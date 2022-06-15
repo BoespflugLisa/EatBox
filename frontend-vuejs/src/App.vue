@@ -113,6 +113,10 @@ export default {
 </script>
 
 <style>
+p {
+    margin-bottom: 0!important;
+}
+
 .main-menu-bottom {
     position: absolute;
     bottom: 0;
@@ -149,5 +153,9 @@ export default {
 
 .font-20 {
     font-size: 20px;
+}
+
+.font-40 {
+    font-size: 40px;
 }
 </style>

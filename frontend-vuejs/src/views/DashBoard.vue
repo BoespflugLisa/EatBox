@@ -28,11 +28,11 @@
 
         <div class="d-flex justify-center pt-7">
 
-            <v-card elevation="2" width="100%">
+            <v-card elevation="2" width="100%" color="accent">
 
                 <v-card-text class="text-center font-weight-bold" >
                     Nombres de commande ce mois-ci :
-                    <p class="text-xl-h1">{{ this.nbCommandes }}</p>
+                    <p class="font-40 mt-4">{{ this.nbCommandes }}</p>
                 </v-card-text>
 
             </v-card>
