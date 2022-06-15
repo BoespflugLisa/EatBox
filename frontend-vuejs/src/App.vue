@@ -1,60 +1,133 @@
 <template>
     <v-app>
         <v-app-bar
-            app
             color="primary"
-            dark
+            app
         >
-            <div class="d-flex align-center">
-                <v-img
-                    alt="Vuetify Logo"
-                    class="shrink mr-2"
-                    contain
-                    src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-                    transition="scale-transition"
-                    width="40"
-                />
-
-                <v-img
-                    alt="Vuetify Name"
-                    class="shrink mt-1 hidden-sm-and-down"
-                    contain
-                    min-width="100"
-                    src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-                    width="100"
-                />
-            </div>
-
-            <v-spacer></v-spacer>
-
-            <v-btn
-                href="https://github.com/vuetifyjs/vuetify/releases/latest"
-                target="_blank"
-                text
+            <v-app-bar-nav-icon
+                @click="displayMenu()"
+                color="white"
+            />
+            <v-img
+                max-width="100"
+                src="/img/EatBoxRestaurateur.png"
+                class="ma-auto"
             >
-                <span class="mr-2">Latest Release</span>
-                <v-icon>mdi-open-in-new</v-icon>
+            </v-img>
+            <v-btn icon>
+                <v-icon color="white">
+                    mdi-bell
+                </v-icon>
             </v-btn>
         </v-app-bar>
 
-        <v-main>
-            <HelloWorld/>
+        <v-navigation-drawer
+            v-model="drawer"
+            temporary absolute width="320"
+            class="main-menu"
+        >
+            <div class="pa-3 pb-0 ml-auto">
+                <v-btn
+                    icon
+                    @click="displayMenu()"
+                >
+                    <v-icon>
+                        mdi-close
+                    </v-icon>
+                </v-btn>
+            </div>
+            <div class="d-flex justify-center flex-column pa-5 pt-2">
+                <v-btn
+                    color="accent dark--text"
+                    class="pr-10 pl-10"
+                >
+                    Mon restaurant
+                </v-btn>
+
+                <v-btn
+                    color="accent dark--text"
+                    class="pr-10 pl-10 mt-5"
+                >
+                    Gestion de la carte
+                </v-btn>
+
+                <v-btn
+                    color="accent dark--text"
+                    class="pr-10 pl-10 mt-5"
+                >
+                    Gestion des commandes
+                </v-btn>
+
+                <v-btn
+                    color="accent dark--text"
+                    class="pr-10 pl-10 mt-5"
+                >
+                    Statistiques avancées
+                </v-btn>
+            </div>
+            <div class="d-flex justify-center flex-column pa-5 main-menu-bottom">
+                <v-btn
+                    color="accent dark--text"
+                    class="pr-10 pl-10"
+                >
+                    Parrainer
+                </v-btn>
+
+                <v-btn
+                    color="secondary white--text"
+                    class="pr-10 pl-10 mt-5"
+                >
+                    Se déconnecter
+                </v-btn>
+            </div>
+        </v-navigation-drawer>
+
+        <v-main class="content">
+            <router-view/>
         </v-main>
     </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+
 
 export default {
     name: 'App',
 
-    components: {
-        HelloWorld,
+    data: function () {
+        return {
+            drawer: false,
+        }
     },
 
-    data: () => ({
-        //
-    }),
+    methods: {
+        displayMenu() {
+            if (this.drawer === true) {
+                this.drawer = false;
+            } else {
+                this.drawer = true;
+            }
+        }
+    }
 };
 </script>
+
+<style>
+.main-menu-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.content {
+    padding: 64px 10% 0 10%!important;
+    display: flex;
+    justify-content: center;
+}
+
+@media screen and (min-width: 768px) {
+    .content {
+        padding: 64px 20% 0 20%!important;
+    }
+}
+</style>
