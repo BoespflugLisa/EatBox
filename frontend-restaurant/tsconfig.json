@@ -12,7 +12,7 @@
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": true,
     "sourceMap": true,
-    "baseUrl": ".",
+    "baseUrl": "..",
     "types": [
       "webpack-env"
     ],
@@ -29,9 +29,9 @@
     ]
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
+    "frontend-restaurant/src/**/*.ts",
+    "frontend-restaurant/src/**/*.tsx",
+    "frontend-restaurant/src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
   ],
