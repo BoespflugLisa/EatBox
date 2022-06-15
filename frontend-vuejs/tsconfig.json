@@ -29,9 +29,9 @@
     ]
   },
   "include": [
-    "frontend-restaurant/src/**/*.ts",
-    "frontend-restaurant/src/**/*.tsx",
-    "frontend-restaurant/src/**/*.vue",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
   ],
