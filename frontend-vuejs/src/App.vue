@@ -37,28 +37,28 @@
             </div>
             <div class="d-flex justify-center flex-column pa-5 pt-2">
                 <v-btn
-                    color="accent black--text"
+                    color="tertiary black--text"
                     class="pr-10 pl-10"
                 >
                     Mon restaurant
                 </v-btn>
 
                 <v-btn
-                    color="accent black--text"
+                    color="tertiary black--text"
                     class="pr-10 pl-10 mt-5"
                 >
                     Gestion de la carte
                 </v-btn>
 
                 <v-btn
-                    color="accent black--text"
+                    color="tertiary black--text"
                     class="pr-10 pl-10 mt-5"
                 >
                     Gestion des commandes
                 </v-btn>
 
                 <v-btn
-                    color="accent black--text"
+                    color="tertiary black--text"
                     class="pr-10 pl-10 mt-5"
                 >
                     Statistiques avancées
@@ -66,7 +66,7 @@
             </div>
             <div class="d-flex justify-center flex-column pa-5 main-menu-bottom">
                 <v-btn
-                    color="accent black--text"
+                    color="tertiary black--text"
                     class="pr-10 pl-10"
                 >
                     Parrainer
@@ -112,7 +112,7 @@ export default {
                     this.$vuetify.theme.themes.light.primary = '#2D5D62';
                     this.$vuetify.theme.themes.light.secondary = '#77A8A3';
                     this.$vuetify.theme.themes.light.accent = '#A1C7C7';
-                    this.$vuetify.theme.themes.light.anchor = '#B9D3CD';
+                    this.$vuetify.theme.themes.light.tertiary = '#B9D3CD';
                     this.EatBoxLogo = "./img/EatBox.png";
                     break;
 
@@ -120,7 +120,7 @@ export default {
                     this.$vuetify.theme.themes.light.primary = '#751A2C';
                     this.$vuetify.theme.themes.light.secondary = '#B33A3A';
                     this.$vuetify.theme.themes.light.accent = '#D57056';
-                    this.$vuetify.theme.themes.light.anchor = '#FFDAC8';
+                    this.$vuetify.theme.themes.light.tertiary = '#FFDAC8';
                     this.EatBoxLogo = "./img/EatBoxRestaurateur.png";
                     break;
 
@@ -128,7 +128,7 @@ export default {
                     this.$vuetify.theme.themes.light.primary = '#43846B';
                     this.$vuetify.theme.themes.light.secondary = '#B0BBA7';
                     this.$vuetify.theme.themes.light.accent = '#F3E0D7';
-                    this.$vuetify.theme.themes.light.anchor = '#F3E0D7';
+                    this.$vuetify.theme.themes.light.tertiary = '#F3E0D7';
                     this.EatBoxLogo = "./img/EatBoxDeliveryman.png";
                     break;
             }
