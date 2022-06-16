@@ -155,6 +155,10 @@ p {
     font-size: 20px;
 }
 
+.font-30 {
+    font-size: 30px;
+}
+
 .font-40 {
     font-size: 40px;
 }

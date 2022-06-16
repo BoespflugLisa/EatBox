@@ -1,3 +1,5 @@
+
+
 <template>
 
     <div id="dashboard">
@@ -12,7 +14,7 @@
         </div>
 
         <div class="d-flex justify-center pt-7">
-            <v-btn block>
+            <v-btn block rounded color="secondary" large>
 
                 Gestion des commandes
             </v-btn>
@@ -28,10 +30,10 @@
 
         <div class="d-flex justify-center pt-7">
 
-            <v-card elevation="2" width="100%" color="accent">
+            <v-card elevation="2" width="100%" color="accent" >
 
-                <v-card-text class="text-center font-weight-bold" >
-                    Nombres de commande ce mois-ci :
+                <v-card-text class="text-center dark--text" >
+                    <p  class="font-weight-bold">Nombres de commande ce mois-ci :</p>
                     <p class="font-40 mt-4">{{ this.nbCommandes }}</p>
                 </v-card-text>
 
@@ -39,12 +41,46 @@
         </div>
 
         <div class="d-flex justify-center pt-7">
-            <v-btn block>
 
-                Gestion des commandes
-            </v-btn>
+            <v-card elevation="2" width="100%" color="accent">
+
+                <v-card-text class="text-center dark--text " >
+                    <p class="font-weight-bold">Moyenne des notes des derniers clients : </p>
+                    <p class="font-40 mt-4">{{ this.moyenneNote }}
+                        <v-icon color="dark" large>
+                            mdi-star
+                        </v-icon>
+                    </p>
+                </v-card-text>
+
+            </v-card>
         </div>
 
+        <div class="d-flex justify-space-between  pt-7 align-center">
+
+            <v-card elevation="2" width="45%" color="accent" >
+
+                <v-card-text class="text-center dark--text " >
+                    <p class="font-weight-bold"> Recette du mois : </p>
+                    <p class="font-40 mt-4">{{ this.recetteDuMois }} €</p>
+                </v-card-text>
+
+            </v-card>
+
+
+
+            <v-card elevation="2" width="45%"   color="accent"  >
+
+                <v-card-text  class="text-center  dark--text  " >
+                    <p class="font-20 ">En savoir plus </p>
+
+                </v-card-text>
+
+            </v-card>
+
+
+
+        </div>
 
     </div>
 
@@ -52,13 +88,43 @@
 </template>
 
 <script>
+
 export default {
+
     data: function () {
         return {
             restaurantName: "Taco Bruno",
             nbCommandes: 6,
+            moyenneNote: 4.4,
+            recetteDuMois: this.nFormatter(12464749,1),
+
         }
     },
+
+    methods: {
+        nFormatter(num, digits) {
+            var si = [
+                { value: 1, symbol: "" },
+                { value: 1E3, symbol: "k" },
+                { value: 1E6, symbol: "M" },
+                { value: 1E9, symbol: "G" },
+                { value: 1E12, symbol: "T" },
+                { value: 1E15, symbol: "P" },
+                { value: 1E18, symbol: "E" }
+            ];
+            var rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+            var i;
+            for (i = si.length - 1; i > 0; i--) {
+                if (num >= si[i].value) {
+                    break;
+                }
+            }
+            return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
+        }
+    },
+
+
+
 
 };
 </script>
