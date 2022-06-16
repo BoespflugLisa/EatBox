@@ -95,7 +95,7 @@ export default {
 
     data: function () {
         return {
-            connectedUserRole: "Deliveryman",
+            connectedUserRole: "Restaurateur",
             EatBoxLogo: '',
             drawer: false,
         }
