@@ -1,8 +1,7 @@
 <template>
     <v-app>
         <v-app-bar
-            color="primary"
-            app
+            app color="primary"
         >
             <v-app-bar-nav-icon
                 @click="displayMenu()"
@@ -10,7 +9,7 @@
             />
             <v-img
                 max-width="100"
-                src="/img/EatBoxRestaurateur.png"
+                :src="this.EatBoxLogo"
                 class="ma-auto"
             >
             </v-img>
@@ -38,28 +37,28 @@
             </div>
             <div class="d-flex justify-center flex-column pa-5 pt-2">
                 <v-btn
-                    color="accent dark--text"
+                    color="accent black--text"
                     class="pr-10 pl-10"
                 >
                     Mon restaurant
                 </v-btn>
 
                 <v-btn
-                    color="accent dark--text"
+                    color="accent black--text"
                     class="pr-10 pl-10 mt-5"
                 >
                     Gestion de la carte
                 </v-btn>
 
                 <v-btn
-                    color="accent dark--text"
+                    color="accent black--text"
                     class="pr-10 pl-10 mt-5"
                 >
                     Gestion des commandes
                 </v-btn>
 
                 <v-btn
-                    color="accent dark--text"
+                    color="accent black--text"
                     class="pr-10 pl-10 mt-5"
                 >
                     Statistiques avancées
@@ -67,7 +66,7 @@
             </div>
             <div class="d-flex justify-center flex-column pa-5 main-menu-bottom">
                 <v-btn
-                    color="accent dark--text"
+                    color="accent black--text"
                     class="pr-10 pl-10"
                 >
                     Parrainer
@@ -96,17 +95,47 @@ export default {
 
     data: function () {
         return {
+            connectedUserRole: "Deliveryman",
+            EatBoxLogo: '',
             drawer: false,
         }
     },
 
+    created() {
+        this.changeTheme();
+    },
+
     methods: {
-        displayMenu() {
-            if (this.drawer === true) {
-                this.drawer = false;
-            } else {
-                this.drawer = true;
+        changeTheme() {
+            switch (this.connectedUserRole) {
+                case "Client":
+                    this.$vuetify.theme.themes.light.primary = '#2D5D62';
+                    this.$vuetify.theme.themes.light.secondary = '#77A8A3';
+                    this.$vuetify.theme.themes.light.accent = '#A1C7C7';
+                    this.$vuetify.theme.themes.light.anchor = '#B9D3CD';
+                    this.EatBoxLogo = "./img/EatBox.png";
+                    break;
+
+                case "Restaurateur":
+                    this.$vuetify.theme.themes.light.primary = '#751A2C';
+                    this.$vuetify.theme.themes.light.secondary = '#B33A3A';
+                    this.$vuetify.theme.themes.light.accent = '#D57056';
+                    this.$vuetify.theme.themes.light.anchor = '#FFDAC8';
+                    this.EatBoxLogo = "./img/EatBoxRestaurateur.png";
+                    break;
+
+                case "Deliveryman":
+                    this.$vuetify.theme.themes.light.primary = '#43846B';
+                    this.$vuetify.theme.themes.light.secondary = '#B0BBA7';
+                    this.$vuetify.theme.themes.light.accent = '#F3E0D7';
+                    this.$vuetify.theme.themes.light.anchor = '#F3E0D7';
+                    this.EatBoxLogo = "./img/EatBoxDeliveryman.png";
+                    break;
             }
+        },
+
+        displayMenu() {
+            this.drawer = this.drawer !== true;
         }
     }
 };
