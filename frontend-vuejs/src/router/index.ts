@@ -16,8 +16,12 @@ const routes: Array<RouteConfig> = [
     path: '/card',
     name: ' ArticlesEtMenus',
     component: ArticlesEtMenus
-
   },
+  {
+    path: '/mon_restaurant',
+    name: 'monRestaurant',
+    component: () => import('../views/Restaurateur/RestaurantInformation.vue')
+  }
 ]
 
 const router = new VueRouter({
