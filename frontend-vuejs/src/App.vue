@@ -43,12 +43,15 @@
                     Mon restaurant
                 </v-btn>
 
+
                 <v-btn
                     color="tertiary black--text"
                     class="pr-10 pl-10 mt-5"
+                    to="/card" tag="button"
                 >
                     Gestion de la carte
                 </v-btn>
+
 
                 <v-btn
                     color="tertiary black--text"
@@ -120,7 +123,7 @@ export default {
                     this.$vuetify.theme.themes.light.primary = '#751A2C';
                     this.$vuetify.theme.themes.light.secondary = '#B33A3A';
                     this.$vuetify.theme.themes.light.accent = '#D57056';
-                    this.$vuetify.theme.themes.light.tertiary = '#FFDAC8';
+                    this.$vuetify.theme.themes.light.tertiary = '#f5f5f5';
                     this.EatBoxLogo = "./img/EatBoxRestaurateur.png";
                     break;
 
@@ -144,6 +147,10 @@ export default {
 <style>
 p {
     margin-bottom: 0!important;
+}
+
+.main-menu {
+    height: 100%;
 }
 
 .main-menu-bottom {
@@ -182,6 +189,14 @@ p {
 
 .font-20 {
     font-size: 20px;
+}
+
+.font-20 {
+    font-size: 20px;
+}
+
+.font-25 {
+    font-size: 25px;
 }
 
 .font-30 {
