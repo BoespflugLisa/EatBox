@@ -10,6 +10,7 @@ const config = require("./config")
 
 const RestaurantsRouter = require("./routes/posts/RestaurantRouter");
 const UsersRouter = require("./routes/posts/UserRouter");
+const DeliverymansRouter = require("./routes/posts/DeliverymanRouter");
 /*const CardsRouter = require("./routes/posts/Restaurant");
 const CategoriesRouter = require("./routes/posts/Restaurant");
 const ArticlesRouter = require("./routes/posts/Restaurant");
@@ -37,6 +38,7 @@ app.use(bodyParser.json());
 
 app.use("/restaurants", RestaurantsRouter);
 app.use("/users", UsersRouter);
+app.use("/deliverymans", DeliverymansRouter);
 /*app.use("/cartes", CardsRouter);
 app.use("/categories", CategoriesRouter);
 app.use("/articles", ArticlesRouter);
