@@ -1,59 +1,130 @@
 <template>
     <div id="restaurant-information">
-<!--        <div class="d-flex justify-space-around  info-menu">
-            <v-btn
-                :color="activeBtn === 'info' ? 'secondary ' : 'tertiary'"
-                class="ma-2" width="150px"
-            >
-                Mes infos
-            </v-btn>
-            <v-btn
-                :color="activeBtn === 'preference' ? 'secondary ' : 'tertiary'"
-                class="ma-2" width="150px"
-            >
-                Préférences
-            </v-btn>
-            <v-btn
-                :color="activeBtn === 'sponsorship' ? 'secondary ' : 'tertiary'"
-                class="ma-2" width="150px"
-            >
-                Parrainage
-            </v-btn>
-        </div>-->
-
         <v-card>
-            <v-tabs
-                v-model="tab"
-                background-color="deep-purple accent-4"
-                fixed-tabs
-            >
-                <v-tabs-slider></v-tabs-slider>
-
-                <v-tab href="#tab-1">
-                    Mes infos
-                </v-tab>
-
-                <v-tab href="#tab-2">
-                    Préférences
-                </v-tab>
-
-                <v-tab href="#tab-3">
-                    Parrainage
-                </v-tab>
+            <v-tabs fixed-tabs v-model="tab">
+                <v-tab v-for="item in items" :key="item.tab">{{ item.tab }}</v-tab>
             </v-tabs>
-
             <v-tabs-items v-model="tab">
-                <v-tab-item
-                    v-for="i in 3"
-                    :key="i"
-                    :value="'tab-' + i"
-                >
-                    <v-card flat>
-                        <v-card-text>{{ text }}</v-card-text>
-                    </v-card>
+                <v-tab-item v-for="item in items" :key="item.tab">
+                    <div class="mt-3 ml-3" v-if="item.tab ==='Commandes entrantes'">
+                        <h2>Informations du restaurant</h2>
+                    </div>
+
+                    <div class="mt-3 ml-3" v-if="item.tab ==='Commandes entrantes'">
+                        <h3>Nom du restaurant</h3>
+                    </div>
+
+                    <div class="mt-3 ml-5" v-if="item.tab ==='Commandes entrantes'">
+                        <h7>{{ restaurantName }}</h7>
+                    </div>
+
+                    <div class="mt-3 ml-3" v-if="item.tab ==='Commandes entrantes'">
+                        <h3>Type de nourriture proposé </h3>
+                    </div>
+
+                    <div class="mt-3 ml-5" v-if="item.tab ==='Commandes entrantes'">
+                        <h7>{{ foodType }}</h7>
+                    </div>
+
+                    <div class="mt-3 ml-3" v-if="item.tab ==='Commandes entrantes'">
+                        <h3>Horaires</h3>
+                    </div>
+
+                    <div class="mt-3 ml-5" v-if="item.tab ==='Commandes entrantes'">
+                        <h7>Lun. : {{ LunTime }}</h7>
+                        <br>
+                        <h7>Mar. : {{ MarTime }}</h7>
+                        <br>
+                        <h7>Mer. : {{ MerTime }}</h7>
+                        <br>
+                        <h7>Jeu. : {{ JeuTime }}</h7>
+                        <br>
+                        <h7>Ven. : {{ VenTime }}</h7>
+                        <br>
+                        <h7>Sam. : {{ SamTime }}</h7>
+                        <br>
+                        <h7>Dim. : {{ DimTime }}</h7>
+                    </div>
+
+                    <div class="d-flex justify-center pt-5 pb-3 " v-if="item.tab ==='Commandes entrantes'">
+                        <v-btn block rounded color="secondary" large>
+                            Fermeture exceptionnelle
+                        </v-btn>
+
+                    </div>
+
+                    <v-banner
+                      v-model="v0"
+                      single-line
+                      transition="slide-y-transition"
+                    ></v-banner>
+
+                    <div class="mt-3 ml-3" v-if="item.tab ==='Commandes entrantes'">
+                        <h2>Informations de contact</h2>
+                    </div>
+
+                    <div class="mt-3 ml-3" v-if="item.tab ==='Commandes entrantes'">
+                        <h3>Numéro de téléphone</h3>
+                    </div>
+
+                    <div class="mt-3 ml-5" v-if="item.tab ==='Commandes entrantes'">
+                        <h7>{{ telephone }}</h7>
+                    </div>
+
+                    <div class="mt-3 ml-3" v-if="item.tab ==='Commandes entrantes'">
+                        <h3>Adresse mail</h3>
+                    </div>
+
+                    <div class="mt-3 ml-5" v-if="item.tab ==='Commandes entrantes'">
+                        <h7>{{ mail }}</h7>
+                    </div>
+
+                    <div class="mt-3 ml-3" v-if="item.tab ==='Commandes entrantes'">
+                        <h3>Numéro de SIRET</h3>
+                    </div>
+
+                    <div class="mt-3 ml-5" v-if="item.tab ==='Commandes entrantes'">
+                        <h7>{{ numSiret }}</h7>
+                    </div>
+
+                    <v-banner
+                      v-model="v0"
+                      single-line
+                      transition="slide-y-transition"
+                    ></v-banner>
+
+                    <div class="mt-3 ml-3" v-if="item.tab ==='Commandes entrantes'">
+                        <h2>Informations banquaires</h2>
+                    </div>
+
+                    <div class="mt-3 ml-3" v-if="item.tab ==='Commandes entrantes'">
+                        <h3>Nom du compte</h3>
+                    </div>
+
+                    <div class="mt-3 ml-5" v-if="item.tab ==='Commandes entrantes'">
+                        <h7>{{ telephone }}</h7>
+                    </div>
+
+                    <div class="mt-3 ml-3" v-if="item.tab ==='Commandes entrantes'">
+                        <h3>Identifiant BIC</h3>
+                    </div>
+
+                    <div class="mt-3 ml-5" v-if="item.tab ==='Commandes entrantes'">
+                        <h7>{{ mail }}</h7>
+                    </div>
+
+                    <div class="mt-3 ml-3" v-if="item.tab ==='Commandes entrantes'">
+                        <h3>Numéro IBAN</h3>
+                    </div>
+
+                    <div class="mt-3 ml-5 mb-5" v-if="item.tab ==='Commandes entrantes'">
+                        <h7>{{ numSiret }}</h7>
+                    </div>
+
                 </v-tab-item>
             </v-tabs-items>
         </v-card>
+
 
     </div>
 </template>
@@ -62,12 +133,28 @@
 export default {
     name: "RestaurantInformation",
 
-    data: function () {
+    data() {
         return {
-            activeBtn: 'info',
-            tab: null,
-            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        }
+            tab: 0,
+            items: [
+                {tab: "Commandes entrantes"},
+                {tab: "Commandes en cours"},
+                {tab: "Historique"},
+            ],
+            restaurantName: "tets",
+            foodType: "tets",
+            telephone: "tets",
+            mail: "tets",
+            numSiret: "tets",
+
+            LunTime: "11h30-14h / 19h-23h30",
+            MarTime: "11h30-14h / 19h-23h30",
+            MerTime: "11h30-14h / 19h-23h30",
+            JeuTime: "11h30-14h / 19h-23h30",
+            VenTime: "11h30-14h / 19h-23h30",
+            SamTime: "11h30-14h / 19h-23h30",
+            DimTime: "Fermé.",
+        };
     },
 }
 </script>

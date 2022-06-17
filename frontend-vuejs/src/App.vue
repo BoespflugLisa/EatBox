@@ -39,6 +39,7 @@
                 <v-btn
                     color="tertiary black--text"
                     class="pr-10 pl-10"
+                    to="/mon_Restaurant"
                 >
                     Mon restaurant
                 </v-btn>
@@ -47,7 +48,7 @@
                 <v-btn
                     color="tertiary black--text"
                     class="pr-10 pl-10 mt-5"
-                    to="/card" tag="button"
+                    to="/card"
                 >
                     Gestion de la carte
                 </v-btn>
