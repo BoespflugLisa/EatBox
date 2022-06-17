@@ -42,12 +42,12 @@
                     <v-card-title>
                         Créer une catégorie
                     </v-card-title>
-                    <ValidationObserver ref="obs" v-slot="{ invalid, validated }">
+                    <validation-observer ref="obs" v-slot="{ invalid, validated }">
                         <v-col
                             cols="12"
                             md="4"
                         >
-                            <ValidationProvider name="Nom de la catégorie" rules="required|max:10"
+                            <validation-provider name="Nom de la catégorie" rules="required|max:10"
                                                 v-slot="{ errors, valid }">
                                 <v-text-field
                                     v-model="categoryName"
@@ -57,7 +57,7 @@
                                     :error-messages="errors"
                                     :success="valid"
                                 ></v-text-field>
-                            </ValidationProvider>
+                            </validation-provider>
 
                         </v-col>
 
@@ -74,7 +74,7 @@
                                 Valider
                             </v-btn>
                         </v-card-actions>
-                    </ValidationObserver>
+                    </validation-observer>
                 </v-card>
             </v-dialog>
         </div>
