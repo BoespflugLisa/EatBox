@@ -85,16 +85,19 @@
         </v-navigation-drawer>
 
         <v-main class="content">
-            <router-view/>
+           <router-view/>
         </v-main>
     </v-app>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
+import { ValidationObserver, ValidationProvider } from 'vee-validate';
 
 @Component({
     components: {
+        ValidationObserver,
+        ValidationProvider
     },
 })
 
@@ -102,6 +105,8 @@ export default class App extends Vue {
     connectedUserRole = "Restaurateur";
     eatBoxLogo = '';
     drawer = false;
+
+    value ='';
 
     created() {
         this.changeTheme();
