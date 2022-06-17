@@ -10,6 +10,11 @@ const routes: Array<RouteConfig> = [
     name: 'DashBoard',
     component: DashBoard
   },
+  {
+    path: '/mon_restaurant',
+    name: 'monRestaurant',
+    component: () => import('../views/Restaurateur/RestaurantInformation.vue')
+  }
 
 ]
 
