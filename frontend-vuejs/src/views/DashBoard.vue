@@ -30,7 +30,7 @@
 
         <div class="d-flex justify-center pt-7">
 
-            <v-card elevation="2" width="100%" color="accent" >
+            <v-card elevation="2" width="100%" color="tertiary" >
 
                 <v-card-text class="text-center dark--text" >
                     <p  class="font-weight-bold">Nombres de commande ce mois-ci :</p>
@@ -42,7 +42,7 @@
 
         <div class="d-flex justify-center pt-7">
 
-            <v-card elevation="2" width="100%" color="accent">
+            <v-card elevation="2" width="100%" color="tertiary">
 
                 <v-card-text class="text-center dark--text " >
                     <p class="font-weight-bold">Moyenne des notes des derniers clients : </p>
@@ -56,20 +56,20 @@
             </v-card>
         </div>
 
-        <div class="d-flex justify-space-between  pt-7 align-center">
+        <div class="d-flex justify-space-between  pt-7 align-center mb-7">
 
-            <v-card elevation="2" width="45%" color="accent" >
+            <v-card elevation="2" width="45%"  color="tertiary" >
 
                 <v-card-text class="text-center dark--text " >
                     <p class="font-weight-bold"> Recette du mois : </p>
-                    <p class="font-40 mt-4">{{ this.recetteDuMois }} €</p>
+                    <p class="font-25 mt-4">{{ this.recetteDuMois }} €</p>
                 </v-card-text>
 
             </v-card>
 
 
 
-            <v-card elevation="2" width="45%"   color="accent"  >
+            <v-card elevation="2" width="45%"   color="tertiary"  >
 
                 <v-card-text  class="text-center  dark--text  " >
                     <p class="font-20 ">En savoir plus </p>
@@ -94,7 +94,7 @@ export default {
     data: function () {
         return {
             restaurantName: "Taco Bruno",
-            nbCommandes: 6,
+            nbCommandes:  this.nFormatter(6,1),
             moyenneNote: 4.4,
             recetteDuMois: this.nFormatter(12464749,1),
 

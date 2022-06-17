@@ -9,7 +9,7 @@
             />
             <v-img
                 max-width="100"
-                :src="this.EatBoxLogo"
+                :src="this.eatBoxLogo"
                 class="ma-auto"
             >
             </v-img>
@@ -43,12 +43,15 @@
                     Mon restaurant
                 </v-btn>
 
+
                 <v-btn
                     color="tertiary black--text"
                     class="pr-10 pl-10 mt-5"
+                    to="/card" tag="button"
                 >
                     Gestion de la carte
                 </v-btn>
+
 
                 <v-btn
                     color="tertiary black--text"
@@ -87,63 +90,65 @@
     </v-app>
 </template>
 
-<script>
+<script lang="ts">
+import {Component, Vue} from 'vue-property-decorator';
 
-
-export default {
-    name: 'App',
-
-    data: function () {
-        return {
-            connectedUserRole: "Restaurateur",
-            EatBoxLogo: '',
-            drawer: false,
-        }
+@Component({
+    components: {
     },
+})
+
+export default class App extends Vue {
+    connectedUserRole = "Restaurateur";
+    eatBoxLogo = '';
+    drawer = false;
 
     created() {
         this.changeTheme();
-    },
+    }
 
-    methods: {
-        changeTheme() {
-            switch (this.connectedUserRole) {
-                case "Client":
-                    this.$vuetify.theme.themes.light.primary = '#2D5D62';
-                    this.$vuetify.theme.themes.light.secondary = '#77A8A3';
-                    this.$vuetify.theme.themes.light.accent = '#A1C7C7';
-                    this.$vuetify.theme.themes.light.tertiary = '#B9D3CD';
-                    this.EatBoxLogo = "./img/EatBox.png";
-                    break;
-
-                case "Restaurateur":
-                    this.$vuetify.theme.themes.light.primary = '#751A2C';
-                    this.$vuetify.theme.themes.light.secondary = '#B33A3A';
-                    this.$vuetify.theme.themes.light.accent = '#D57056';
-                    this.$vuetify.theme.themes.light.tertiary = '#FFDAC8';
-                    this.EatBoxLogo = "./img/EatBoxRestaurateur.png";
-                    break;
-
-                case "Deliveryman":
-                    this.$vuetify.theme.themes.light.primary = '#43846B';
-                    this.$vuetify.theme.themes.light.secondary = '#B0BBA7';
-                    this.$vuetify.theme.themes.light.accent = '#F3E0D7';
-                    this.$vuetify.theme.themes.light.tertiary = '#F3E0D7';
-                    this.EatBoxLogo = "./img/EatBoxDeliveryman.png";
-                    break;
+    changeTheme() {
+        switch (this.connectedUserRole) {
+            case "Client":  {
+                this.$vuetify.theme.themes.light.primary = '#2D5D62';
+                this.$vuetify.theme.themes.light.secondary = '#77A8A3';
+                this.$vuetify.theme.themes.light.accent = '#A1C7C7';
+                this.$vuetify.theme.themes.light.tertiary = '#B9D3CD';
+                this.eatBoxLogo = "./img/EatBox.png";
+                break;
             }
-        },
 
-        displayMenu() {
-            this.drawer = this.drawer !== true;
+            case "Restaurateur":
+                this.$vuetify.theme.themes.light.primary = '#751A2C';
+                this.$vuetify.theme.themes.light.secondary = '#B33A3A';
+                this.$vuetify.theme.themes.light.accent = '#D57056';
+                this.$vuetify.theme.themes.light.tertiary = '#e1e1e1';
+                this.eatBoxLogo = "./img/EatBoxRestaurateur.png";
+                break;
+
+            case "Deliveryman":
+                this.$vuetify.theme.themes.light.primary = '#43846B';
+                this.$vuetify.theme.themes.light.secondary = '#B0BBA7';
+                this.$vuetify.theme.themes.light.accent = '#F3E0D7';
+                this.$vuetify.theme.themes.light.tertiary = '#F3E0D7';
+                this.eatBoxLogo = "./img/EatBoxDeliveryman.png";
+                break;
         }
     }
-};
+
+    displayMenu() {
+        this.drawer = !this.drawer;
+    }
+}
 </script>
 
 <style>
 p {
-    margin-bottom: 0!important;
+    margin-bottom: 0 !important;
+}
+
+.main-menu {
+    height: 100%;
 }
 
 .main-menu-bottom {
@@ -153,14 +158,14 @@ p {
 }
 
 .content {
-    padding: 64px 10% 0 10%!important;
+    padding: 64px 10% 0 10% !important;
     display: flex;
     justify-content: center;
 }
 
 @media screen and (min-width: 768px) {
     .content {
-        padding: 64px 20% 0 20%!important;
+        padding: 64px 20% 0 20% !important;
     }
 }
 
@@ -182,6 +187,14 @@ p {
 
 .font-20 {
     font-size: 20px;
+}
+
+.font-20 {
+    font-size: 20px;
+}
+
+.font-25 {
+    font-size: 25px;
 }
 
 .font-30 {
