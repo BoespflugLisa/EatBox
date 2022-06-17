@@ -1,6 +1,6 @@
 <template>
 
-    <div id="dashboard">
+    <div id="dashboard" class="side-padding">
 
 
         <div class="d-flex justify-center pt-7 ">

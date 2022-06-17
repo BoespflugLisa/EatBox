@@ -84,9 +84,9 @@
             </div>
         </v-navigation-drawer>
 
-        <v-main class="content">
+        <div class="content">
            <router-view/>
-        </v-main>
+        </div>
     </v-app>
 </template>
 
@@ -163,14 +163,12 @@ p {
 }
 
 .content {
-    padding: 64px 10% 0 10% !important;
-    display: flex;
-    justify-content: center;
+    padding-top: 64px!important;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 960px) {
     .content {
-        padding: 64px 20% 0 20% !important;
+        padding-top: 56px!important;
     }
 }
 
