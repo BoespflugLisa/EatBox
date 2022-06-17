@@ -84,17 +84,20 @@
             </div>
         </v-navigation-drawer>
 
-        <v-main class="content">
-            <router-view/>
-        </v-main>
+        <div class="content">
+           <router-view/>
+        </div>
     </v-app>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
+import { ValidationObserver, ValidationProvider } from 'vee-validate';
 
 @Component({
     components: {
+        ValidationObserver,
+        ValidationProvider
     },
 })
 
@@ -102,6 +105,8 @@ export default class App extends Vue {
     connectedUserRole = "Restaurateur";
     eatBoxLogo = '';
     drawer = false;
+
+    value ='';
 
     created() {
         this.changeTheme();
@@ -158,14 +163,12 @@ p {
 }
 
 .content {
-    padding: 64px 10% 0 10% !important;
-    display: flex;
-    justify-content: center;
+    padding-top: 64px!important;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 960px) {
     .content {
-        padding: 64px 20% 0 20% !important;
+        padding-top: 56px!important;
     }
 }
 
