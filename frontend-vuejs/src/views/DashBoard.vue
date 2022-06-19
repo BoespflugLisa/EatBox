@@ -12,7 +12,7 @@
         </div>
 
         <div class="d-flex justify-center pt-7">
-            <v-btn block rounded color="secondary" large>
+            <v-btn block rounded color="secondary" to="/commandes" large>
 
                 Gestion des commandes
             </v-btn>
@@ -74,7 +74,6 @@
                 </v-card-text>
 
             </v-card>
-
 
         </div>
 

@@ -21,6 +21,11 @@ const routes: Array<RouteConfig> = [
     path: '/mon_restaurant',
     name: 'monRestaurant',
     component: () => import('../views/Restaurateur/RestaurantInformation.vue')
+  },
+  {
+    path: '/commandes',
+    name: 'commandes',
+    component: () => import('../views/Restaurateur/Command/CommandsList.vue')
   }
 ]
 
