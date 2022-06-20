@@ -23,7 +23,7 @@
         <v-navigation-drawer
             v-model="drawer"
             temporary absolute width="320"
-            class="main-menu"
+            class="main-menu" height="100vh"
         >
             <div class="pa-3 pb-0 ml-auto">
                 <v-btn
@@ -68,34 +68,40 @@
                     Statistiques avancées
                 </v-btn>
             </div>
-            <div class="d-flex justify-center flex-column pa-5 main-menu-bottom">
-                <v-btn
-                    color="tertiary black--text"
-                    class="pr-10 pl-10"
-                >
-                    Parrainer
-                </v-btn>
+            <template v-slot:append>
+                <div class="d-flex justify-center flex-column pa-5">
+                    <v-btn
+                        color="tertiary black--text"
+                        class="pr-10 pl-10"
+                    >
+                        Parrainer
+                    </v-btn>
 
-                <v-btn
-                    color="secondary white--text"
-                    class="pr-10 pl-10 mt-5"
-                >
-                    Se déconnecter
-                </v-btn>
-            </div>
+                    <v-btn
+                        color="secondary white--text"
+                        class="pr-10 pl-10 mt-5"
+                    >
+                        Se déconnecter
+                    </v-btn>
+                </div>
+            </template>
+
         </v-navigation-drawer>
 
-        <v-main class="content">
+        <div class="content">
             <router-view/>
-        </v-main>
+        </div>
     </v-app>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
+import {ValidationObserver, ValidationProvider} from 'vee-validate';
 
 @Component({
     components: {
+        ValidationObserver,
+        ValidationProvider
     },
 })
 
@@ -104,18 +110,20 @@ export default class App extends Vue {
     eatBoxLogo = '';
     drawer = false;
 
+    value = '';
+
     created() {
         this.changeTheme();
     }
 
     changeTheme() {
         switch (this.connectedUserRole) {
-            case "Client":  {
+            case "Client": {
                 this.$vuetify.theme.themes.light.primary = '#2D5D62';
                 this.$vuetify.theme.themes.light.secondary = '#77A8A3';
                 this.$vuetify.theme.themes.light.accent = '#A1C7C7';
                 this.$vuetify.theme.themes.light.tertiary = '#B9D3CD';
-                this.eatBoxLogo = "./img/EatBox.png";
+                this.eatBoxLogo = require('./assets/img/EatBox.png');
                 break;
             }
 
@@ -124,7 +132,7 @@ export default class App extends Vue {
                 this.$vuetify.theme.themes.light.secondary = '#B33A3A';
                 this.$vuetify.theme.themes.light.accent = '#D57056';
                 this.$vuetify.theme.themes.light.tertiary = '#e1e1e1';
-                this.eatBoxLogo = "./img/EatBoxRestaurateur.png";
+                this.eatBoxLogo = require('./assets/img/EatBoxRestaurateur.png');
                 break;
 
             case "Deliveryman":
@@ -132,7 +140,7 @@ export default class App extends Vue {
                 this.$vuetify.theme.themes.light.secondary = '#B0BBA7';
                 this.$vuetify.theme.themes.light.accent = '#F3E0D7';
                 this.$vuetify.theme.themes.light.tertiary = '#F3E0D7';
-                this.eatBoxLogo = "./img/EatBoxDeliveryman.png";
+                this.eatBoxLogo = require('./assets/img/EatBoxDeliveryman.png');
                 break;
         }
     }
@@ -148,25 +156,14 @@ p {
     margin-bottom: 0 !important;
 }
 
-.main-menu {
-    height: 100%;
-}
-
-.main-menu-bottom {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-}
 
 .content {
-    padding: 64px 10% 0 10% !important;
-    display: flex;
-    justify-content: center;
+    padding-top: 64px !important;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 960px) {
     .content {
-        padding: 64px 20% 0 20% !important;
+        padding-top: 56px !important;
     }
 }
 
