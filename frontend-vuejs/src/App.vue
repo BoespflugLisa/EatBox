@@ -85,14 +85,14 @@
         </v-navigation-drawer>
 
         <div class="content">
-           <router-view/>
+            <router-view/>
         </div>
     </v-app>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import { ValidationObserver, ValidationProvider } from 'vee-validate';
+import {ValidationObserver, ValidationProvider} from 'vee-validate';
 
 @Component({
     components: {
@@ -106,7 +106,7 @@ export default class App extends Vue {
     eatBoxLogo = '';
     drawer = false;
 
-    value ='';
+    value = '';
 
     created() {
         this.changeTheme();
@@ -114,12 +114,12 @@ export default class App extends Vue {
 
     changeTheme() {
         switch (this.connectedUserRole) {
-            case "Client":  {
+            case "Client": {
                 this.$vuetify.theme.themes.light.primary = '#2D5D62';
                 this.$vuetify.theme.themes.light.secondary = '#77A8A3';
                 this.$vuetify.theme.themes.light.accent = '#A1C7C7';
                 this.$vuetify.theme.themes.light.tertiary = '#B9D3CD';
-                this.eatBoxLogo = "./img/EatBox.png";
+                this.eatBoxLogo = require('./assets/img/EatBox.png');
                 break;
             }
 
@@ -128,7 +128,7 @@ export default class App extends Vue {
                 this.$vuetify.theme.themes.light.secondary = '#B33A3A';
                 this.$vuetify.theme.themes.light.accent = '#D57056';
                 this.$vuetify.theme.themes.light.tertiary = '#e1e1e1';
-                this.eatBoxLogo = "./img/EatBoxRestaurateur.png";
+                this.eatBoxLogo = require('./assets/img/EatBoxRestaurateur.png');
                 break;
 
             case "Deliveryman":
@@ -136,7 +136,7 @@ export default class App extends Vue {
                 this.$vuetify.theme.themes.light.secondary = '#B0BBA7';
                 this.$vuetify.theme.themes.light.accent = '#F3E0D7';
                 this.$vuetify.theme.themes.light.tertiary = '#F3E0D7';
-                this.eatBoxLogo = "./img/EatBoxDeliveryman.png";
+                this.eatBoxLogo = require('./assets/img/EatBoxDeliveryman.png');
                 break;
         }
     }
@@ -163,12 +163,12 @@ p {
 }
 
 .content {
-    padding-top: 64px!important;
+    padding-top: 64px !important;
 }
 
 @media screen and (max-width: 960px) {
     .content {
-        padding-top: 56px!important;
+        padding-top: 56px !important;
     }
 }
 
