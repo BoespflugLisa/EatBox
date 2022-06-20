@@ -1,12 +1,40 @@
 const express = require("express");
 const UserModel = require("../../models/User")
+const mongoose = require("mongoose");
 const router = express.Router();
 
 router.post("/", async (req, res) => {
     try {
+        const newid = new mongoose.Types.ObjectId();
         let user = new UserModel({
+            _id : newid,
             Mail: "tacosbruno@encanto.fr",
-            Phone: "",
+            //MDP
+            Type: {
+                Manager : {
+                    rid : `R${newid}`,
+                    sponsors : [],
+                    sponsored : [],
+                },
+                Deliveryman : {
+                    lid : `L${newid}`,
+                    sponsors : [],
+                    sponsored : [],
+                    Phone: "",
+                },
+                Client : {
+                    uid : `U${newid}`,
+                    sponsors : [],
+                    sponsored : [],
+                    Phone: "",//"+33645896510",
+                },
+                Developer : {
+                    did : `D${newid}`,
+                    sponsors : [],
+                    sponsored : [],
+                    Phone: "",
+                },
+            },
         });
         console.log(user)
         user = await user.save();
@@ -58,6 +86,14 @@ router.get("/:id", async (req, res) => {
             status: 400,
             message: err.message,
         })
+    }
+})
+
+router.put("/", async(req, res) => {
+    try {
+
+    } catch(e){
+
     }
 })
 
