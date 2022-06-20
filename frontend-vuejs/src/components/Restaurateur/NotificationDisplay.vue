@@ -8,7 +8,7 @@
 
         <v-card
             color="tertiary"
-            v-for="notif in newCommand"
+            v-for="(notif, index) in newCommand"
             :key="notif.id"
             class="mt-3 rounded-lg"
         >
@@ -35,7 +35,7 @@
 
         <v-card
             color="tertiary"
-            v-for="notif in deliverymanArrived"
+            v-for="(notif, index) in deliverymanArrived"
             :key="notif.id"
             class="mt-3 rounded-lg"
         >
@@ -62,7 +62,7 @@
 
         <v-card
             color="tertiary"
-            v-for="notif, index in recentActivities"
+            v-for="(notif, index) in recentActivities"
             :key="notif.id"
             class="mt-3 rounded-lg"
         >
