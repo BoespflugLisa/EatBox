@@ -1,26 +1,30 @@
 const express = require("express");
-const UserRouter = require("../../models/User")
+const UserModel = require("../../models/User")
 const router = express.Router();
 
-router.post("/", async(req, res) => {
+router.post("/", async (req, res) => {
     try {
-        let user = new UserRouter(req.body);
+        let user = new UserModel({
+            Mail: "tacosbruno@encanto.fr",
+            Phone: "",
+        });
+        console.log(user)
         user = await user.save();
         res.status(200).json({
-            status:200,
+            status: 200,
             data: user,
         });
     } catch (err) {
         res.status(400).json({
             status: 400,
-            message : err.message,
+            message: err.message,
         })
     }
 });
 
 router.get("/", async (req, res) => {
     try {
-        let users = await UserRouter.find();
+        let users = await UserModel.find();
         res.status(200).json({
             status: 200,
             data: users,
@@ -28,15 +32,16 @@ router.get("/", async (req, res) => {
     } catch (err) {
         res.status(400).json({
             status: 400,
-            message : err.message,
+            message: err.message,
         })
     }
+    return 0
 })
 
 router.get("/:id", async (req, res) => {
     try {
-        let user = await UserRouter.findOne({
-            _id: req.params.id,
+        let user = await UserModel.findOne({
+            type: req.params.id,
         });
         if (user) {
             res.status(200).json({
@@ -51,7 +56,7 @@ router.get("/:id", async (req, res) => {
     } catch (err) {
         res.status(400).json({
             status: 400,
-            message : err.message,
+            message: err.message,
         })
     }
 })

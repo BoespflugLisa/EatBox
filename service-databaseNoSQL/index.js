@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
@@ -30,6 +31,7 @@ const options = {
 mongoose.connect(dbUrl, options, (err) => {
     if (err) console.log(err);
 });
+
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));

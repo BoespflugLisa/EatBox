@@ -1,18 +1,37 @@
 const mongoose = require("mongoose");
-let Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
+let countID = 0;
 
 let UserSchema = new Schema(
     {
-        _id: Schema.Types.ObjectId,
+        UserID: {type: Number, ref:'User', default : () => countID++},
         Mail: String,
         Phone: String,
         Type: {
-            Manager : Map,
-            infos : {type: Map, of: [String]},
+            Manager : {
+                rid : {type:String, ref:"Manager", default : () => `R${countID}`},
+                sponsors : [String],
+                sponsored : [String],
+            },
+            Deliveryman : {
+                lid : {type:String, ref:"Delivery", default : () => `L${countID}`},
+                sponsors : [String],
+                sponsored : [String],
+            },
+            Client : {
+                uid : {type:String, ref:"Client", default : () => `U${countID}`},
+                sponsors : [String],
+                sponsored : [String],
+            },
         },
     }
 );
 
-let User = mongoose.model("User", UserSchema);
+let User = mongoose.model("UserModel", UserSchema, "users");
+
+User.countDocuments({}, function(err, count){
+    countID = count;
+})
+
 
 module.exports = User;

@@ -17,14 +17,14 @@ let RestaurantSchema = new Schema(
             iban: String,
             siret: String,
         },
-        Manager_ID : {
+        Manager_ID : String,/*{
             type: Schema.Types.ObjectId,
             ref: 'User'
             //https://stackoverflow.com/questions/18001478/referencing-another-schema-in-mongoose
             //https://mongoosejs.com/docs/populate.html
-        },
+        },*/
         Days : {
-            type: String,
+            type: [String],
             heures : {
                 0 : String,
                 1 : String
@@ -33,6 +33,6 @@ let RestaurantSchema = new Schema(
     }
 );
 
-let Restaurant = mongoose.model("Restaurant", RestaurantSchema);
+let Restaurant = mongoose.model("RestaurantModel", RestaurantSchema, "restaurants");
 
 module.exports = Restaurant;

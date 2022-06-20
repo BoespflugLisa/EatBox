@@ -89,7 +89,6 @@
 
 <script>
 
-
 export default {
     name: 'App',
 
@@ -136,8 +135,8 @@ export default {
 
         displayMenu() {
             this.drawer = this.drawer !== true;
-        }
-    }
+        },
+    },
 };
 </script>
 
