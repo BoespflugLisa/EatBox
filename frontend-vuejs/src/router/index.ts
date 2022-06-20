@@ -19,8 +19,13 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/mon_restaurant',
-    name: 'monRestaurant',
+    name: 'MonRestaurant',
     component: () => import('../views/Restaurateur/RestaurantInformation.vue')
+  },
+  {
+    path: '/notifications',
+    name: 'Notifications',
+    component: () => import('../views/NotificationList.vue')
   }
 ]
 

@@ -7,13 +7,15 @@
                 @click="displayMenu()"
                 color="white"
             />
-            <v-img
-                max-width="100"
-                :src="this.eatBoxLogo"
-                class="ma-auto"
-            >
-            </v-img>
-            <v-btn icon>
+
+            <router-link to="/" class="ma-auto">
+                <v-img
+                    max-width="100"
+                    :src="this.eatBoxLogo"
+                />
+            </router-link>
+
+            <v-btn icon to="/notifications">
                 <v-icon color="white">
                     mdi-bell
                 </v-icon>
@@ -158,6 +160,7 @@ p {
 
 .content {
     padding-top: 64px !important;
+    padding-bottom: 30px !important;
 }
 
 @media screen and (max-width: 960px) {
