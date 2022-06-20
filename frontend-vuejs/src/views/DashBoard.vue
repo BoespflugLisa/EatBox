@@ -22,7 +22,6 @@
 
             <h1>
                 Quelques statistiques...
-
             </h1>
         </div>
 
@@ -39,9 +38,7 @@
         </div>
 
         <div class="d-flex justify-center pt-7">
-
             <v-card elevation="2" width="100%" color="tertiary">
-
                 <v-card-text class="text-center dark--text ">
                     <p class="font-weight-bold">Moyenne des notes des derniers clients : </p>
                     <p class="font-40 mt-4">{{ this.moyenneNote }}
@@ -50,32 +47,22 @@
                         </v-icon>
                     </p>
                 </v-card-text>
-
             </v-card>
         </div>
 
-        <div class="d-flex justify-space-between  pt-7 align-center mb-7">
-
-            <v-card elevation="2" width="45%" color="tertiary">
-
+        <div class="d-flex justify-center pt-7">
+            <v-card elevation="2" width="100%" color="tertiary">
                 <v-card-text class="text-center dark--text ">
                     <p class="font-weight-bold"> Recette du mois : </p>
                     <p class="font-25 mt-4">{{ this.recetteDuMois }} €</p>
                 </v-card-text>
-
             </v-card>
+        </div>
 
-
-            <v-card elevation="2" width="45%" color="tertiary">
-
-                <v-card-text class="text-center  dark--text  ">
-                    <p class="font-20 ">En savoir plus </p>
-
-                </v-card-text>
-
-            </v-card>
-
-
+        <div class="d-flex justify-center">
+            <v-btn color="secondary" class="mt-7" rounded>
+                En savoir plus
+            </v-btn>
         </div>
 
     </div>
