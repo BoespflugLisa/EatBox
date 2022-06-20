@@ -23,7 +23,7 @@
         <v-navigation-drawer
             v-model="drawer"
             temporary absolute width="320"
-            class="main-menu"
+            class="main-menu" height="100vh"
         >
             <div class="pa-3 pb-0 ml-auto">
                 <v-btn
@@ -67,21 +67,24 @@
                     Statistiques avancées
                 </v-btn>
             </div>
-            <div class="d-flex justify-center flex-column pa-5 main-menu-bottom">
-                <v-btn
-                    color="tertiary black--text"
-                    class="pr-10 pl-10"
-                >
-                    Parrainer
-                </v-btn>
+            <template v-slot:append>
+                <div class="d-flex justify-center flex-column pa-5">
+                    <v-btn
+                        color="tertiary black--text"
+                        class="pr-10 pl-10"
+                    >
+                        Parrainer
+                    </v-btn>
 
-                <v-btn
-                    color="secondary white--text"
-                    class="pr-10 pl-10 mt-5"
-                >
-                    Se déconnecter
-                </v-btn>
-            </div>
+                    <v-btn
+                        color="secondary white--text"
+                        class="pr-10 pl-10 mt-5"
+                    >
+                        Se déconnecter
+                    </v-btn>
+                </div>
+            </template>
+
         </v-navigation-drawer>
 
         <div class="content">
@@ -152,15 +155,6 @@ p {
     margin-bottom: 0 !important;
 }
 
-.main-menu {
-    height: 100%;
-}
-
-.main-menu-bottom {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-}
 
 .content {
     padding-top: 64px !important;
