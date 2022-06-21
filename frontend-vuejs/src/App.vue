@@ -1,9 +1,9 @@
 <template>
-    <v-app>
-        <v-app-bar
-            app color="primary"
+    <v-index>
+        <v-index-bar
+            index color="primary"
         >
-            <v-app-bar-nav-icon
+            <v-index-bar-nav-icon
                 @click="displayMenu()"
                 color="white"
             />
@@ -20,11 +20,11 @@
                     mdi-bell
                 </v-icon>
             </v-btn>
-        </v-app-bar>
+        </v-index-bar>
 
         <v-navigation-drawer
             v-model="drawer"
-            width="320" app fixed
+            width="320" index fixed
         >
             <div class="pa-3 pb-0 ml-auto">
                 <v-btn
@@ -91,7 +91,7 @@
         <div class="content">
             <router-view/>
         </div>
-    </v-app>
+    </v-index>
 </template>
 
 <script lang="ts">

@@ -10,6 +10,7 @@ let config = {
         }
 
 };
+
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 const db = {};
@@ -33,4 +34,4 @@ db.users = UsersModel;
 //db.carts
 //db.articles
 
-module.exports = db;
+module.exports = db, mongoose;
