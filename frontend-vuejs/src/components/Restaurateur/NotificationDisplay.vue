@@ -14,7 +14,7 @@
         >
             <v-card-text>
                 <div class="d-flex justify-space-between align-center">
-                    <div>
+                    <div class="font-16">
                         <p>{{ notif.date }}</p>
                         <p>Nouvelle commande !</p>
                     </div>
@@ -41,7 +41,7 @@
         >
             <v-card-text>
                 <div class="d-flex justify-space-between align-center">
-                    <div>
+                    <div class="font-16">
                         <p>{{ notif.date }}</p>
                         <p>Livreur arrivé !</p>
                     </div>
@@ -68,7 +68,7 @@
         >
             <v-card-text>
                 <div class="d-flex justify-space-between align-center">
-                    <div>
+                    <div class="font-16">
                         <p>{{ notif.date }}</p>
                         <p>{{ notif.message }}</p>
                     </div>

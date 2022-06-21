@@ -168,40 +168,4 @@ p {
         padding-top: 56px !important;
     }
 }
-
-.font-12 {
-    font-size: 12px;
-}
-
-.font-14 {
-    font-size: 14px;
-}
-
-.font-16 {
-    font-size: 16px;
-}
-
-.font-18 {
-    font-size: 18px;
-}
-
-.font-20 {
-    font-size: 20px;
-}
-
-.font-20 {
-    font-size: 20px;
-}
-
-.font-25 {
-    font-size: 25px;
-}
-
-.font-30 {
-    font-size: 30px;
-}
-
-.font-40 {
-    font-size: 40px;
-}
 </style>
