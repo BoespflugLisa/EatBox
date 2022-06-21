@@ -12,7 +12,8 @@ const UsersRouter = require("./routes/posts/UserRouter");
 const DeliverymansRouter = require("./routes/posts/DeliverymanRouter");
 const OrdersRouter = require("./routes/posts/OrderRouter");
 const ArticlesRouter = require("./routes/posts/ArticleRouter");
-const StatsRouter = require("./routes/posts/StatsRouter")
+const StatsRouter = require("./routes/posts/StatsRouter");
+const NotificationsRouter = require("./routes/posts/NotificationRouter")
 /*const CardsRouter = require("./routes/posts/Restaurant");
 const CategoriesRouter = require("./routes/posts/Restaurant");
 const MenusRouter = require("./routes/posts/Restaurant");
@@ -41,6 +42,7 @@ app.use("/articles", ArticlesRouter);
 app.use("/orders", OrdersRouter);
 app.use("/stats", StatsRouter);
 app.use("/deliverymans", DeliverymansRouter);
+app.use("/notifications", NotificationsRouter);
 /*app.use("/cartes", CardsRouter);
 app.use("/categories", CategoriesRouter);
 app.use("/menus", MenusRouter);*/
