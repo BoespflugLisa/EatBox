@@ -1,22 +1,27 @@
 const express = require("express");
 const DeliverymanModel = require("../../models/Deliveryman");
+const UserModel = require("../../models/User");
 const router = express.Router();
 
-router.post("/", async(req, res) => {
+router.post("/:id", async(req, res) => {
     try {
+        let deliverymanUser = await UserModel.findById(req.params.id).exec();
         let deliveryman = new DeliverymanModel({
-            Name: "Rabi",
-            Firstname: "Jacob",
-            Picture: "Photo de profil 2",
-            Opentowork: true,
-            Free: false,
+            "Name": "Speedy",
+            "Firstname": "Gonzalès",
+            "belongs_to": deliverymanUser._id,
+            "Picture": "Photo de profil",
+            "Open_to_work": true,
+            "Free": true,
         });
+
         deliveryman = await deliveryman.save();
         res.status(200).json({
-            status:200,
+            status: 200,
             data: deliveryman,
         });
-    } catch (err) {
+    }
+    catch (err) {
         res.status(400).json({
             status: 400,
             message : err.message,
