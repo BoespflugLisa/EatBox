@@ -4,7 +4,7 @@
 
         <v-autocomplete
           v-model="model"
-          :items="states"
+          :items="titleArticle"
           :readonly="isEditing"
           label="Chercher un article"
           persistent-hint
@@ -14,10 +14,11 @@
 
         <h2> Mes articles</h2>
 
-        <div class="mt-4">
+        <div class="mt-4 ">
             <v-chip-group
-            column>
-                <v-chip close @click:close="chip1= false" class="mr-3 mb-3 font-40" rounded v-for="(item, index) in categories"
+              column>
+                <v-chip close @click:close="chip1= false" class="mr-3 mb-3 font-40" rounded
+                        v-for="(item, index) in categories"
                         v-bind:key=index
                         v-bind:title=item
                 >
@@ -75,8 +76,8 @@
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn
-                              @click="addCategorie()"
                               :disabled="invalid || !validated"
+                              @click="addCategorie() "
                               color="primary"
                               text
                             >
@@ -141,6 +142,7 @@
                                 <validation-provider name="Nom de l'article" rules="required|max:30"
                                                      v-slot="{ errors, valid }">
                                     <v-text-field
+                                      prepend-icon="mdi-food"
                                       v-model="itemName"
                                       :counter="25"
                                       label="Nom de l'article"
@@ -151,25 +153,59 @@
                                 </validation-provider>
 
 
-                                <template>
-                                    <v-file-input
-                                      v-model="tempImage"
-                                      placeholder="Télécharger une image"
-                                      label="Télécharger une image"
-                                      multiple
-                                      prepend-icon="mdi-paperclip"
-                                    >
-                                        <template v-slot:selection="{ text }">
-                                            <v-chip
-                                              small
-                                              label
-                                              color="primary"
-                                            >
-                                                {{ text }}
-                                            </v-chip>
-                                        </template>
-                                    </v-file-input>
-                                </template>
+                                <validation-provider name="Description de l'article" rules="required|max:140"
+                                                     v-slot="{ errors, valid }">
+                                    <v-text-field
+                                      prepend-icon="mdi-image-text"
+                                      v-model="itemDesc"
+                                      :counter="140"
+                                      label="Description de l'article"
+                                      required
+                                      :error-messages="errors"
+                                      :success="valid"
+                                    ></v-text-field>
+                                </validation-provider>
+
+                                <v-autocomplete
+                                  v-model="model"
+                                  :items="categories"
+                                  :readonly="isEditing"
+                                  label="Ajouter à une catégorie"
+                                  persistent-hint
+
+                                >
+                                </v-autocomplete>
+
+                                <validation-provider name="Prix de l'article"
+                                                   >
+                                    <v-text-field
+                                      prepend-icon="mdi-currency-eur"
+                                      v-model="itemPrix"
+                                      label="Prix de l'article"
+                                      required
+                                      type="number"
+                                      min="0" max="500"
+                                    ></v-text-field>
+                                </validation-provider>
+
+                                <v-file-input
+                                  v-model="tempImage"
+                                  placeholder="Télécharger une image"
+                                  label="Télécharger une image"
+                                  multiple
+                                  prepend-icon="mdi-paperclip"
+                                >
+                                    <template v-slot:selection="{ text }">
+                                        <v-chip
+                                          small
+                                          label
+                                          color="primary"
+                                        >
+                                            {{ text }}
+                                        </v-chip>
+                                    </template>
+                                </v-file-input>
+
 
                             </v-col>
 
@@ -211,22 +247,6 @@ export default class ArticlesEtMenus extends Vue {
 
     isEditing = false
     model = null
-    states = [
-        'Alabama', 'Alaska', 'American Samoa', 'Arizona',
-        'Arkansas', 'California', 'Colorado', 'Connecticut',
-        'Delaware', 'District of Columbia', 'Federated States of Micronesia',
-        'Florida', 'Georgia', 'Guam', 'Hawaii', 'Idaho',
-        'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky',
-        'Louisiana', 'Maine', 'Marshall Islands', 'Maryland',
-        'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
-        'Missouri', 'Montana', 'Nebraska', 'Nevada',
-        'New Hampshire', 'New Jersey', 'New Mexico', 'New York',
-        'North Carolina', 'North Dakota', 'Northern Mariana Islands', 'Ohio',
-        'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico',
-        'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee',
-        'Texas', 'Utah', 'Vermont', 'Virgin Island', 'Virginia',
-        'Washington', 'West Virginia', 'Wisconsin', 'Wyoming',
-    ]
 
     categories = ['Frites', 'Burger', 'Boissons']
     titleArticle = ['Frites patate douce maison', ' Chips', 'Frites basiques', 'Boissons', 'Boissons']
@@ -234,8 +254,11 @@ export default class ArticlesEtMenus extends Vue {
     dialogCategorie = false
     dialogArticle = false
     categoryName = ''
-    tempImage: Array<unknown> = []
+    //tempImage: Array<unknown> = []
+    tempImage:any = null
     itemName = ''
+    itemPrix = ''
+    itemDesc = ''
     $refs!: {
         obs: ValidationObserverInstance
         obsArticle: ValidationObserverInstance
@@ -255,12 +278,16 @@ export default class ArticlesEtMenus extends Vue {
     addItem(): void {
         this.$refs.obsArticle.validate().then(success => {
             if (success) {
-                this.tempImage.push(this.imagesArticle)
-                console.log(this.tempImage)
-                this.tempImage = []
+                this.tempImage = 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg'
+                this.imagesArticle.push(this.tempImage)
+
+                this.tempImage = ''
                 this.titleArticle.push(this.itemName)
                 this.dialogArticle = false
                 this.itemName = ''
+                this.itemDesc = ''
+                this.itemPrix = ''
+
             }
             console.log(this.imagesArticle)
         });
