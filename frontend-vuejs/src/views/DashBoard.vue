@@ -1,3 +1,5 @@
+
+
 <template>
 
     <div id="dashboard" class="side-padding">
@@ -31,7 +33,7 @@
 
                 <v-card-text class="text-center dark--text">
                     <p class="font-weight-bold">Nombres de commande ce mois-ci :</p>
-                    <p class="font-40 mt-4">{{ this.nbCommandes }}</p>
+                    <p class="font-40 mt-4">{{ nFormatter(this.nbCommandes,1) }}</p>
                 </v-card-text>
 
             </v-card>
@@ -54,7 +56,7 @@
             <v-card elevation="2" width="100%" color="tertiary">
                 <v-card-text class="text-center dark--text ">
                     <p class="font-weight-bold"> Recette du mois : </p>
-                    <p class="font-25 mt-4">{{ this.recetteDuMois }} €</p>
+                    <p class="font-25 mt-4">{{ nFormatter(this.recetteDuMois,1) }} €</p>
                 </v-card-text>
             </v-card>
         </div>
@@ -79,14 +81,25 @@ import {Component, Vue} from 'vue-property-decorator';
 
 export default class ArticlesEtMenus extends Vue {
 
-    restaurantName = "Taco Bruno"
-    nbCommandes = this.nFormatter(6, 1)
-    moyenneNote = 4.4
-    recetteDuMois = this.nFormatter(12464749, 1)
+    restaurantName = null
+    nbCommandes = null
+    moyenneNote = null
+    recetteDuMois = null
+
+    mounted() {
+        this.$axios.get(`stats/62b04dcfff5bc1bbf9802446`)
+            .then(response => {
+                console.log(response.data.data);
+                this.restaurantName = response.data.data.belongs_to;
+                this.nbCommandes = response.data.data.NbOrders;
+                this.moyenneNote = response.data.data.MeanNotes;
+                this.recetteDuMois = response.data.data.Benefit;
+            })
+    }
 
 
     nFormatter(num, digits) {
-        var si = [
+        let si = [
             {value: 1, symbol: ""},
             {value: 1E3, symbol: "k"},
             {value: 1E6, symbol: "M"},
@@ -95,8 +108,8 @@ export default class ArticlesEtMenus extends Vue {
             {value: 1E15, symbol: "P"},
             {value: 1E18, symbol: "E"}
         ];
-        var rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
-        var i;
+        let rx = /\.0+$|(\.\d*[1-9])0+$/;
+        let i;
         for (i = si.length - 1; i > 0; i--) {
             if (num >= si[i].value) {
                 break;

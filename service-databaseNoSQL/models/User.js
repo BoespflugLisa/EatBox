@@ -1,18 +1,42 @@
 const mongoose = require("mongoose");
-let Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 let UserSchema = new Schema(
     {
         _id: Schema.Types.ObjectId,
         Mail: String,
-        Phone: String,
         Type: {
-            Manager : Map,
-            infos : {type: Map, of: [String]},
+            Manager : {
+                //rid : {type:String, ref:"Manager", default : () => `R${countID++}`},
+                rid : String,
+                sponsors : [String],
+                sponsored : [String],
+            },
+            Deliveryman : {
+                //lid : {type:String, ref:"Delivery", default : () => `L${countID++}`},
+                lid : String,
+                sponsors : [String],
+                sponsored : [String],
+                Phone: String,
+            },
+            Client : {
+                //uid : {type:String, ref:"Client", default : () => `U${countID++}`},
+                uid : String,
+                sponsors : [String],
+                sponsored : [String],
+                Phone: String,
+            },
+            Developer : {
+                //did : {type:String, ref:"Developer", default : () => `U${countID++}`},
+                did : String,
+                sponsors : [String],
+                sponsored : [String],
+                Phone: String,
+            },
         },
     }
 );
 
-let User = mongoose.model("User", UserSchema);
+let User = mongoose.model("UserModel", UserSchema, "users");
 
 module.exports = User;
