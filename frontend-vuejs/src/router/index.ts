@@ -31,7 +31,17 @@ const routes: Array<RouteConfig> = [
     path: '/stats',
     name: 'Stats',
     component: () => import('../views/Restaurateur/RestaurantStats.vue')
-  }
+  },
+  {
+    path: '/commandes',
+    name: 'commandes',
+    component: () => import('../views/Restaurateur/Command/CommandsList.vue')
+  },
+  {
+    path: '/commandes/details/:id',
+    name: 'commandeDetails',
+    component: () => import('../views/Restaurateur/Command/CommandDetails.vue')
+  },
 ]
 
 const router = new VueRouter({
