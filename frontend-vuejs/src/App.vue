@@ -25,7 +25,6 @@
         <v-navigation-drawer
             v-model="drawer"
             temporary absolute width="320"
-            class="main-menu" height="100vh"
         >
             <div class="pa-3 pb-0 ml-auto">
                 <v-btn
