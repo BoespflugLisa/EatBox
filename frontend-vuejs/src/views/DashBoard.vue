@@ -60,7 +60,7 @@
         </div>
 
         <div class="d-flex justify-center">
-            <v-btn color="secondary" class="mt-7" rounded>
+            <v-btn to="/stats" color="secondary" class="mt-7" rounded>
                 En savoir plus
             </v-btn>
         </div>

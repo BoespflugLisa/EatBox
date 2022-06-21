@@ -8,6 +8,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@types/chart.js": "^2.9.37",
+    "chart.js": "^3.8.0",
     "core-js": "^3.8.3",
     "number-shortener": "^1.0.1",
     "vee-validate": "^2.2.15",

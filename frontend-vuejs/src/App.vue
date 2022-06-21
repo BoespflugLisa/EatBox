@@ -65,7 +65,7 @@
 
                 <v-btn
                     color="tertiary black--text"
-                    class="pr-10 pl-10 mt-5"
+                    class="pr-10 pl-10 mt-5" to="/stats"
                 >
                     Statistiques avancées
                 </v-btn>
@@ -154,11 +154,6 @@ export default class App extends Vue {
 </script>
 
 <style>
-p {
-    margin-bottom: 0 !important;
-}
-
-
 .content {
     padding-top: 64px !important;
     padding-bottom: 30px !important;
