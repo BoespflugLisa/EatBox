@@ -30,8 +30,7 @@ router.post("/:id", async (req, res) => {
         }
         restaurant = await restaurant.save();
         res.status(200).json({
-            status: 200,
-            data: restaurant,
+            restaurant,
         });
     } catch (err) {
         res.status(400).json({
@@ -45,8 +44,7 @@ router.get("/", async (req, res) => {
     try {
         let restaurants = await RestaurantModel.find();
         res.status(200).json({
-            status: 200,
-            data: restaurants,
+            restaurants,
         });
     } catch (err) {
         res.status(400).json({

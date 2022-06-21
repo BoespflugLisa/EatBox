@@ -33,8 +33,7 @@ router.post("/:clientid", async (req, res) => {
         console.log(order)
         order = await order.save();
         res.status(200).json({
-            status: 200,
-            data: order,
+            order,
         });
     } catch (err) {
         res.status(400).json({
@@ -48,8 +47,7 @@ router.get("/", async (req, res) => {
     try {
         let orders = await OrderModel.find();
         res.status(200).json({
-            status: 200,
-            data: orders,
+            orders,
         });
     } catch (err) {
         res.status(400).json({

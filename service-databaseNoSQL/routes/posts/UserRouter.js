@@ -41,8 +41,7 @@ router.post("/", async (req, res) => {
         console.log(user)
         user = await user.save();
         res.status(200).json({
-            status: 200,
-            data: user,
+            user,
         });
     } catch (err) {
         res.status(400).json({
@@ -56,8 +55,7 @@ router.get("/", async (req, res) => {
     try {
         let users = await UserModel.find();
         res.status(200).json({
-            status: 200,
-            data: users,
+            users,
         });
     } catch (err) {
         res.status(400).json({
@@ -75,8 +73,7 @@ router.get("/:id", async (req, res) => {
         });
         if (user) {
             res.status(200).json({
-                status: 200,
-                data: user,
+                user,
             });
         }
         res.status(400).json({

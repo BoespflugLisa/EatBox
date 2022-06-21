@@ -42,8 +42,7 @@ router.post("/:id", async (req, res) => {
         })
         await stat.save();
         res.status(200).json({
-            status: 200,
-            message: "Les stats ont été ajoutés",
+            stat,
         });
     } catch (err) {
         res.status(400).json({
@@ -57,8 +56,7 @@ router.get("/", async (req, res) => {
     try {
         let stats = await StatsModel.find().populate('belongs_to', 'Name').exec();
         res.status(200).json({
-            status: 200,
-            data: stats,
+            stats,
         });
     } catch (err) {
         res.status(400).json({
@@ -76,8 +74,7 @@ router.get("/:id", async (req, res) => {
         }).populate('belongs_to', 'Name').exec();
         if (stat) {
             res.status(200).json({
-                status: 200,
-                data: stat,
+                stat,
             });
         }
 
@@ -102,8 +99,7 @@ router.put("/:id", async (req, res) => {
         console.log(newstats)
         newstats = await newstats.save();
         res.status(200).json({
-            status: 200,
-            data: newstats,
+            newstats,
         });
     } catch (err) {
         res.status(400).json({

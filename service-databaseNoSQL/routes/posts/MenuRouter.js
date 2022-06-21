@@ -35,9 +35,8 @@ router.post("/:id", async (req, res) => {
         menu = await menu.save();
         console.log(menu)
         res.status(200).json({
-            status: 200,
             message: "Le menu a été créé.",
-            data: menu,
+            menu,
         });
     } catch (err) {
         res.status(400).json({
@@ -51,8 +50,7 @@ router.get("/", async (req, res) => {
     try {
         let menus = await MenuModel.find();
         res.status(200).json({
-            status: 200,
-            data: menus,
+            menus,
         });
     } catch (err) {
         res.status(400).json({
@@ -70,13 +68,12 @@ router.get("/:id", async (req, res) => {
         });
         if (menu) {
             res.status(200).json({
-                status: 200,
-                data: menu,
+                menu,
             });
         }
         res.status(400).json({
             status: 400,
-            message: "L'menu n'a pas été trouvé.",
+            message: "Le menu n'a pas été trouvé.",
         });
     } catch (err) {
         res.status(400).json({
@@ -94,8 +91,7 @@ router.put("/:id", async (req, res) => {
 
         if (menu) {
             res.status(200).json({
-                status: 200,
-                data: menu,
+                menu,
             });
         }
     } catch (err) {

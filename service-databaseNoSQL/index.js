@@ -11,11 +11,8 @@ const RestaurantsRouter = require("./routes/posts/RestaurantRouter");
 const UsersRouter = require("./routes/posts/UserRouter");
 const OrdersRouter = require("./routes/posts/OrderRouter");
 const ArticlesRouter = require("./routes/posts/ArticleRouter");
-const StatsRouter = require("./routes/posts/StatsRouter");
+const StatsRouter = require("./routes/posts/StatsRouter")
 const MenusRouter = require("./routes/posts/MenuRouter");
-/*const CardsRouter = require("./routes/posts/Restaurant");
-const CategoriesRouter = require("./routes/posts/Restaurant");
-;*/
 
 app.use(logger("dev"));
 app.use(cors());
@@ -40,9 +37,6 @@ app.use("/articles", ArticlesRouter);
 app.use("/orders", OrdersRouter);
 app.use("/stats", StatsRouter);
 app.use("/menus", MenusRouter);
-/*app.use("/cartes", CardsRouter);
-app.use("/categories", CategoriesRouter);
-*/
 
 app.listen(port, function () {
     console.log("Runnning on " + port);
