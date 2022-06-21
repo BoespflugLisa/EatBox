@@ -4,12 +4,22 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import VeeValidate from "vee-validate"
+import axios, {AxiosStatic} from 'axios'
 
 import './assets/CSS/main.scss'
 
 Vue.use(VeeValidate);
 
+
 Vue.config.productionTip = false
+
+axios.defaults.baseURL = 'http://localhost:3031';
+Vue.prototype.$axios = axios;
+declare module 'vue/types/vue' {
+    interface Vue {
+        $axios: AxiosStatic;
+    }
+}
 
 new Vue({
     router,

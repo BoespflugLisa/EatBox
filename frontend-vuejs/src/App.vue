@@ -46,7 +46,6 @@
                     Mon restaurant
                 </v-btn>
 
-
                 <v-btn
                     color="tertiary black--text"
                     class="pr-10 pl-10 mt-5"
@@ -55,10 +54,10 @@
                     Gestion de la carte
                 </v-btn>
 
-
                 <v-btn
                     color="tertiary black--text"
                     class="pr-10 pl-10 mt-5"
+                    to="/commandes"
                 >
                     Gestion des commandes
                 </v-btn>
@@ -155,9 +154,14 @@ export default class App extends Vue {
 
 <style>
 p {
-    margin-bottom: 0 !important;
+    margin-bottom: 0!important;
 }
 
+.main-menu-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
 
 .content {
     padding-top: 64px !important;
