@@ -13,6 +13,7 @@ const OrdersRouter = require("./routes/posts/OrderRouter");
 const ArticlesRouter = require("./routes/posts/ArticleRouter");
 const StatsRouter = require("./routes/posts/StatsRouter")
 const MenusRouter = require("./routes/posts/MenuRouter");
+const PerformancesRouter = require("./routes/posts/PerformanceRouter");
 
 app.use(logger("dev"));
 app.use(cors());
@@ -37,6 +38,7 @@ app.use("/articles", ArticlesRouter);
 app.use("/orders", OrdersRouter);
 app.use("/stats", StatsRouter);
 app.use("/menus", MenusRouter);
+app.use("/performance", PerformancesRouter);
 
 app.listen(port, function () {
     console.log("Runnning on " + port);
