@@ -9,11 +9,13 @@ const port = 3031;
 
 const RestaurantsRouter = require("./routes/posts/RestaurantRouter");
 const UsersRouter = require("./routes/posts/UserRouter");
+const OrdersRouter = require("./routes/posts/OrderRouter");
+const ArticlesRouter = require("./routes/posts/ArticleRouter");
+const StatsRouter = require("./routes/posts/StatsRouter")
 /*const CardsRouter = require("./routes/posts/Restaurant");
 const CategoriesRouter = require("./routes/posts/Restaurant");
-const ArticlesRouter = require("./routes/posts/Restaurant");
 const MenusRouter = require("./routes/posts/Restaurant");
-const StatsRouter = require("./routes/posts/Restaurant");*/
+;*/
 
 app.use(logger("dev"));
 app.use(cors());
@@ -34,14 +36,17 @@ db.mongoose
 
 app.use("/restaurants", RestaurantsRouter);
 app.use("/users", UsersRouter);
+app.use("/articles", ArticlesRouter);
+app.use("/orders", OrdersRouter);
+app.use("/stats", StatsRouter);
 /*app.use("/cartes", CardsRouter);
 app.use("/categories", CategoriesRouter);
-app.use("/articles", ArticlesRouter);
-app.use("/menus", MenusRouter);
-app.use("/stats", StatsRouter);*/
+app.use("/menus", MenusRouter);*/
 
 app.listen(port, function () {
     console.log("Runnning on " + port);
 });
 
 module.exports = app;
+
+//https://stackoverflow.com/questions/34327599/using-express-js-to-consume-an-api

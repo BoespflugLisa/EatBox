@@ -62,7 +62,7 @@
 
                 <v-card-text class="text-center dark--text " >
                     <p class="font-weight-bold"> Recette du mois : </p>
-                    <p class="font-40 mt-4">{{ this.recetteDuMois }} €</p>
+                    <p class="font-40 mt-4">{{ nFormatter(this.recetteDuMois,1) }} €</p>
                 </v-card-text>
 
             </v-card>
@@ -93,17 +93,36 @@ export default {
 
     data: function () {
         return {
-            restaurantName: "Taco Bruno",
-            nbCommandes: 6,
-            moyenneNote: 4.4,
-            recetteDuMois: this.nFormatter(12464749,1),
+            restaurantName: null,
+            nbCommandes: null,
+            moyenneNote: null,
+            recetteDuMois: null,
 
         }
     },
 
+    mounted() {
+        this.$axios.get(`stats/62b04dcfff5bc1bbf9802446`)
+            .then(response => {
+                console.log(response.data.data);
+                this.restaurantName = response.data.data.belongs_to;
+                this.nbCommandes = response.data.data.NbOrders;
+                this.moyenneNote = response.data.data.MeanNotes;
+                this.recetteDuMois = response.data.data.Benefit;
+            })
+
+            /*.then(function(response){
+                console.log(response.data.data)
+                //this.restaurantName = "Taco Bruno";
+                this.nbCommandes = response.data.data.NbOrders;
+                this.moyenneNote = response.data.data.MeanNotes;
+                this.recetteDuMois = this.nFormatter(response.data.data.benefits,1);
+            })*/
+    },
+
     methods: {
         nFormatter(num, digits) {
-            var si = [
+            let si = [
                 { value: 1, symbol: "" },
                 { value: 1E3, symbol: "k" },
                 { value: 1E6, symbol: "M" },
@@ -112,8 +131,8 @@ export default {
                 { value: 1E15, symbol: "P" },
                 { value: 1E18, symbol: "E" }
             ];
-            var rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
-            var i;
+            let rx = /\.0+$|(\.\d*[1-9])0+$/;
+            let i;
             for (i = si.length - 1; i > 0; i--) {
                 if (num >= si[i].value) {
                     break;

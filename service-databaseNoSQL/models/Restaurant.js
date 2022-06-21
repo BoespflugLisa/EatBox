@@ -3,7 +3,7 @@ let Schema = mongoose.Schema;
 
 let RestaurantSchema = new Schema(
     {
-        belongs_to : {type: String, ref: 'User'},/*{
+        belongs_to : {type: Schema.Types.ObjectId, ref: 'UserModel'},/*{
             type: Schema.Types.ObjectId,
             ref: 'User'
             //https://stackoverflow.com/questions/18001478/referencing-another-schema-in-mongoose

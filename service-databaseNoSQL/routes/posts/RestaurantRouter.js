@@ -9,7 +9,7 @@ router.post("/:id", async (req, res) => {
         let restaurant = new RestaurantModel({
                 "Name": "Taco Bruno",
                 "Type": "Fast-Food",
-                "belongs_to": `R${manager._id}`,
+                "belongs_to": manager._id,
                 "Address": {"Number": "3", "Street": "rue des fleurs", "Town": "Encanto", "Code": "12345"},
                 "Legal": {"AccountName": "M. Bruno Madrigal", "IBAN": "FR15 1245 1562 1544 80", "SIRET": "12 12354564"},
                 "Hours": {
@@ -23,7 +23,11 @@ router.post("/:id", async (req, res) => {
                 }
             }
         );
-
+        if(!restaurant.populated('belongs_to')){
+            await restaurant.populate('belongs_to')
+                .then(p=>console.log(p))
+                .catch(error=>console.log(error));;
+        }
         restaurant = await restaurant.save();
         res.status(200).json({
             status: 200,

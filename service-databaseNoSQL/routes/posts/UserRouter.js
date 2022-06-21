@@ -3,6 +3,8 @@ const UserModel = require("../../models/User")
 const mongoose = require("mongoose");
 const router = express.Router();
 
+//https://mongoosejs.com/docs/populate.html#populate-virtuals
+
 router.post("/", async (req, res) => {
     try {
         const newid = new mongoose.Types.ObjectId();
