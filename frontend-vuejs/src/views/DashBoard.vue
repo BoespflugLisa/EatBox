@@ -90,7 +90,7 @@ export default class ArticlesEtMenus extends Vue {
         this.$axios.get(`stats/62b04dcfff5bc1bbf9802446`)
             .then(response => {
                 console.log(response.data.data);
-                this.restaurantName = response.data.data.belongs_to;
+                this.restaurantName = response.data.data.belongs_to.Name;
                 this.nbCommandes = response.data.data.NbOrders;
                 this.moyenneNote = response.data.data.MeanNotes;
                 this.recetteDuMois = response.data.data.Benefit;

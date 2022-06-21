@@ -26,7 +26,7 @@ router.post("/:id", async (req, res) => {
         if(!restaurant.populated('belongs_to')){
             await restaurant.populate('belongs_to')
                 .then(p=>console.log(p))
-                .catch(error=>console.log(error));;
+                .catch(error=>console.log(error));
         }
         restaurant = await restaurant.save();
         res.status(200).json({
