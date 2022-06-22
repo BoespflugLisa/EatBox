@@ -146,7 +146,7 @@
 
         <div class="mt-3 ml-5">
             <h7 v-if="!editBank">{{ telephone }}</h7>
-            <v-text-field v-else v-model="numSiret"></v-text-field>
+            <v-text-field v-else v-model="telephone"></v-text-field>
         </div>
 
         <div class="mt-3 ml-3">
@@ -154,8 +154,8 @@
         </div>
 
         <div class="mt-3 ml-5">
-            <h7 v-if="!editBank">{{ mail }}</h7>
-            <v-text-field v-else v-model="numSiret"></v-text-field>
+            <h7 v-if="!editBank">{{ BIC }}</h7>
+            <v-text-field v-else v-model="BIC"></v-text-field>
         </div>
 
         <div class="mt-3 ml-3">
@@ -163,8 +163,8 @@
         </div>
 
         <div class="mt-3 ml-5 mb-5">
-            <h7 v-if="!editBank">{{ numSiret }}</h7>
-            <v-text-field v-else v-model="numSiret"></v-text-field>
+            <h7 v-if="!editBank">{{ IBAN }}</h7>
+            <v-text-field v-else v-model="IBAN"></v-text-field>
         </div>
     </div>
 </template>
@@ -182,6 +182,8 @@ export default class RestaurantInfos extends Vue {
     telephone = "tets"
     mail = "tets"
     numSiret = "tets"
+    BIC = "tets"
+    IBAN = "tets"
 
     LunTime = "11h30-14h / 19h-23h30"
     MarTime = "11h30-14h / 19h-23h30"

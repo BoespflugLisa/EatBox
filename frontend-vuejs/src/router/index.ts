@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import DashBoard from '../views/DashBoard.vue'
 import ArticlesEtMenus from '../views/ArticlesEtMenus.vue'
 
+
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
@@ -22,6 +23,19 @@ const routes: Array<RouteConfig> = [
     name: 'MonRestaurant',
     component: () => import('../views/Restaurateur/RestaurantInformation.vue')
   },
+
+  {
+    path: '/mon_profil',
+    name: 'ProfileView',
+    component: () => import('../views/ProfileView.vue')
+  },
+
+  {
+    path: '/OpenToWork',
+    name: 'OpenToWork',
+    component: () => import('../views/OpenToWork.vue')
+  },
+
   {
     path: '/notifications',
     name: 'Notifications',

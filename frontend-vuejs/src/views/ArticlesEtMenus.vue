@@ -74,7 +74,9 @@
               width="500"
             >
 
-                <template v-slot:activator="{ on, attrs }">
+
+                <template  v-slot:activator="{ on, attrs }">
+                    <div class="d-flex ">
                     <v-btn
                       class="mr-3 mb-3"
                       icon
@@ -85,7 +87,12 @@
                         <v-icon size="30">mdi-plus-circle-outline</v-icon>
 
                     </v-btn>
+                        <p class="mt-1">Ajouter une catégorie</p>
+                    </div>
                 </template>
+
+
+
 
                 <v-card>
                     <v-card-title>
