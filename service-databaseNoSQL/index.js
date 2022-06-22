@@ -9,9 +9,12 @@ const port = 3031;
 
 const RestaurantsRouter = require("./routes/posts/RestaurantRouter");
 const UsersRouter = require("./routes/posts/UserRouter");
+const DeliverymansRouter = require("./routes/posts/DeliverymanRouter");
 const OrdersRouter = require("./routes/posts/OrderRouter");
 const ArticlesRouter = require("./routes/posts/ArticleRouter");
-const StatsRouter = require("./routes/posts/StatsRouter")
+const StatsRouter = require("./routes/posts/StatsRouter");
+const NotificationsRouter = require("./routes/posts/NotificationRouter")
+// const CategoriesRouter = require("./routes/posts/Restaurant");
 const MenusRouter = require("./routes/posts/MenuRouter");
 const PerformancesRouter = require("./routes/posts/PerformanceRouter");
 
@@ -38,6 +41,9 @@ app.use("/orders", OrdersRouter);
 app.use("/stats", StatsRouter);
 app.use("/menus", MenusRouter);
 app.use("/performance", PerformancesRouter);
+app.use("/deliverymans", DeliverymansRouter);
+app.use("/notifications", NotificationsRouter);
+// app.use("/categories", CategoriesRouter);
 
 app.listen(port, function () {
     console.log("Runnning on " + port);
