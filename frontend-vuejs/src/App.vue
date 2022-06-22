@@ -1,9 +1,9 @@
 <template>
-    <v-index>
-        <v-index-bar
-            index color="primary"
+    <v-app>
+        <v-app-bar
+            app color="primary"
         >
-            <v-index-bar-nav-icon
+            <v-app-bar-nav-icon
                 @click="displayMenu()"
                 color="white"
             />
@@ -20,7 +20,7 @@
                     mdi-bell
                 </v-icon>
             </v-btn>
-        </v-index-bar>
+        </v-app-bar>
 
         <v-navigation-drawer
             v-model="drawer"
@@ -63,7 +63,7 @@
 
                 <v-btn
                     color="tertiary black--text"
-                    class="pr-10 pl-10 mt-5"
+                    class="pr-10 pl-10 mt-5" to="/stats"
                 >
                     Statistiques avancées
                 </v-btn>
@@ -91,7 +91,7 @@
         <div class="content">
             <router-view/>
         </div>
-    </v-index>
+    </v-app>
 </template>
 
 <script lang="ts">
