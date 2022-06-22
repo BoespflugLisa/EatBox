@@ -71,6 +71,7 @@
             <template v-slot:append>
                 <div class="d-flex justify-center flex-column pa-5">
                     <v-btn
+                        to="/mon_Restaurant?tab=2"
                         color="tertiary black--text"
                         class="pr-10 pl-10"
                     >
