@@ -9,7 +9,6 @@ router.post("/:id", async (req, res) => {
         let restaurant = await RestaurantModel.findById(req.params.id).exec();
         let article = new ArticleModel({
             made_by : restaurant._id,
-            //belongs_to : {type: [Schema.Types.ObjectId], ref: "Categories"},
             Name : "Frites",
             Image_path : "../image.png",
             Description : "Les meilleurs que vous avez goûtés depuis très longtemps",
@@ -38,7 +37,6 @@ router.post("/:id", async (req, res) => {
         article = await article.save();
         console.log(article)
         res.status(200).json({
-            status: 200,
             message: "L'article a été créé.",
         });
     } catch (err) {
@@ -53,8 +51,7 @@ router.get("/", async (req, res) => {
     try {
         let articles = await ArticleModel.find();
         res.status(200).json({
-            status: 200,
-            data: articles,
+            articles,
         });
     } catch (err) {
         res.status(400).json({
@@ -72,8 +69,7 @@ router.get("/:id", async (req, res) => {
         });
         if (article) {
             res.status(200).json({
-                status: 200,
-                data: article,
+                article,
             });
         }
         res.status(400).json({
@@ -96,8 +92,7 @@ router.put("/:id", async(req, res) => {
 
         if (article) {
             res.status(200).json({
-                status: 200,
-                data: article,
+                article,
             });
         }
     } catch (err) {

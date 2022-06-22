@@ -29,8 +29,6 @@ let UserSchema = new Schema(
             Developer : {
                 //did : {type:String, ref:"Developer", default : () => `U${countID++}`},
                 did : String,
-                sponsors : [String],
-                sponsored : [String],
                 Phone: String,
             },
         },

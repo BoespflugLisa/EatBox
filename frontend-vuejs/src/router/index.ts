@@ -1,18 +1,11 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import DashBoard from '../views/DashBoard.vue'
-import TestView from '../views/TestView.vue'
 import ArticlesEtMenus from '../views/ArticlesEtMenus.vue'
 
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
-  {
-    path: '/test',
-    name: 'TestView',
-    component: TestView
-
-  },
   {
     path: '/',
     name: 'DashBoard',
@@ -33,6 +26,11 @@ const routes: Array<RouteConfig> = [
     path: '/notifications',
     name: 'Notifications',
     component: () => import('../views/NotificationList.vue')
+  },
+  {
+    path: '/stats',
+    name: 'Stats',
+    component: () => import('../views/Restaurateur/RestaurantStats.vue')
   },
   {
     path: '/commandes',
