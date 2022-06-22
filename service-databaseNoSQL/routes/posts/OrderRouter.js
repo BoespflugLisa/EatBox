@@ -9,7 +9,7 @@ router.post("/:clientid", async (req, res) => {
         let menus = "";
         let articles = "";
         let order = new OrderModel({N_Order : "String",
-                State : 0, //0 En attente / 1
+                State : 0, //0 En attente de validation / 1 En préparation / 2 En attente du livreur / 3 En livraison / 4 Livrée
                 Payment : "CB",
                 Restaurant : restaurant._id,
                 Client : {
