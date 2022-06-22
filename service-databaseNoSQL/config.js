@@ -10,6 +10,7 @@ let config = {
         }
 
 };
+
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 const db = {};
@@ -18,11 +19,19 @@ db.mongoose = mongoose;
 db.url = config.dbUrl
 db.options = config.option;
 
-db.restaurants = require("./models/Restaurant")(mongoose);
-db.users = require("./models/User")(mongoose);
+const RestaurantsModel = require("./models/Restaurant");
+const UsersModel = require("./models/User");
+const OrdersModel = require("./models/Order");
+const ArticlesModel = require("./models/Article");
+const StatsModel = require("./models/Stats")
+const MenusModel = require("./models/Menu");
+const PerformancesModel = require("./models/Perfomance");
+
+db.restaurants = RestaurantsModel;
+db.users = UsersModel;
 //db.deliverymen
 //db.menus
 //db.carts
 //db.articles
 
-module.exports = db;
+module.exports = db, mongoose;

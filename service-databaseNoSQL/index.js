@@ -14,10 +14,11 @@ const OrdersRouter = require("./routes/posts/OrderRouter");
 const ArticlesRouter = require("./routes/posts/ArticleRouter");
 const StatsRouter = require("./routes/posts/StatsRouter");
 const NotificationsRouter = require("./routes/posts/NotificationRouter")
-/*const CardsRouter = require("./routes/posts/Restaurant");
-const CategoriesRouter = require("./routes/posts/Restaurant");
-const MenusRouter = require("./routes/posts/Restaurant");
-;*/
+// const CategoriesRouter = require("./routes/posts/Restaurant");
+
+const StatsRouter = require("./routes/posts/StatsRouter")
+const MenusRouter = require("./routes/posts/MenuRouter");
+const PerformancesRouter = require("./routes/posts/PerformanceRouter");
 
 app.use(logger("dev"));
 app.use(cors());
@@ -26,8 +27,7 @@ app.use(bodyParser.json());
 
 const db = require("./config");
 
-db.mongoose
-    .connect(db.url, db.options)
+db.mongoose.connect(db.url, db.options)
     .then(() => {
         console.log("Connected to the database!");
     })
@@ -41,11 +41,11 @@ app.use("/users", UsersRouter);
 app.use("/articles", ArticlesRouter);
 app.use("/orders", OrdersRouter);
 app.use("/stats", StatsRouter);
+app.use("/menus", MenusRouter);
+app.use("/performance", PerformancesRouter);
 app.use("/deliverymans", DeliverymansRouter);
 app.use("/notifications", NotificationsRouter);
-/*app.use("/cartes", CardsRouter);
-app.use("/categories", CategoriesRouter);
-app.use("/menus", MenusRouter);*/
+// app.use("/categories", CategoriesRouter);
 
 app.listen(port, function () {
     console.log("Runnning on " + port);

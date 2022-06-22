@@ -24,8 +24,7 @@
 
         <v-navigation-drawer
             v-model="drawer"
-            temporary absolute width="320"
-            class="main-menu" height="100vh"
+            width="320" index fixed
         >
             <div class="pa-3 pb-0 ml-auto">
                 <v-btn
@@ -64,7 +63,7 @@
 
                 <v-btn
                     color="tertiary black--text"
-                    class="pr-10 pl-10 mt-5"
+                    class="pr-10 pl-10 mt-5" to="/stats"
                 >
                     Statistiques avancées
                 </v-btn>
@@ -153,16 +152,6 @@ export default class App extends Vue {
 </script>
 
 <style>
-p {
-    margin-bottom: 0!important;
-}
-
-.main-menu-bottom {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-}
-
 .content {
     padding-top: 64px !important;
     padding-bottom: 30px !important;

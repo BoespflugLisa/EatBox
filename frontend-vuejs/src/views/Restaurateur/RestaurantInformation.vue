@@ -250,17 +250,21 @@
                         </p>
 
                         <div class="d-flex justify-center">
-                            <v-btn color="secondary" class="mt-7" rounded>
+                            <v-btn color="secondary" class="mt-7" @click="  expand =true" rounded>
                                 {{ RandomNumParrainage }}
                             </v-btn>
                         </div>
-
-
 
                         <p class="d-flex justify-center text-center mt-5">
                             Partagez votre code avec d'autres restaurants. Lorsqu'ils l'utilisent vous bénéficiez de...
                         </p>
 
+                        <v-expand-transition>
+                        <v-alert  dismissible @click="expand =false" v-show="expand"
+                                class="mt-5" type="success"  >
+                            Copier avec succès.
+                        </v-alert>
+                        </v-expand-transition>
 
                     </div>
 
@@ -269,7 +273,6 @@
             </v-tabs-items>
         </div>
     </div>
-
 </template>
 
 <script lang="ts">
@@ -307,6 +310,7 @@ export default class ArticlesEtMenus extends Vue {
     editResto = false
     editContact = false
     editBank = false
+    expand= false
     checkbox1 = false
     checkbox2 = false
     checkbox3 = false

@@ -4,11 +4,11 @@
             Notifications des commandes
         </h2>
 
-        <p v-if="newCommand.length === 0">Tout est calme pour le moment...</p>
+        <p v-if="command.length === 0">Tout est calme pour le moment...</p>
 
         <v-card
             color="tertiary"
-            v-for="(notif, index) in newCommand"
+            v-for="(notif, index) in command"
             :key="notif.id"
             class="mt-3 rounded-lg"
         >
@@ -16,10 +16,10 @@
                 <div class="d-flex justify-space-between align-center">
                     <div class="font-16">
                         <p>{{ notif.date }}</p>
-                        <p>Nouvelle commande !</p>
+                        <p>{{ notif.message }}</p>
                     </div>
 
-                    <v-btn icon  @click="delNotification(index, 'newCommand')">
+                    <v-btn icon  @click="delNotification(index, 'command')">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
 
@@ -31,11 +31,11 @@
             Notifications des livreurs
         </h2>
 
-        <p v-if="deliverymanArrived.length === 0">Tout est calme pour le moment...</p>
+        <p v-if="deliveryman.length === 0">Tout est calme pour le moment...</p>
 
         <v-card
             color="tertiary"
-            v-for="(notif, index) in deliverymanArrived"
+            v-for="(notif, index) in deliveryman"
             :key="notif.id"
             class="mt-3 rounded-lg"
         >
@@ -43,10 +43,10 @@
                 <div class="d-flex justify-space-between align-center">
                     <div class="font-16">
                         <p>{{ notif.date }}</p>
-                        <p>Livreur arrivé !</p>
+                        <p>{{ notif.message }}</p>
                     </div>
 
-                    <v-btn icon  @click="delNotification(index, 'deliverymanArrived')">
+                    <v-btn icon  @click="delNotification(index, 'deliveryman')">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
 
@@ -90,35 +90,39 @@ import {Component, Vue} from 'vue-property-decorator';
 })
 
 export default class NotificationDisplay extends Vue {
-    newCommand: Array<unknown> = []
-    deliverymanArrived: Array<unknown> = []
+    command: Array<unknown> = []
+    deliveryman: Array<unknown> = []
     recentActivities: Array<unknown> = []
 
     notifications = [
         {
             id: "1",
             date: "16:11 - 13/06/2022",
-            type: "restaurateur_new_command",
+            type: "command",
+            message: "Nouvelle commande !",
         },
         {
             id: "2",
             date: "14:15 - 13/06/2022",
-            type: "restaurateur_new_command",
+            type: "command",
+            message: "Nouvelle commande !",
         },
         {
             id: "3",
             date: "16:23 - 13/06/2022",
-            type: "restaurateur_deliveryman_arrived",
+            type: "deliveryman",
+            message: "Livreur arrivé !",
         },
         {
             id: "4",
             date: "14:31 - 13/06/2022",
-            type: "restaurateur_deliveryman_arrived",
+            type: "deliveryman",
+            message: "Livreur arrivé !",
         },
         {
             id: "5",
             date: "17:00 - 13/06/2022",
-            type: "restaurateur_recent_activities",
+            type: "recent_activities",
             message: "Bravo ! 10 commandes aujourd'hui",
         },
     ]
@@ -130,15 +134,15 @@ export default class NotificationDisplay extends Vue {
     getNotifications() {
         this.notifications.forEach(notification => {
             switch (notification.type) {
-                case "restaurateur_new_command":
-                    this.newCommand.push(notification);
+                case "command":
+                    this.command.push(notification);
                     break;
 
-                case "restaurateur_deliveryman_arrived":
-                    this.deliverymanArrived.push(notification);
+                case "deliveryman":
+                    this.deliveryman.push(notification);
                     break;
 
-                case "restaurateur_recent_activities":
+                case "recent_activities":
                     this.recentActivities.push(notification);
                     break;
             }
@@ -147,11 +151,11 @@ export default class NotificationDisplay extends Vue {
 
     delNotification(index, datatable: string) {
         switch (datatable) {
-            case "newCommand":
-                this.newCommand.splice(index, 1);
+            case "command":
+                this.command.splice(index, 1);
                 break;
-            case "deliverymanArrived":
-                this.deliverymanArrived.splice(index, 1);
+            case "deliveryman":
+                this.deliveryman.splice(index, 1);
                 break;
             case "recentActivities":
                 this.recentActivities.splice(index, 1);

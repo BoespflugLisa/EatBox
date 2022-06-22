@@ -62,7 +62,7 @@
         </div>
 
         <div class="d-flex justify-center">
-            <v-btn color="secondary" class="mt-7" rounded>
+            <v-btn to="/stats" color="secondary" class="mt-7" rounded>
                 En savoir plus
             </v-btn>
         </div>
@@ -89,11 +89,11 @@ export default class ArticlesEtMenus extends Vue {
     mounted() {
         this.$axios.get(`stats/62b04dcfff5bc1bbf9802446`)
             .then(response => {
-                console.log(response.data.data);
-                this.restaurantName = response.data.data.belongs_to;
-                this.nbCommandes = response.data.data.NbOrders;
-                this.moyenneNote = response.data.data.MeanNotes;
-                this.recetteDuMois = response.data.data.Benefit;
+                console.log(response.data)
+                this.restaurantName = response.data.stat.belongs_to.Name;
+                this.nbCommandes = response.data.stat.NbOrders;
+                this.moyenneNote = response.data.stat.MeanNotes;
+                this.recetteDuMois = response.data.stat.Benefit;
             })
     }
 
