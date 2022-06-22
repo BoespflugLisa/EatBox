@@ -79,7 +79,7 @@ import {Component, Vue} from 'vue-property-decorator';
     components: {},
 })
 
-export default class ArticlesEtMenus extends Vue {
+export default class DashBoard extends Vue {
 
     restaurantName = null
     nbCommandes = null
