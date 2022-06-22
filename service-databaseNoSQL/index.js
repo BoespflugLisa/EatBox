@@ -15,8 +15,6 @@ const ArticlesRouter = require("./routes/posts/ArticleRouter");
 const StatsRouter = require("./routes/posts/StatsRouter");
 const NotificationsRouter = require("./routes/posts/NotificationRouter")
 // const CategoriesRouter = require("./routes/posts/Restaurant");
-
-const StatsRouter = require("./routes/posts/StatsRouter")
 const MenusRouter = require("./routes/posts/MenuRouter");
 const PerformancesRouter = require("./routes/posts/PerformanceRouter");
 
