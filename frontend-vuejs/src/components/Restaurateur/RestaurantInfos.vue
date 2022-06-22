@@ -7,8 +7,6 @@
                 <v-btn
                     icon
                     color="primary"
-                    v-bind="attrs"
-                    v-on="on"
                     @click="editResto = !editResto"
                 >
                     <v-icon v-if="!editResto" size="25">mdi-pencil</v-icon>
@@ -42,22 +40,7 @@
         </div>
 
         <div class="mt-3 ml-5">
-            <p v-if="!editResto">Lun. : {{ LunTime }}</p>
-            <div v-else>
-
-            </div>
-            <br>
-            <p v-if="!editResto">Mar. : {{ MarTime }}</p>
-            <br>
-            <p v-if="!editResto">Mer. : {{ MerTime }}</p>
-            <br>
-            <p v-if="!editResto">Jeu. : {{ JeuTime }}</p>
-            <br>
-            <p v-if="!editResto">Ven. : {{ VenTime }}</p>
-            <br>
-            <p v-if="!editResto">Sam. : {{ SamTime }}</p>
-            <br>
-            <p v-if="!editResto">Dim. : {{ DimTime }}</p>
+            <select-schedule/>
         </div>
 
         <div class="d-flex justify-center pt-5 pb-3 ">
@@ -67,11 +50,7 @@
 
         </div>
 
-        <v-banner
-            v-model="v0"
-            single-line
-            transition="slide-y-transition"
-        ></v-banner>
+        <v-divider class="mt-4 mb-4"/>
 
         <div class="mt-3 ml-3">
             <h2>Informations de contact
@@ -79,8 +58,6 @@
                 <v-btn
                     icon
                     color="primary"
-                    v-bind="attrs"
-                    v-on="on"
                     @click="editContact = !editContact"
                 >
                     <v-icon v-if="!editContact" size="25">mdi-pencil</v-icon>
@@ -118,11 +95,7 @@
             <v-text-field v-else v-model="numSiret"></v-text-field>
         </div>
 
-        <v-banner
-            v-model="v0"
-            single-line
-            transition="slide-y-transition"
-        ></v-banner>
+        <v-divider class="mt-4 mb-4"/>
 
         <div class="mt-3 ml-3">
             <h2>Informations banquaires
@@ -130,8 +103,6 @@
                 <v-btn
                     icon
                     color="primary"
-                    v-bind="attrs"
-                    v-on="on"
                     @click="editBank = !editBank"
                 >
                     <v-icon v-if="!editBank" size="25">mdi-pencil</v-icon>
@@ -171,9 +142,12 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
+import SelectSchedule from './SelectSchedule.vue'
 
 @Component({
-    components: {},
+    components: {
+        SelectSchedule
+    },
 })
 
 export default class RestaurantInfos extends Vue {
