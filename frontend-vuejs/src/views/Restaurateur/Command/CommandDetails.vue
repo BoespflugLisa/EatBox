@@ -19,11 +19,7 @@
                 <v-card-text>
                     <p>
                         {{ order.client }}
-                        <span v-if="order.favori === true">
-                        <v-icon color="accent">
-                            mdi-star
-                        </v-icon>
-                    </span>
+                        <span v-if="order.favori === true">⭐</span>
                     </p>
                     <p>
                         Commande à réaliser pour {{ order.hour }}
