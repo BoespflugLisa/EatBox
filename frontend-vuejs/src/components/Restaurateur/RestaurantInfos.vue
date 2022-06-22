@@ -23,7 +23,7 @@
         </div>
 
         <div class="mt-3 ml-5">
-            <h7 v-if="!editResto">{{ restaurantName }}</h7>
+            <p v-if="!editResto">{{ restaurantName }}</p>
             <v-text-field v-else v-model="restaurantName"></v-text-field>
 
         </div>
@@ -33,7 +33,7 @@
         </div>
 
         <div class="mt-3 ml-5">
-            <h7 v-if="!editResto">{{ foodType }}</h7>
+            <p v-if="!editResto">{{ foodType }}</p>
             <v-text-field v-else v-model="foodType"></v-text-field>
         </div>
 
@@ -42,22 +42,22 @@
         </div>
 
         <div class="mt-3 ml-5">
-            <h7 v-if="!editResto">Lun. : {{ LunTime }}</h7>
+            <p v-if="!editResto">Lun. : {{ LunTime }}</p>
             <div v-else>
 
             </div>
             <br>
-            <h7 v-if="!editResto">Mar. : {{ MarTime }}</h7>
+            <p v-if="!editResto">Mar. : {{ MarTime }}</p>
             <br>
-            <h7 v-if="!editResto">Mer. : {{ MerTime }}</h7>
+            <p v-if="!editResto">Mer. : {{ MerTime }}</p>
             <br>
-            <h7 v-if="!editResto">Jeu. : {{ JeuTime }}</h7>
+            <p v-if="!editResto">Jeu. : {{ JeuTime }}</p>
             <br>
-            <h7 v-if="!editResto">Ven. : {{ VenTime }}</h7>
+            <p v-if="!editResto">Ven. : {{ VenTime }}</p>
             <br>
-            <h7 v-if="!editResto">Sam. : {{ SamTime }}</h7>
+            <p v-if="!editResto">Sam. : {{ SamTime }}</p>
             <br>
-            <h7 v-if="!editResto">Dim. : {{ DimTime }}</h7>
+            <p v-if="!editResto">Dim. : {{ DimTime }}</p>
         </div>
 
         <div class="d-flex justify-center pt-5 pb-3 ">
@@ -96,7 +96,7 @@
         </div>
 
         <div class="mt-3 ml-5">
-            <h7 v-if="!editContact">{{ telephone }}</h7>
+            <p v-if="!editContact">{{ telephone }}</p>
             <v-text-field v-else v-model="telephone"></v-text-field>
         </div>
 
@@ -105,7 +105,7 @@
         </div>
 
         <div class="mt-3 ml-5">
-            <h7 v-if="!editContact">{{ mail }}</h7>
+            <p v-if="!editContact">{{ mail }}</p>
             <v-text-field v-else v-model="mail"></v-text-field>
         </div>
 
@@ -114,7 +114,7 @@
         </div>
 
         <div class="mt-3 ml-5">
-            <h7 v-if="!editContact">{{ numSiret }}</h7>
+            <p v-if="!editContact">{{ numSiret }}</p>
             <v-text-field v-else v-model="numSiret"></v-text-field>
         </div>
 
@@ -145,7 +145,7 @@
         </div>
 
         <div class="mt-3 ml-5">
-            <h7 v-if="!editBank">{{ telephone }}</h7>
+            <p v-if="!editBank">{{ telephone }}</p>
             <v-text-field v-else v-model="numSiret"></v-text-field>
         </div>
 
@@ -154,7 +154,7 @@
         </div>
 
         <div class="mt-3 ml-5">
-            <h7 v-if="!editBank">{{ mail }}</h7>
+            <p v-if="!editBank">{{ mail }}</p>
             <v-text-field v-else v-model="numSiret"></v-text-field>
         </div>
 
@@ -163,7 +163,7 @@
         </div>
 
         <div class="mt-3 ml-5 mb-5">
-            <h7 v-if="!editBank">{{ numSiret }}</h7>
+            <p v-if="!editBank">{{ numSiret }}</p>
             <v-text-field v-else v-model="numSiret"></v-text-field>
         </div>
     </div>
