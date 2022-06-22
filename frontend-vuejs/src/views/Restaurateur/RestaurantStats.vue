@@ -6,21 +6,21 @@
                     <stats-of-the-month/>
                 </v-tab-item>
                 <v-tab-item>
-                    nblhgfjfgnlgnfkbgf
+                    <stats-history/>
                 </v-tab-item>
         </v-tabs>
-
-
     </div>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import StatsOfTheMonth from "../../components/Restaurateur/StatsOfTheMonth.vue";
+import StatsHistory from "../../components/Restaurateur/StatsHistory.vue";
 
 @Component({
     components: {
-        StatsOfTheMonth
+        StatsOfTheMonth,
+        StatsHistory
     },
 })
 
