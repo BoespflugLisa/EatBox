@@ -32,14 +32,17 @@
         </v-card>
 
         <div class="pt-7" v-if="displayHistory">
-            <h3>{{ this.title }}</h3>
-            <p class="text-center">{{ this.meanRating }}⭐ basé sur {{ this.nbRate }} notes</p>
-            <div class="d-flex flex-row flex-wrap mt-7">
-                <div class="w-50 text-center">
+            <h2>{{ this.title }}</h2>
+            <div class="d-flex flex-wrap justify-space-around mt-2">
+                <div class="text-center pa-3">
                     <h3>Nombre de commande</h3>
                     <p class="font-40">{{ this.nbCommand }}</p>
                 </div>
-                <div class="w-50 text-center">
+                <div class="text-center pa-3">
+                    <h3>Note</h3>
+                    <p class="font-40">{{ this.meanRating }}⭐</p>
+                </div>
+                <div class="text-center pa-3">
                     <h3>Recette</h3>
                     <p class="font-40">{{ this.recette }} €</p>
                 </div>
@@ -99,7 +102,6 @@ export default class StatsHistory extends Vue {
     recette = 0;
 
     showHistoryDetail(item: any) {
-        console.log(item)
         this.title = item.date;
         this.meanRating = item.meanRating;
         this.nbRate = item.nbRate;
