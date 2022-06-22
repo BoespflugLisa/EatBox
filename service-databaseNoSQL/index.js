@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 
 const db = require("./config");
 
-db.mongoose.connect(db.dbUrl, db.options)
+db.mongoose.connect(db.url, db.options)
     .then(() => {
         console.log("Connected to the database!");
     })
