@@ -90,37 +90,13 @@ router.get("/:id", async (req, res) => {
 
 router.put("/:id", async(req, res) => {
     try {
-    const order = new OrderModel({
-        _id: req.params.id,
-        N_Order: req.body.N_Order,
-        State: req.body.State,
-        Payment: req.body.Payment,
-        Restaurant: req.body.Restaurant,
-        Client: {
-            Client_ID: req.body.Client_ID,
-            Favorite: req.body.Favorite,
-        },
-        Complementary: req.body.Complementary,
-        Detail: {
-            Price: req.body.Price,
-            Menus: req.body.Menus,
-            Articles: req.body.Articles,
-        },
-        CheckTime : {
-            Created_at : req.body.Created_at,
-            Accepted_at : req.body.Accepted_at,
-            Ready_at: req.body.Ready_at,
-            Pickedup_at: req.body.Pickedup_at,
-            Delivered_at: req.body.Delivered_at,
-        },
-    });
-    OrderModel.updateOne({_id: req.params.id}, order).then(
-        () => {
-            res.status(201).json({
-                message: 'Order updated successfully!'
-            });
+        OrderModel.updateOne({_id: req.params.id}, req.body.data).then(
+            () => {
+                res.status(204).json({
+                    message: 'Order updated successfully!'
+                });
+            })
         }
-    )}
     catch(err) {
         res.status(400).json({
             status: 400,

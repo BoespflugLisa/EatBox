@@ -33,17 +33,15 @@ import {Component, Vue} from 'vue-property-decorator';
 export default class OrdersHistory extends Vue {
     name = "OrdersHistory"
 
-    orders = [];
+    orders = null;
 
     mounted (){
-        this.$axios.get(`orders`)
-            .then(response => {
-                this.orders = response.data.orders;
-            })
+        this.$emit('ready');
     }
-    /*getOrders(orders: Array<never>){
+
+    getOrders(orders){
         this.orders = orders;
-    }*/
+    }
 
     showDetails(order) {
         this.$router.push({name: 'commandeDetails', params: {id: order._id}});

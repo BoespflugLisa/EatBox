@@ -1,6 +1,7 @@
 <template>
     <div id="incoming-orders" class="side-padding">
-            <h2 class="mt-3">Commandes à valider</h2>
+        <h2 class="mt-3">Commandes à valider</h2>
+<!--        <div v-if="this.orders !== null">-->
             <div v-for="order in this.orders" :key="order._id">
                 <div class="d-flex" v-if="order.State === 0">
                     <div class="command-tab border-tab">
@@ -23,11 +24,16 @@
                     </div>
                 </div>
             </div>
-        </div>
+<!--        </div>-->
+<!--        <div v-else>
+            <h3>Il n'y a pas de commandes à valider</h3>
+        </div>-->
+    </div>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
+
 @Component({
     components: {}
 })
@@ -35,21 +41,20 @@ import {Component, Vue} from 'vue-property-decorator';
 export default class IncomingOrders extends Vue {
     name = "IncomingOrders"
 
-    orders = [];
+    orders = null;
 
-    mounted (){
-        this.$axios.get(`orders`)
-            .then(response => {
-                this.orders = response.data.orders;
-            })
+    mounted() {
+        this.$emit('ready');
+        console.log(this.orders);
     }
-   /* getOrders(orders: Array<never>){
-        this.orders = orders;
-    }*/
 
-    HoursFormater (orderTime) {
-        const hours =  new Date(orderTime).getHours();
-        const minutes =  new Date(orderTime).getMinutes();
+    getOrders(orders) {
+        this.orders = orders;
+    }
+
+    HoursFormater(orderTime) {
+        const hours = new Date(orderTime).getHours();
+        const minutes = new Date(orderTime).getMinutes();
         const time = hours + "h" + minutes
         return time
     }

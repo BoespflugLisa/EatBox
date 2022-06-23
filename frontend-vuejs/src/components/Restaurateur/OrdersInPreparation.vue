@@ -61,19 +61,16 @@ import {Component, Vue} from 'vue-property-decorator';
 export default class OrdersInPreparation extends Vue {
     name = "OrdersInPreparation"
 
-    orders = [];
+    orders = null;
 
     mounted (){
-        this.$axios.get(`orders`)
-            .then(response => {
-                this.orders = response.data.orders;
-            })
+        this.$emit('ready');
     }
-    /*getOrders(orders) {
-        console.log(orders);
+
+    getOrders(orders) {
         this.orders = orders;
     }
-*/
+
     HoursFormater (orderTime, accepted: boolean) {
         if(accepted){
             const minutesToAdd = 30;

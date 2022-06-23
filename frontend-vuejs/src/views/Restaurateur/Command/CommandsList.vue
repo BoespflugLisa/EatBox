@@ -6,10 +6,10 @@
                 <incoming-orders ref="incoming"/>
             </v-tab-item>
             <v-tab-item>
-                <orders-in-preparation ref="preparation"/>
+                <orders-in-preparation v-on:ready="getOrdersInPreparation()" ref="preparation"/>
             </v-tab-item>
             <v-tab-item>
-                <orders-history ref="history"/>
+                <orders-history v-on:ready="getOrdersHistory()" ref="history"/>
             </v-tab-item>
         </v-tabs>
     </div>
@@ -37,22 +37,29 @@ export default class CommandsList extends Vue {
         {tab: "Commandes en cours"},
         {tab: "Historique"},
     ]
+    orders = null;
 
-    /*$refs!: {
+    $refs!: {
         incoming: IncomingOrders,
         preparation: OrdersInPreparation,
         history: OrdersHistory,
-    }*/
+    }
 
-
-
-    /*getOrdersData() {
+    mounted () {
         this.$axios.get(`orders`)
             .then(response => {
-                console.log(response.data.orders);
+                this.orders = response.data.orders;
+                this.$refs.incoming.getOrders(this.orders);
             })
     }
-*/
+
+    getOrdersInPreparation() {
+        this.$refs.preparation.getOrders(this.orders);
+    }
+
+    getOrdersHistory() {
+        this.$refs.history.getOrders(this.orders);
+    }
 
 }
 
