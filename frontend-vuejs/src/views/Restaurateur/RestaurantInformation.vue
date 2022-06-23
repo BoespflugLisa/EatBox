@@ -17,11 +17,11 @@
                             <h2>Informations du restaurant
 
                                 <v-btn
-                                  icon
-                                  color="primary"
-                                  v-bind="attrs"
-                                  v-on="on"
-                                  @click="editResto = !editResto"
+                                    icon
+                                    color="primary"
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    @click="editResto = !editResto"
                                 >
                                     <v-icon v-if="!editResto" size="25">mdi-pencil</v-icon>
                                     <v-icon v-else size="25">mdi-check</v-icon>
@@ -80,20 +80,20 @@
                         </div>
 
                         <v-banner
-                          v-model="v0"
-                          single-line
-                          transition="slide-y-transition"
+                            v-model="v0"
+                            single-line
+                            transition="slide-y-transition"
                         ></v-banner>
 
                         <div class="mt-3 ml-3">
                             <h2>Informations de contact
 
                                 <v-btn
-                                  icon
-                                  color="primary"
-                                  v-bind="attrs"
-                                  v-on="on"
-                                  @click="editContact = !editContact"
+                                    icon
+                                    color="primary"
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    @click="editContact = !editContact"
                                 >
                                     <v-icon v-if="!editContact" size="25">mdi-pencil</v-icon>
                                     <v-icon v-else size="25">mdi-check</v-icon>
@@ -131,20 +131,20 @@
                         </div>
 
                         <v-banner
-                          v-model="v0"
-                          single-line
-                          transition="slide-y-transition"
+                            v-model="v0"
+                            single-line
+                            transition="slide-y-transition"
                         ></v-banner>
 
                         <div class="mt-3 ml-3">
                             <h2>Informations banquaires
 
                                 <v-btn
-                                  icon
-                                  color="primary"
-                                  v-bind="attrs"
-                                  v-on="on"
-                                  @click="editBank = !editBank"
+                                    icon
+                                    color="primary"
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    @click="editBank = !editBank"
                                 >
                                     <v-icon v-if="!editBank" size="25">mdi-pencil</v-icon>
                                     <v-icon v-else size="25">mdi-check</v-icon>
@@ -187,45 +187,45 @@
                         <h2>Mes préferences</h2>
 
                         <v-checkbox
-                          color="primary"
-                          v-model="checkbox1"
-                          :label="`Recevoir des notifications par e-mail`"
+                            color="primary"
+                            v-model="checkbox1"
+                            :label="`Recevoir des notifications par e-mail`"
                         ></v-checkbox>
 
                         <v-checkbox
-                          color="primary"
-                          v-model="checkbox2"
-                          :label="`Recevoir des notifications sur les commandes`"
+                            color="primary"
+                            v-model="checkbox2"
+                            :label="`Recevoir des notifications sur les commandes`"
                         ></v-checkbox>
 
                         <v-checkbox
-                          color="primary"
-                          v-model="checkbox3"
-                          :label="`Recevoir des notifications sr les livreurs`"
+                            color="primary"
+                            v-model="checkbox3"
+                            :label="`Recevoir des notifications sr les livreurs`"
                         ></v-checkbox>
 
                         <v-checkbox
-                          color="primary"
-                          v-model="checkbox4"
-                          :label="`Recevoir des notifications sur les activitées`"
+                            color="primary"
+                            v-model="checkbox4"
+                            :label="`Recevoir des notifications sur les activitées`"
                         ></v-checkbox>
 
                         <v-checkbox
-                          color="primary"
-                          v-model="checkbox5"
-                          :label="`Recevoir des notifications par e-mail`"
+                            color="primary"
+                            v-model="checkbox5"
+                            :label="`Recevoir des notifications par e-mail`"
                         ></v-checkbox>
 
                         <v-checkbox
-                          color="primary"
-                          v-model="checkbox6"
-                          :label="`Recevoir des notifications`"
+                            color="primary"
+                            v-model="checkbox6"
+                            :label="`Recevoir des notifications`"
                         ></v-checkbox>
 
                         <v-checkbox
-                          color="primary"
-                          v-model="checkbox7"
-                          :label="`Recevoir des notifications`"
+                            color="primary"
+                            v-model="checkbox7"
+                            :label="`Recevoir des notifications`"
                         ></v-checkbox>
                     </div>
 
@@ -235,12 +235,12 @@
 
                         <v-card
 
-                          class="mx-auto mt-5"
-                          max-width="400"
+                            class="mx-auto mt-5"
+                            max-width="400"
                         >
                             <v-img
-                              src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-                              height="200px"
+                                src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+                                height="200px"
                             ></v-img>
 
                         </v-card>
@@ -260,10 +260,10 @@
                         </p>
 
                         <v-expand-transition>
-                        <v-alert  dismissible @click="expand =false" v-show="expand"
-                                class="mt-5" type="success"  >
-                            Copier avec succès.
-                        </v-alert>
+                            <v-alert dismissible @click="expand =false" v-show="expand"
+                                     class="mt-5" type="success">
+                                Copier avec succès.
+                            </v-alert>
                         </v-expand-transition>
 
                     </div>
@@ -282,7 +282,7 @@ import {Component, Vue} from 'vue-property-decorator';
     components: {},
 })
 
-export default class ArticlesEtMenus extends Vue {
+export default class RestaurantInformation extends Vue {
 
     name = "RestaurantInformation"
 
@@ -306,11 +306,11 @@ export default class ArticlesEtMenus extends Vue {
     SamTime = "11h30-14h / 19h-23h30"
     DimTime = "Fermé."
 
-    RandomNumParrainage= "EatBox-9KJI9u"
+    RandomNumParrainage = "EatBox-9KJI9u"
     editResto = false
     editContact = false
     editBank = false
-    expand= false
+    expand = false
     checkbox1 = false
     checkbox2 = false
     checkbox3 = false

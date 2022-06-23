@@ -32,6 +32,10 @@ let RestaurantSchema = new Schema(
             IBAN: String,
             SIRET: String,
         },
+        Sponsors : {
+            sponsors : [String],
+            sponsored : [String],
+        }
     }
 );
 

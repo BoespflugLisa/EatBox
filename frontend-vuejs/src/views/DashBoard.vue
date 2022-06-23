@@ -8,7 +8,7 @@
         <div class="d-flex justify-center pt-7 ">
 
             <h2>
-                Bonjour, {{ this.restaurantName }}
+                Bonjour, {{ this.stats.restaurantName }}
 
             </h2>
         </div>
@@ -33,7 +33,7 @@
 
                 <v-card-text class="text-center dark--text">
                     <p class="font-weight-bold">Nombres de commande ce mois-ci :</p>
-                    <p class="font-40 mt-4">{{ nFormatter(this.nbCommandes,1) }}</p>
+                    <p class="font-40 mt-4">{{ nFormatter(this.stats.nbCommandes,1) }}</p>
                 </v-card-text>
 
             </v-card>
@@ -43,7 +43,7 @@
             <v-card elevation="2" width="100%" color="tertiary">
                 <v-card-text class="text-center dark--text ">
                     <p class="font-weight-bold">Moyenne des notes des derniers clients : </p>
-                    <p class="font-40 mt-4">{{ this.moyenneNote }}
+                    <p class="font-40 mt-4">{{ this.stats.moyenneNote }}
                         <v-icon color="dark" large>
                             mdi-star
                         </v-icon>
@@ -56,7 +56,7 @@
             <v-card elevation="2" width="100%" color="tertiary">
                 <v-card-text class="text-center dark--text ">
                     <p class="font-weight-bold"> Recette du mois : </p>
-                    <p class="font-25 mt-4">{{ nFormatter(this.recetteDuMois,1) }} €</p>
+                    <p class="font-25 mt-4">{{ nFormatter(this.stats.recetteDuMois,1) }} €</p>
                 </v-card-text>
             </v-card>
         </div>
@@ -79,21 +79,24 @@ import {Component, Vue} from 'vue-property-decorator';
     components: {},
 })
 
-export default class ArticlesEtMenus extends Vue {
+export default class DashBoard extends Vue {
 
-    restaurantName = null
-    nbCommandes = null
-    moyenneNote = null
-    recetteDuMois = null
+    stats = {
+        restaurantName : null,
+        nbCommandes : null,
+        moyenneNote : null,
+        recetteDuMois : null,
+    }
 
     mounted() {
+        console.log(this.$store.state)
         this.$axios.get(`stats/62b04dcfff5bc1bbf9802446`)
             .then(response => {
                 console.log(response.data)
-                this.restaurantName = response.data.stat.belongs_to.Name;
-                this.nbCommandes = response.data.stat.NbOrders;
-                this.moyenneNote = response.data.stat.MeanNotes;
-                this.recetteDuMois = response.data.stat.Benefit;
+                this.stats.restaurantName = response.data.stat.belongs_to.Name;
+                this.stats.nbCommandes = response.data.stat.NbOrders;
+                this.stats.moyenneNote = response.data.stat.MeanNotes;
+                this.stats.recetteDuMois = response.data.stat.Benefit;
             })
     }
 

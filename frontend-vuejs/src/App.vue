@@ -1,9 +1,9 @@
 <template>
-    <v-index>
-        <v-index-bar
-            index color="primary"
+    <v-app>
+        <v-app-bar
+            app color="primary"
         >
-            <v-index-bar-nav-icon
+            <v-app-bar-nav-icon
                 @click="displayMenu()"
                 color="white"
             />
@@ -15,17 +15,64 @@
                 />
             </router-link>
 
-            <v-btn icon to="/notifications">
+            <v-btn v-if="this.cookie.auth" icon to="/notifications">
                 <v-icon color="white">
                     mdi-bell
                 </v-icon>
             </v-btn>
-        </v-index-bar>
+        </v-app-bar>
+        <div class="pa-3 pb-0 ml-auto">
+            <v-btn
+                icon
+                @click="displayMenu()"
+            >
+                <v-icon>
+                    mdi-close
+                </v-icon>
+            </v-btn>
+        </div>
 
         <v-navigation-drawer
             v-model="drawer"
             width="320" index fixed
+            v-if="this.cookie.auth"
         >
+            <div class="pa-3 pb-0 ml-auto">
+                <v-btn
+                    icon
+                    @click="displayMenu()"
+                >
+                    <v-icon>
+                        mdi-close
+                    </v-icon>
+                </v-btn>
+            </div>
+            <!--  MENU @Restaurant-->
+            <RestaurantSidebar v-if="this.cookie.role==='Restaurant'"/>
+            <template v-slot:append>
+                <div class="d-flex justify-center flex-column pa-5">
+                    <v-btn
+                        color="tertiary black--text"
+                        class="pr-10 pl-10"
+                    >
+                        Parrainer
+                    </v-btn>
+
+                    <v-btn
+                        color="secondary white--text"
+                        class="pr-10 pl-10 mt-5"
+                        @click="logout()"
+                    >
+                        Se déconnecter
+                    </v-btn>
+                </div>
+            </template>
+        </v-navigation-drawer>
+
+        <v-navigation-drawer
+            v-model="drawer"
+            width="320" index fixed
+            v-else>
             <div class="pa-3 pb-0 ml-auto">
                 <v-btn
                     icon
@@ -40,94 +87,72 @@
                 <v-btn
                     color="tertiary black--text"
                     class="pr-10 pl-10"
-                    to="/mon_Restaurant"
+                    to="/connexion"
                 >
-                    Mon restaurant
-                </v-btn>
-
-                <v-btn
-                    color="tertiary black--text"
-                    class="pr-10 pl-10 mt-5"
-                    to="/card"
-                >
-                    Gestion de la carte
-                </v-btn>
-
-                <v-btn
-                    color="tertiary black--text"
-                    class="pr-10 pl-10 mt-5"
-                    to="/commandes"
-                >
-                    Gestion des commandes
-                </v-btn>
-
-                <v-btn
-                    color="tertiary black--text"
-                    class="pr-10 pl-10 mt-5"
-                >
-                    Statistiques avancées
+                    Se connecter
                 </v-btn>
             </div>
-            <template v-slot:append>
-                <div class="d-flex justify-center flex-column pa-5">
-                    <v-btn
-                        color="tertiary black--text"
-                        class="pr-10 pl-10"
-                    >
-                        Parrainer
-                    </v-btn>
-
-                    <v-btn
-                        color="secondary white--text"
-                        class="pr-10 pl-10 mt-5"
-                    >
-                        Se déconnecter
-                    </v-btn>
-                </div>
-            </template>
 
         </v-navigation-drawer>
 
+
         <div class="content">
-            <router-view/>
+            <router-view v-on:change-theme="changeTheme()"/>
         </div>
-    </v-index>
+    </v-app>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import {ValidationObserver, ValidationProvider} from 'vee-validate';
+import RestaurantSidebar from "./components/Restaurateur/RestaurantSidebar.vue"
+import { logoutUser } from './utils/auth.js'
 
 @Component({
     components: {
         ValidationObserver,
-        ValidationProvider
+        ValidationProvider,
+        RestaurantSidebar,
     },
 })
 
 export default class App extends Vue {
-    connectedUserRole = "Restaurateur";
+
     eatBoxLogo = '';
-    drawer = false;
-
     value = '';
+    drawer = false
 
-    created() {
-        this.changeTheme();
+    cookie = {
+        role : localStorage.Role,
+        auth : localStorage.auth,
+        token : localStorage.token
+    }
+
+    mounted(){
+        this.changeTheme()
+    }
+    
+    logout(){
+        logoutUser()
+        this.changeTheme()
+        this.$router.push('/connexion')
+    }
+
+    displayMenu() {
+        this.drawer = !this.drawer;
     }
 
     changeTheme() {
-        switch (this.connectedUserRole) {
-            case "Client": {
+        switch (localStorage.Role) {
+            case "Client":
                 this.$vuetify.theme.themes.light.primary = '#2D5D62';
                 this.$vuetify.theme.themes.light.secondary = '#77A8A3';
                 this.$vuetify.theme.themes.light.accent = '#A1C7C7';
                 this.$vuetify.theme.themes.light.tertiary = '#B9D3CD';
                 this.eatBoxLogo = require('./assets/img/EatBox.png');
                 break;
-            }
 
-            case "Restaurateur":
+            case "Restaurant":
                 this.$vuetify.theme.themes.light.primary = '#751A2C';
                 this.$vuetify.theme.themes.light.secondary = '#B33A3A';
                 this.$vuetify.theme.themes.light.accent = '#D57056';
@@ -135,19 +160,25 @@ export default class App extends Vue {
                 this.eatBoxLogo = require('./assets/img/EatBoxRestaurateur.png');
                 break;
 
-            case "Deliveryman":
+            case "Livreur":
                 this.$vuetify.theme.themes.light.primary = '#43846B';
                 this.$vuetify.theme.themes.light.secondary = '#B0BBA7';
                 this.$vuetify.theme.themes.light.accent = '#F3E0D7';
                 this.$vuetify.theme.themes.light.tertiary = '#F3E0D7';
                 this.eatBoxLogo = require('./assets/img/EatBoxDeliveryman.png');
                 break;
+
+            default:
+                this.$vuetify.theme.themes.light.primary = '#2D5D62';
+                this.$vuetify.theme.themes.light.secondary = '#77A8A3';
+                this.$vuetify.theme.themes.light.accent = '#A1C7C7';
+                this.$vuetify.theme.themes.light.tertiary = '#B9D3CD';
+                this.eatBoxLogo = require('./assets/img/EatBox.png');
+                break;
         }
     }
 
-    displayMenu() {
-        this.drawer = !this.drawer;
-    }
+
 }
 </script>
 

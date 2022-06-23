@@ -2,11 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let UserSchema = new Schema({
-    UserName: String,
+    Username: String,
     Email: String,
     Password: String,
+    Phone : String,
+    Type : String, //Restaurant Livreur Client
 });
 
-let User = mongoose.model("UserModel", UserSchema, "users");
+let UserLogin = mongoose.model("UserModel", UserSchema, "users_login");
 
-module.exports = User;
+module.exports = UserLogin;
