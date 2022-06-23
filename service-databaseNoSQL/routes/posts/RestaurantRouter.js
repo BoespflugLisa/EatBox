@@ -23,7 +23,7 @@ router.post("/:id", async (req, res) => {
                 "saturday": { isOpen: true, isSecondTimeRange: true, startHour: "11:30", endHour: "14:30", startHour2: "18:30", endHour2: "23:30" },
                 "sunday": { isOpen: true, isSecondTimeRange: false, startHour: "11:30", endHour: "14:00", startHour2: null, endHour2: null },
             },
-
+            "Preference": { NotificationCommand: Boolean, NotificationDeliveryman: Boolean, NotificationActivities: Boolean },
         });
 
         if(!restaurant.populated('belongs_to')){

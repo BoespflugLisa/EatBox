@@ -1,26 +1,26 @@
 <template>
     <div id="restaurant-pref">
-
-
         <h2>Mes préferences</h2>
+        <div class="ml-4">
+            <v-checkbox
+                color="primary"
+                v-model="checkbox1"
+                :label="`Recevoir des notifications sur les commandes`"
+            ></v-checkbox>
 
-        <v-checkbox
-            color="primary"
-            v-model="checkbox1"
-            :label="`Recevoir des notifications sur les commandes`"
-        ></v-checkbox>
+            <v-checkbox
+                color="primary"
+                v-model="checkbox2"
+                :label="`Recevoir des notifications sur les livreurs`"
+            ></v-checkbox>
 
-        <v-checkbox
-            color="primary"
-            v-model="checkbox2"
-            :label="`Recevoir des notifications sur les livreurs`"
-        ></v-checkbox>
+            <v-checkbox
+                color="primary"
+                v-model="checkbox3"
+                :label="`Recevoir des notifications sur les activitées`"
+            ></v-checkbox>
+        </div>
 
-        <v-checkbox
-            color="primary"
-            v-model="checkbox3"
-            :label="`Recevoir des notifications sur les activitées`"
-        ></v-checkbox>
     </div>
 
 </template>
@@ -29,8 +29,7 @@
 import {Component, Vue} from 'vue-property-decorator';
 
 @Component({
-    components: {
-    },
+    components: {},
 })
 
 export default class RestaurantPref extends Vue {
