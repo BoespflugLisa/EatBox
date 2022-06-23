@@ -346,10 +346,6 @@ export default class SelectSchedule extends Vue {
         obs: ValidationObserverInstance
     }
 
-    test(item) {
-        console.log(item.day)
-    }
-
     displaySchedule(day) {
         if (!this.hours[day].isOpen) {
             return "Fermé";
