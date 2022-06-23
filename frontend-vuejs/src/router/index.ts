@@ -74,7 +74,7 @@ router.beforeEach((to, from, next) =>{
   // to.matched.some(record => record.meta.requiresAuth)
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  if (to.meta.requiresAuth && !isLoggedIn() || to.meta.isUser === getRole()) {
+  if (to.meta.requiresAuth && !isLoggedIn() || !to.meta.isUser === getRole()) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
 

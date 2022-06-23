@@ -37,6 +37,7 @@ export function registerUser(form){
         }
     })
 }
+
 export function loginUser(username, password) {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
@@ -82,7 +83,6 @@ export function setRole(type) {
 }
 
 export function getRole() {
-    //return store.state.UserRole
     if(localStorage.Role){
         return localStorage.Role
     } else return store.state.UserRole
@@ -93,7 +93,7 @@ export function setUser(user) {
 }
 
 export function getAuthToken() {
-    if(localStorage.token){
+    if(localStorage.auth){
         return localStorage.token
     } else return store.state.token
 }

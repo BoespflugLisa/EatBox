@@ -11,6 +11,7 @@
             <router-link to="/" class="ma-auto">
                 <v-img
                     max-width="100"
+                    max-height="120"
                     :src="this.eatBoxLogo"
                 />
             </router-link>
@@ -131,7 +132,7 @@ export default class App extends Vue {
     mounted(){
         this.changeTheme()
     }
-    
+
     logout(){
         logoutUser()
         this.changeTheme()
