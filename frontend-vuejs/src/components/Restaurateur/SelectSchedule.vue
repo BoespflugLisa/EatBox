@@ -24,6 +24,7 @@
         <v-dialog
             v-model="showDialog"
             max-width="600px"
+            persistent
         >
             <v-card>
                 <v-card-title>
@@ -344,6 +345,10 @@ export default class SelectSchedule extends Vue {
 
     $refs!: {
         obs: ValidationObserverInstance
+    }
+
+    getHours(hours) {
+        this.hours = hours;
     }
 
     displaySchedule(day) {

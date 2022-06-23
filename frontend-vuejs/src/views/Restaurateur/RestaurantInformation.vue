@@ -3,7 +3,7 @@
         <v-tabs fixed-tabs v-model="tab">
             <v-tab v-for="item in items" :key="item.tab">{{ item.tab }}</v-tab>
             <v-tab-item>
-                <restaurant-infos/>
+                <restaurant-infos ref="infos"/>
             </v-tab-item>
             <v-tab-item>
                 <restaurant-pref/>
@@ -21,6 +21,7 @@ import {Component, Vue} from 'vue-property-decorator';
 import RestaurantInfos from "../../components/Restaurateur/RestaurantInfos.vue";
 import RestaurantPref from "../../components/Restaurateur/RestaurantPref.vue";
 import RestaurantSponsorship from "../../components/Restaurateur/RestaurantSponsorship.vue";
+import axios from "axios";
 
 @Component({
     components: {
@@ -32,22 +33,32 @@ import RestaurantSponsorship from "../../components/Restaurateur/RestaurantSpons
 
 export default class ArticlesEtMenus extends Vue {
 
-    tab = 0
+    tab = 0;
     items = [
         {tab: "Info"},
         {tab: "Préférences"},
         {tab: "Parrainage"},
-    ]
+    ];
 
+    data = {};
 
+    $refs!: {
+        infos: RestaurantInfos
+    }
 
-
-
-
-    created() {
+    mounted() {
+        this.getData()
         if (this.$route.query.tab === '2') {
             this.tab = 2;
         }
+    }
+
+    getData() {
+        axios.get('/restaurants/62b47acd5997e91af99f7c37')
+            .then(response => {
+                this.data = response.data.restaurant
+                this.$refs.infos.getData(this.data);
+            });
     }
 }
 </script>

@@ -10,15 +10,66 @@ let RestaurantSchema = new Schema(
             //https://mongoosejs.com/docs/populate.html
         },*/
         Name: String,
+        Phone : String,
+        Mail : String,
         Type: String,
-        Hours: {
-            Monday: [[String]],
-            Tuesday: [[String]],
-            Wednesday: [[String]],
-            Thursday: [[String]],
-            Friday: [[String]],
-            Saturday: [[String]],
-            Sunday: [[String]],
+        hours: {
+            monday: {
+                isOpen: Boolean,
+                isSecondTimeRange: Boolean,
+                startHour: String,
+                endHour: String,
+                startHour2: String,
+                endHour2: String,
+            },
+            tuesday: {
+                isOpen: Boolean,
+                isSecondTimeRange: Boolean,
+                startHour: String,
+                endHour: String,
+                startHour2: String,
+                endHour2: String,
+            },
+            wednesday: {
+                isOpen: Boolean,
+                isSecondTimeRange: Boolean,
+                startHour: String,
+                endHour: String,
+                startHour2: String,
+                endHour2: String,
+            },
+            thursday: {
+                isOpen: Boolean,
+                isSecondTimeRange: Boolean,
+                startHour: String,
+                endHour: String,
+                startHour2: String,
+                endHour2: String,
+            },
+            friday: {
+                isOpen: Boolean,
+                isSecondTimeRange: Boolean,
+                startHour: String,
+                endHour: String,
+                startHour2: String,
+                endHour2: String,
+            },
+            saturday: {
+                isOpen: Boolean,
+                isSecondTimeRange: Boolean,
+                startHour: String,
+                endHour: String,
+                startHour2: String,
+                endHour2: String,
+            },
+            sunday: {
+                isOpen: Boolean,
+                isSecondTimeRange: Boolean,
+                startHour: String,
+                endHour: String,
+                startHour2: String,
+                endHour2: String,
+            },
         },
         Address: {
             Number : String,
@@ -26,11 +77,11 @@ let RestaurantSchema = new Schema(
             Town: String,
             Code: Number
         },
-        Phone : String,
         Legal: {
             AccountName: String,
             IBAN: String,
             SIRET: String,
+            BIC: String,
         },
     }
 );

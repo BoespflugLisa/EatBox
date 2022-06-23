@@ -1,142 +1,86 @@
 <template>
     <div id="restaurant-infos">
-
-        <div class="mt-3 ml-3">
-            <h2>Informations du restaurant
-
-                <v-btn
-                    icon
-                    color="primary"
-                    @click="editResto = !editResto"
-                >
-                    <v-icon v-if="!editResto" size="25">mdi-pencil</v-icon>
-                    <v-icon v-else size="25">mdi-check</v-icon>
-                </v-btn>
-            </h2>
-        </div>
-
-
-        <div class="mt-3 ml-3">
-            <h3>Nom du restaurant</h3>
-        </div>
-
-        <div class="mt-3 ml-5">
-            <p v-if="!editResto">{{ restaurantName }}</p>
-            <v-text-field v-else v-model="restaurantName"></v-text-field>
-
-        </div>
-
-        <div class="mt-3 ml-3">
-            <h3>Type de nourriture proposé </h3>
-        </div>
-
-        <div class="mt-3 ml-5">
-            <p v-if="!editResto">{{ foodType }}</p>
-            <v-text-field v-else v-model="foodType"></v-text-field>
-        </div>
-
-        <div class="mt-3 ml-3">
-            <h3>Horaires</h3>
-        </div>
-
-        <div class="mt-3 ml-5">
-            <select-schedule/>
-        </div>
-
-        <div class="d-flex justify-center pt-5 pb-3 ">
-            <v-btn block rounded color="secondary" large>
-                Fermeture exceptionnelle
+        <h2 class="mt-3">
+            Informations du restaurant
+            <v-btn
+                icon
+                color="primary"
+                @click="editResto = !editResto"
+            >
+                <v-icon v-if="!editResto" size="25">mdi-pencil</v-icon>
+                <v-icon v-else size="25">mdi-check</v-icon>
             </v-btn>
+        </h2>
 
-        </div>
+        <h3 class="mt-3 mb-3">Nom du restaurant</h3>
+        <p v-if="!editResto">{{ restaurantInfos.Name }}</p>
+        <v-text-field v-else v-model="restaurantInfos.Name"></v-text-field>
 
-        <v-divider class="mt-4 mb-4"/>
+        <h3 class="mt-3 mb-3">Adresse du restaurant</h3>
+        <p v-if="!editResto">{{
+                restaurantInfos.Address.Number + ' ' + restaurantInfos.Address.Street + ' - ' + restaurantInfos.Address.Code + ' ' + restaurantInfos.Address.Town
+            }}</p>
+        <v-text-field v-else v-model="restaurantAddress"></v-text-field>
 
-        <div class="mt-3 ml-3">
-            <h2>Informations de contact
+        <h3 class="mt-3 mb-3">Type de nourriture proposé </h3>
+        <p v-if="!editResto">{{ restaurantInfos.Type }}</p>
+        <v-text-field v-else v-model="restaurantInfos.Type"></v-text-field>
 
-                <v-btn
-                    icon
-                    color="primary"
-                    @click="editContact = !editContact"
-                >
-                    <v-icon v-if="!editContact" size="25">mdi-pencil</v-icon>
-                    <v-icon v-else size="25">mdi-check</v-icon>
-                </v-btn>
-
-            </h2>
-
-        </div>
-
-        <div class="mt-3 ml-3">
-            <h3>Numéro de téléphone</h3>
-        </div>
-
-        <div class="mt-3 ml-5">
-            <p v-if="!editContact">{{ telephone }}</p>
-            <v-text-field v-else v-model="telephone"></v-text-field>
-        </div>
-
-        <div class="mt-3 ml-3">
-            <h3>Adresse mail</h3>
-        </div>
-
-        <div class="mt-3 ml-5">
-            <p v-if="!editContact">{{ mail }}</p>
-            <v-text-field v-else v-model="mail"></v-text-field>
-        </div>
-
-        <div class="mt-3 ml-3">
-            <h3>Numéro de SIRET</h3>
-        </div>
-
-        <div class="mt-3 ml-5">
-            <p v-if="!editContact">{{ numSiret }}</p>
-            <v-text-field v-else v-model="numSiret"></v-text-field>
-        </div>
+        <h3 class="mt-3 mb-3">Horaires</h3>
+        <select-schedule ref="schedule"/>
 
         <v-divider class="mt-4 mb-4"/>
 
-        <div class="mt-3 ml-3">
-            <h2>Informations banquaires
+        <h2 class="mt-3 mb-3">
+            Informations de contact
+            <v-btn
+                icon
+                color="primary"
+                @click="editContact = !editContact"
+            >
+                <v-icon v-if="!editContact" size="25">mdi-pencil</v-icon>
+                <v-icon v-else size="25">mdi-check</v-icon>
+            </v-btn>
+        </h2>
 
-                <v-btn
-                    icon
-                    color="primary"
-                    @click="editBank = !editBank"
-                >
-                    <v-icon v-if="!editBank" size="25">mdi-pencil</v-icon>
-                    <v-icon v-else size="25">mdi-check</v-icon>
-                </v-btn>
-            </h2>
-        </div>
+        <h3 class="mt-3 mb-3">Numéro de téléphone</h3>
+        <p v-if="!editContact">{{ restaurantInfos.Phone }}</p>
+        <v-text-field v-else v-model="restaurantInfos.Phone"></v-text-field>
 
-        <div class="mt-3 ml-3">
-            <h3>Nom du compte</h3>
-        </div>
+        <h3 class="mt-3 mb-3">Adresse mail</h3>
+        <p v-if="!editContact">{{ restaurantInfos.Mail }}</p>
+        <v-text-field v-else v-model="restaurantInfos.Mail"></v-text-field>
 
-        <div class="mt-3 ml-5">
-            <p v-if="!editBank">{{ telephone }}</p>
-            <v-text-field v-else v-model="numSiret"></v-text-field>
-        </div>
 
-        <div class="mt-3 ml-3">
-            <h3>Identifiant BIC</h3>
-        </div>
+        <h3 class="mt-3 mb-3">Numéro de SIRET</h3>
+        <p v-if="!editContact">{{ restaurantInfos.Legal.SIRET }}</p>
+        <v-text-field v-else v-model="restaurantInfos.Legal.SIRET"></v-text-field>
 
-        <div class="mt-3 ml-5">
-            <p v-if="!editBank">{{ mail }}</p>
-            <v-text-field v-else v-model="numSiret"></v-text-field>
-        </div>
+        <v-divider class="mt-4 mb-4"/>
 
-        <div class="mt-3 ml-3">
-            <h3>Numéro IBAN</h3>
-        </div>
+        <h2 class="mt-3 mb-3">
+            Informations banquaires
+            <v-btn
+                icon
+                color="primary"
+                @click="editBank = !editBank"
+            >
+                <v-icon v-if="!editBank" size="25">mdi-pencil</v-icon>
+                <v-icon v-else size="25">mdi-check</v-icon>
+            </v-btn>
+        </h2>
 
-        <div class="mt-3 ml-5 mb-5">
-            <p v-if="!editBank">{{ numSiret }}</p>
-            <v-text-field v-else v-model="numSiret"></v-text-field>
-        </div>
+        <h3 class="mt-3 mb-3">Nom du compte</h3>
+        <p v-if="!editBank">{{ restaurantInfos.Legal.AccountName }}</p>
+        <v-text-field v-else v-model="restaurantInfos.Legal.AccountName"></v-text-field>
+
+        <h3 class="mt-3 mb-3">Identifiant BIC</h3>
+        <p v-if="!editBank">{{ restaurantInfos.Legal.BIC }}</p>
+        <v-text-field v-else v-model="restaurantInfos.Legal.BIC"></v-text-field>
+
+        <h3 class="mt-3 mb-3">Numéro IBAN</h3>
+        <p v-if="!editBank">{{ restaurantInfos.Legal.IBAN }}</p>
+        <v-text-field v-else v-model="restaurantInfos.Legal.IBAN"></v-text-field>
     </div>
 </template>
 
@@ -150,24 +94,31 @@ import SelectSchedule from './SelectSchedule.vue'
     },
 })
 
-export default class RestaurantInfos extends Vue {
-    restaurantName = "tets"
-    foodType = "tets"
-    telephone = "tets"
-    mail = "tets"
-    numSiret = "tets"
 
-    LunTime = "11h30-14h / 19h-23h30"
-    MarTime = "11h30-14h / 19h-23h30"
-    MerTime = "11h30-14h / 19h-23h30"
-    JeuTime = "11h30-14h / 19h-23h30"
-    VenTime = "11h30-14h / 19h-23h30"
-    SamTime = "11h30-14h / 19h-23h30"
-    DimTime = "Fermé."
+export default class RestaurantInfos extends Vue {
+
+    restaurantInfos = {
+        Address: {
+            Number: 0,
+        },
+        Legal: {
+            SIRET: ""
+        }
+    }
 
     editResto = false
     editContact = false
     editBank = false
+
+    $refs!: {
+        schedule: SelectSchedule,
+    }
+
+    getData(data) {
+        this.restaurantInfos = data;
+        this.$refs.schedule.getHours(data.hours)
+    }
+
 }
 </script>
 

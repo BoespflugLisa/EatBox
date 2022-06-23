@@ -89,7 +89,6 @@ export default class DashBoard extends Vue {
     mounted() {
         this.$axios.get(`stats/62b04dcfff5bc1bbf9802446`)
             .then(response => {
-                console.log(response.data)
                 this.restaurantName = response.data.stat.belongs_to.Name;
                 this.nbCommandes = response.data.stat.NbOrders;
                 this.moyenneNote = response.data.stat.MeanNotes;

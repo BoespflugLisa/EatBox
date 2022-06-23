@@ -7,22 +7,25 @@ router.post("/:id", async (req, res) => {
     try {
         let manager = await UserModel.findById(req.params.id).exec();
         let restaurant = new RestaurantModel({
-                "Name": "Taco Bruno",
-                "Type": "Fast-Food",
-                "belongs_to": manager._id,
-                "Address": {"Number": "3", "Street": "rue des fleurs", "Town": "Encanto", "Code": "12345"},
-                "Legal": {"AccountName": "M. Bruno Madrigal", "IBAN": "FR15 1245 1562 1544 80", "SIRET": "12 12354564"},
-                "Hours": {
-                    "Monday": [["8", "14"], ["16", "22"]],
-                    "Tuesday": [["Fermé"], ["Fermé"]],
-                    "Wednesday": [["10"], ["20"]],
-                    "Thursday": [[""], [""]],
-                    "Friday": [[""], [""]],
-                    "Saturday": [[""], [""]],
-                    "Sunday": [["Fermé"], ["Fermé"]],
-                }
-            }
-        );
+            "Name": "Taco Bruno",
+            "Phone": "0660606060",
+            "Mail": "taco-bruno@encanto.fr",
+            "Type": "Fast-Food",
+            "belongs_to": manager._id,
+            "Address": {"Number": "3", "Street": "rue des fleurs", "Town": "Encanto", "Code": "12345"},
+            "Legal": {"AccountName": "M. Bruno Madrigal", "IBAN": "FR15 1245 1562 1544 80", "SIRET": "12 12354564", "BIC": "DAAE FR PP CCT"},
+            "hours": {
+                "monday": { isOpen: false, isSecondTimeRange: false, startHour: null, endHour: null, startHour2: null, endHour2: null },
+                "tuesday": { isOpen: true, isSecondTimeRange: true, startHour: "11:30", endHour: "14:30", startHour2: "18:30", endHour2: "23:30" },
+                "wednesday": { isOpen: true, isSecondTimeRange: true, startHour: "11:30", endHour: "14:30", startHour2: "18:30", endHour2: "23:30" },
+                "thursday": { isOpen: true, isSecondTimeRange: true, startHour: "11:30", endHour: "14:30", startHour2: "18:30", endHour2: "23:30" },
+                "friday": { isOpen: true, isSecondTimeRange: true, startHour: "11:30", endHour: "14:30", startHour2: "18:30", endHour2: "23:30" },
+                "saturday": { isOpen: true, isSecondTimeRange: true, startHour: "11:30", endHour: "14:30", startHour2: "18:30", endHour2: "23:30" },
+                "sunday": { isOpen: true, isSecondTimeRange: false, startHour: "11:30", endHour: "14:00", startHour2: null, endHour2: null },
+            },
+
+        });
+
         if(!restaurant.populated('belongs_to')){
             await restaurant.populate('belongs_to')
                 .then(p=>console.log(p))
@@ -62,13 +65,9 @@ router.get("/:id", async (req, res) => {
         if (restaurant) {
             res.status(200).json({
                 status: 200,
-                data: restaurant,
+                restaurant,
             });
         }
-        res.status(400).json({
-            status: 400,
-            message: "Le restaurant n'a pas été trouvé.",
-        });
     } catch (err) {
         res.status(400).json({
             status: 400,
