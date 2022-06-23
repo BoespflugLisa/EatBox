@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
-
 import DashBoard from '../views/DashBoard.vue'
-import TestView from '../views/TestView.vue'
 import ArticlesEtMenus from '../views/ArticlesEtMenus.vue'
 
 import { isLoggedIn, getRole } from "../utils/auth";
@@ -10,13 +8,6 @@ import { isLoggedIn, getRole } from "../utils/auth";
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
-  {
-    path: '/test',
-    name: 'TestView',
-    component: TestView,
-    meta : {requiresAuth: false}
-
-  },
   {
     path: '/',
     name: 'DashBoard',
@@ -41,6 +32,12 @@ const routes: Array<RouteConfig> = [
     name: 'Notifications',
     component: () => import('../views/NotificationList.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/stats',
+    name: 'Stats',
+    component: () => import('../views/Restaurateur/RestaurantStats.vue'),
+    meta : {requiresAuth: true, isUser : 'Restaurant'}
   },
   {
     path: '/commandes',

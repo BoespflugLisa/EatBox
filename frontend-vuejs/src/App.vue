@@ -11,7 +11,7 @@
             <router-link to="/" class="ma-auto">
                 <v-img
                     max-width="100"
-                    max-height="120"
+                    max-height="110"
                     :src="this.eatBoxLogo"
                 />
             </router-link>
@@ -53,6 +53,7 @@
             <template v-slot:append>
                 <div class="d-flex justify-center flex-column pa-5">
                     <v-btn
+                        to="/mon_Restaurant?tab=2"
                         color="tertiary black--text"
                         class="pr-10 pl-10"
                     >
@@ -96,7 +97,6 @@
 
         </v-navigation-drawer>
 
-
         <div class="content">
             <router-view v-on:change-theme="changeTheme()"/>
         </div>
@@ -120,8 +120,9 @@ import { logoutUser } from './utils/auth.js'
 export default class App extends Vue {
 
     eatBoxLogo = '';
+    drawer = false;
+
     value = '';
-    drawer = false
 
     cookie = {
         role : localStorage.Role,
