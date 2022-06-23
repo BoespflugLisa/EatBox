@@ -37,6 +37,25 @@ const routes: Array<RouteConfig> = [
   },
 
   {
+    path: '/DeliveryList',
+    name: 'DeliveryList',
+    component: () => import('../views/DeliveryList.vue')
+  },
+
+  {
+    path: '/DeliveryDetail',
+    name: 'DeliveryDetail',
+    component: () => import('../views/DeliveryDetail.vue')
+  },
+
+
+  {
+    path: '/ScanRestaurant',
+    name: 'ScanRestaurant',
+    component: () => import('../views/ScanRestaurant.vue')
+  },
+
+  {
     path: '/notifications',
     name: 'Notifications',
     component: () => import('../views/NotificationList.vue')

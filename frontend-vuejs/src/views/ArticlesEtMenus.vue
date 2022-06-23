@@ -39,7 +39,7 @@
 
             <v-dialog
               v-model="dialogDelete"
-              width="500"
+              width="300"
               v-if="dialogDelete"
             >
                 <v-card>
@@ -212,6 +212,7 @@
 
                                 <v-autocomplete
                                   v-model="model"
+                                  prepend-icon="mdi-folder-open"
                                   :items="categories.map(({ nom }) => nom)"
                                   :readonly="isEditing"
                                   label="Ajouter à une catégorie"
@@ -333,6 +334,7 @@
 
                                 <v-autocomplete
                                   v-model="model"
+                                  prepend-icon="mdi-folder-open"
                                   :items="categories.map(({ nom }) => nom)"
                                   :readonly="isEditing"
                                   label="Ajouter à une catégorie"
@@ -428,7 +430,7 @@ export default class ArticlesEtMenus extends Vue {
     itemPrix = 0
     itemtemtem = ''
     itemDesc = ''
-    showArtileEdit= false
+
     $refs!: {
         obs: ValidationObserverInstance
         obsArticle: ValidationObserverInstance

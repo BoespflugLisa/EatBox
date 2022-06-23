@@ -8,7 +8,7 @@
               elevation="2"
               outlined
               x-large
-              @click="yeet=false"
+              @click="free=true"
               class="ma-auto align-content-center align-self text-center">
                 Open to work
             </v-btn>
@@ -26,7 +26,7 @@ import {Component, Vue} from 'vue-property-decorator';
 })
 
 export default class OpenToWork extends Vue {
-    yeet = true
+    free = false
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
     <div id="restaurant-sponsorship">
-        <h2 class="d-flex justify-center pt-7">Parrainer un Livreur</h2>
+        <h2 class=" pt-7">Parrainer un Livreur</h2>
         <v-card
 
           class="mx-auto mt-5"
