@@ -10,16 +10,16 @@ router.post("/", async (req, res) => {
         const newid = new mongoose.Types.ObjectId();
         let user = new UserModel({
             _id : newid,
-            Mail: "tacosbruno@encanto.fr",
+            Mail: "GrosvenorBonnet@rhyta.com",
             //MDP
             Type: {
                 Manager : {
-                    rid : `R${newid}`,
+                    rid : ``,
                     sponsors : [],
                     sponsored : [],
                 },
                 Deliveryman : {
-                    lid : `L${newid}`,
+                    lid : ``,
                     sponsors : [],
                     sponsored : [],
                     Phone: "",
@@ -28,10 +28,10 @@ router.post("/", async (req, res) => {
                     uid : `U${newid}`,
                     sponsors : [],
                     sponsored : [],
-                    Phone: "",//"+33645896510",
+                    Phone: "0236985944",//"+33645896510",
                 },
                 Developer : {
-                    did : `D${newid}`,
+                    did : ``,
                     sponsors : [],
                     sponsored : [],
                     Phone: "",

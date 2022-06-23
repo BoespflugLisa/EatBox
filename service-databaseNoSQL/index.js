@@ -9,6 +9,7 @@ const port = 3031;
 
 const RestaurantsRouter = require("./routes/posts/RestaurantRouter");
 const UsersRouter = require("./routes/posts/UserRouter");
+const ClientsRouter = require("./routes/posts/ClientRouter");
 const DeliverymansRouter = require("./routes/posts/DeliverymanRouter");
 const OrdersRouter = require("./routes/posts/OrderRouter");
 const ArticlesRouter = require("./routes/posts/ArticleRouter");
@@ -42,6 +43,7 @@ app.use("/stats", StatsRouter);
 app.use("/menus", MenusRouter);
 app.use("/performance", PerformancesRouter);
 app.use("/deliverymans", DeliverymansRouter);
+app.use("/clients", ClientsRouter);
 app.use("/notifications", NotificationsRouter);
 // app.use("/categories", CategoriesRouter);
 
