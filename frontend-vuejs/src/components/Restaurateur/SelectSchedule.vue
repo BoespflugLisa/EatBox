@@ -10,7 +10,7 @@
         >
             <v-card>
                 <v-card-title>
-                    Renseignez vos horraire
+                    Renseignez vos horaire
                 </v-card-title>
                 <v-card-text>
                     <v-switch
@@ -164,7 +164,7 @@
                         text
                         color="secondary"
                         :disabled="!formIsValid"
-                        @click="updateForm()"
+                        @click="validHours()"
                     >
                         Valider
                     </v-btn>
@@ -176,9 +176,13 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
+import {ValidationObserver, ValidationObserverInstance, ValidationProvider} from "vee-validate";
 
 @Component({
-    components: {},
+    components: {
+        ValidationObserver,
+        ValidationProvider
+    },
 })
 
 export default class SelectSchedule extends Vue {
@@ -253,8 +257,6 @@ export default class SelectSchedule extends Vue {
         endHour2: null,
     }
 
-
-
     menuStart = false
     menuEnd = false
 
@@ -284,8 +286,8 @@ export default class SelectSchedule extends Vue {
         }
     }
 
-    updateForm() {
-        console.log('test')
+    validHours() {
+        console.log(this.schedule)
     }
 }
 </script>
