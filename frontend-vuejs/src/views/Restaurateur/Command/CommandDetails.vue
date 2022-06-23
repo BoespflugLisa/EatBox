@@ -1,5 +1,5 @@
 <template>
-    <div id="CommandDetails" v-if="this.order">
+    <div id="CommandDetails">
         <div class="side-padding">
             <h2 class="mt-3" v-if="this.order.State === 0">Commande à valider</h2>
             <h2 class="mt-3" v-else-if="this.order.State === 1">Commande en préparation</h2>
@@ -77,7 +77,7 @@
                            width="30%">
                         Refuser
                     </v-btn>
-                    <v-btn rounded color="secondary" to="/commandes" @click="validateOrder(this.order)" class="ma-2"
+                    <v-btn rounded color="secondary" @click="validateOrder(this.order)" class="ma-2"
                            width="30%">
                         Accepter
                     </v-btn>
@@ -169,11 +169,13 @@ export default class CommandsDetails extends Vue {
     }
 
     validateOrder(order) {
-        order = this.order
+        console.log(order)
+        /*order = this.order
         order.State = 1;
         this.$axios.put(`orders/` + order._id).then(response => {
+            response.data = order;
             console.log(response.data)
-        })
+        })*/
     }
 
     goBack() {
