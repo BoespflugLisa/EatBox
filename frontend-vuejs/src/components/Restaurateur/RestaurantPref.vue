@@ -4,19 +4,19 @@
         <div class="ml-4">
             <v-checkbox
                 color="primary"
-                v-model="checkbox1"
+                v-model="Preferences.NotificationCommand"
                 :label="`Recevoir des notifications sur les commandes`"
             ></v-checkbox>
 
             <v-checkbox
                 color="primary"
-                v-model="checkbox2"
+                v-model="Preferences.NotificationDeliveryman"
                 :label="`Recevoir des notifications sur les livreurs`"
             ></v-checkbox>
 
             <v-checkbox
                 color="primary"
-                v-model="checkbox3"
+                v-model="Preferences.NotificationActivities"
                 :label="`Recevoir des notifications sur les activitées`"
             ></v-checkbox>
         </div>
@@ -33,9 +33,19 @@ import {Component, Vue} from 'vue-property-decorator';
 })
 
 export default class RestaurantPref extends Vue {
-    checkbox1 = false
-    checkbox2 = false
-    checkbox3 = false
+    Preferences = {
+        NotificationActivities: false,
+        NotificationCommand: false,
+        NotificationDeliveryman: false,
+    }
+
+    mounted() {
+        this.$emit('ready');
+    }
+
+    getPreferences(pref) {
+        this.Preferences = pref;
+    }
 }
 </script>
 

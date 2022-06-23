@@ -6,7 +6,7 @@
                 <restaurant-infos ref="infos"/>
             </v-tab-item>
             <v-tab-item>
-                <restaurant-pref/>
+                <restaurant-pref v-on:ready="restaurantPrefReady()" ref="pref"/>
             </v-tab-item>
             <v-tab-item>
                 <restaurant-sponsorship/>
@@ -40,10 +40,11 @@ export default class ArticlesEtMenus extends Vue {
         {tab: "Parrainage"},
     ];
 
-    data = {};
+    preferences = {};
 
     $refs!: {
-        infos: RestaurantInfos
+        infos: RestaurantInfos,
+        pref: RestaurantPref,
     }
 
     mounted() {
@@ -56,9 +57,13 @@ export default class ArticlesEtMenus extends Vue {
     getData() {
         axios.get('/restaurants/62b47acd5997e91af99f7c37')
             .then(response => {
-                this.data = response.data.restaurant
-                this.$refs.infos.getData(this.data);
+                this.preferences = response.data.restaurant.Preferences
+                this.$refs.infos.getData(response.data.restaurant);
             });
+    }
+
+    restaurantPrefReady() {
+        this.$refs.pref.getPreferences(this.preferences)
     }
 }
 </script>

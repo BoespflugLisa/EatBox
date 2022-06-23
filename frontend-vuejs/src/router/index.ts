@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
-import DashBoard from '../views/DashBoard.vue'
-import ArticlesEtMenus from '../views/ArticlesEtMenus.vue'
 
 Vue.use(VueRouter)
 
@@ -9,13 +7,13 @@ const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'DashBoard',
-    component: DashBoard
+    component: () => import('../views/DashBoard.vue')
 
   },
   {
     path: '/card',
     name: ' ArticlesEtMenus',
-    component: ArticlesEtMenus
+    component: () => import('../views/Restaurateur/ArticlesEtMenus.vue')
   },
   {
     path: '/mon_restaurant',
