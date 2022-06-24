@@ -38,6 +38,11 @@ export default class CommandsList extends Vue {
         {tab: "Historique"},
     ]
     orders = null;
+    incomingOrders = null;
+    ordersInPreparation = null;
+    ordersWithDeliveryman = null;
+    ordersInWaiting = null;
+    ordersFinished = null;
 
     $refs!: {
         incoming: IncomingOrders,
@@ -49,16 +54,21 @@ export default class CommandsList extends Vue {
         this.$axios.get(`orders`)
             .then(response => {
                 this.orders = response.data.orders;
-                this.$refs.incoming.getOrders(this.orders);
+                this.incomingOrders = response.data.ordersToAcceptByRestaurant;
+                this.ordersInPreparation = response.data.ordersToPrepare;
+                this.ordersInWaiting = response.data.ordersToDeliver;
+                this.ordersWithDeliveryman = response.data.ordersInDelivery;
+                this.ordersFinished = response.data.ordersOver;
+                this.$refs.incoming.getOrders(this.incomingOrders);
             })
     }
 
     getOrdersInPreparation() {
-        this.$refs.preparation.getOrders(this.orders);
+        this.$refs.preparation.getOrders(this.ordersInPreparation, this.ordersInWaiting);
     }
 
     getOrdersHistory() {
-        this.$refs.history.getOrders(this.orders);
+        this.$refs.history.getOrders(this.ordersWithDeliveryman, this.ordersFinished);
     }
 
 }
