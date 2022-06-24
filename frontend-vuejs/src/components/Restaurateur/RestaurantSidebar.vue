@@ -26,7 +26,7 @@
 
         <v-btn
             color="tertiary black--text"
-            class="pr-10 pl-10 mt-5"
+            class="pr-10 pl-10 mt-5" to="/stats"
         >
             Statistiques avancées
         </v-btn>

@@ -4,7 +4,8 @@ import store from '@/store/index';
 
 
 const REST_ENDPOINT = 'http://localhost:3032/'
-export function registerUser(form){
+
+export function registerUser(form) {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
         try {
@@ -12,27 +13,26 @@ export function registerUser(form){
                 url: `${REST_ENDPOINT}register`,
                 method: 'POST',
                 data: {
-                    email: form.username,
+                    email: form.email,
                     password: form.password,
-                    type : form.type,
-                    role : form.role,
-                    username : form.username,
-                    legal : form.legal
-
+                    type: form.type,
+                    username: form.username,
+                    legal: form.legal,
+                    role: form.role,
+                    phone: form.phone,
                 }
             })
-
+            console.log(res)
             setAuthToken(true, res.data.token)
-            setRole(res.data.user.Type)
+            setRole(res.data.user.Role)
             setUser({
-                id : res.data.user._id,
-                name : res.data.user.Username,
+                id: res.data.user._id,
+                name: res.data.user.Username,
                 phone: res.data.user.Phone,
             })
             resolve()
-        }
-        catch (err) {
-            console.error('Erreur lors de la connexion:', err)
+        } catch (err) {
+            console.error('Erreur lors de l\'inscription: ', err)
             reject(err)
         }
     })
@@ -50,16 +50,14 @@ export function loginUser(username, password) {
                     password: password,
                 }
             })
-
-            setAuthToken(true, res.data.token)
+            setAuthToken(res.data.auth, res.data.token)
             setUser({
-                id : res.data.user._id,
-                name : res.data.user.Username,
+                id: res.data.user._id,
+                name: res.data.user.Username,
                 phone: res.data.user.Phone,
             })
             resolve()
-        }
-        catch (err) {
+        } catch (err) {
             console.error('Erreur lors de la connexion:', err)
             reject(err)
         }
@@ -73,19 +71,17 @@ export function logoutUser() {
 export function setAuthToken(auth, token) {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
     store.commit('changeState', [auth, token])
-    localStorage.auth = auth
-    localStorage.token = token
+    localStorage.setItem('auth', auth)
+    localStorage.setItem('token', token)
 }
 
 export function setRole(type) {
     store.commit('changeRole', type)
-    localStorage.Role = type
+    localStorage.setItem('Role', type)
 }
 
 export function getRole() {
-    if(localStorage.Role){
-        return localStorage.Role
-    } else return store.state.UserRole
+    return store.state.UserRole
 }
 
 export function setUser(user) {
@@ -93,9 +89,7 @@ export function setUser(user) {
 }
 
 export function getAuthToken() {
-    if(localStorage.auth){
-        return localStorage.token
-    } else return store.state.token
+    return store.state.token
 }
 
 export function clearAuthToken() {

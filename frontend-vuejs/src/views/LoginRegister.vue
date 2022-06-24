@@ -1,28 +1,35 @@
 <template>
     <div id="connection-form" class=" side-padding">
+        <div v-if="this.type.chosen">
+            <v-btn
+                v-on:click="choose"
+                color="primary"
+                text
+            >
+                Retour
+            </v-btn>
+            <v-tabs fixed-tabs>
+                <v-tab v-for="item in items" :key="item.tab">{{ item.tab }}</v-tab>
+                <v-tab-item>
+                    <LoginComponent class="pb-15 pl-5 pr-5"/>
+                </v-tab-item>
+                <v-tab-item>
+                    <RegisterComponentR class="pb-15 pl-5 pr-5" v-if="this.type.type==='Restaurant'"/>
+                    <!--            <RegisterComponentL class="pb-15 pl-5 pr-5" v-if="this.type==='Livreur'"/>
+                                    <RegisterComponentC class="pb-15 pl-5 pr-5" v-if="this.type==='Client'"/>-->
+                </v-tab-item>
 
-        <v-tabs fixed-tabs v-if="this.type.chosen">
-            <v-tab v-for="item in items" :key="item.tab">{{ item.tab }}</v-tab>
-            <v-tab-item>
-                <LoginComponent class="pb-15 pl-5 pr-5"/>
-            </v-tab-item>
-            <v-tab-item>
-                <RegisterComponentR class="pb-15 pl-5 pr-5" v-if="this.type.type==='Restaurant'"/>
-<!--            <RegisterComponentL class="pb-15 pl-5 pr-5" v-if="this.type==='Livreur'"/>
-                <RegisterComponentC class="pb-15 pl-5 pr-5" v-if="this.type==='Client'"/>-->
-            </v-tab-item>
-        </v-tabs>
+            </v-tabs>
+        </div>
         <div v-else class="text-center">
             <p>Je suis un...</p>
             <div v-for="(type, index) in types" :key="index">
                 <v-btn color="secondary" class="mt-7" rounded v-on:click=setForms(index)>
-                    {{ type }}</v-btn>
+                    {{ type }}
+                </v-btn>
             </div>
 
         </div>
-
-
-
     </div>
 </template>
 
@@ -50,15 +57,20 @@ export default class LoginRegister extends Vue {
     ]
     types = ["Restaurant", "Client", "Livreur"]
     type = {
-        chosen : false,
-        type : ""
+        chosen: false,
+        type: ""
     }
 
-    setForms(index){
-        this.type.chosen=true
+    setForms(index) {
+        this.choose()
         setRole(this.types[index])
         this.type.type = this.types[index]
         this.$emit('change-theme')
+    }
+
+    choose(){
+        this.type.chosen = !this.type.chosen
+        this.type.type = ""
     }
 }
 

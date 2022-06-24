@@ -75,7 +75,10 @@ router.beforeEach((to, from, next) =>{
     // this route requires auth, check if logged in
     // if not, redirect to login page.
 
-    next('connexion')
+    next({
+      path: '/connexion',
+      query: { redirect: to.fullPath }
+    })
   }
       next(() => '/')
 

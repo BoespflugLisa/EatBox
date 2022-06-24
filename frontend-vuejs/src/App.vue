@@ -11,7 +11,6 @@
             <router-link to="/" class="ma-auto">
                 <v-img
                     max-width="100"
-                    max-height="110"
                     :src="this.eatBoxLogo"
                 />
             </router-link>
@@ -107,7 +106,7 @@
 import {Component, Vue} from 'vue-property-decorator';
 import {ValidationObserver, ValidationProvider} from 'vee-validate';
 import RestaurantSidebar from "./components/Restaurateur/RestaurantSidebar.vue"
-import { logoutUser } from './utils/auth.js'
+import {logoutUser} from './utils/auth.js'
 
 @Component({
     components: {
@@ -121,31 +120,36 @@ export default class App extends Vue {
 
     eatBoxLogo = '';
     drawer = false;
-
     value = '';
 
-    cookie = {
-        role : localStorage.Role,
-        auth : localStorage.auth,
-        token : localStorage.token
+    cookie: any = ''
+
+    setCookie() {
+        this.cookie = {
+            role: this.$store.state.UserRole,
+            auth: this.$store.state.isConnected,
+            token: this.$store.state.token
+        }
     }
 
-    mounted(){
+    mounted() {
         this.changeTheme()
+        this.setCookie()
     }
 
-    logout(){
+    logout() {
         logoutUser()
         this.changeTheme()
         this.$router.push('/connexion')
     }
 
     displayMenu() {
+        this.setCookie()
         this.drawer = !this.drawer;
     }
 
     changeTheme() {
-        switch (localStorage.Role) {
+        switch (this.$store.state.UserRole) {
             case "Client":
                 this.$vuetify.theme.themes.light.primary = '#2D5D62';
                 this.$vuetify.theme.themes.light.secondary = '#77A8A3';

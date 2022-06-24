@@ -2,31 +2,44 @@ const express = require("express");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../config')
-const UserModel = require('../models/User.js')
+const UserModel = require('../models/User')
 const router = express.Router();
 
 // Register
 router.post('/register', function (req, res) {
     let newUser = new UserModel();
-    try {
-        newUser.Username = req.body.username;
-        newUser.Email = req.body.email;
-        newUser.Password = bcrypt.hashSync(req.body.password, 8);
-        newUser.Phone = req.body.phone;
-        newUser.Type = req.body.type;
 
-        if(UserModel.findOne({Email:req.body.email})){
-            throw Error("un utilisateur est déjà enregistré sous cet email")
+    newUser.Username = req.body.username;
+    newUser.Email = req.body.email;
+    newUser.Password = bcrypt.hashSync(req.body.password, 8);
+    newUser.Phone = req.body.phone;
+    newUser.Type = req.body.type;
+    newUser.Role = req.body.role;
+    newUser.Legal = {
+        SIRET: req.body.legal.siret,
+        IBAN: req.body.legal.iban
+    }
+
+
+    try {
+        let r = UserModel.findOne({Email: req.body.email}).exec().then(r => {
+            return r;
+
+        })
+
+        if (!!r) {
+            console.log(`"result: "${r}`)
+            throw "un utilisateur est déjà enregistré sous cet email"
         }
 
-        let token = jwt.sign(
-            {id: newUser._id},
-            config.secret,
-            {expiresIn:86400} //24h
-        )
 
         newUser.save()
             .then(function (r) {
+                let token = jwt.sign(
+                    {id: newUser._id},
+                    config.secret,
+                    {expiresIn: 86400} //24h
+                )
                 res.status(200).json({
                     auth: true,
                     token: token,
@@ -36,34 +49,51 @@ router.post('/register', function (req, res) {
     } catch (err) {
         console.log(err)
         res.status(400).json({
-            message: err.message,
+            message: err,
         })
+        return res
     }
+
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
     //https://www.digitalocean.com/community/tutorials/how-to-set-up-vue-js-authentication-and-route-handling-using-vue-router
+    let user = new UserModel()
+    try {
+        user = await UserModel.findOne({Email: req.body.email}).then(r => {
+            return r;
+        })
 
-    UserModel.findOne({Email:req.body.email}, (err, user) => {
-        if(err) return res.status(500).json({
-            message : "Le serveur n'a pas répondu"
-        })
-        let pwdIsValid = true//bcrypt.compareSync(req.body.password, user.Password);
-        if(!user || !pwdIsValid) return res.status(404).json({
-            message : "Aucun utilisateur avec ce couple email/mot de passe n'a été trouvé"
-        })
+        let pwdIsValid = false
+
+        if(user){
+            pwdIsValid = bcrypt.compareSync(req.body.password, user.Password);
+        }
+        console.log(user)
+
+        if (!!!user || !pwdIsValid) {
+            throw "Aucun utilisateur avec ce couple email/mot de passe n'a été trouvé"
+        }
+
 
         let token = jwt.sign(
-            {id : user._id},
+            {id: user._id},
             config.secret,
-            {expiresIn:86400} //24h
+            {expiresIn: 86400} //24h
         );
         res.status(200).json({
-            auth:true,
+            auth: true,
             token: token,
             user: user,
         })
-    })
+
+    } catch (err) {
+        console.log(err)
+        res.status(400).json({
+            message: err,
+        })
+        return res
+    }
 });
 
 router.get('/', function (req, res) {

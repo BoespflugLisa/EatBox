@@ -3,6 +3,16 @@
         <v-main>
             <p class="text-center">Utilisez votre nom d'utilisateur et votre mot de passe pour vous connecter au EatBox
                 Restaurant.</p>
+            <v-alert
+                color="accent"
+                shaped
+                text
+                type="error"
+                @click="this.ReturnError = false"
+                v-show="this.ReturnError"
+            >
+                {{this.error_login}}
+            </v-alert>
             <v-container fluid fill-height>
                 <v-layout align-center justify-center>
                     <v-flex xs12 sm8 md4>
@@ -51,6 +61,9 @@ import {loginUser} from '../utils/auth'
 
 export default class LoginComponent extends Vue {
     name = 'LoginComponent'
+
+    ReturnError = false
+    error_login = ""
     form = {
         email: "",
         password: ""
@@ -64,16 +77,23 @@ export default class LoginComponent extends Vue {
         }
     }
 
+    urlParams:any = new URLSearchParams(window.location.search)
 
     async login() {
         try {
             await loginUser(this.form.email, this.form.password)
                 .then(r => {
-                    this.$router.push('/')
+                    if(this.urlParams.get('redirect') != null){
+                        this.$router.push(this.urlParams.get('redirect').toString())
+                    } else {
+                        this.$router.push('/')
+                    }
                 })
 
-        } catch (err) {
-            console.log(`Erreur: ${err}`)
+        } catch (err:any) {
+            console.log(`Erreur: ${err.response.data.message}`)
+            this.ReturnError = true;
+            this.error_login = err.response.data.message
         }
     }
 }
