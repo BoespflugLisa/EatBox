@@ -25,12 +25,20 @@ function createProfile(newUser) {
                 method: 'POST',
                 data: newUser
             })
-            console.log("response ", res.data)
+        } catch (err) {
+            console.error('Erreur lors de l\'inscription du restaurant: ', err)
+            reject()
+        }
+        try {
+            let stats = await axios({
+                url: `${REST_ENDPOINT}/stats/${newUser._id}`,
+                method: 'POST'
+            })
+            //console.log("restaurant ", res.data)
             resolve()
         } catch (err) {
-            console.error('Erreur lors de l\'inscription: ', err)
+            console.error('Erreur lors de la création des stats: ', err)
             reject()
-            throw err
         }
     })
 }

@@ -51,7 +51,7 @@
                                     <v-text-field
                                         v-model="form.phone"
                                         label="Numéro de téléphone"
-                                        :rules="[rules.required, rules.phone]"
+                                        :rules="[rules.required, /*rules.phone*/]"
                                         prepend-icon="mdi-phone"
                                     ></v-text-field>
 <!--                                    +33123456789-->
@@ -63,7 +63,7 @@
                                     <v-text-field
                                         v-model="form.legal.iban"
                                         label="Numéro IBAN"
-                                        :rules="[rules.required, rules.iban]"
+                                        :rules="[rules.required, /*rules.iban*/]"
                                     ></v-text-field>
                                     <!--FR1420041010050500013M02606-->
                                 </v-form>

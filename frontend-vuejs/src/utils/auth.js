@@ -22,12 +22,13 @@ export function registerUser(form) {
                     phone: form.phone,
                 }
             })
+
+            console.log(res.data)
             setAuthToken(res.data.auth, res.data.token)
             setRole(res.data.user.Role)
             setUser({
                 id: res.data.user._id,
                 name: res.data.user.Username,
-                phone: res.data.user.Phone,
             })
             resolve()
         } catch (err) {

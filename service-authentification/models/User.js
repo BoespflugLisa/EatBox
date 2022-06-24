@@ -16,4 +16,7 @@ let UserSchema = new Schema({
 
 let UserLogin = mongoose.model("UsersLogModel", UserSchema, "users_login");
 
-module.exports = UserLogin;
+module.exports = {
+    model : UserLogin,
+    schema : UserSchema
+};

@@ -5,7 +5,6 @@ const router = express.Router();
 
 router.post("/:id", async (req, res) => {
     try {
-        console.log(req.body)
         let restaurant = new RestaurantModel({
             Name: req.body.Username,
             Type: req.body.Type,
@@ -79,7 +78,7 @@ router.post("/:id", async (req, res) => {
                 .then(p=>console.log(p))
                 .catch(error=>console.log(error));
         }*/
-        restaurant = await restaurant.save();
+        await restaurant.save();
         res.status(200).json({
             restaurant,
         });
@@ -98,6 +97,7 @@ router.get("/", async (req, res) => {
         res.status(200).json({
             restaurants,
         });
+
     } catch (err) {
         res.status(400).json({
             status: 400,
@@ -110,12 +110,16 @@ router.get("/:id", async (req, res) => {
     try {
         let restaurant = await RestaurantModel.findOne({
             _id: req.params.id,
-        });
+        }).populate('belongs_to')
+            .then(p => console.log(p))
+            .catch(error => console.log(error));
+
         if (restaurant) {
             res.status(200).json({
                 status: 200,
                 data: restaurant,
             });
+
         }
         res.status(400).json({
             status: 400,
