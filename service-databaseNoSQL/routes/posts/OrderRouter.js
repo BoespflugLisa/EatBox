@@ -1,32 +1,37 @@
 const express = require("express");
 const OrderModel = require("../../models/Order")
+const ClientModel = require("../../models/Client")
+const ArticleModel = require("../../models/Article");
+const MenuModel = require("../../models/Menu");
+const UserModel = require("../../models/User");
 const router = express.Router();
 
-router.post("/:clientid", async (req, res) => {
+router.post("/:id", async (req, res) => {
     try {
-        let client = "";
-        let restaurant = "";
-        let menus = "";
-        let articles = "";
-        let order = new OrderModel({N_Order : "String",
-                State : 0, //0 En attente de validation / 1 En préparation / 2 En attente du livreur / 3 En livraison / 4 Livrée
+        let client = await ClientModel.findById(req.params.id).exec();
+        let restaurant = {_id:"62b04d2058f414638a677ce9"};
+        let menus = await MenuModel.find({}).select('_id').exec()
+        let articles = await ArticleModel.find({}).select('_id').exec()
+        let order = new OrderModel({N_Order : "0012BON",
+                State : 1, //0 En attente de validation / 1 En préparation / 2 Prête et en attente du livreur / 3 En livraison / 4 Livrée
                 Payment : "CB",
                 Restaurant : restaurant._id,
                 Client : {
-                    Client_ID : client._id,
+                    Client_ID : client,
                     Favorite : true,
                 },
-                Complementary : "Attention, je suis allergique.",
+                Complementary : "",
                 Detail : {
-                    Price : 31.5,
-                    Menus : {type: [Schema.Types.ObjectId], ref:"MenuModel"},
-                    Articles : {type: [Schema.Types.ObjectId], ref:"ArticleModel"},
+                    Price : 19,
+                    Menus : null,
+                    Articles : ["62b1f0f2259c5c3129f2038f", "62b0ba0402b85723b2dd78ea", "62b1f1b8259c5c3129f20392", "62b1f1b8259c5c3129f20392"],
                 },
-                Time : {
-                    Created_at : Date,
-                    Accepted_at : Date,
-                    Pickedup_at: Date,
-                    Delivered_at: Date,
+                CheckTime : {
+                    Created_at : "2022-06-21T20:10:30.000+00:00",
+                    Accepted_at : "2022-06-21T20:30:30.000+00:00",
+                    Ready_at: null,
+                    Pickedup_at:  null,
+                    Delivered_at: null,
                 },
             }
         );
@@ -45,9 +50,21 @@ router.post("/:clientid", async (req, res) => {
 
 router.get("/", async (req, res) => {
     try {
-        let orders = await OrderModel.find();
+        let ordersToAcceptByDeliveryman = await OrderModel.find({ State: 5 } ).exec();
+        let ordersToAcceptByRestaurant = await OrderModel.find({ State: 0 } ).exec();
+        let ordersToPrepare = await OrderModel.find({ State: 1 } ).exec();
+        let ordersToDeliver = await OrderModel.find({ State: 2 } ).exec();
+        let ordersInDelivery = await OrderModel.find({ State: 3 } ).exec();
+        let ordersOver = await OrderModel.find({ State: 4 } ).exec();
+        let ordersRefused = await OrderModel.find({ State: 6 } ).exec();
         res.status(200).json({
-            orders,
+            ordersToAcceptByDeliveryman,
+            ordersToAcceptByRestaurant,
+            ordersToPrepare,
+            ordersToDeliver,
+            ordersInDelivery,
+            ordersOver,
+            ordersRefused,
         });
     } catch (err) {
         res.status(400).json({
@@ -60,19 +77,16 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     try {
-        let order = await OrderModel.findOne({
-            type: req.params.id,
-        });
+        let order = await OrderModel.findById(req.params.id)
+            .populate('Client.Client_ID', 'Name Firstname')
+            .populate('Detail.Menus', 'Name Articles Price _id')
+            .populate('Detail.Menus.Articles', 'Name')
+            .populate('Detail.Articles', 'Name Price').exec();
         if (order) {
             res.status(200).json({
-                status: 200,
-                data: order,
+                order,
             });
         }
-        res.status(400).json({
-            status: 400,
-            message: "La commande n'a pas été trouvé.",
-        });
     } catch (err) {
         res.status(400).json({
             status: 400,
@@ -81,12 +95,22 @@ router.get("/:id", async (req, res) => {
     }
 })
 
-router.put("/", async(req, res) => {
+router.put("/:id", async(req, res) => {
     try {
-
-    } catch(e){
-
+        OrderModel.updateOne({_id: req.params.id}, req.body.data).then(
+            () => {
+                res.status(204).json({
+                    message: 'Order updated successfully!'
+                });
+            })
+        }
+    catch(err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        });
     }
 })
+
 
 module.exports = router;

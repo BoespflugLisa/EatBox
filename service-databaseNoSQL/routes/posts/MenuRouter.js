@@ -63,18 +63,13 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     try {
-        let menu = await MenuModel.findOne({
-            type: req.params.id,
-        });
+        let menu = await MenuModel.findById(req.params.id)
+            .populate('Articles', 'Name').exec();
         if (menu) {
             res.status(200).json({
                 menu,
             });
         }
-        res.status(400).json({
-            status: 400,
-            message: "Le menu n'a pas été trouvé.",
-        });
     } catch (err) {
         res.status(400).json({
             status: 400,

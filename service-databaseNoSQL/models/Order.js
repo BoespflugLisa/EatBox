@@ -17,9 +17,10 @@ let OrderSchema = new Schema(
             Menus : {type: [Schema.Types.ObjectId], ref:"MenuModel"},
             Articles : {type: [Schema.Types.ObjectId], ref:"ArticleModel"},
         },
-        Time : {
+        CheckTime : {
             Created_at : Date,
             Accepted_at : Date,
+            Ready_at: Date,
             Pickedup_at: Date,
             Delivered_at: Date,
         },
