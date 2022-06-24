@@ -76,4 +76,21 @@ router.get("/:id", async (req, res) => {
     }
 })
 
+router.put("/:id", async (req, res) => {
+    try {
+        RestaurantModel.updateOne({_id: req.params.id}, req.body.data).then(
+            () => {
+                res.status(204).json({
+                    message: 'Restaurant updates successfully'
+                })
+            })
+    } catch (err) {
+            res.status(400).json({
+                status: 400,
+                message: err.message,
+        });
+    }
+
+})
+
 module.exports = router;

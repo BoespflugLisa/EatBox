@@ -40,6 +40,7 @@ export default class ArticlesEtMenus extends Vue {
         {tab: "Parrainage"},
     ];
 
+    restaurant = {}
     preferences = {};
 
     $refs!: {
@@ -55,9 +56,9 @@ export default class ArticlesEtMenus extends Vue {
     }
 
     getData() {
-        //this.$store.state.User.id
-        axios.get('/restaurants/62b47acd5997e91af99f7c37')
+        axios.get('restaurants/62b47acd5997e91af99f7c37')
             .then(response => {
+                this.restaurant = response.data.restaurant;
                 this.preferences = response.data.restaurant.Preferences
                 this.$refs.infos.getData(response.data.restaurant);
             });
