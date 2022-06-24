@@ -1,24 +1,20 @@
 <template>
-
-    <div id="restaurant-stats" class="side-padding mt-3">
-
-        <h2>Commandes à valider</h2>
-        <div v-for="order in orders" :key="order.number">
+    <div id="incoming-orders" class="side-padding">
+        <h2 class="mt-3">Commandes à valider</h2>
+        <div v-for="order in this.orders" :key="order._id">
             <div class="d-flex" >
                 <div class="command-tab border-tab">
                     <p class="font-weight-bold">
-                        {{ order.number }}
+                        N°{{ order.N_Order }}
                     </p>
-                    <p>
-                        Nom du client : {{ order.client }}
-                    </p>
-                    <p>
-                        Adresse de livraison : {{ order.adresse }}
+
+                    <p >
+                        Adresse client : {{ order.Client.Client_ID.Address.Number+ ' ' +order.Client.Client_ID.Address.Street+ ' ' +order.Client.Client_ID.Address.Town + ' , ' + order.Client.Client_ID.Address.Code}}
                     </p>
                 </div>
                 <div class="info-tab border-tab">
                     <p class="text-center">
-                        {{ order.hour }}
+                        {{ HoursFormater(order.CheckTime.Created_at, false) }}
                     </p>
                 </div>
                 <div class="info-tab border-tab">
@@ -26,12 +22,8 @@
                         Détails
                     </v-btn>
                 </div>
-            </div>
+          </div>
         </div>
-
-
-
-
 
         <v-dialog
           v-model="dialogDelete"
@@ -39,7 +31,7 @@
           v-if="dialogDelete"
         >
             <v-card class="text-end">
-                <v-card-title >
+                <v-card-title>
                     Accepter la course ?
                 </v-card-title>
 
@@ -65,41 +57,46 @@
         </v-dialog>
 
     </div>
+
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 
 @Component({
-    components: {},
+    components: {}
 })
 
-export default class DeliveryList extends Vue {
+export default class IncomingOrders extends Vue {
+    name = "IncomingOrders"
+    dialogDelete= false
+    orders = [];
+    myAdresse= ''
 
+    async mounted() {
+        await this.$axios.get(`orders`)
+          .then(response => {
+              this.orders = response.data.ordersToAcceptByDeliveryman;
+              console.log( this.orders)
+          })
 
-    dialogDelete = false
-    orders = [
-        {
-            number: "N°7696TCH", price: "15", hour: "19h00", delivery_man_validate: false,
-            restaurant_checked: false,
-            ready: false,
-            delivered: false,
-            client: "M. Laurent MOY",
-            adresse: "24 Rue Iggy Azalea, 5400 Nancy",
-            favori: true,
-            Menus: [{
-                boisson: "Coca-cola",
-                burger: "French Burger; sauce maison, salade, steack haché",
-                accompagnement: "Frite; taille XL, sauce ketchup",
-            }],
-            Articles: ["Muffin au chocolat"],
-            info_plus: "Attention je suis alergique au gluten"
-        },]
+    }
 
+    HoursFormater(orderTime) {
+        const hours = new Date(orderTime).getHours();
+        const minutes = new Date(orderTime).getMinutes();
+        const time = hours + "h" + minutes
+        return time
+    }
+
+    showDetails(order) {
+        this.$router.push({name: 'commandeDetails', params: {id: order._id}});
+    }
+
+    //TODO : Le déplacement de l'order en fonction de son état ("A valider" à "En prép", "En prép" à "En Attente du livreur"
 
 }
 </script>
-
 
 <style scoped>
 
@@ -126,9 +123,7 @@ export default class DeliveryList extends Vue {
     align-items: center;
 }
 
-.order_details_modal {
-    width: 100%;
-    height: 60%;
-}
-
 </style>
+
+
+

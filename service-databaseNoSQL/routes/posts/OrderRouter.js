@@ -50,7 +50,8 @@ router.post("/:id", async (req, res) => {
 
 router.get("/", async (req, res) => {
     try {
-        let ordersToAcceptByDeliveryman = await OrderModel.find({ State: 5 } ).exec();
+        let ordersToAcceptByDeliveryman = await OrderModel.find({ State: 5 } )
+            .populate('Client.Client_ID').exec();
         let ordersToAcceptByRestaurant = await OrderModel.find({ State: 0 } ).exec();
         let ordersToPrepare = await OrderModel.find({ State: 1 } ).exec();
         let ordersToDeliver = await OrderModel.find({ State: 2 } ).exec();
@@ -78,7 +79,8 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     try {
         let order = await OrderModel.findById(req.params.id)
-            .populate('Client.Client_ID')
+            .populate('Client.Client_ID', 'Address')
+            .populate('Restaurant', 'Address')
             .populate('Detail.Menus', 'Name Articles Price _id')
             .populate('Detail.Menus.Articles', 'Name')
             .populate('Detail.Articles', 'Name Price').exec();

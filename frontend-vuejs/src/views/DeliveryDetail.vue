@@ -39,9 +39,9 @@
             <v-card-title>Contact</v-card-title>
 
             <v-card-text>
-                <p class="mb-2">Adresse du restaurant : {{ this.RestaurantAdresse }}</p>
-                <p class="mb-2">Adresse de livraison : {{ this.myAdresse }}</p>
-                <p class="mb-2">Numéro de tél : {{ this.numTel }}</p>
+                <p class="mb-2 font-weight-bold">Adresse du restaurant : {{ this.RestaurantAdresse }}</p>
+                <p class="mb-2 font-weight-bold">Adresse de livraison : {{ this.myAdresse }}</p>
+                <p class="mb-2 font-weight-bold">Numéro de téléphone client : {{ this.numTel }}</p>
 
             </v-card-text>
 
@@ -146,7 +146,7 @@ export default {
               this.commandState = this.states[response.data.order.State]
               this.idClient = response.data.order.Client.Client_ID._id
               this.myAdresse = response.data.order.Client.Client_ID.Address.Number + ' ' + response.data.order.Client.Client_ID.Address.Street + ' , ' + response.data.order.Client.Client_ID.Address.Town + ' , ' + response.data.order.Client.Client_ID.Address.Code
-              //this.RestaurantAdresse =  response.data.order.
+              this.RestaurantAdresse =  response.data.order.Restaurant.Address.Number + ' ' + response.data.order.Restaurant.Address.Street + ' , ' +  response.data.order.Restaurant.Address.Town + ' , ' + response.data.order.Client.Client_ID.Address.Town
 
 
           })
