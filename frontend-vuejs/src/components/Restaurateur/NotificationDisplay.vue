@@ -1,4 +1,4 @@
-<template>
+<template v-if="connectedUserRole === 'Restaurant'">
     <div id="restaurateur-notification-display">
         <h2 class="mt-7">
             Notifications des commandes
@@ -148,6 +148,8 @@ export default class NotificationDisplay extends Vue {
             }
         });
     }
+
+    connectedUserRole = "Restaurant";
 
     delNotification(index, datatable: string) {
         switch (datatable) {

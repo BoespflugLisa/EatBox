@@ -31,7 +31,7 @@ import axios from "axios";
     },
 })
 
-export default class ArticlesEtMenus extends Vue {
+export default class RestaurantInformation extends Vue {
 
     restaurantId = "62b47acd5997e91af99f7c37"
 

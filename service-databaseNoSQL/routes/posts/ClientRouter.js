@@ -1,24 +1,23 @@
 const express = require("express");
-const DeliverymanModel = require("../../models/Deliveryman");
+const ClientModel = require("../../models/Client");
 const UserModel = require("../../models/User");
 const router = express.Router();
 
 router.post("/:id", async(req, res) => {
     try {
-        let deliverymanUser = await UserModel.findById(req.params.id).exec();
-        let deliveryman = new DeliverymanModel({
-            "Name": "Speedy",
-            "Firstname": "Gonzalès",
-            "belongs_to": deliverymanUser._id,
+        let clientUser = await UserModel.findById(req.params.id).exec();
+        let client = new ClientModel({
+            "Name": "Bonnet",
+            "Firstname": "Grosvenor",
+            "belongs_to": clientUser._id,
             "Picture": "Photo de profil",
-            "Open_to_work": true,
-            "Free": true,
+            "Address": {"Number": "86", "Street": "rue Cazade", "Town": "DREUX", "Code": "28100"},
         });
 
-        deliveryman = await deliveryman.save();
+        client = await client.save();
         res.status(200).json({
             status: 200,
-            data: deliveryman,
+            data: client,
         });
     }
     catch (err) {
@@ -31,10 +30,9 @@ router.post("/:id", async(req, res) => {
 
 router.get("/", async (req, res) => {
     try {
-        let deliverymans = await DeliverymanModel.find();
+        let clients = await ClientModel.find();
         res.status(200).json({
-            status: 200,
-            data: deliverymans,
+            clients,
         });
     } catch (err) {
         res.status(400).json({
@@ -46,15 +44,12 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     try {
-        let deliveryman = await DeliverymanModel.findOne({
-            _id: req.params.id,
-        });
-        if (deliveryman) {
+        let client = await ClientModel.findById(req.params.id).exec();
+        if (client) {
             res.status(200).json({
-                 deliveryman,
+                client,
             });
         }
-
     } catch (err) {
         res.status(400).json({
             status: 400,

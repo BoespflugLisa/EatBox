@@ -1,5 +1,4 @@
-let config;
-config = {
+let config = {
     dbUrl:
         'mongodb+srv://root:KK4C2U282Ec5S7DT@eatbox-cluster.ogtl4.mongodb.net/Eatbox-NoSQL',
     options:
@@ -22,6 +21,7 @@ const db = {};
 db.mongoose = mongoose;
 db.url = config.dbUrl
 db.options = config.options;
+db.secret = config.secret;
 
 const UsersModel = require("./models/User");
 

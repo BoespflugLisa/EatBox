@@ -13,11 +13,21 @@ import './assets/CSS/main.scss'
 
 Vue.config.productionTip = false
 
-axios.defaults.baseURL = 'http://localhost:3031';
-Vue.prototype.$axios = axios;
+const axios_nosql = axios.create({
+    baseURL:'http://localhost:3031',
+});
+
+const axios_login = axios.create({
+    baseURL:'http://localhost:3032',
+});
+
+Vue.prototype.$axios = axios_nosql;
+Vue.prototype.$axios_login = axios_login;
+
 declare module 'vue/types/vue' {
     interface Vue {
         $axios: AxiosStatic;
+        $axios_login: AxiosStatic;
     }
 }
 
