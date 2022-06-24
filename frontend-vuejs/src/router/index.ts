@@ -58,7 +58,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/ScanRestaurant',
     name: 'ScanRestaurant',
-    component: () => import('../views/ScanRestaurant.vue')
+    component: () => import('../views/ScanRestaurant.vue'),
     meta: { requiresAuth: true, isUser: 'Restaurant'},
   },
 
