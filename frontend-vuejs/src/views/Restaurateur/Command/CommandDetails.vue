@@ -166,6 +166,7 @@ export default class CommandsDetails extends Vue {
         this.$axios.put(`orders/` + this.order._id, {data: this.order}).then(response => {
             response.data;
         })
+        this.goBack();
     }
 
     validateOrder() {

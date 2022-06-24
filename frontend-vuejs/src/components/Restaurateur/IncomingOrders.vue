@@ -61,8 +61,6 @@ export default class IncomingOrders extends Vue {
         this.$router.push({name: 'commandeDetails', params: {id: order._id}});
     }
 
-    //TODO : Le déplacement de l'order en fonction de son état ("A valider" à "En prép", "En prép" à "En Attente du livreur"
-
 }
 </script>
 
