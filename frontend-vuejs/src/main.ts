@@ -3,12 +3,12 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
-import VeeValidate from "vee-validate"
 import axios, {AxiosStatic} from 'axios'
+import "./plugins/vee-validate"
 
 import './assets/CSS/main.scss'
 
-Vue.use(VeeValidate);
+
 
 
 Vue.config.productionTip = false

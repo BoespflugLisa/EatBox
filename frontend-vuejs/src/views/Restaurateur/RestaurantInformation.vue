@@ -55,6 +55,7 @@ export default class ArticlesEtMenus extends Vue {
     }
 
     getData() {
+        //this.$store.state.User.id
         axios.get('/restaurants/62b47acd5997e91af99f7c37')
             .then(response => {
                 this.preferences = response.data.restaurant.Preferences

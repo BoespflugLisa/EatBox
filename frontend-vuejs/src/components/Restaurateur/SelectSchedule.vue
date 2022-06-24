@@ -216,8 +216,8 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
-import {ValidationObserver, ValidationObserverInstance, ValidationProvider} from "vee-validate";
+import {Component, Vue} from 'vue-property-decorator';
+import {ValidationObserver, ValidationProvider} from "vee-validate";
 
 @Component({
     components: {
@@ -227,6 +227,12 @@ import {ValidationObserver, ValidationObserverInstance, ValidationProvider} from
 })
 
 export default class SelectSchedule extends Vue {
+    $refs!: {
+        obs: InstanceType<typeof ValidationObserver>
+    }
+
+
+
     showDialog = false;
     editedDay = "";
 
@@ -342,10 +348,6 @@ export default class SelectSchedule extends Vue {
     menuEnd2 = false
 
     formIsValid = false
-
-    $refs!: {
-        obs: ValidationObserverInstance
-    }
 
     getHours(hours) {
         this.hours = hours;

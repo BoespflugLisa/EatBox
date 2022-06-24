@@ -5,26 +5,70 @@
             <v-btn
                 icon
                 color="primary"
-                @click="editResto = !editResto"
+                @click="editInfos()"
             >
                 <v-icon v-if="!editResto" size="25">mdi-pencil</v-icon>
                 <v-icon v-else size="25">mdi-check</v-icon>
             </v-btn>
         </h2>
 
-        <h3 class="mt-3 mb-3">Nom du restaurant</h3>
-        <p v-if="!editResto">{{ restaurantInfos.Name }}</p>
-        <v-text-field v-else v-model="restaurantInfos.Name"></v-text-field>
+        <validation-observer ref="obsInfo">
+            <h3 class="mt-3 mb-3">Nom du restaurant</h3>
+            <p v-if="!editResto">{{ restaurantInfos.Name }}</p>
+            <validation-provider v-else name="Nom du restaurant" rules="required" v-slot="{ errors, valid }">
+                <v-text-field
+                    v-model="restaurantInfos.Name"
+                    :error-messages="errors"
+                    :success="valid"
+                />
+            </validation-provider>
 
-        <h3 class="mt-3 mb-3">Adresse du restaurant</h3>
-        <p v-if="!editResto">{{
-                restaurantInfos.Address.Number + ' ' + restaurantInfos.Address.Street + ' - ' + restaurantInfos.Address.Code + ' ' + restaurantInfos.Address.Town
-            }}</p>
-        <v-text-field v-else v-model="restaurantAddress"></v-text-field>
+
+            <h3 class="mt-3 mb-3">Adresse du restaurant</h3>
+            <p v-if="!editResto">{{
+                    restaurantInfos.Address.Number + ' ' + restaurantInfos.Address.Street + ' - ' + restaurantInfos.Address.Code + ' ' + restaurantInfos.Address.Town
+                }}</p>
+            <div v-else>
+
+                <validation-provider name="Numéro" rules="required" v-slot="{ errors, valid }">
+                    <v-text-field
+                        v-model="restaurantInfos.Address.Number"
+                        label="Numéro"
+                        :error-messages="errors"
+                        :success="valid"
+                    />
+                </validation-provider>
+
+                <validation-provider name="Rue" rules="required" v-slot="{ errors, valid }">
+                    <v-text-field
+                        v-model="restaurantInfos.Address.Street" label="Rue"
+                        :error-messages="errors"
+                        :success="valid"
+                    />
+                </validation-provider>
+
+                <validation-provider name="Code postal" rules="required|numeric" v-slot="{ errors, valid }">
+                    <v-text-field
+                        type="number"
+                        v-model="restaurantInfos.Address.Code" label="Code postal"
+                        :error-messages="errors"
+                        :success="valid"
+                    />
+                </validation-provider>
+
+                <validation-provider name="Ville" rules="required" v-slot="{ errors, valid }">
+                    <v-text-field
+                        v-model="restaurantInfos.Address.Town" label="Ville"
+                        :error-messages="errors"
+                        :success="valid"
+                    />
+                </validation-provider>
+            </div>
+        </validation-observer>
+
 
         <h3 class="mt-3 mb-3">Type de nourriture proposé </h3>
-        <p v-if="!editResto">{{ restaurantInfos.Type }}</p>
-        <v-text-field v-else v-model="restaurantInfos.Type"></v-text-field>
+        <p>{{ restaurantInfos.Type }}</p>
 
         <h3 class="mt-3 mb-3">Horaires</h3>
         <select-schedule ref="schedule"/>
@@ -87,13 +131,15 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import SelectSchedule from './SelectSchedule.vue'
+import {ValidationObserver, ValidationProvider} from "vee-validate";
 
 @Component({
     components: {
-        SelectSchedule
+        SelectSchedule,
+        ValidationObserver,
+        ValidationProvider,
     },
 })
-
 
 export default class RestaurantInfos extends Vue {
 
@@ -112,11 +158,22 @@ export default class RestaurantInfos extends Vue {
 
     $refs!: {
         schedule: SelectSchedule,
+        obsInfo: InstanceType<typeof ValidationObserver>
     }
 
     getData(data) {
         this.restaurantInfos = data;
         this.$refs.schedule.getHours(data.hours)
+    }
+
+    editInfos() {
+        this.$refs.obsInfo.validate().then(success => {
+            if (success) {
+                this.editResto = !this.editResto;
+            }
+        })
+
+
     }
 
 }
