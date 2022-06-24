@@ -18,7 +18,7 @@ import DashboardRestaurant from "./Restaurateur/DashboardRestaurant.vue";
 })
 
 export default class DashBoard extends Vue {
-    role = this.$store.state.UserRole
+    role = this.$cookies.get('role')
 }
 </script>
 

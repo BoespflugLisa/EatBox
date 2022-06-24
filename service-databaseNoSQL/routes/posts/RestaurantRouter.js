@@ -5,38 +5,90 @@ const router = express.Router();
 
 router.post("/:id", async (req, res) => {
     try {
-        let manager = await UserModel.findById(req.params.id).exec();
+        console.log(req.body)
         let restaurant = new RestaurantModel({
-                "Name": "Taco Bruno",
-                "Type": "Fast-Food",
-                "belongs_to": manager._id,
-                "Address": {"Number": "3", "Street": "rue des fleurs", "Town": "Encanto", "Code": "12345"},
-                "Legal": {"AccountName": "M. Bruno Madrigal", "IBAN": "FR15 1245 1562 1544 80", "SIRET": "12 12354564"},
-                "Hours": {
-                    "Monday": [["8", "14"], ["16", "22"]],
-                    "Tuesday": [["Fermé"], ["Fermé"]],
-                    "Wednesday": [["10"], ["20"]],
-                    "Thursday": [[""], [""]],
-                    "Friday": [[""], [""]],
-                    "Saturday": [[""], [""]],
-                    "Sunday": [["Fermé"], ["Fermé"]],
-                }
-            }
-        );
-        if(!restaurant.populated('belongs_to')){
+            Name: req.body.Username,
+            Type: req.body.Type,
+            Legal: {AccountName: "", IBAN: req.body.Legal.IBAN, SIRET: req.body.Legal.SIRET},
+            belongs_to: req.params.id,
+            hours: {
+                monday: {
+                    isOpen: true,
+                    isSecondTimeRange: true,
+                    startHour: "",
+                    endHour: "",
+                    startHour2: "",
+                    endHour2: "",
+                },
+                tuesday: {
+                    isOpen: true,
+                    isSecondTimeRange: true,
+                    startHour: "",
+                    endHour: "",
+                    startHour2: "",
+                    endHour2: "",
+                },
+                wednesday: {
+                    isOpen: true,
+                    isSecondTimeRange: true,
+                    startHour: "",
+                    endHour: "",
+                    startHour2: "",
+                    endHour2: "",
+                },
+                thursday: {
+                    isOpen: true,
+                    isSecondTimeRange: true,
+                    startHour: "",
+                    endHour: "",
+                    startHour2: "",
+                    endHour2: "",
+                },
+                friday: {
+                    isOpen: true,
+                    isSecondTimeRange: true,
+                    startHour: "",
+                    endHour: "",
+                    startHour2: "",
+                    endHour2: "",
+                },
+                saturday: {
+                    isOpen: true,
+                    isSecondTimeRange: true,
+                    startHour: "",
+                    endHour: "",
+                    startHour2: "",
+                    endHour2: "",
+                },
+                sunday: {
+                    isOpen: true,
+                    isSecondTimeRange: true,
+                    startHour: "",
+                    endHour: "",
+                    startHour2: "",
+                    endHour2: "",
+                },
+            },
+            Address: {Number: "", Street: "", Town: "", Code: ""},
+            Phone: req.body.Phone,
+        })
+
+        //console.log("restaurant ", restaurant)
+        /*if(!restaurant.populated('belongs_to')){
             await restaurant.populate('belongs_to')
                 .then(p=>console.log(p))
                 .catch(error=>console.log(error));
-        }
+        }*/
         restaurant = await restaurant.save();
         res.status(200).json({
             restaurant,
         });
     } catch (err) {
-        res.status(400).json({
+        throw err
+        /*res.status(400).json({
             status: 400,
-            message: err.message,
-        })
+            message: err,
+        })*/
     }
 });
 

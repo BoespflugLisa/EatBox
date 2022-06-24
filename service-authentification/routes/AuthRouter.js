@@ -4,33 +4,34 @@ const jwt = require('jsonwebtoken');
 const config = require('../config')
 const UserModel = require('../models/User')
 const router = express.Router();
+const utils = require('../ExternCalls.js')
+
 
 // Register
-router.post('/register', function (req, res) {
-    let newUser = new UserModel();
-
-    newUser.Username = req.body.username;
-    newUser.Email = req.body.email;
-    newUser.Password = bcrypt.hashSync(req.body.password, 8);
-    newUser.Phone = req.body.phone;
-    newUser.Type = req.body.type;
-    newUser.Role = req.body.role;
-    newUser.Legal = {
-        SIRET: req.body.legal.siret,
-        IBAN: req.body.legal.iban
-    }
+router.post('/register', async function (req, res) {
+    let newUser = new UserModel({
+        Username : req.body.username,
+        Email : req.body.email,
+        Password : bcrypt.hashSync(req.body.password, 8),
+        Phone : req.body.phone,
+        Type : req.body.type,
+        Role : req.body.role,
+        Legal : {
+            SIRET: req.body.legal.siret,
+            IBAN: req.body.legal.iban,
+        }
+    });
 
 
     try {
-        let r = UserModel.findOne({Email: req.body.email}).exec().then(r => {
-            return r;
-
+        let r = await UserModel.findOne({Email: req.body.email}).exec().then(r => {
+                        return r;
         })
-
-        if (!!r) {
-            console.log(`"result: "${r}`)
+        if (r!=null) {
+            console.log("Already existing: ",r)
             throw "un utilisateur est déjà enregistré sous cet email"
         }
+
 
 
         newUser.save()
@@ -43,9 +44,10 @@ router.post('/register', function (req, res) {
                 res.status(200).json({
                     auth: true,
                     token: token,
-                    user: r,
+                    user : newUser,
                 });
             });
+        utils.createProfile(newUser).then(r => console.log("CreateProfile: ", r))
     } catch (err) {
         console.log(err)
         res.status(400).json({
@@ -66,12 +68,12 @@ router.post('/login', async (req, res) => {
 
         let pwdIsValid = false
 
-        if(user){
+        if(user.Password){
             pwdIsValid = bcrypt.compareSync(req.body.password, user.Password);
         }
         console.log(user)
 
-        if (!!!user || !pwdIsValid) {
+        if (user===null || !pwdIsValid) {
             throw "Aucun utilisateur avec ce couple email/mot de passe n'a été trouvé"
         }
 

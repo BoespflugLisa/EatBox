@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+require('events').EventEmitter.defaultMaxListeners = 15;
+
 
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -8,12 +10,12 @@ const logger = require("morgan");
 const port = 3031;
 
 const RestaurantsRouter = require("./routes/posts/RestaurantRouter");
-const UsersRouter = require("./routes/posts/UserRouter");
+//const UsersRouter = require("../service-authentification/routes/AuthRouter");
 const DeliverymansRouter = require("./routes/posts/DeliverymanRouter");
 const OrdersRouter = require("./routes/posts/OrderRouter");
 const ArticlesRouter = require("./routes/posts/ArticleRouter");
 const StatsRouter = require("./routes/posts/StatsRouter");
-const NotificationsRouter = require("./routes/posts/NotificationRouter")
+const NotificationsRouter = require("./routes/posts/NotificationRouter");
 // const CategoriesRouter = require("./routes/posts/Restaurant");
 const MenusRouter = require("./routes/posts/MenuRouter");
 const PerformancesRouter = require("./routes/posts/PerformanceRouter");
@@ -35,7 +37,7 @@ db.mongoose.connect(db.url, db.options)
     });
 
 app.use("/restaurants", RestaurantsRouter);
-app.use("/users", UsersRouter);
+//app.use("/users", UsersRouter);
 app.use("/articles", ArticlesRouter);
 app.use("/orders", OrdersRouter);
 app.use("/stats", StatsRouter);

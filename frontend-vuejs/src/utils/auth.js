@@ -1,7 +1,7 @@
 import decode from 'jwt-decode'
 import axios from 'axios'
 import store from '@/store/index';
-
+import Vue from 'vue'
 
 const REST_ENDPOINT = 'http://localhost:3032/'
 
@@ -22,8 +22,7 @@ export function registerUser(form) {
                     phone: form.phone,
                 }
             })
-            console.log(res)
-            setAuthToken(true, res.data.token)
+            setAuthToken(res.data.auth, res.data.token)
             setRole(res.data.user.Role)
             setUser({
                 id: res.data.user._id,
@@ -71,25 +70,39 @@ export function logoutUser() {
 export function setAuthToken(auth, token) {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
     store.commit('changeState', [auth, token])
+
+    Vue.$cookies.set('auth', auth, getTokenExpirationDate(token)+'s')
+    Vue.$cookies.set('token', token, getTokenExpirationDate(token)+'s')
+
     localStorage.setItem('auth', auth)
     localStorage.setItem('token', token)
 }
 
 export function setRole(type) {
     store.commit('changeRole', type)
+
+    Vue.$cookies.set('role', type, '90000s')
+
     localStorage.setItem('Role', type)
 }
 
 export function getRole() {
-    return store.state.UserRole
+    if(Vue.$cookies.isKey('role')){
+        return Vue.$cookies.get('role')
+    } else return store.state.UserRole
+    // return store.state.UserRole
 }
 
 export function setUser(user) {
     store.commit('changeUser', user)
+    Vue.$cookies.set('user', user, '80000s')
 }
 
 export function getAuthToken() {
-    return store.state.token
+    if(Vue.$cookies.isKey('token')){
+        return Vue.$cookies.get('token')
+    } else return store.state.token
+    //return store.state.token
 }
 
 export function clearAuthToken() {
@@ -97,6 +110,11 @@ export function clearAuthToken() {
     store.commit('changeState', [false, null])
     store.commit('changeUser', null)
     store.commit('changeRole', null)
+
+    Vue.$cookies.remove('user')
+    Vue.$cookies.remove('token')
+    Vue.$cookies.remove('auth')
+    Vue.$cookies.remove('role')
 
     localStorage.clear()
 }

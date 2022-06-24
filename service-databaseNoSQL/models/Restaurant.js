@@ -3,7 +3,8 @@ let Schema = mongoose.Schema;
 
 let RestaurantSchema = new Schema(
     {
-        belongs_to : {type: Schema.Types.ObjectId, ref: 'UserModel'},/*{
+        //_id : Schema.Types.ObjectId,
+        belongs_to: {type: Schema.Types.ObjectId, ref: 'UserModel'},/*{
             type: Schema.Types.ObjectId,
             ref: 'User'
             //https://stackoverflow.com/questions/18001478/referencing-another-schema-in-mongoose
@@ -11,30 +12,85 @@ let RestaurantSchema = new Schema(
         },*/
         Name: String,
         Type: String,
-        Hours: {
-            Monday: [[String]],
-            Tuesday: [[String]],
-            Wednesday: [[String]],
-            Thursday: [[String]],
-            Friday: [[String]],
-            Saturday: [[String]],
-            Sunday: [[String]],
+        Preferences:
+            {
+                NotificationCommand: Boolean,
+                NotificationDeliveryman: Boolean,
+                NotificationActivities: Boolean,
+            },
+        hours: {
+            monday: {
+                isOpen: Boolean,
+                isSecondTimeRange: Boolean,
+                startHour: String,
+                endHour: String,
+                startHour2: String,
+                endHour2: String,
+            },
+            tuesday: {
+                isOpen: Boolean,
+                isSecondTimeRange: Boolean,
+                startHour: String,
+                endHour: String,
+                startHour2: String,
+                endHour2: String,
+            },
+            wednesday: {
+                isOpen: Boolean,
+                isSecondTimeRange: Boolean,
+                startHour: String,
+                endHour: String,
+                startHour2: String,
+                endHour2: String,
+            },
+            thursday: {
+                isOpen: Boolean,
+                isSecondTimeRange: Boolean,
+                startHour: String,
+                endHour: String,
+                startHour2: String,
+                endHour2: String,
+            },
+            friday: {
+                isOpen: Boolean,
+                isSecondTimeRange: Boolean,
+                startHour: String,
+                endHour: String,
+                startHour2: String,
+                endHour2: String,
+            },
+            saturday: {
+                isOpen: Boolean,
+                isSecondTimeRange: Boolean,
+                startHour: String,
+                endHour: String,
+                startHour2: String,
+                endHour2: String,
+            },
+            sunday: {
+                isOpen: Boolean,
+                isSecondTimeRange: Boolean,
+                startHour: String,
+                endHour: String,
+                startHour2: String,
+                endHour2: String,
+            },
         },
         Address: {
-            Number : String,
+            Number: String,
             Street: String,
             Town: String,
             Code: Number
         },
-        Phone : String,
+        Phone: String,
         Legal: {
             AccountName: String,
             IBAN: String,
             SIRET: String,
         },
-        Sponsors : {
-            sponsors : [String],
-            sponsored : [String],
+        Sponsors: {
+            sponsors: [String],
+            sponsored: [String],
         }
     }
 );

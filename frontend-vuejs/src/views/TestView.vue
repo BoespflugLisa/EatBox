@@ -39,7 +39,6 @@ export default class LoginRegister extends Vue {
 
     isUserConnected = false
 
-    //connectedUserRole = this.$store.state.UserRole[0];
 
 
 }

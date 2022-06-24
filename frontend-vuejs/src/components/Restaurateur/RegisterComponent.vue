@@ -107,7 +107,7 @@ export default class RegisterComponent extends Vue {
         },
         phone: "",
         type: "",
-        role: this.$store.state.UserRole
+        role: this.$cookies.get('role')
     }
 
     show2 = false

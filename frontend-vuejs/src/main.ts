@@ -5,11 +5,11 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 import VeeValidate from "vee-validate"
 import axios, {Axios, AxiosStatic} from 'axios'
+import * as VueCookies from "vue-cookies";
 
 import './assets/CSS/main.scss'
 
-Vue.use(VeeValidate);
-
+Vue.use(VueCookies, {expire : '1d'}, VeeValidate);
 
 Vue.config.productionTip = false
 
