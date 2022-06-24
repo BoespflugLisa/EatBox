@@ -88,7 +88,7 @@
         <p>{{ restaurantInfos.Type }}</p>
 
         <h3 class="mt-3 mb-3">Horaires</h3>
-        <select-schedule ref="schedule"/>
+        <select-schedule ref="schedule" v-on:update-hours="updateHours"/>
 
         <v-divider class="mt-4 mb-4"/>
 
@@ -271,7 +271,7 @@ export default class RestaurantInfos extends Vue {
         obsBank: InstanceType<typeof ValidationObserver>,
     }
 
-    restaurantId = "62b47acd5997e91af99f7c37"
+    restaurantId = ""
 
     restaurantInfos = {
         Name: "",
@@ -283,6 +283,7 @@ export default class RestaurantInfos extends Vue {
             Town: "",
             Code: 0,
         },
+        hours: {},
         Legal: {
             SIRET: "",
             AccountName: "",
@@ -320,14 +321,15 @@ export default class RestaurantInfos extends Vue {
         this.restaurantId = this.$store.state.User.id
     }*/
 
-    getData(data) {
+    getData(data, id) {
+        this.restaurantId = id;
         this.restaurantInfos = data;
         this.$refs.schedule.getHours(data.hours);
     }
 
     showEditInfo() {
         this.editedRestaurantName = this.restaurantInfos.Name;
-        this.editedAddress = this.restaurantInfos.Address;
+        this.editedAddress = JSON.parse(JSON.stringify(this.restaurantInfos.Address));
         this.editInfo = true;
     }
 
@@ -360,6 +362,9 @@ export default class RestaurantInfos extends Vue {
         this.$refs.obsContact.validate().then(success => {
             if (success) {
                 this.loadingContact = true
+                this.restaurantInfos.Phone = this.editedPhone;
+                this.restaurantInfos.Mail = this.editedMail;
+                this.restaurantInfos.Legal.SIRET = this.editedSiret
                 this.updateRestaurant()
             }
         })
@@ -369,9 +374,17 @@ export default class RestaurantInfos extends Vue {
         this.$refs.obsBank.validate().then(success => {
             if (success) {
                 this.loadingBank = true
+                this.restaurantInfos.Legal.AccountName = this.editedAccountName;
+                this.restaurantInfos.Legal.BIC = this.editedBic;
+                this.restaurantInfos.Legal.IBAN = this.editedIban
                 this.updateRestaurant()
             }
         })
+    }
+
+    updateHours(hours){
+        this.restaurantInfos.hours = hours;
+        this.updateRestaurant();
     }
 
     updateRestaurant() {

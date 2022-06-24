@@ -83,7 +83,7 @@ let RestaurantSchema = new Schema(
             SIRET: String,
             BIC: String,
         },
-        Preference: {
+        Preferences: {
             NotificationCommand: Boolean,
             NotificationDeliveryman: Boolean,
             NotificationActivities: Boolean,

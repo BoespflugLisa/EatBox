@@ -33,6 +33,8 @@ import axios from "axios";
 
 export default class ArticlesEtMenus extends Vue {
 
+    restaurantId = "62b47acd5997e91af99f7c37"
+
     tab = 0;
     items = [
         {tab: "Info"},
@@ -41,7 +43,6 @@ export default class ArticlesEtMenus extends Vue {
     ];
 
     restaurant = {}
-    preferences = {};
 
     $refs!: {
         infos: RestaurantInfos,
@@ -59,13 +60,12 @@ export default class ArticlesEtMenus extends Vue {
         axios.get('restaurants/62b47acd5997e91af99f7c37')
             .then(response => {
                 this.restaurant = response.data.restaurant;
-                this.preferences = response.data.restaurant.Preferences
-                this.$refs.infos.getData(response.data.restaurant);
+                this.$refs.infos.getData(response.data.restaurant, this.restaurantId);
             });
     }
 
     restaurantPrefReady() {
-        this.$refs.pref.getPreferences(this.preferences)
+        this.$refs.pref.getPreferences(this.restaurant, this.restaurantId)
     }
 }
 </script>
