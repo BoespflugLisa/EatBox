@@ -50,9 +50,21 @@ router.post("/:id", async (req, res) => {
 
 router.get("/", async (req, res) => {
     try {
-        let orders = await OrderModel.find();
+        let ordersToAcceptByDeliveryman = await OrderModel.find({ State: 5 } ).exec();
+        let ordersToAcceptByRestaurant = await OrderModel.find({ State: 0 } ).exec();
+        let ordersToPrepare = await OrderModel.find({ State: 1 } ).exec();
+        let ordersToDeliver = await OrderModel.find({ State: 2 } ).exec();
+        let ordersInDelivery = await OrderModel.find({ State: 3 } ).exec();
+        let ordersOver = await OrderModel.find({ State: 4 } ).exec();
+        let ordersRefused = await OrderModel.find({ State: 6 } ).exec();
         res.status(200).json({
-            orders,
+            ordersToAcceptByDeliveryman,
+            ordersToAcceptByRestaurant,
+            ordersToPrepare,
+            ordersToDeliver,
+            ordersInDelivery,
+            ordersOver,
+            ordersRefused,
         });
     } catch (err) {
         res.status(400).json({
@@ -62,12 +74,7 @@ router.get("/", async (req, res) => {
     }
     return 0
 })
-function getMenusOrders(username){
-    return User.findOne({ username: username })
-        .populate('posts').exec((err, posts) => {
-            console.log("Populated User " + posts);
-        })
-}
+
 router.get("/:id", async (req, res) => {
     try {
         let order = await OrderModel.findById(req.params.id)
@@ -90,37 +97,13 @@ router.get("/:id", async (req, res) => {
 
 router.put("/:id", async(req, res) => {
     try {
-    const order = new OrderModel({
-        _id: req.params.id,
-        N_Order: req.body.N_Order,
-        State: req.body.State,
-        Payment: req.body.Payment,
-        Restaurant: req.body.Restaurant,
-        Client: {
-            Client_ID: req.body.Client_ID,
-            Favorite: req.body.Favorite,
-        },
-        Complementary: req.body.Complementary,
-        Detail: {
-            Price: req.body.Price,
-            Menus: req.body.Menus,
-            Articles: req.body.Articles,
-        },
-        CheckTime : {
-            Created_at : req.body.Created_at,
-            Accepted_at : req.body.Accepted_at,
-            Ready_at: req.body.Ready_at,
-            Pickedup_at: req.body.Pickedup_at,
-            Delivered_at: req.body.Delivered_at,
-        },
-    });
-    OrderModel.updateOne({_id: req.params.id}, order).then(
-        () => {
-            res.status(201).json({
-                message: 'Order updated successfully!'
-            });
+        OrderModel.updateOne({_id: req.params.id}, req.body.data).then(
+            () => {
+                res.status(204).json({
+                    message: 'Order updated successfully!'
+                });
+            })
         }
-    )}
     catch(err) {
         res.status(400).json({
             status: 400,

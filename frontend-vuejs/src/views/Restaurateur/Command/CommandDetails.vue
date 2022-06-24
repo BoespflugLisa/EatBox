@@ -1,5 +1,5 @@
 <template>
-    <div id="CommandDetails">
+    <div id="CommandDetails" v-if="this.order">
         <div class="side-padding">
             <h2 class="mt-3" v-if="this.order.State === 0">Commande à valider</h2>
             <h2 class="mt-3" v-else-if="this.order.State === 1">Commande en préparation</h2>
@@ -22,8 +22,8 @@
                         {{ this.client.Name }}
                         <span v-if="this.order.Client.Favorite === true">⭐</span>
                     </p>
-                    <p v-if="this.order.State === 1">Commande à réaliser pour : {{ HoursFormater(this.order.CheckTime.Accepted_at, true) }}</p>
-                    <p v-else-if="this.order.State === 2">Commande prête depuis : {{ HoursFormater(this.order.CheckTime.Ready_at, false) }}</p>
+                    <p v-if="this.order.State === 1">Commande à réaliser pour : {{ HoursFormater(order, this.order.CheckTime.Accepted_at) }}</p>
+                    <p v-else-if="this.order.State === 2">Commande prête depuis : {{ HoursFormater(order, this.order.CheckTime.Ready_at) }}</p>
                 <div>
                     <div class="d-flex justify-space-between mr-5">
                         <p class="font-weight-bold font-18">
@@ -73,11 +73,11 @@
                 </div>
 
                 <div v-if="this.order.State === 0" class="d-flex flex-row justify-center">
-                    <v-btn rounded color="secondary" to="/commandes" @click="cancelOrder(this.order)" class="ma-2"
+                    <v-btn rounded color="secondary" @click="RefuseOrder()" class="ma-2"
                            width="30%">
                         Refuser
                     </v-btn>
-                    <v-btn rounded color="secondary" @click="validateOrder(this.order)" class="ma-2"
+                    <v-btn rounded color="secondary" @click="validateOrder()" class="ma-2"
                            width="30%">
                         Accepter
                     </v-btn>
@@ -85,10 +85,10 @@
 
                 <div v-if="this.order.State === 1"
                      class="d-flex flex-row justify-center">
-                    <v-btn rounded color="secondary" to="/commandes" @click="goBack(this.order)" class="ma-2" width="30%">
+                    <v-btn rounded color="secondary" @click="goBack()" class="ma-2" width="30%">
                         Retour
                     </v-btn>
-                    <v-btn rounded color="secondary" to="/commandes" @click="orderIsReady(this.order , Date.now())" class="ma-2"
+                    <v-btn rounded color="secondary" @click="orderIsReady(Date.now())" class="ma-2"
                            width="30%">
                         Prêt!
                     </v-btn>
@@ -97,7 +97,7 @@
                     <div class="button-position" v-if="this.order.State === 2">
                         <p class="font-16">Le livreur est présent ?</p>
                         <p class="font-14 font-italic">Scannez son QrCode :</p>
-                        <v-btn to="/commandes" @click="scanQrCode(this.order)" class="ma-2">
+                        <v-btn @click="scanQrCode(Date.now())" class="ma-2">
                             <v-icon>
                                 mdi-qrcode-scan
                             </v-icon>
@@ -108,7 +108,7 @@
 
                 <div>
                     <div v-if="this.order.State === 4" class="d-flex flex-row justify-center">
-                        <v-btn rounded color="secondary" to="/commandes" @click="goBack(this.order)" class="ma-2"
+                        <v-btn rounded color="secondary" @click="goBack()" class="ma-2"
                                width="30%">
                             Retour
                         </v-btn>
@@ -123,6 +123,8 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
+import moment from "moment";
+
 
 @Component({
     components: {}
@@ -130,9 +132,9 @@ import {Component, Vue} from 'vue-property-decorator';
 
 export default class CommandsDetails extends Vue {
     orderID = "";
-    order = null;
+    order: any = null
     client = null;
-    menus: Array<any> = [];
+    menus: Array<never> = [];
     articles = [];
 
     created() {
@@ -149,33 +151,46 @@ export default class CommandsDetails extends Vue {
             })
     }
 
-    HoursFormater (orderTime, accepted: boolean) {
-        if(accepted){
-            const minutesToAdd = 30;
-            const newTime = new Date(orderTime)
-            const ReadyTime = new Date(newTime.getTime() + minutesToAdd*60000);
-            const hours =  new Date(ReadyTime).getHours();
-            const minutes =  new Date(ReadyTime).getMinutes();
-            if(minutes === 0){
-                return hours + "h";
-            }
-            return hours + "h" + minutes;
-        }else {
-            const hours =  new Date(orderTime).getHours();
-            const minutes =  new Date(orderTime).getMinutes();
-            const time = hours + "h" + minutes
-            return time
+    HoursFormater(order, orderTime) {
+        if (order.State === 1){
+            const preparationTime = moment(orderTime).add(moment.duration(30, 'minutes'))
+            return preparationTime.format('HH:mm');
+        }
+        else if (order.State === 2){
+            return moment(orderTime).format('HH:mm');
         }
     }
 
-    validateOrder(order) {
-        console.log(order)
-        /*order = this.order
-        order.State = 1;
-        this.$axios.put(`orders/` + order._id).then(response => {
-            response.data = order;
-            console.log(response.data)
-        })*/
+    RefuseOrder() {
+        this.order.State = 5;
+        this.$axios.put(`orders/` + this.order._id, {data: this.order}).then(response => {
+            response.data;
+        })
+        this.goBack();
+    }
+
+    validateOrder() {
+        this.order.State = 1;
+        this.order.CheckTime.Accepted_at = new Date();
+        this.$axios.put(`orders/` + this.order._id, {data: this.order}).then(response => {
+            response.data;
+        })
+    }
+
+    orderIsReady(readyDate) {
+        this.order.State = 2;
+        this.order.CheckTime.Ready_at = readyDate;
+        this.$axios.put(`orders/` + this.order._id, {data: this.order}).then(response => {
+            response.data;
+        })
+    }
+
+    scanQrCode(PickedupDate){
+        this.order.State = 3;
+        this.order.CheckTime.Pickedup_at = PickedupDate;
+        this.$axios.put(`orders/` + this.order._id, {data: this.order}).then(response => {
+            response.data;
+        })
     }
 
     goBack() {

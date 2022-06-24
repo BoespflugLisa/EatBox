@@ -1,8 +1,9 @@
 <template>
     <div id="incoming-orders" class="side-padding">
-            <h2 class="mt-3">Commandes à valider</h2>
+        <h2 class="mt-3">Commandes à valider</h2>
+        <div v-if="this.orders.length > 0">
             <div v-for="order in this.orders" :key="order._id">
-                <div class="d-flex" v-if="order.State === 0">
+                <div class="d-flex">
                     <div class="command-tab border-tab">
                         <p class="font-weight-bold">
                             N°{{ order.N_Order }}
@@ -24,41 +25,41 @@
                 </div>
             </div>
         </div>
+        <div v-else class="mt-5">
+            <p> Aucune commande à valider</p>
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
+import moment from 'moment'
+
 @Component({
     components: {}
 })
 
 export default class IncomingOrders extends Vue {
+
     name = "IncomingOrders"
 
     orders = [];
 
-    mounted (){
-        this.$axios.get(`orders`)
-            .then(response => {
-                this.orders = response.data.orders;
-            })
+    mounted() {
+        this.$emit('ready');
     }
-   /* getOrders(orders: Array<never>){
-        this.orders = orders;
-    }*/
 
-    HoursFormater (orderTime) {
-        const hours =  new Date(orderTime).getHours();
-        const minutes =  new Date(orderTime).getMinutes();
-        const time = hours + "h" + minutes
-        return time
+    getOrders(orders) {
+        this.orders = orders;
+    }
+
+    HoursFormater(orderTime) {
+        return moment(orderTime).format('HH:mm');
     }
 
     showDetails(order) {
         this.$router.push({name: 'commandeDetails', params: {id: order._id}});
     }
-
-    //TODO : Le déplacement de l'order en fonction de son état ("A valider" à "En prép", "En prép" à "En Attente du livreur"
 
 }
 </script>
@@ -72,7 +73,7 @@ export default class IncomingOrders extends Vue {
 }
 
 .border-tab {
-    margin-top: 5%;
+    margin-top: 2%;
     border: 1px solid black;
 }
 
