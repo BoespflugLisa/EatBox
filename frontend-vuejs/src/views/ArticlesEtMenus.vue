@@ -42,7 +42,7 @@
               width="300"
               v-if="dialogDelete"
             >
-                <v-card>
+                <v-card  class="text-end">
                     <v-card-title>
                         Supprimer une catégorie ?
                     </v-card-title>

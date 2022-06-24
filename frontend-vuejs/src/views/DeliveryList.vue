@@ -38,13 +38,13 @@
           width="300"
           v-if="dialogDelete"
         >
-            <v-card>
-                <v-card-title>
+            <v-card class="text-end">
+                <v-card-title >
                     Accepter la course ?
                 </v-card-title>
 
                 <v-btn
-                  @click=" close(itemtemtem)"
+                  to="/DeliveryDetail"
                   color="primary"
                   text
                 >

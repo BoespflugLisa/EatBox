@@ -71,7 +71,7 @@ function getMenusOrders(username){
 router.get("/:id", async (req, res) => {
     try {
         let order = await OrderModel.findById(req.params.id)
-            .populate('Client.Client_ID', 'Name Firstname')
+            .populate('Client.Client_ID')
             .populate('Detail.Menus', 'Name Articles Price _id')
             .populate('Detail.Menus.Articles', 'Name')
             .populate('Detail.Articles', 'Name Price').exec();
