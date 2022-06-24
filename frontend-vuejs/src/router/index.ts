@@ -25,6 +25,43 @@ const routes: Array<RouteConfig> = [
     component: () => import('../views/Restaurateur/RestaurantInformation.vue'),
     meta: { requiresAuth: true, isUser : 'Restaurant' }
   },
+
+  {
+    path: '/mon_profil',
+    name: 'ProfileView',
+    component: () => import('../views/ProfileView.vue'),
+    meta: { requiresAuth: true}
+  },
+
+  {
+    path: '/OpenToWork',
+    name: 'OpenToWork',
+    component: () => import('../views/OpenToWork.vue'),
+    meta: { requiresAuth: true, isUser: 'Livreur'}
+  },
+
+  {
+    path: '/DeliveryList',
+    name: 'DeliveryList',
+    component: () => import('../views/DeliveryList.vue'),
+    meta: { requiresAuth: true, isUser: 'Livreur'}
+  },
+
+  {
+    path: '/DeliveryDetail',
+    name: 'DeliveryDetail',
+    component: () => import('../views/DeliveryDetail.vue'),
+    meta: { requiresAuth: true, isUser: 'Livreur'}
+  },
+
+
+  {
+    path: '/ScanRestaurant',
+    name: 'ScanRestaurant',
+    component: () => import('../views/ScanRestaurant.vue')
+    meta: { requiresAuth: true, isUser: 'Restaurant'},
+  },
+
   {
     path: '/notifications',
     name: 'Notifications',

@@ -51,14 +51,10 @@ router.get("/:id", async (req, res) => {
         });
         if (deliveryman) {
             res.status(200).json({
-                status: 200,
-                data: deliveryman,
+                 deliveryman,
             });
         }
-        res.status(400).json({
-            status: 400,
-            message: "Le livreur n'a pas été trouvé.",
-        });
+
     } catch (err) {
         res.status(400).json({
             status: 400,
