@@ -50,9 +50,21 @@ router.post("/:id", async (req, res) => {
 
 router.get("/", async (req, res) => {
     try {
-        let orders = await OrderModel.find();
+        let ordersToAcceptByDeliveryman = await OrderModel.find({ State: 5 } ).exec();
+        let ordersToAcceptByRestaurant = await OrderModel.find({ State: 0 } ).exec();
+        let ordersToPrepare = await OrderModel.find({ State: 1 } ).exec();
+        let ordersToDeliver = await OrderModel.find({ State: 2 } ).exec();
+        let ordersInDelivery = await OrderModel.find({ State: 3 } ).exec();
+        let ordersOver = await OrderModel.find({ State: 4 } ).exec();
+        let ordersRefused = await OrderModel.find({ State: 6 } ).exec();
         res.status(200).json({
-            orders,
+            ordersToAcceptByDeliveryman,
+            ordersToAcceptByRestaurant,
+            ordersToPrepare,
+            ordersToDeliver,
+            ordersInDelivery,
+            ordersOver,
+            ordersRefused,
         });
     } catch (err) {
         res.status(400).json({
@@ -62,12 +74,7 @@ router.get("/", async (req, res) => {
     }
     return 0
 })
-function getMenusOrders(username){
-    return User.findOne({ username: username })
-        .populate('posts').exec((err, posts) => {
-            console.log("Populated User " + posts);
-        })
-}
+
 router.get("/:id", async (req, res) => {
     try {
         let order = await OrderModel.findById(req.params.id)
