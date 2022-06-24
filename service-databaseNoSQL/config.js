@@ -17,7 +17,7 @@ const db = {};
 
 db.mongoose = mongoose;
 db.url = config.dbUrl
-db.options = config.option;
+db.options = config.options;
 
 const RestaurantsModel = require("./models/Restaurant");
 const UsersModel = require("./models/User");

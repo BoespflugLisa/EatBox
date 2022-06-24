@@ -2,71 +2,8 @@
 
 <template>
 
-    <div id="dashboard" class="side-padding">
-
-
-        <div class="d-flex justify-center pt-7 ">
-
-            <h2>
-                Bonjour, {{ this.restaurantName }}
-
-            </h2>
-        </div>
-
-        <div class="d-flex justify-center pt-7">
-            <v-btn block rounded color="secondary" to="/commandes" large>
-
-                Gestion des commandes
-            </v-btn>
-        </div>
-
-        <div class="d-flex  pt-7 ">
-
-            <h1>
-                Quelques statistiques...
-            </h1>
-        </div>
-
-        <div class="d-flex justify-center pt-7">
-
-            <v-card elevation="2" width="100%" color="tertiary">
-
-                <v-card-text class="text-center dark--text">
-                    <p class="font-weight-bold">Nombres de commande ce mois-ci :</p>
-                    <p class="font-40 mt-4">{{ nFormatter(this.nbCommandes,1) }}</p>
-                </v-card-text>
-
-            </v-card>
-        </div>
-
-        <div class="d-flex justify-center pt-7">
-            <v-card elevation="2" width="100%" color="tertiary">
-                <v-card-text class="text-center dark--text ">
-                    <p class="font-weight-bold">Moyenne des notes des derniers clients : </p>
-                    <p class="font-40 mt-4">{{ this.moyenneNote }}
-                        <v-icon color="dark" large>
-                            mdi-star
-                        </v-icon>
-                    </p>
-                </v-card-text>
-            </v-card>
-        </div>
-
-        <div class="d-flex justify-center pt-7">
-            <v-card elevation="2" width="100%" color="tertiary">
-                <v-card-text class="text-center dark--text ">
-                    <p class="font-weight-bold"> Recette du mois : </p>
-                    <p class="font-25 mt-4">{{ nFormatter(this.recetteDuMois,1) }} €</p>
-                </v-card-text>
-            </v-card>
-        </div>
-
-        <div class="d-flex justify-center">
-            <v-btn to="/stats" color="secondary" class="mt-7" rounded>
-                En savoir plus
-            </v-btn>
-        </div>
-
+    <div class="side-padding">
+        <DashboardRestaurant v-if="this.role==='Restaurant'" />
     </div>
 
 
@@ -74,9 +11,10 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
+import DashboardRestaurant from "./Restaurateur/DashboardRestaurant.vue";
 
 @Component({
-    components: {},
+    components: {DashboardRestaurant},
 })
 
 export default class DashBoard extends Vue {
@@ -118,6 +56,7 @@ export default class DashBoard extends Vue {
     }
 
 
+    role = this.$store.state.UserRole
 }
 </script>
 

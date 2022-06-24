@@ -10,7 +10,6 @@ let RestaurantSchema = new Schema(
             //https://mongoosejs.com/docs/populate.html
         },*/
         Name: String,
-        Phone : String,
         Mail : String,
         Type: String,
         hours: {
@@ -77,6 +76,7 @@ let RestaurantSchema = new Schema(
             Town: String,
             Code: Number
         },
+        Phone : String,
         Legal: {
             AccountName: String,
             IBAN: String,
@@ -87,6 +87,10 @@ let RestaurantSchema = new Schema(
             NotificationCommand: Boolean,
             NotificationDeliveryman: Boolean,
             NotificationActivities: Boolean,
+        },
+        Sponsors : {
+            sponsors : [String],
+            sponsored : [String],
         }
     }
 );

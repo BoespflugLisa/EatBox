@@ -12,6 +12,8 @@
     "axios": "^0.27.2",
     "chart.js": "^3.8.0",
     "core-js": "^3.8.3",
+    "jwt-decode": "^3.1.2",
+    "number-shortener": "^1.0.1",
     "vee-validate": "^3.4.14",
     "vue": "^2.6.14",
     "vue-class-component": "^7.2.3",

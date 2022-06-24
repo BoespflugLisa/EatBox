@@ -31,9 +31,9 @@ import axios from "axios";
     },
 })
 
-export default class ArticlesEtMenus extends Vue {
+export default class RestaurantInformation extends Vue {
 
-    tab = 0;
+    tab = 0
     items = [
         {tab: "Info"},
         {tab: "Préférences"},
