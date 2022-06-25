@@ -51,6 +51,9 @@ router.post('/register', async function (req, res) {
                             IBAN: req.body.legal.iban,
                         }
                     }).then(r => console.log("CreateProfile: ", r))
+                        .catch(err => {
+                            throw err
+                        })
                 } catch (e) {
                     console.log(e)
                     res.status(400).json({
@@ -62,7 +65,12 @@ router.post('/register', async function (req, res) {
                 res.status(200).json({
                     auth: true,
                     token: token,
-                    user: newUser,
+                    user: {
+                        _id : newUser._id,
+                        Role : req.body.role
+
+                    },
+
                 });
             });
 

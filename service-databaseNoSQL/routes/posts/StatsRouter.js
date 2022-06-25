@@ -86,7 +86,7 @@ router.get("/:id", async (req, res) => {
         console.log(err.message)
         res.status(400).json({
             status: 400,
-            message: "La stat n'a pas été trouvé.",
+            message: "Vos statistiques n'ont pas été trouvées.",
         });
     }
 })

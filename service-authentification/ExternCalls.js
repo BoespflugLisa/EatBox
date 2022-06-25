@@ -30,9 +30,19 @@ function createProfile(newUser) {
                 data: newUser
             })
 
+            console.log(res.data.restaurant);
+            stats = await axios({
+                url: `${REST_ENDPOINT}/stats/${res.data.restaurant._id}`,
+                method: 'POST'
+            })
+
+            await UserModel.findByIdAndUpdate(newUser._id, {restaurant: new mongoose.Types.ObjectId(res.data.restaurant._id)})
+            resolve()
         } catch (err) {
             console.error('Erreur lors de l\'inscription du restaurant: ', err)
             reject()
+            return err
+            //throw "Erreur lors de l'inscription du restaurant"
         }
         /*try {
             stats = await axios({
@@ -43,8 +53,7 @@ function createProfile(newUser) {
             console.error('Erreur lors de la création des stats: ', err)
             reject()
         }*/
-        await UserModel.findByIdAndUpdate(newUser._id, {restaurant: new mongoose.Types.ObjectId(res._id)})
-        resolve()
+
     })
 }
 

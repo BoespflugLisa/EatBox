@@ -23,6 +23,8 @@ export function registerUser(form) {
                 }
             })
 
+            console.log(res)
+
             setAuthToken(res.data.auth, res.data.token)
             setRole(res.data.user.Role)
             setUser({
@@ -50,13 +52,16 @@ export function loginUser(username, password) {
             })
             console.log(res.data)
             setAuthToken(res.data.auth, res.data.token)
+            setRole(res.data.user.Role)
             setUser({
                 id: res.data.user._id,
                 restaurant: res.data.user.restaurant._id
             })
+
+
             resolve()
         } catch (err) {
-            console.error('Erreur lors de la connexion:', err)
+            console.error('Erreur lors de la connexion:', err.response.data.message)
             reject(err)
         }
     })

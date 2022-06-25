@@ -92,7 +92,7 @@ export default class LoginComponent extends Vue {
                 })
 
         } catch (err:any) {
-            console.log(`Erreur: ${err.response.data.message}`)
+            //console.log(`Erreur: ${err.response.data.message}`)
             this.ReturnError = true;
             this.error_login = err.response.data.message
         }
