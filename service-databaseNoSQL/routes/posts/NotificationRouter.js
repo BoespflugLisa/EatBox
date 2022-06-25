@@ -1,16 +1,14 @@
 const express = require("express");
 const NotificationModel = require("../../models/Notification")
-const UserModel = require("../../models/User")
 const {now} = require("mongoose");
 const router = express.Router();
 
 router.post("/:id/:action", async (req, res) => {
     try {
-        let clientType = await UserModel.findById(req.params.id).exec();
         let notification = new NotificationModel({
                 "Date": "2022-06-21T19:10:30.000+00:00",
                 "Read": false,
-                "belongs_to": clientType._id,
+                "belongs_to": req.params.id,
                 "Types": {
                     "Command": false,
                     "Activity": true,

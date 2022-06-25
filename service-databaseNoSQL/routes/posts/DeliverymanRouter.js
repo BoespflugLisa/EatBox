@@ -1,15 +1,13 @@
 const express = require("express");
-const DeliverymanModel = require("../../models/Deliveryman");
-const UserModel = require("../../models/User");
+const DeliverymanModel = require("../../models/Deliveryman").model;
 const router = express.Router();
 
 router.post("/:id", async(req, res) => {
     try {
-        let deliverymanUser = await UserModel.findById(req.params.id).exec();
         let deliveryman = new DeliverymanModel({
             "Name": "Speedy",
             "Firstname": "Gonzalès",
-            "belongs_to": deliverymanUser._id,
+            "belongs_to": req.params.id,
             "Picture": "Photo de profil",
             "Open_to_work": true,
             "Free": true,

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 let NotificationSchema = new Schema(
     {
-        belongs_to: {type: Schema.Types.ObjectId, ref: 'UserModel'},
+        belongs_to: {type: Schema.Types.ObjectId, ref: 'UsersLogModel'},
         Name: String,
         Date: Date,
         Read: Boolean,

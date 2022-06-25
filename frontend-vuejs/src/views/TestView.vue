@@ -1,67 +1,58 @@
 <template>
-    <div>{{infos.data}}</div>
+    <div id="connection-form" class=" side-padding">
+
+        <v-tabs fixed-tabs>
+            <v-tab v-for="item in items" :key="item.tab">{{ item.tab }}</v-tab>
+            <v-tab-item>
+                <LoginComponent class="pb-15 pl-5 pr-5"/>
+            </v-tab-item>
+            <v-tab-item>
+                <RegisterComponent class="pb-15 pl-5 pr-5"/>
+            </v-tab-item>
+        </v-tabs>
+
+
+
+    </div>
 </template>
 
-<script>
-    let page = "restaurants";
-    let request = "";
 
-export default {
-    name: "TestView",
+<script lang="ts">
+import {Component, Vue} from 'vue-property-decorator';
+import LoginComponent from '../components/LoginComponent.vue'
+import RegisterComponent from "../components/Restaurateur/RegisterComponent.vue";
 
-    data: function(){
-        return {
-            infos: null,
-        }
+@Component({
+    components: {
+        LoginComponent,
+        RegisterComponent,
     },
+})
 
-     mounted() {
-         this.$axios.get(`${page}/${request}`)
-             .then(response =>(this.infos = response))
-    },
+export default class LoginRegister extends Vue {
+    name = "LoginRegister"
 
-    methods:{
-         /*callAPI(page, type, datas, request = "") {
-            switch (type) {
-                case "GET":
-                    this.$axios.get(`${page}/${request}`)
-                        .then(function (response) {
-                            //console.log(response)
-                            return response;
-                        })
-                        .catch(function (error) {
-                            console.log(error)
-                            return {0: "nop"};
-                        })
-                        .then(function(response){
-                            //console.log(response)
-                            //data["infos"] = response
-                            datas["hello"] = response["data"]["data"]
-                            //console.log(data)
-                            return datas;
-                        })
-                    break;
+    items = [
+        {tab: "Se Connecter"},
+        {tab: "Créer un compte"},
+    ]
 
-                default:
-                    return {0: "nop"};
+    isUserConnected = false
 
-                /!*case "POST":
-                    return [];
-                    break;
 
-                case "PUT":
-                    return [];
-                    break;
 
-                case "DELETE":
-                    return [];
-                    break;*!/
-            }
-        }*/
-    }
 }
+
 </script>
 
-<style>
+<style scoped>
+.input-group {
+    margin: 1rem;
+}
 
+.input-group label {
+    margin-right: 0.5rem;
+}
 </style>
+
+<!--https://auth0.com/blog/beginner-vuejs-tutorial-with-user-login/-->

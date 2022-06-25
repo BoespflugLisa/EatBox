@@ -1,20 +1,21 @@
 const express = require("express");
 const StatsModel = require("../../models/Stats");
-const RestaurantModel = require("../../models/Restaurant")
+//const RestaurantModel = require("../../models/Restaurant").model
 const OrderModel = require("../../models/Order")
+const mongoose = require("mongoose");
 const router = express.Router();
 
 async function getGrouped(id) {
     //let orders = await OrderModel.findById(id).exec();
-    OrderModel.findOne(id, '_id', function (err, order) {
+    OrderModel.findOne(id, 'Restaurants', await function (err, order) {
         StatsModel.aggregate([
-            {$match: {belongs_to: {$in: order.made_by}}},
+            {$match: {belongs_to: order.Restaurant}},
             {
                 $group: {
-                    _id: order._id,
-                    meannotes: {$avg: '$Rating'},
+                    _id: order.Restaurant,
+                    //meannotes: {$avg: '$Rating'},
                     nborders: {$sum: 1},
-                    benefits: {$sum: '$Price'}
+                    benefits: {$sum: '$Detail.$Price'}
                 }
             }
         ], function (err, result) {
@@ -30,14 +31,14 @@ async function getGrouped(id) {
 
 router.post("/:id", async (req, res) => {
     try {
-        let restaurant = await RestaurantModel.findById(req.params.id).exec();
+        //let restaurant = await RestaurantModel.findById(req.params.id).exec();
         //let stats = getGrouped(req.params.id)
         let stat = new StatsModel({
-            belongs_to: restaurant._id,
+            belongs_to: req.params.id,
             Date: new Date(),
-            MeanNotes: 3.2,//stats.meannotes,
-            NbOrders: 16,//stats.nborders,
-            Benefit: 45115.25,//stats.benefits,
+            MeanNotes: 0,//stats.meannotes,
+            NbOrders: 2,//stats.nborders,
+            Benefit: 2,//stats.benefits,
             //NewFave : stats,
         })
         await stat.save();
@@ -45,16 +46,17 @@ router.post("/:id", async (req, res) => {
             stat,
         });
     } catch (err) {
-        res.status(400).json({
+        throw err
+        /*res.status(400).json({
             status: 400,
             message: err.message,
-        })
+        })*/
     }
 });
 
 router.get("/", async (req, res) => {
     try {
-        let stats = await StatsModel.find().populate('belongs_to', 'Name').exec();
+        let stats = await StatsModel.find().populate('belongs_to').exec();
         res.status(200).json({
             stats,
         });
@@ -69,19 +71,22 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     try {
+        console.log(req.params.id)
         let stat = await StatsModel.findOne({
-            type: req.params.id,
-        }).populate('belongs_to', 'Name').exec();
+            belongs_to: req.params.id
+        }).populate('belongs_to');
         if (stat) {
+            console.log(stat)
             res.status(200).json({
                 stat,
             });
         }
 
     } catch (err) {
+        console.log(err.message)
         res.status(400).json({
             status: 400,
-            message: "La commande n'a pas été trouvé.",
+            message: "La stat n'a pas été trouvé.",
         });
     }
 })
@@ -91,7 +96,7 @@ router.put("/:id", async (req, res) => {
         let stats = getGrouped(req.params.id)
         let newstats = {
             Date: new Date(),
-            MeanNotes: stats.meannotes,
+            //MeanNotes: stats.meannotes,
             NbOrders: stats.nborders,
             Benefit: stats.benefits,
             //NewFave : stats,

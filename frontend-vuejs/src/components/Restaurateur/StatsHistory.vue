@@ -101,7 +101,7 @@ export default class StatsHistory extends Vue {
     nbCommand = 0;
     recette = 0;
 
-    showHistoryDetail(item: any) {
+    showHistoryDetail(item) {
         this.title = item.date;
         this.meanRating = item.meanRating;
         this.nbRate = item.nbRate;

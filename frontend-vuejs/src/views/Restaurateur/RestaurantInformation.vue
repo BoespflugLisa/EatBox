@@ -3,10 +3,10 @@
         <v-tabs fixed-tabs v-model="tab">
             <v-tab v-for="item in items" :key="item.tab">{{ item.tab }}</v-tab>
             <v-tab-item>
-                <restaurant-infos/>
+                <restaurant-infos ref="infos"/>
             </v-tab-item>
             <v-tab-item>
-                <restaurant-pref/>
+                <restaurant-pref v-on:ready="restaurantPrefReady()" ref="pref"/>
             </v-tab-item>
             <v-tab-item>
                 <restaurant-sponsorship/>
@@ -30,24 +30,42 @@ import RestaurantSponsorship from "../../components/Restaurateur/RestaurantSpons
     },
 })
 
-export default class ArticlesEtMenus extends Vue {
+export default class RestaurantInformation extends Vue {
 
-    tab = 0
+    restaurantId = "62b47acd5997e91af99f7c37"
+
+    tab = 0;
     items = [
         {tab: "Info"},
         {tab: "Préférences"},
         {tab: "Parrainage"},
-    ]
+    ];
 
+    restaurant = {}
 
+    $refs!: {
+        infos: RestaurantInfos,
+        pref: RestaurantPref,
+    }
 
-
-
-
-    created() {
+    mounted() {
+        this.getData()
         if (this.$route.query.tab === '2') {
             this.tab = 2;
         }
+    }
+
+    getData() {
+        this.$axios.get('restaurants/62b04dcfff5bc1bbf9802446')
+            .then(response => {
+                console.log(response.data)
+                this.restaurant = response.data.restaurant;
+                this.$refs.infos.getData(response.data.restaurant, this.restaurantId);
+            });
+    }
+
+    restaurantPrefReady() {
+        this.$refs.pref.getPreferences(this.restaurant, this.restaurantId)
     }
 }
 </script>

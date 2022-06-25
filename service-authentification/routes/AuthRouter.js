@@ -1,54 +1,126 @@
 const express = require("express");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const text = require('../config')
-const UserModel = require("../models/User")
+const config = require('../config')
+const UserModel = require('../models/User')
 const router = express.Router();
+const utils = require('../ExternCalls.js')
+const mongoose = require("mongoose");
 
-function UserException(message) {
-    this.message = message;
-    this.name = 'UserException';
-}
 
 // Register
-router.post('/register', function (req, res) {
-    let newUser = new UserModel();
-    try {
-        newUser.UserName = req.body.username;
-        newUser.Email = req.body.email;
-        newUser.Password = bcrypt.hashSync(req.body.password, 8);
+router.post('/register', async function (req, res) {
+    let newUser = new UserModel.model({
+        Username: req.body.username,
+        Email: req.body.email,
+        Password: bcrypt.hashSync(req.body.password, 8),
+        restaurant : null,
+        livreur : null,
+        client : null
+    });
 
-        if(UserModel.findOne({Email:req.body.email})){
-            throw new UserException("un utilisateur est déjà enregistré sous cette email")
+
+    try {
+        let r = await UserModel.model.findOne({Email: req.body.email}).exec().then(r => {
+            return r;
+        })
+
+        if (r != null) {
+            console.log("Already existing: ", r)
+            throw "un utilisateur est déjà enregistré sous cet email"
         }
 
-        let token = jwt.sign(
-            {id: newUser._id},
-            text.config.secret,
-            {expiresIn:86400} //24h
-        )
+
         newUser.save()
-            .then(function (r) {
+            .then( async function (r) {
+                let token = jwt.sign(
+                    {id: newUser._id},
+                    config.secret,
+                    {expiresIn: 86400} //24h
+                )
+
+                try {
+                    await utils.createProfile({
+                        _id : newUser._id,
+                        Username: req.body.username,
+                        Phone: req.body.phone,
+                        Type: req.body.type,
+                        Role: req.body.role,
+                        Legal: {
+                            SIRET: req.body.legal.siret,
+                            IBAN: req.body.legal.iban,
+                        }
+                    }).then(r => console.log("CreateProfile: ", r))
+                } catch (e) {
+                    console.log(e)
+                    res.status(400).json({
+                        message: e,
+                    })
+                    return res
+                }
+
                 res.status(200).json({
                     auth: true,
                     token: token,
-                    user: r,
+                    user: newUser,
                 });
             });
+
     } catch (err) {
         console.log(err)
         res.status(400).json({
-            message: err.message,
+            message: err,
         })
+        return res
+    }
+
+});
+
+router.post('/login', async (req, res) => {
+    //https://www.digitalocean.com/community/tutorials/how-to-set-up-vue-js-authentication-and-route-handling-using-vue-router
+    let pwdIsValid = false
+
+    try {
+        let user = await UserModel.model.findOne({Email: req.body.email}).then(r => {
+            return r;
+        })
+
+        if (user != null) {
+            pwdIsValid = bcrypt.compareSync(req.body.password, user.Password);
+        }
+        if (!!!user || !pwdIsValid) {
+            throw "Aucun utilisateur avec ce couple email/mot de passe n'a été trouvé"
+        }
+
+        let token = jwt.sign(
+            {id: user._id},
+            config.secret,
+            {expiresIn: 86400} //24h
+        );
+
+        if(!user.populated('restaurant')){
+            await user.populate('restaurant')
+                .then(p=>console.log(p))
+                .catch(error=>console.log(error));
+        }
+
+        res.status(200).json({
+            auth: true,
+            token: token,
+            user: user,
+        })
+
+    } catch (err) {
+        console.log(err)
+        res.status(400).json({
+            message: err,
+        })
+        return res
     }
 });
 
-router.post('/login', (req, res) => {
-    //https://www.digitalocean.com/community/tutorials/how-to-set-up-vue-js-authentication-and-route-handling-using-vue-router
-});
-
 router.get('/', function (req, res) {
-    UserModel.find(function (err, data) {
+    UserModel.model.find(function (err, data) {
         if (err) {
             console.log(err);
         } else {
@@ -57,8 +129,8 @@ router.get('/', function (req, res) {
     });
 });
 
-router.get('/:id', function (req, res) {
-    UserModel.findOne({UserId: req.params.id}, function (err, data) {
+router.get('/:token', function (req, res) {
+    UserModel.model.findOne({UserId: req.params.token}, function (err, data) {
         if (err) {
             console.log(err);
         } else {
@@ -68,7 +140,7 @@ router.get('/:id', function (req, res) {
 });
 
 router.delete('/:id', function (req, res) {
-    UserModel.remove({UserId: req.params.id}, function (err, data) {
+    UserModel.model.remove({UserId: req.params.id}, function (err, data) {
         if (err) {
             console.log(err);
         } else {

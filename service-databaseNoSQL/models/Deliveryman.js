@@ -3,7 +3,7 @@ let Schema = mongoose.Schema;
 
 let DeliverymanSchema = new Schema(
     {
-        belongs_to : {type: Schema.Types.ObjectId, ref: 'UserModel'},
+        belongs_to : {type: Schema.Types.ObjectId, ref: 'UsersLogModel'},
         Name: String,
         Firstname: String,
         Picture: String,
@@ -13,6 +13,9 @@ let DeliverymanSchema = new Schema(
     }
 );
 
-let Deliveryman = mongoose.model("Deliveryman", DeliverymanSchema, "Deliveryman");
+let Deliveryman = mongoose.model("Deliveryman", DeliverymanSchema, "deliverymen");
 
-module.exports = Deliveryman;
+module.exports = {
+        model: Deliveryman,
+        schema: DeliverymanSchema
+};

@@ -3,10 +3,7 @@
         <v-btn block rounded color="secondary" large class="mt-7">
             Tout marquer comme lu
         </v-btn>
-
-        <restaurateur-display v-if="connectedUserRole === 'Restaurateur'"/>
-
-
+        <restaurateur-display v-if="isUserConnected" />
     </div>
 </template>
 
@@ -21,7 +18,7 @@ import RestaurateurDisplay from '../components/Restaurateur/NotificationDisplay.
 })
 
 export default class NotificationList extends Vue {
-    connectedUserRole = "Restaurateur";
+ isUserConnected = true
 }
 </script>
 
