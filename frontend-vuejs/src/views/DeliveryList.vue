@@ -23,38 +23,47 @@
                     </v-btn>
                 </div>
           </div>
+
+
+            <v-dialog
+              v-model="dialogDelete"
+              width="300"
+              v-if="dialogDelete"
+            >
+                <v-card class="text-end">
+                    <v-card-title>
+                        Accepter la course ?
+                    </v-card-title>
+
+                    <v-btn
+                      @click="showDetails(order)"
+                      color="primary"
+                      text
+                    >
+                        Accepter
+                    </v-btn>
+                    <v-btn
+
+                      @click=" dialogDelete =false"
+                      color="primary"
+                      text
+                    >
+                        Retour
+                    </v-btn>
+
+
+                </v-card>
+
+            </v-dialog>
+
+
+
+
+
+
         </div>
 
-        <v-dialog
-          v-model="dialogDelete"
-          width="300"
-          v-if="dialogDelete"
-        >
-            <v-card class="text-end">
-                <v-card-title>
-                    Accepter la course ?
-                </v-card-title>
 
-                <v-btn
-                  to="/DeliveryDetail"
-                  color="primary"
-                  text
-                >
-                    Accepter
-                </v-btn>
-                <v-btn
-
-                  @click=" dialogDelete =false"
-                  color="primary"
-                  text
-                >
-                    Retour
-                </v-btn>
-
-
-            </v-card>
-
-        </v-dialog>
 
     </div>
 
@@ -73,6 +82,9 @@ export default class IncomingOrders extends Vue {
     orders = [];
     myAdresse= ''
 
+
+
+
     async mounted() {
         await this.$axios.get(`orders`)
           .then(response => {
@@ -90,7 +102,7 @@ export default class IncomingOrders extends Vue {
     }
 
     showDetails(order) {
-        this.$router.push({name: 'commandeDetails', params: {id: order._id}});
+        this.$router.push({name: 'DeliveryDetail', params: {id: order._id}});
     }
 
     //TODO : Le déplacement de l'order en fonction de son état ("A valider" à "En prép", "En prép" à "En Attente du livreur"

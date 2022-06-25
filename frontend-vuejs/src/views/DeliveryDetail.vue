@@ -115,6 +115,9 @@ export default {
 
     },
 
+
+
+
     data() {
         return {
             dialogDelete: false,
@@ -127,15 +130,21 @@ export default {
             myAdresse: null,
             stateNumber:0,
             RestaurantAdresse: null,
+            orderID : ""
         }
 
+    },
+
+
+
+    created() {
+        this.orderID = this.$route.params.id;
     },
 
     methods: {
         test(dataUrl, id) {
             console.log(this.token, id)
         },
-
 
     },
 
