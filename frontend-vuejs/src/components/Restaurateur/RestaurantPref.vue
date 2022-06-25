@@ -81,7 +81,7 @@ export default class RestaurantPref extends Vue {
             this.restaurantInfos.Preferences = this.editedPreferences;
             console.log(this.restaurantInfos)
             console.log(this.editedPreferences)
-            axios.put("restaurants/" + this.restaurantId, {data: this.restaurantInfos}).then(() => {
+            this.$axios.put("restaurants/"+this.restaurantId, {data: this.restaurantInfos}).then(() => {
                 //this.snackbarSuccess = true
                 this.loading = false;
             }).catch(() => {

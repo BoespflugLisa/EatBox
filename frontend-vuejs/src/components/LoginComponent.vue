@@ -67,7 +67,8 @@ export default class LoginComponent extends Vue {
     error_login = ""
     form = {
         email: "",
-        password: ""
+        password: "",
+        Role : this.$cookies.get('role'),
     }
     show1 = false
     rules = {
@@ -82,7 +83,7 @@ export default class LoginComponent extends Vue {
 
     async login() {
         try {
-            await loginUser(this.form.email, this.form.password)
+            await loginUser(this.form.email, this.form.password, this.form.Role)
                 .then(r => {
                     if(this.urlParams.get('redirect') != null){
                         this.$router.push(this.urlParams.get('redirect').toString())

@@ -388,9 +388,10 @@ export default class RestaurantInfos extends Vue {
     }
 
     updateRestaurant() {
-        axios.put("restaurants/" + this.restaurantId, {data: this.restaurantInfos}).then(() => {
+        this.$axios.put("restaurants/"+this.restaurantId, {data: this.restaurantInfos}).then(() => {
             this.snackbarSuccess = true
-        }).catch(() => {
+        }).catch((e) => {
+            console.log(e)
             this.snackbarError = true;
         }).finally(() => {
             this.loadingInfo = false;

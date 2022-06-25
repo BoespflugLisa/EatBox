@@ -42,6 +42,8 @@ router.post('/register', async function (req, res) {
                 try {
                     await utils.createProfile({
                         _id : newUser._id,
+                        ProfileImg: req.body.ProfileImg,
+                        CoverImg: req.body.CoverImg,
                         Username: req.body.username,
                         Phone: req.body.phone,
                         Type: req.body.type,
@@ -53,6 +55,7 @@ router.post('/register', async function (req, res) {
                     }).then(r => console.log("CreateProfile: ", r))
                         .catch(err => {
                             throw err
+
                         })
                 } catch (e) {
                     console.log(e)
@@ -62,13 +65,14 @@ router.post('/register', async function (req, res) {
                     return res
                 }
 
+                console.log(newUser)
+
                 res.status(200).json({
                     auth: true,
                     token: token,
                     user: {
                         _id : newUser._id,
-                        Role : req.body.role
-
+                        Role : req.body.role,
                     },
 
                 });
@@ -111,11 +115,19 @@ router.post('/login', async (req, res) => {
                 .then(p=>console.log(p))
                 .catch(error=>console.log(error));
         }
+        console.log(user)
 
         res.status(200).json({
             auth: true,
             token: token,
-            user: user,
+            user: {
+                _id : user._id,
+                Role : req.body.Role,
+                restaurant : user.restaurant._id,
+                livreur : user.livreur,
+                client : user.client
+
+            }
         })
 
     } catch (err) {
