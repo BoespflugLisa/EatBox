@@ -26,10 +26,8 @@ const StatsModel = require("./models/Stats")
 const MenusModel = require("./models/Menu");
 const PerformancesModel = require("./models/Perfomance");
 
-const Users =  require("../service-authentification/models/User")
-
-
-mongoose.model('UsersLogModel', Users.schema, "users_login")
+const UsersSchema =  require("../service-authentification/models/User").schema
+db.mongoose.model('UsersLogModel', UsersSchema, "users_login")
 
 db.restaurants = RestaurantsModel;
 //db.deliverymen

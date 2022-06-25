@@ -96,4 +96,7 @@ let RestaurantSchema = new Schema(
 
 let Restaurant = mongoose.model("RestaurantModel", RestaurantSchema, "restaurants");
 
-module.exports = Restaurant;
+module.exports = {
+    model: Restaurant,
+    schema : RestaurantSchema
+};

@@ -1,6 +1,6 @@
 const express = require("express");
 const StatsModel = require("../../models/Stats");
-//const RestaurantModel = require("../../models/Restaurant")
+//const RestaurantModel = require("../../models/Restaurant").model
 const OrderModel = require("../../models/Order")
 const mongoose = require("mongoose");
 const router = express.Router();
@@ -56,7 +56,7 @@ router.post("/:id", async (req, res) => {
 
 router.get("/", async (req, res) => {
     try {
-        let stats = await StatsModel.find().populate('belongs_to', 'Name').exec();
+        let stats = await StatsModel.find().populate('belongs_to').exec();
         res.status(200).json({
             stats,
         });
@@ -71,9 +71,10 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     try {
+        console.log(req.params.id)
         let stat = await StatsModel.findOne({
             belongs_to: req.params.id
-        }).populate('belongs_to', 'Username');
+        }).populate('belongs_to');
         if (stat) {
             console.log(stat)
             res.status(200).json({

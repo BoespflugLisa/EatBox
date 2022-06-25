@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 let StatsSchema = new Schema(
     {
-        belongs_to : {type: Schema.Types.ObjectId, ref: 'UsersLogModel'},
+        belongs_to : {type: Schema.Types.ObjectId, ref: 'RestaurantModel'},
         Date: Schema.Types.Date,
         MeanNotes : Number,
         NbOrders : Number,

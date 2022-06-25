@@ -23,12 +23,10 @@ export function registerUser(form) {
                 }
             })
 
-            console.log(res.data)
             setAuthToken(res.data.auth, res.data.token)
             setRole(res.data.user.Role)
             setUser({
                 id: res.data.user._id,
-                name: res.data.user.Username,
             })
             resolve()
         } catch (err) {
@@ -50,11 +48,11 @@ export function loginUser(username, password) {
                     password: password,
                 }
             })
+            console.log(res.data)
             setAuthToken(res.data.auth, res.data.token)
             setUser({
                 id: res.data.user._id,
-                name: res.data.user.Username,
-                phone: res.data.user.Phone,
+                restaurant: res.data.user.restaurant._id
             })
             resolve()
         } catch (err) {
@@ -96,7 +94,9 @@ export function getRole() {
 
 export function setUser(user) {
     store.commit('changeUser', user)
-    Vue.$cookies.set('user', user, '80000s')
+
+    Vue.$cookies.set('_id', user.id, '80000s')
+    Vue.$cookies.set('restaurant_id', user.restaurant, '80000s')
 }
 
 export function getAuthToken() {

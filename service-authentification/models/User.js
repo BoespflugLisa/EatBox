@@ -4,9 +4,9 @@ const Schema = mongoose.Schema;
 let UserSchema = new Schema({
     Email: String,
     Password: String,
-    Role : String, //Restaurant Livreur Client
-    token : String,
-    isConnected : Boolean,
+    restaurant : {type: Schema.Types.ObjectId, ref: 'RestaurantModel'},
+    livreur : {type: Schema.Types.ObjectId, ref: 'LivreurModel'},
+    client : {type: Schema.Types.ObjectId, ref: 'ClientModel'},
 });
 
 let UserLogin = mongoose.model("UsersLogModel", UserSchema, "users_login");

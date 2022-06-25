@@ -1,4 +1,6 @@
 const axios = require('axios');
+const mongoose = require("mongoose");
+const UserModel = require('./models/User').model
 
 const REST_ENDPOINT = 'http://localhost:3031'
 
@@ -19,27 +21,30 @@ function createProfile(newUser) {
     }
 
     return new Promise(async (resolve, reject) => {
+        let res;
+        let stats;
         try {
-            let res = await axios({
+            res = await axios({
                 url: `${REST_ENDPOINT}/${chemin}/${newUser._id}`,
                 method: 'POST',
                 data: newUser
             })
+
         } catch (err) {
             console.error('Erreur lors de l\'inscription du restaurant: ', err)
             reject()
         }
-        try {
-            let stats = await axios({
-                url: `${REST_ENDPOINT}/stats/${newUser._id}`,
+        /*try {
+            stats = await axios({
+                url: `${REST_ENDPOINT}/stats/${res._id}`,
                 method: 'POST'
             })
-            //console.log("restaurant ", res.data)
-            resolve()
         } catch (err) {
             console.error('Erreur lors de la création des stats: ', err)
             reject()
-        }
+        }*/
+        await UserModel.findByIdAndUpdate(newUser._id, {restaurant: new mongoose.Types.ObjectId(res._id)})
+        resolve()
     })
 }
 

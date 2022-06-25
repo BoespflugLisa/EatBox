@@ -1,9 +1,8 @@
 const express = require("express");
 const OrderModel = require("../../models/Order")
-const ClientModel = require("../../models/Client")
+const ClientModel = require("../../models/Client").model
 const ArticleModel = require("../../models/Article");
 const MenuModel = require("../../models/Menu");
-const UserModel = require("../../models/User");
 const router = express.Router();
 
 router.post("/:id", async (req, res) => {

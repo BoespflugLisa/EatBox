@@ -25,6 +25,16 @@ db.secret = config.secret;
 
 const UsersModel = require("./models/User");
 
+const RestaurantsSchema = require('../service-databaseNoSQL/models/Restaurant').schema
+db.mongoose.model("RestaurantModel", RestaurantsSchema, "restaurants");
+
+const LivreursSchema = require('../service-databaseNoSQL/models/Deliveryman').schema
+db.mongoose.model('LivreurModel', LivreursSchema, "deliverymen")
+
+const ClientSchema = require('../service-databaseNoSQL/models/Client').schema
+db.mongoose.model("ClientModel", ClientSchema, 'clients');
+
+
 /*const RestaurantsModel = require("../service-databaseNoSQL/models/Restaurant");
 const OrdersModel = require("../service-databaseNoSQL/models/Order");
 const ArticlesModel = require("../service-databaseNoSQL/models/Article");
@@ -32,6 +42,6 @@ const StatsModel = require("../service-databaseNoSQL/models/Stats")
 const MenusModel = require("../service-databaseNoSQL/models/Menu");
 const PerformancesModel = require("../service-databaseNoSQL/models/Perfomance");*/
 
-db.users = UsersModel;
+
 
 module.exports = db;

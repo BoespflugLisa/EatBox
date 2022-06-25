@@ -13,6 +13,9 @@ let DeliverymanSchema = new Schema(
     }
 );
 
-let Deliveryman = mongoose.model("Deliveryman", DeliverymanSchema, "Deliveryman");
+let Deliveryman = mongoose.model("Deliveryman", DeliverymanSchema, "deliverymen");
 
-module.exports = Deliveryman;
+module.exports = {
+        model: Deliveryman,
+        schema: DeliverymanSchema
+};

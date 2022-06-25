@@ -21,7 +21,6 @@ import {Component, Vue} from 'vue-property-decorator';
 import RestaurantInfos from "../../components/Restaurateur/RestaurantInfos.vue";
 import RestaurantPref from "../../components/Restaurateur/RestaurantPref.vue";
 import RestaurantSponsorship from "../../components/Restaurateur/RestaurantSponsorship.vue";
-import axios from "axios";
 
 @Component({
     components: {
@@ -57,8 +56,9 @@ export default class RestaurantInformation extends Vue {
     }
 
     getData() {
-        axios.get('restaurants/62b47acd5997e91af99f7c37')
+        this.$axios.get('restaurants/62b04dcfff5bc1bbf9802446')
             .then(response => {
+                console.log(response.data)
                 this.restaurant = response.data.restaurant;
                 this.$refs.infos.getData(response.data.restaurant, this.restaurantId);
             });

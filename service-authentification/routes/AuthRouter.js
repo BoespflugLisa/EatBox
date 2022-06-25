@@ -5,6 +5,7 @@ const config = require('../config')
 const UserModel = require('../models/User')
 const router = express.Router();
 const utils = require('../ExternCalls.js')
+const mongoose = require("mongoose");
 
 
 // Register
@@ -13,13 +14,9 @@ router.post('/register', async function (req, res) {
         Username: req.body.username,
         Email: req.body.email,
         Password: bcrypt.hashSync(req.body.password, 8),
-        Phone: req.body.phone,
-        Type: req.body.type,
-        Role: req.body.role,
-        Legal: {
-            SIRET: req.body.legal.siret,
-            IBAN: req.body.legal.iban,
-        }
+        restaurant : null,
+        livreur : null,
+        client : null
     });
 
 
@@ -35,27 +32,40 @@ router.post('/register', async function (req, res) {
 
 
         newUser.save()
-            .then(function (r) {
+            .then( async function (r) {
                 let token = jwt.sign(
                     {id: newUser._id},
                     config.secret,
                     {expiresIn: 86400} //24h
                 )
+
+                try {
+                    await utils.createProfile({
+                        _id : newUser._id,
+                        Username: req.body.username,
+                        Phone: req.body.phone,
+                        Type: req.body.type,
+                        Role: req.body.role,
+                        Legal: {
+                            SIRET: req.body.legal.siret,
+                            IBAN: req.body.legal.iban,
+                        }
+                    }).then(r => console.log("CreateProfile: ", r))
+                } catch (e) {
+                    console.log(e)
+                    res.status(400).json({
+                        message: e,
+                    })
+                    return res
+                }
+
                 res.status(200).json({
                     auth: true,
                     token: token,
                     user: newUser,
                 });
             });
-        try {
-            await utils.createProfile(newUser).then(r => console.log("CreateProfile: ", r))
-        } catch (e) {
-            console.log(e)
-            res.status(400).json({
-                message: e,
-            })
-            return res
-        }
+
     } catch (err) {
         console.log(err)
         res.status(400).json({
@@ -75,8 +85,6 @@ router.post('/login', async (req, res) => {
             return r;
         })
 
-        console.log(user)
-
         if (user != null) {
             pwdIsValid = bcrypt.compareSync(req.body.password, user.Password);
         }
@@ -89,6 +97,12 @@ router.post('/login', async (req, res) => {
             config.secret,
             {expiresIn: 86400} //24h
         );
+
+        if(!user.populated('restaurant')){
+            await user.populate('restaurant')
+                .then(p=>console.log(p))
+                .catch(error=>console.log(error));
+        }
 
         res.status(200).json({
             auth: true,

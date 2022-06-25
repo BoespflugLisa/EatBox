@@ -1,5 +1,5 @@
 const express = require("express");
-const RestaurantModel = require("../../models/Restaurant")
+const RestaurantModel = require("../../models/Restaurant").model
 const router = express.Router();
 
 router.post("/:id", async (req, res) => {
@@ -107,11 +107,10 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     try {
-        let restaurant = await RestaurantModel.findOne({
-            _id: req.params.id,
-        }).populate('belongs_to')
-            .then(p => console.log(p))
-            .catch(error => console.log(error));
+        let restaurant = await RestaurantModel.findById(req.params.id)
+            .populate('belongs_to')
+            //.then(p => console.log(p))
+            //.catch(error => console.log(error));
 
         if (restaurant) {
             res.status(200).json({
