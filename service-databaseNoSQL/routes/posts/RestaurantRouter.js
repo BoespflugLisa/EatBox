@@ -1,45 +1,92 @@
 const express = require("express");
 const RestaurantModel = require("../../models/Restaurant")
-const UserModel = require("../../models/User")
 const router = express.Router();
 
 router.post("/:id", async (req, res) => {
     try {
-        let manager = await UserModel.findById(req.params.id).exec();
         let restaurant = new RestaurantModel({
-            "Name": "Taco Bruno",
-            "Phone": "0660606060",
-            "Mail": "taco-bruno@encanto.fr",
-            "Type": "Fast-Food",
-            "belongs_to": manager._id,
-            "Address": {"Number": "3", "Street": "rue des fleurs", "Town": "Encanto", "Code": "12345"},
-            "Legal": {"AccountName": "M. Bruno Madrigal", "IBAN": "FR15 1245 1562 1544 80", "SIRET": "12 12354564", "BIC": "DAAE FR PP CCT"},
-            "hours": {
-                "monday": { isOpen: false, isSecondTimeRange: false, startHour: null, endHour: null, startHour2: null, endHour2: null },
-                "tuesday": { isOpen: true, isSecondTimeRange: true, startHour: "11:30", endHour: "14:30", startHour2: "18:30", endHour2: "23:30" },
-                "wednesday": { isOpen: true, isSecondTimeRange: true, startHour: "11:30", endHour: "14:30", startHour2: "18:30", endHour2: "23:30" },
-                "thursday": { isOpen: true, isSecondTimeRange: true, startHour: "11:30", endHour: "14:30", startHour2: "18:30", endHour2: "23:30" },
-                "friday": { isOpen: true, isSecondTimeRange: true, startHour: "11:30", endHour: "14:30", startHour2: "18:30", endHour2: "23:30" },
-                "saturday": { isOpen: true, isSecondTimeRange: true, startHour: "11:30", endHour: "14:30", startHour2: "18:30", endHour2: "23:30" },
-                "sunday": { isOpen: true, isSecondTimeRange: false, startHour: "11:30", endHour: "14:00", startHour2: null, endHour2: null },
+            Name: req.body.Username,
+            Type: req.body.Type,
+            Legal: {AccountName: "", IBAN: req.body.Legal.IBAN, SIRET: req.body.Legal.SIRET},
+            belongs_to: req.params.id,
+            hours: {
+                monday: {
+                    isOpen: true,
+                    isSecondTimeRange: true,
+                    startHour: "",
+                    endHour: "",
+                    startHour2: "",
+                    endHour2: "",
+                },
+                tuesday: {
+                    isOpen: true,
+                    isSecondTimeRange: true,
+                    startHour: "",
+                    endHour: "",
+                    startHour2: "",
+                    endHour2: "",
+                },
+                wednesday: {
+                    isOpen: true,
+                    isSecondTimeRange: true,
+                    startHour: "",
+                    endHour: "",
+                    startHour2: "",
+                    endHour2: "",
+                },
+                thursday: {
+                    isOpen: true,
+                    isSecondTimeRange: true,
+                    startHour: "",
+                    endHour: "",
+                    startHour2: "",
+                    endHour2: "",
+                },
+                friday: {
+                    isOpen: true,
+                    isSecondTimeRange: true,
+                    startHour: "",
+                    endHour: "",
+                    startHour2: "",
+                    endHour2: "",
+                },
+                saturday: {
+                    isOpen: true,
+                    isSecondTimeRange: true,
+                    startHour: "",
+                    endHour: "",
+                    startHour2: "",
+                    endHour2: "",
+                },
+                sunday: {
+                    isOpen: true,
+                    isSecondTimeRange: true,
+                    startHour: "",
+                    endHour: "",
+                    startHour2: "",
+                    endHour2: "",
+                },
             },
-            "Preference": { NotificationCommand: Boolean, NotificationDeliveryman: Boolean, NotificationActivities: Boolean },
-        });
+            Address: {Number: "", Street: "", Town: "", Code: ""},
+            Phone: req.body.Phone,
+        })
 
+        //console.log("restaurant ", restaurant)
         if(!restaurant.populated('belongs_to')){
             await restaurant.populate('belongs_to')
                 .then(p=>console.log(p))
                 .catch(error=>console.log(error));
         }
-        restaurant = await restaurant.save();
+        await restaurant.save();
         res.status(200).json({
             restaurant,
         });
     } catch (err) {
-        res.status(400).json({
+        throw err
+        /*res.status(400).json({
             status: 400,
-            message: err.message,
-        })
+            message: err,
+        })*/
     }
 });
 
@@ -49,6 +96,7 @@ router.get("/", async (req, res) => {
         res.status(200).json({
             restaurants,
         });
+
     } catch (err) {
         res.status(400).json({
             status: 400,
@@ -61,7 +109,10 @@ router.get("/:id", async (req, res) => {
     try {
         let restaurant = await RestaurantModel.findOne({
             _id: req.params.id,
-        });
+        }).populate('belongs_to')
+            .then(p => console.log(p))
+            .catch(error => console.log(error));
+
         if (restaurant) {
             res.status(200).json({
                 status: 200,
@@ -85,9 +136,9 @@ router.put("/:id", async (req, res) => {
                 })
             })
     } catch (err) {
-            res.status(400).json({
-                status: 400,
-                message: err.message,
+        res.status(400).json({
+            status: 400,
+            message: err.message,
         });
     }
 

@@ -4,31 +4,32 @@ const jwt = require('jsonwebtoken');
 const config = require('../config')
 const UserModel = require('../models/User')
 const router = express.Router();
+const utils = require('../ExternCalls.js')
+
 
 // Register
-router.post('/register', function (req, res) {
-    let newUser = new UserModel();
-
-    newUser.Username = req.body.username;
-    newUser.Email = req.body.email;
-    newUser.Password = bcrypt.hashSync(req.body.password, 8);
-    newUser.Phone = req.body.phone;
-    newUser.Type = req.body.type;
-    newUser.Role = req.body.role;
-    newUser.Legal = {
-        SIRET: req.body.legal.siret,
-        IBAN: req.body.legal.iban
-    }
+router.post('/register', async function (req, res) {
+    let newUser = new UserModel.model({
+        Username: req.body.username,
+        Email: req.body.email,
+        Password: bcrypt.hashSync(req.body.password, 8),
+        Phone: req.body.phone,
+        Type: req.body.type,
+        Role: req.body.role,
+        Legal: {
+            SIRET: req.body.legal.siret,
+            IBAN: req.body.legal.iban,
+        }
+    });
 
 
     try {
-        let r = UserModel.findOne({Email: req.body.email}).exec().then(r => {
+        let r = await UserModel.model.findOne({Email: req.body.email}).exec().then(r => {
             return r;
-
         })
 
-        if (!!r) {
-            console.log(`"result: "${r}`)
+        if (r != null) {
+            console.log("Already existing: ", r)
             throw "un utilisateur est déjà enregistré sous cet email"
         }
 
@@ -43,9 +44,18 @@ router.post('/register', function (req, res) {
                 res.status(200).json({
                     auth: true,
                     token: token,
-                    user: r,
+                    user: newUser,
                 });
             });
+        try {
+            await utils.createProfile(newUser).then(r => console.log("CreateProfile: ", r))
+        } catch (e) {
+            console.log(e)
+            res.status(400).json({
+                message: e,
+            })
+            return res
+        }
     } catch (err) {
         console.log(err)
         res.status(400).json({
@@ -58,29 +68,28 @@ router.post('/register', function (req, res) {
 
 router.post('/login', async (req, res) => {
     //https://www.digitalocean.com/community/tutorials/how-to-set-up-vue-js-authentication-and-route-handling-using-vue-router
-    let user = new UserModel()
+    let pwdIsValid = false
+
     try {
-        user = await UserModel.findOne({Email: req.body.email}).then(r => {
+        let user = await UserModel.model.findOne({Email: req.body.email}).then(r => {
             return r;
         })
 
-        let pwdIsValid = false
-
-        if(user){
-            pwdIsValid = bcrypt.compareSync(req.body.password, user.Password);
-        }
         console.log(user)
 
+        if (user != null) {
+            pwdIsValid = bcrypt.compareSync(req.body.password, user.Password);
+        }
         if (!!!user || !pwdIsValid) {
             throw "Aucun utilisateur avec ce couple email/mot de passe n'a été trouvé"
         }
-
 
         let token = jwt.sign(
             {id: user._id},
             config.secret,
             {expiresIn: 86400} //24h
         );
+
         res.status(200).json({
             auth: true,
             token: token,
@@ -97,7 +106,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/', function (req, res) {
-    UserModel.find(function (err, data) {
+    UserModel.model.find(function (err, data) {
         if (err) {
             console.log(err);
         } else {
@@ -107,7 +116,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/:token', function (req, res) {
-    UserModel.findOne({UserId: req.params.token}, function (err, data) {
+    UserModel.model.findOne({UserId: req.params.token}, function (err, data) {
         if (err) {
             console.log(err);
         } else {
@@ -117,7 +126,7 @@ router.get('/:token', function (req, res) {
 });
 
 router.delete('/:id', function (req, res) {
-    UserModel.remove({UserId: req.params.id}, function (err, data) {
+    UserModel.model.remove({UserId: req.params.id}, function (err, data) {
         if (err) {
             console.log(err);
         } else {

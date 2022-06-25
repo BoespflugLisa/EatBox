@@ -81,12 +81,15 @@ export default class DashboardRestaurant extends Vue {
     }
 
     mounted() {
-        this.$axios.get(`stats/62b04dcfff5bc1bbf9802446`)
+        this.$axios.get(`stats/`+this.$cookies.get('user').id)
             .then(response => {
-                this.stats.restaurantName = response.data.stat.belongs_to.Name;
+                this.stats.restaurantName = response.data.stat.belongs_to.Username;
                 this.stats.nbCommandes = response.data.stat.NbOrders;
                 this.stats.moyenneNote = response.data.stat.MeanNotes;
                 this.stats.recetteDuMois = response.data.stat.Benefit;
+            })
+            .catch(err=>{
+                console.log(err)
             })
     }
 
