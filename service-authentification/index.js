@@ -30,6 +30,7 @@ db.mongoose.connect(db.url, db.options)
         process.exit();
     });
 
+
 app.use("/", Authrouter);
 
 app.listen(port, function () {

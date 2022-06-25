@@ -1,8 +1,9 @@
 <template>
     <div>
         <v-main>
-            <p class="text-center">Utilisez votre nom d'utilisateur et votre mot de passe pour vous connecter au EatBox
-                Restaurant.</p>
+            <p class="text-center">Utilisez votre email et votre mot de passe pour vous connecter au EatBox
+                <span v-if="this.$cookies.get('role')==='Restaurant'">Restaurant</span>
+                <span v-if="this.$cookies.get('role')==='Livreur'">Livreur</span></p>
             <v-alert
                 color="accent"
                 shaped

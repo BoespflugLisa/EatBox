@@ -1,6 +1,5 @@
 const express = require("express");
 const RestaurantModel = require("../../models/Restaurant")
-const UserModel = require("../../models/User")
 const router = express.Router();
 
 router.post("/:id", async (req, res) => {

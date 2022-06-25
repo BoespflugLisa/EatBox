@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 let ClientSchema = new Schema(
     {
-        belongs_to : {type: Schema.Types.ObjectId, ref: 'UserModel'},
+        belongs_to : {type: Schema.Types.ObjectId, ref: 'UsersLogModel'},
     }
 );
 

@@ -25,6 +25,13 @@ db.secret = config.secret;
 
 const UsersModel = require("./models/User");
 
+/*const RestaurantsModel = require("../service-databaseNoSQL/models/Restaurant");
+const OrdersModel = require("../service-databaseNoSQL/models/Order");
+const ArticlesModel = require("../service-databaseNoSQL/models/Article");
+const StatsModel = require("../service-databaseNoSQL/models/Stats")
+const MenusModel = require("../service-databaseNoSQL/models/Menu");
+const PerformancesModel = require("../service-databaseNoSQL/models/Perfomance");*/
+
 db.users = UsersModel;
 
 module.exports = db;

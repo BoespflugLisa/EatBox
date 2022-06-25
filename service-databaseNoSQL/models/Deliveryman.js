@@ -3,7 +3,7 @@ let Schema = mongoose.Schema;
 
 let DeliverymanSchema = new Schema(
     {
-        belongs_to : {type: Schema.Types.ObjectId, ref: 'UserModel'},
+        belongs_to : {type: Schema.Types.ObjectId, ref: 'UsersLogModel'},
         Name: String,
         Firstname: String,
         Picture: String,
