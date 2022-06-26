@@ -220,7 +220,7 @@
         </validation-observer>
 
         <v-snackbar color="success" v-model="snackbarSuccess">
-            Mise à jour efféctué avec succées
+            Mise à jour effectuée avec succès
             <template v-slot:action="{ attrs }">
                 <v-btn
                     icon v-bind="attrs"
