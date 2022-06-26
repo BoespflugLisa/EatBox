@@ -67,9 +67,7 @@ export default class AccueilClient extends Vue {
     showRestoDetail(resto) {
 
 
-        this.$axios.put(`ClientRestaurantDetail/` + resto._id, {data: resto}).then(response => {
-            response.data;
-        })
+
 
         this.$router.push({name: 'ClientRestaurantDetail', params: {id: resto._id}});
 

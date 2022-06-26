@@ -2,10 +2,9 @@
     <div class="side-padding mt-5">
 
         <v-item-group
-          v-model="selected"
         >
-            <v-item v-slot="{ active, toggle }"
-                    v-model="selected">
+            <v-item
+              v-model="active">
                 <v-img
                   :src=restaurantImage
                   height="200px"
@@ -14,10 +13,10 @@
                     <v-btn
                       icon
                       dark
-                      @click="toggle"
+                      @click="toggleAndSnack()"
                     >
                         <v-icon>
-                            {{ active ? 'mdi-heart-outline' : 'mdi-heart' }}
+                            {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}
                         </v-icon>
 
                     </v-btn>
@@ -31,91 +30,96 @@
         <p>Frais de livraisons : {{ faisDeLivraison }} € </p>
         <p>{{ restaurantType }}</p>
 
+        <div v-if=" menus.length !== 0 ">
+            <h2 class="mt-3">
 
-        <h2 class="mt-3">
+                <v-icon color="dark">
+                    mdi-food
+                </v-icon>
+                Menus
+            </h2>
 
-            <v-icon color="dark">
-                mdi-food
-            </v-icon>
-            Menus
-        </h2>
-
-
-        <v-card
-
-          class="ml-2 mt-5 ml-2 "
-          v-for="(menu) in menus"
-          v-bind:key=menu._id
-          :src=menu.Image
-          @click="AddToCard()"
-        >
-            <v-img
-              rounded
-              height="100px"
-              :src=menu.Image
-            ></v-img>
-
-            <VCardTitle>
-                {{ menu.Name }}
-
-            </VCardTitle>
-            <VCardText>
-                {{ menu.Description }}
-
-            </VCardText>
-
-        </v-card>
-
-
-        <h2 class="mt-10">
-
-            <v-icon color="dark">
-                mdi-food
-            </v-icon>
-            Articles
-        </h2>
-
-
-        <div
-
-          class="ml-2 mt-5 ml-2 "
-          v-for="(categorie) in this.categories"
-          v-bind:key=categorie._id
-        >
-            <p class="mt-10 font-20">
-                {{ categorie.name }}
-            </p>
 
             <v-card
 
               class="ml-2 mt-5 ml-2 "
-              v-for="(article) in articles"
-              v-bind:key=article._id
-              :src=article.ArticleImg
+              v-for="(menu) in menus"
+              v-bind:key=menu._id
+              :src=menu.Image
               @click="AddToCard()"
-
             >
-                <div v-if="article.Category._id === categorie.id">
-                    <v-img
-                      rounded
-                      height="100px"
-                      :src=article.ArticleImg
-                    ></v-img>
+                <v-img
+                  rounded
+                  height="100px"
+                  :src=menu.Image
+                ></v-img>
 
-                    <VCardTitle>
-                        {{ article.Name }}
+                <VCardTitle>
+                    {{ menu.Name }}
 
-                    </VCardTitle>
-                    <VCardText>
-                        {{ article.Description }}
+                </VCardTitle>
+                <VCardText>
+                    {{ menu.Description }}
 
-                    </VCardText>
-                </div>
-
+                </VCardText>
 
             </v-card>
         </div>
+        <div v-if=" articles.length !== 0 ">
+            <h2 class="mt-10">
 
+                <v-icon color="dark">
+                    mdi-food
+                </v-icon>
+                Articles
+            </h2>
+
+
+            <div
+
+              class="ml-2 mt-5 ml-2 "
+              v-for="(categorie) in this.categories"
+              v-bind:key=categorie._id
+            >
+                <p class="mt-10 font-20">
+                    {{ categorie.name }}
+                </p>
+
+                <v-card
+
+                  class="ml-2 mt-5 ml-2 "
+                  v-for="(article) in articles"
+                  v-bind:key=article._id
+                  :src=article.ArticleImg
+                  @click="AddToCard()"
+
+                >
+                    <div v-if="article.Category._id === categorie.id">
+                        <v-img
+                          rounded
+                          height="100px"
+                          :src=article.ArticleImg
+                        ></v-img>
+
+                        <VCardTitle>
+                            {{ article.Name }}
+
+                        </VCardTitle>
+                        <VCardText>
+                            {{ article.Description }}
+
+                        </VCardText>
+                    </div>
+
+
+                </v-card>
+            </div>
+        </div>
+
+        <div class="justify-center text-center mt-10" v-if=" articles.length == 0 &&  menus.length == 0 ">
+            <h1 > On dirait que {{ restaurantName }} n'as pas encore publié sa carte ! Reviens plus tard (っ˘ڡ˘ς) </h1>
+        </div>
+        <eatbox-snackbar ref="snack"/>
     </div>
 
 
@@ -123,9 +127,12 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
+import EatboxSnackbar from "../components/Snack/EatboxSnackbar.vue";
 
 @Component({
-    components: {}
+    components: {
+        EatboxSnackbar,
+    }
 })
 
 export default class ClientRestaurantDetail extends Vue {
@@ -138,15 +145,20 @@ export default class ClientRestaurantDetail extends Vue {
     restaurantID = ''
     articles = []
     categories: Array<object> = []
-    selected = 0
+    active = false
 
     async mounted() {
         await this.$axios.get(`restaurants/menus/` + this.restaurantID)
           .then(response => {
-              this.restaurantType = response.data.menu[0].made_by.Type
-              this.restaurantName = response.data.menu[0].made_by.Name
-              this.restaurantImage = response.data.menu[0].made_by.CoverImg
               this.menus = response.data.menu
+
+          })
+
+        await this.$axios.get(`restaurants/` + this.restaurantID)
+          .then(response => {
+              this.restaurantType = response.data.restaurant.Type
+              this.restaurantName = response.data.restaurant.Name
+              this.restaurantImage = response.data.restaurant.CoverImg
 
           })
 
@@ -166,8 +178,19 @@ export default class ClientRestaurantDetail extends Vue {
     }
 
 
+    $refs!: {
+        snack: EatboxSnackbar,
+    }
 
 
+    toggleAndSnack() {
+        this.active = !this.active
+        if (this.active) {
+            this.$refs.snack.openSnackbar("Ajouté au favoris", "success");
+        } else {
+            this.$refs.snack.openSnackbar("Retiré des favoris", "fail");
+        }
+    }
 
     created() {
         this.restaurantID = this.$route.params.id;
@@ -175,7 +198,7 @@ export default class ClientRestaurantDetail extends Vue {
 
     AddToCard() {
         console.log("prout")
-        console.log(this.selected)
+
     }
 
 }
