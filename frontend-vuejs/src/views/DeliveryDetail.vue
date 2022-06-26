@@ -149,14 +149,14 @@ export default {
     },
 
     async mounted() {
-        await this.$axios.get(`orders/62b42f825b8ad063a37b74d9`)
+        await this.$axios.get(`orders/` + this.orderID )
           .then(response => {
               this.stateNumber = response.data.order.State
               this.commandState = this.states[response.data.order.State]
               this.idClient = response.data.order.Client.Client_ID._id
               this.myAdresse = response.data.order.Client.Client_ID.Address.Number + ' ' + response.data.order.Client.Client_ID.Address.Street + ' , ' + response.data.order.Client.Client_ID.Address.Town + ' , ' + response.data.order.Client.Client_ID.Address.Code
               this.RestaurantAdresse =  response.data.order.Restaurant.Address.Number + ' ' + response.data.order.Restaurant.Address.Street + ' , ' +  response.data.order.Restaurant.Address.Town + ' , ' + response.data.order.Client.Client_ID.Address.Town
-
+console.log(response.data.order)
 
           })
 

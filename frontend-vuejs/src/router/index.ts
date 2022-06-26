@@ -56,9 +56,16 @@ const routes: Array<RouteConfig> = [
 
 
   {
-    path: '/AccueilClient',
+    path: '/Accueil',
     name: 'AccueilClient',
     component: () => import('../views/AccueilClient.vue'),
+    //meta: { requiresAuth: true, isUser: 'Client'},
+  },
+
+  {
+    path: '/DetailRestaurant/:id',
+    name: 'ClientRestaurantDetail',
+    component: () => import('../views/ClientRestaurantDetail.vue'),
     //meta: { requiresAuth: true, isUser: 'Client'},
   },
 

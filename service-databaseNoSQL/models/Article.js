@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 let ArticleSchema = new Schema(
     {
-        made_by: {type: String, ref: 'RestaurantModel'},
+        made_by: {type: Schema.Types.ObjectId, ref: 'RestaurantModel'},
         //belongs_to : {type: [Schema.Types.ObjectId], ref: "Categories"},
         Name: String,
         Image_path: String,

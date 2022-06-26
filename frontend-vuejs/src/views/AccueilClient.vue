@@ -10,7 +10,7 @@
           v-for="(resto, index) in restaurant"
           v-bind:key=index
           :src=resto.CoverImg
-          @click="resto.state=true"
+          @click="showRestoDetail(resto)"
         >
             <v-img
               rounded
@@ -46,10 +46,10 @@ import {Component, Vue} from 'vue-property-decorator';
 
 export default class AccueilClient extends Vue {
 
-    //restaurant = null
 
+    clickedResto={}
     restaurant: Array<string> = []
-    isEditing=false
+
 
 
 
@@ -60,6 +60,18 @@ export default class AccueilClient extends Vue {
               //response.data.restaurants.forEach(element => this.restaurant.push(element.Name));
 
           })
+
+    }
+
+
+    showRestoDetail(resto) {
+
+
+        this.$axios.put(`ClientRestaurantDetail/` + resto._id, {data: resto}).then(response => {
+            response.data;
+        })
+
+        this.$router.push({name: 'ClientRestaurantDetail', params: {id: resto._id}});
 
     }
 

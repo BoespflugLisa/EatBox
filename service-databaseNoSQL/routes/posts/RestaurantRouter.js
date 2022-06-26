@@ -2,6 +2,8 @@ const express = require("express");
 const RestaurantModel = require("../../models/Restaurant")
 const UserModel = require("../../models/User")
 const router = express.Router();
+const MenuModel = require("../../models/Menu")
+const ArticleModel = require("../../models/Article")
 
 router.post("/:id", async (req, res) => {
     try {
@@ -42,6 +44,45 @@ router.post("/:id", async (req, res) => {
         })
     }
 });
+
+//GET tous les menus d'un restaurant
+router.get("/menus/:id", async (req, res) => {
+    try {
+        let menu = await MenuModel.find({made_by:req.params.id})
+            .populate('Articles', 'Name')
+            .populate('made_by')
+        if (menu) {
+            res.status(200).json({
+                menu,
+            });
+        }
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        })
+    }
+})
+
+
+//GET tous les articles d'un restaurant
+router.get("/articles/:id", async (req, res) => {
+    try {
+        let article = await ArticleModel.find({made_by:req.params.id})
+            .populate('made_by')
+        if (article) {
+            res.status(200).json({
+                article,
+            });
+        }
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        })
+    }
+})
+
 
 router.get("/", async (req, res) => {
     try {
