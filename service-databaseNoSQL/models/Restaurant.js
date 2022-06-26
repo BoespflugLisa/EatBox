@@ -9,8 +9,11 @@ let RestaurantSchema = new Schema(
             //https://stackoverflow.com/questions/18001478/referencing-another-schema-in-mongoose
             //https://mongoosejs.com/docs/populate.html
         },*/
+        Role : String,
         Name: String,
         Type: String,
+        CoverImg : String,
+        ProfileImg: String,
         hours: {
             monday: {
                 isOpen: Boolean,

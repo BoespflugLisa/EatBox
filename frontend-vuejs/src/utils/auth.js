@@ -20,14 +20,21 @@ export function registerUser(form) {
                     legal: form.legal,
                     role: form.role,
                     phone: form.phone,
+                    CoverImg : form.CoverImg,
+                    ProfileImg : form.ProfileImg
                 }
             })
 
-            setAuthToken(res.data.auth, res.data.token)
+            console.log(res)
+
+            /*setAuthToken(res.data.auth, res.data.token)
             setRole(res.data.user.Role)
             setUser({
                 id: res.data.user._id,
-            })
+                restaurant: res.data.user.restaurant,
+                client: res.data.user.client,
+                livreur: res.data.user.livreur
+            })*/
             resolve()
         } catch (err) {
             console.error('Erreur lors de l\'inscription: ', err)
@@ -36,7 +43,7 @@ export function registerUser(form) {
     })
 }
 
-export function loginUser(username, password) {
+export function loginUser(username, password, role) {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
         try {
@@ -48,15 +55,20 @@ export function loginUser(username, password) {
                     password: password,
                 }
             })
-            console.log(res.data)
+
             setAuthToken(res.data.auth, res.data.token)
+            setRole(role)
             setUser({
                 id: res.data.user._id,
-                restaurant: res.data.user.restaurant._id
+                restaurant: res.data.user.restaurant,
+                livreur: res.data.user.livreur,
+                client : res.data.user.client,
             })
+
+
             resolve()
         } catch (err) {
-            console.error('Erreur lors de la connexion:', err)
+            console.error('Erreur lors de la connexion:', err.response.data.message)
             reject(err)
         }
     })

@@ -36,9 +36,9 @@ router.post("/:id", async (req, res) => {
         let stat = new StatsModel({
             belongs_to: req.params.id,
             Date: new Date(),
-            MeanNotes: 0,//stats.meannotes,
-            NbOrders: 2,//stats.nborders,
-            Benefit: 2,//stats.benefits,
+            MeanNotes: null,//stats.meannotes,
+            NbOrders: null,//stats.nborders,
+            Benefit: null,//stats.benefits,
             //NewFave : stats,
         })
         await stat.save();
@@ -86,7 +86,7 @@ router.get("/:id", async (req, res) => {
         console.log(err.message)
         res.status(400).json({
             status: 400,
-            message: "La stat n'a pas été trouvé.",
+            message: "Vos statistiques n'ont pas été trouvées.",
         });
     }
 })
