@@ -1,5 +1,64 @@
 <template>
     <div id="restaurant-infos">
+        <div class="d-flex mt-3">
+            <h2>Image du restaurant</h2>
+            <v-btn
+                icon class="ml-3"
+                color="primary"
+                v-if="!editImg"
+                @click="showEditImg()"
+            >
+                <v-icon size="25">mdi-pencil</v-icon>
+            </v-btn>
+            <div v-else class="ml-3">
+                <v-btn
+                    icon
+                    color="primary"
+                    @click="updateImg()"
+                    :loading="loadingImg"
+                >
+                    <v-icon size="25">mdi-check</v-icon>
+                </v-btn>
+                <v-btn
+                    icon
+                    color="primary"
+                    @click="editImg = !editImg"
+                >
+                    <v-icon size="25">mdi-close</v-icon>
+                </v-btn>
+            </div>
+        </div>
+
+
+        <div class="mt-3 img-container" v-if="!editImg">
+            <v-img height="200px" width="100%" :src="this.restaurantInfos.CoverImg" class="rounded-lg"/>
+            <v-img class="rounded-circle profile-img" height="150px" width="150px"
+                   :src="this.restaurantInfos.ProfileImg"/>
+        </div>
+
+        <div v-else>
+
+            <v-file-input
+                show-size v-model="editedCoverImg"
+                truncate-length="15"
+                prepend-icon="mdi-image-area"
+                label="Image de couverture"
+                @change="uploadImg()"
+                accept="image/*"
+            />
+
+
+            <v-file-input
+                show-size v-model="editedProfileImg"
+                truncate-length="15"
+                prepend-icon="mdi-image"
+                label="Image de profil"
+                @change="uploadImg()"
+                accept="image/*"
+            />
+        </div>
+
+
         <h2 class="mt-3">
             Informations du restaurant
             <v-btn
@@ -132,16 +191,8 @@
                 />
             </validation-provider>
 
-
             <h3 class="mt-3 mb-3">Adresse mail</h3>
-            <p v-if="!editContact">{{ restaurantInfos.Mail }}</p>
-            <validation-provider name="Email" v-else rules="required|email" v-slot="{ errors, valid }">
-                <v-text-field
-                    v-model="editedMail"
-                    :error-messages="errors"
-                    :success="valid"
-                />
-            </validation-provider>
+            <p>{{ restaurantInfos.belongs_to.Email }}</p>
 
             <h3 class="mt-3 mb-3">Numéro de SIRET</h3>
             <p v-if="!editContact">{{ restaurantInfos.Legal.SIRET }}</p>
@@ -276,7 +327,11 @@ export default class RestaurantInfos extends Vue {
     restaurantInfos = {
         Name: "",
         Phone: "",
-        Mail: "",
+        ProfileImg: "",
+        CoverImg: "",
+        belongs_to: {
+            Email: "",
+        },
         Address: {
             Number: 0,
             Street: "",
@@ -292,6 +347,13 @@ export default class RestaurantInfos extends Vue {
         }
     }
 
+    editImg = false
+    loadingImg = false
+    editedCoverImg = null
+    resultCoverImg: ArrayBuffer | string | null = null
+    editedProfileImg = null
+    resultProfileImg: ArrayBuffer | string | null = null
+
     editInfo = false
     loadingInfo = false
     editedRestaurantName = ""
@@ -305,7 +367,6 @@ export default class RestaurantInfos extends Vue {
     editContact = false
     loadingContact = false
     editedPhone = ""
-    editedMail = ""
     editedSiret = ""
 
     editBank = false
@@ -317,14 +378,35 @@ export default class RestaurantInfos extends Vue {
     snackbarSuccess = false
     snackbarError = false
 
-    /*mounted() {
-        this.restaurantId = this.$store.state.User.id
-    }*/
-
     getData(data, id) {
         this.restaurantId = id;
         this.restaurantInfos = data;
         this.$refs.schedule.getHours(data.hours);
+    }
+
+    showEditImg() {
+        this.editImg = true
+    }
+
+    uploadImg() {
+        const reader = new FileReader();
+        if (this.editedProfileImg !== null) {
+            reader.onloadend = () => {
+                this.resultProfileImg = reader.result;
+            }
+            reader.readAsDataURL(this.editedProfileImg);
+        } else {
+            this.resultProfileImg = null;
+        }
+
+        if (this.editedCoverImg !== null) {
+            reader.onloadend = () => {
+                this.resultCoverImg = reader.result;
+            }
+            reader.readAsDataURL(this.editedCoverImg);
+        } else {
+            this.resultCoverImg = null;
+        }
     }
 
     showEditInfo() {
@@ -335,7 +417,6 @@ export default class RestaurantInfos extends Vue {
 
     showEditContact() {
         this.editedPhone = this.restaurantInfos.Phone;
-        this.editedMail = this.restaurantInfos.Mail;
         this.editedSiret = this.restaurantInfos.Legal.SIRET;
         this.editContact = true;
     }
@@ -345,6 +426,19 @@ export default class RestaurantInfos extends Vue {
         this.editedBic = this.restaurantInfos.Legal.BIC;
         this.editedIban = this.restaurantInfos.Legal.IBAN;
         this.editBank = true;
+    }
+
+    updateImg() {
+        if (this.resultCoverImg !== null || this.resultProfileImg !== null) {
+            this.loadingImg = true;
+            if (this.resultCoverImg !== null)
+                this.restaurantInfos.CoverImg = this.resultCoverImg.toString();
+
+            if (this.resultProfileImg !== null)
+                this.restaurantInfos.CoverImg = this.resultProfileImg.toString();
+
+            this.updateRestaurant();
+        }
     }
 
     updateInfos() {
@@ -363,7 +457,6 @@ export default class RestaurantInfos extends Vue {
             if (success) {
                 this.loadingContact = true
                 this.restaurantInfos.Phone = this.editedPhone;
-                this.restaurantInfos.Mail = this.editedMail;
                 this.restaurantInfos.Legal.SIRET = this.editedSiret
                 this.updateRestaurant()
             }
@@ -382,20 +475,22 @@ export default class RestaurantInfos extends Vue {
         })
     }
 
-    updateHours(hours){
+    updateHours(hours) {
         this.restaurantInfos.hours = hours;
         this.updateRestaurant();
     }
 
     updateRestaurant() {
-        axios.put("restaurants/" + this.restaurantId, {data: this.restaurantInfos}).then(() => {
+        this.$axios.put("restaurants/" + this.restaurantId, {data: this.restaurantInfos}).then(() => {
             this.snackbarSuccess = true
         }).catch(() => {
             this.snackbarError = true;
         }).finally(() => {
+            this.loadingImg = false;
             this.loadingInfo = false;
             this.loadingContact = false;
             this.loadingBank = false;
+            this.editImg = false;
             this.editInfo = false;
             this.editContact = false;
             this.editBank = false;
@@ -406,5 +501,14 @@ export default class RestaurantInfos extends Vue {
 </script>
 
 <style scoped>
+.img-container {
+    position: relative;
+    margin-bottom: 75px;
+}
 
+.profile-img {
+    position: absolute;
+    bottom: -75px;
+    left: 0;
+}
 </style>

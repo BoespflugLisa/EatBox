@@ -436,7 +436,7 @@ export default class ArticlesEtMenus extends Vue {
     itemPrix = 0
     itemtemtem = ''
     itemDesc = ''
-    showArtileEdit = false
+    showArticleEdit = false
     $refs!: {
         obs: InstanceType<typeof ValidationObserver>
         obsArticle: InstanceType<typeof ValidationObserver>

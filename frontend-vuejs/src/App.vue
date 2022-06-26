@@ -21,16 +21,6 @@
                 </v-icon>
             </v-btn>
         </v-app-bar>
-        <div class="pa-3 pb-0 ml-auto">
-            <v-btn
-                icon
-                @click="displayMenu()"
-            >
-                <v-icon>
-                    mdi-close
-                </v-icon>
-            </v-btn>
-        </div>
 
         <v-navigation-drawer
             v-model="drawer"
