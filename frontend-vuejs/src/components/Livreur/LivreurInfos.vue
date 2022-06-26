@@ -196,17 +196,21 @@
                 />
             </validation-provider>
         </validation-observer>
+
+        <eatbox-snackbar ref="snack"/>
     </div>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import {ValidationObserver, ValidationProvider} from "vee-validate";
+import EatboxSnackbar from "../Snack/EatboxSnackbar.vue";
 
 @Component({
     components: {
         ValidationObserver,
         ValidationProvider,
+        EatboxSnackbar,
     }
 })
 
@@ -215,6 +219,7 @@ export default class LivreurInfos extends Vue {
         obsInfo: InstanceType<typeof ValidationObserver>,
         obsContact: InstanceType<typeof ValidationObserver>,
         obsBank: InstanceType<typeof ValidationObserver>,
+        snack: EatboxSnackbar,
     }
 
     deliverymanId = ""
@@ -254,7 +259,6 @@ export default class LivreurInfos extends Vue {
     getData(data, id) {
         this.deliverymanId = id;
         this.deliverymanInfos = data;
-        console.log(this.deliverymanInfos)
     }
 
     showEditImg() {
@@ -324,6 +328,10 @@ export default class LivreurInfos extends Vue {
 
     updateDeliveryman() {
         this.$axios.put("/deliverymans/" + this.deliverymanId, {data : this.deliverymanInfos}).then(() => {
+            this.$refs.snack.openSnackbar("Mise à jour efféctué avec succès", "success");
+        }).catch(() => {
+            this.$refs.snack.openSnackbar("Erreur lors de la mise à jour", "error");
+        }).finally(() => {
             this.loadingImg = false;
             this.loadingInfo = false;
             this.loadingContact = false;
