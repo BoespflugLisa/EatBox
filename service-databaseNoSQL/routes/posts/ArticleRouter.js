@@ -1,6 +1,7 @@
 const express = require("express");
 const ArticleModel = require("../../models/Article")
-const RestaurantModel = require("../../models/Restaurant");
+const {model: CategoryModel} = require("../../models/Category");
+const RestaurantModel = require("../../models/Restaurant").model;
 const router = express.Router();
 
 
@@ -85,21 +86,19 @@ router.get("/:id", async (req, res) => {
 })
 
 router.put("/:id", async(req, res) => {
-    const filter = {connected:'true', _id:req.params.id};
-
     try {
-        let article = await ArticleModel.findOne(filter, update,{new:true})
-
-        if (article) {
-            res.status(200).json({
-                article,
-            });
-        }
-    } catch (err) {
+        ArticleModel.updateOne({_id: req.params.id}, req.body.data).then(
+            () => {
+                res.status(204).json({
+                    message: 'Category updated successfully!'
+                });
+            })
+    }
+    catch(err) {
         res.status(400).json({
             status: 400,
             message: err.message,
-        })
+        });
     }
 })
 

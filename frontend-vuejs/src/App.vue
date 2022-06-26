@@ -15,27 +15,17 @@
                 />
             </router-link>
 
-            <v-btn v-if="this.cookie.auth" icon to="/notifications">
+            <v-btn v-if="this.$cookies.get('auth')" icon to="/notifications">
                 <v-icon color="white">
                     mdi-bell
                 </v-icon>
             </v-btn>
         </v-app-bar>
-        <div class="pa-3 pb-0 ml-auto">
-            <v-btn
-                icon
-                @click="displayMenu()"
-            >
-                <v-icon>
-                    mdi-close
-                </v-icon>
-            </v-btn>
-        </div>
 
         <v-navigation-drawer
             v-model="drawer"
             width="320" index fixed
-            v-if="this.cookie.auth"
+            v-if="this.$cookies.get('auth')"
         >
             <div class="pa-3 pb-0 ml-auto">
                 <v-btn
@@ -48,7 +38,7 @@
                 </v-btn>
             </div>
             <!--  MENU @Restaurant-->
-            <RestaurantSidebar v-if="this.cookie.role==='Restaurant'"/>
+            <RestaurantSidebar v-if="this.$cookies.get('role')==='Restaurant'"/>
             <template v-slot:append>
                 <div class="d-flex justify-center flex-column pa-5">
                     <v-btn
@@ -122,19 +112,8 @@ export default class App extends Vue {
     drawer = false;
     value = '';
 
-    cookie: any = ''
-
-    setCookie() {
-        this.cookie = {
-            role: this.$store.state.UserRole,
-            auth: this.$store.state.isConnected,
-            token: this.$store.state.token
-        }
-    }
-
     mounted() {
         this.changeTheme()
-        this.setCookie()
     }
 
     logout() {
@@ -144,12 +123,11 @@ export default class App extends Vue {
     }
 
     displayMenu() {
-        this.setCookie()
         this.drawer = !this.drawer;
     }
 
     changeTheme() {
-        switch (this.$store.state.UserRole) {
+        switch (this.$cookies.get('role')) {
             case "Client":
                 this.$vuetify.theme.themes.light.primary = '#2D5D62';
                 this.$vuetify.theme.themes.light.secondary = '#77A8A3';

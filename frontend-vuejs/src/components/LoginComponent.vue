@@ -1,8 +1,9 @@
 <template>
     <div>
         <v-main>
-            <p class="text-center">Utilisez votre nom d'utilisateur et votre mot de passe pour vous connecter au EatBox
-                Restaurant.</p>
+            <p class="text-center">Utilisez votre email et votre mot de passe pour vous connecter au EatBox
+                <span v-if="this.$cookies.get('role')==='Restaurant'">Restaurant</span>
+                <span v-if="this.$cookies.get('role')==='Livreur'">Livreur</span></p>
             <v-alert
                 color="accent"
                 shaped
@@ -66,7 +67,8 @@ export default class LoginComponent extends Vue {
     error_login = ""
     form = {
         email: "",
-        password: ""
+        password: "",
+        Role : this.$cookies.get('role'),
     }
     show1 = false
     rules = {
@@ -81,7 +83,7 @@ export default class LoginComponent extends Vue {
 
     async login() {
         try {
-            await loginUser(this.form.email, this.form.password)
+            await loginUser(this.form.email, this.form.password, this.form.Role)
                 .then(r => {
                     if(this.urlParams.get('redirect') != null){
                         this.$router.push(this.urlParams.get('redirect').toString())
@@ -91,7 +93,7 @@ export default class LoginComponent extends Vue {
                 })
 
         } catch (err:any) {
-            console.log(`Erreur: ${err.response.data.message}`)
+            //console.log(`Erreur: ${err.response.data.message}`)
             this.ReturnError = true;
             this.error_login = err.response.data.message
         }

@@ -3,15 +3,17 @@ let Schema = mongoose.Schema;
 
 let RestaurantSchema = new Schema(
     {
-        belongs_to : {type: Schema.Types.ObjectId, ref: 'UserModel'},/*{
+        belongs_to: {type: Schema.Types.ObjectId, ref: 'UsersLogModel'},/*{
             type: Schema.Types.ObjectId,
             ref: 'User'
             //https://stackoverflow.com/questions/18001478/referencing-another-schema-in-mongoose
             //https://mongoosejs.com/docs/populate.html
         },*/
+        Role : String,
         Name: String,
-        Mail : String,
         Type: String,
+        CoverImg : String,
+        ProfileImg: String,
         hours: {
             monday: {
                 isOpen: Boolean,
@@ -71,30 +73,33 @@ let RestaurantSchema = new Schema(
             },
         },
         Address: {
-            Number : String,
+            Number: String,
             Street: String,
             Town: String,
             Code: Number
         },
-        Phone : String,
+        Phone: String,
         Legal: {
             AccountName: String,
             IBAN: String,
             SIRET: String,
             BIC: String,
         },
-        Preference: {
+        Preferences: {
             NotificationCommand: Boolean,
             NotificationDeliveryman: Boolean,
             NotificationActivities: Boolean,
         },
-        Sponsors : {
-            sponsors : [String],
-            sponsored : [String],
+        Sponsors: {
+            sponsors: [String],
+            sponsored: [String],
         }
     }
 );
 
 let Restaurant = mongoose.model("RestaurantModel", RestaurantSchema, "restaurants");
 
-module.exports = Restaurant;
+module.exports = {
+    model: Restaurant,
+    schema : RestaurantSchema
+};

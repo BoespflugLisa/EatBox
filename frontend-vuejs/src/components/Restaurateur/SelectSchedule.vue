@@ -349,8 +349,8 @@ export default class SelectSchedule extends Vue {
 
     formIsValid = false
 
-    getHours(hours) {
-        this.hours = hours;
+    getHours(data) {
+        this.hours = data;
     }
 
     displaySchedule(day) {
@@ -388,9 +388,11 @@ export default class SelectSchedule extends Vue {
     validHours() {
         this.$refs.obs.validate().then(success => {
             if (success) {
+                console.log('test')
                 this.hours[this.editedDay] = this.schedule;
                 this.editedDay = "";
                 this.showDialog = false;
+                this.$emit('update-hours', this.hours)
             }
         });
     }

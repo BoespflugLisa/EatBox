@@ -2,18 +2,16 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let UserSchema = new Schema({
-    Username: String,
     Email: String,
     Password: String,
-    Phone : String,
-    Role : String, //Restaurant Livreur Client
-    Type : String,
-    Legal : {
-        SIRET : String,
-        IBAN : String,
-    }
+    restaurant : {type: Schema.Types.ObjectId, ref: 'RestaurantModel'},
+    livreur : {type: Schema.Types.ObjectId, ref: 'LivreurModel'},
+    client : {type: Schema.Types.ObjectId, ref: 'ClientModel'},
 });
 
 let UserLogin = mongoose.model("UsersLogModel", UserSchema, "users_login");
 
-module.exports = UserLogin;
+module.exports = {
+    model : UserLogin,
+    schema : UserSchema
+};

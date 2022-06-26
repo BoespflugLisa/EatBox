@@ -1,15 +1,13 @@
 const express = require("express");
-const ClientModel = require("../../models/Client");
-const UserModel = require("../../models/User");
+const ClientModel = require("../../models/Client").model;
 const router = express.Router();
 
 router.post("/:id", async(req, res) => {
     try {
-        let clientUser = await UserModel.findById(req.params.id).exec();
         let client = new ClientModel({
             "Name": "Bonnet",
             "Firstname": "Grosvenor",
-            "belongs_to": clientUser._id,
+            "belongs_to": req.params.id,
             "Picture": "Photo de profil",
             "Address": {"Number": "86", "Street": "rue Cazade", "Town": "DREUX", "Code": "28100"},
         });

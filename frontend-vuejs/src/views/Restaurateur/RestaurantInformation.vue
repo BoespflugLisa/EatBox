@@ -21,7 +21,6 @@ import {Component, Vue} from 'vue-property-decorator';
 import RestaurantInfos from "../../components/Restaurateur/RestaurantInfos.vue";
 import RestaurantPref from "../../components/Restaurateur/RestaurantPref.vue";
 import RestaurantSponsorship from "../../components/Restaurateur/RestaurantSponsorship.vue";
-import axios from "axios";
 
 @Component({
     components: {
@@ -33,14 +32,16 @@ import axios from "axios";
 
 export default class RestaurantInformation extends Vue {
 
-    tab = 0
+    restaurantId = this.$cookies.get('restaurant_id')
+
+    tab = 0;
     items = [
         {tab: "Info"},
         {tab: "Préférences"},
         {tab: "Parrainage"},
     ];
 
-    preferences = {};
+    restaurant = {}
 
     $refs!: {
         infos: RestaurantInfos,
@@ -55,16 +56,16 @@ export default class RestaurantInformation extends Vue {
     }
 
     getData() {
-        //this.$store.state.User.id
-        axios.get('/restaurants/62b47acd5997e91af99f7c37')
+        this.$axios.get('restaurants/'+this.$cookies.get('restaurant_id'))
             .then(response => {
-                this.preferences = response.data.restaurant.Preferences
-                this.$refs.infos.getData(response.data.restaurant);
+                console.log(response.data)
+                this.restaurant = response.data.restaurant;
+                this.$refs.infos.getData(response.data.restaurant, this.restaurantId);
             });
     }
 
     restaurantPrefReady() {
-        this.$refs.pref.getPreferences(this.preferences)
+        this.$refs.pref.getPreferences(this.restaurant, this.restaurantId)
     }
 }
 </script>

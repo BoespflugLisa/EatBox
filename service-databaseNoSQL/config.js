@@ -20,18 +20,19 @@ db.url = config.dbUrl
 db.options = config.options;
 
 const RestaurantsModel = require("./models/Restaurant");
-const UsersModel = require("./models/User");
 const OrdersModel = require("./models/Order");
 const ArticlesModel = require("./models/Article");
 const StatsModel = require("./models/Stats")
 const MenusModel = require("./models/Menu");
 const PerformancesModel = require("./models/Perfomance");
 
+const UsersSchema =  require("../service-authentification/models/User").schema
+db.mongoose.model('UsersLogModel', UsersSchema, "users_login")
+
 db.restaurants = RestaurantsModel;
-db.users = UsersModel;
 //db.deliverymen
 //db.menus
 //db.carts
 //db.articles
 
-module.exports = db, mongoose;
+module.exports = db;
