@@ -356,7 +356,7 @@ export default class SelectSchedule extends Vue {
     displaySchedule(day) {
         if (!this.hours[day].isOpen) {
             return "Fermé";
-        } else if (this.hours[day].startHour2 === null && this.hours[day].endHour2 === null && !this.hours[day].isSecondTimeRange) {
+        } else if (!this.hours[day].isSecondTimeRange) {
             return this.hours[day].startHour + " - " + this.hours[day].endHour;
         }
         return this.hours[day].startHour + " - " + this.hours[day].endHour + " / " + this.hours[day].startHour2 + " - " + this.hours[day].endHour2;

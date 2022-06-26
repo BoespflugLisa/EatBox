@@ -270,33 +270,7 @@
             </validation-provider>
         </validation-observer>
 
-        <v-snackbar color="success" v-model="snackbarSuccess">
-            Mise à jour efféctué avec succées
-            <template v-slot:action="{ attrs }">
-                <v-btn
-                    icon v-bind="attrs"
-                    @click="snackbarSuccess = false"
-                >
-                    <v-icon>
-                        mdi-close
-                    </v-icon>
-                </v-btn>
-            </template>
-        </v-snackbar>
-
-        <v-snackbar color="error" v-model="snackbarError">
-            Erreur lors de la mise à jour
-            <template v-slot:action="{ attrs }">
-                <v-btn
-                    icon v-bind="attrs"
-                    @click="snackbarError = false"
-                >
-                    <v-icon>
-                        mdi-close
-                    </v-icon>
-                </v-btn>
-            </template>
-        </v-snackbar>
+        <eatbox-snackbar ref="snack"/>
     </div>
 </template>
 
@@ -304,13 +278,14 @@
 import {Component, Vue} from 'vue-property-decorator';
 import SelectSchedule from './SelectSchedule.vue'
 import {ValidationObserver, ValidationProvider} from "vee-validate";
-import axios from "axios";
+import EatboxSnackbar from "../Snack/EatboxSnackbar.vue";
 
 @Component({
     components: {
         SelectSchedule,
         ValidationObserver,
         ValidationProvider,
+        EatboxSnackbar,
     },
 })
 
@@ -320,6 +295,7 @@ export default class RestaurantInfos extends Vue {
         obsInfo: InstanceType<typeof ValidationObserver>,
         obsContact: InstanceType<typeof ValidationObserver>,
         obsBank: InstanceType<typeof ValidationObserver>,
+        snack: EatboxSnackbar,
     }
 
     restaurantId = ""
@@ -374,9 +350,6 @@ export default class RestaurantInfos extends Vue {
     editedAccountName = ""
     editedBic = ""
     editedIban = ""
-
-    snackbarSuccess = false
-    snackbarError = false
 
     getData(data, id) {
         this.restaurantId = id;
@@ -482,9 +455,9 @@ export default class RestaurantInfos extends Vue {
 
     updateRestaurant() {
         this.$axios.put("restaurants/" + this.restaurantId, {data: this.restaurantInfos}).then(() => {
-            this.snackbarSuccess = true
+            this.$refs.snack.openSnackbar("Mise à jour efféctué avec succès", "success");
         }).catch(() => {
-            this.snackbarError = true;
+            this.$refs.snack.openSnackbar("Erreur lors de la mise à jour", "error");
         }).finally(() => {
             this.loadingImg = false;
             this.loadingInfo = false;
