@@ -191,10 +191,8 @@
                 />
             </validation-provider>
 
-
             <h3 class="mt-3 mb-3">Adresse mail</h3>
             <p>{{ restaurantInfos.belongs_to.Email }}</p>
-
 
             <h3 class="mt-3 mb-3">Numéro de SIRET</h3>
             <p v-if="!editContact">{{ restaurantInfos.Legal.SIRET }}</p>
