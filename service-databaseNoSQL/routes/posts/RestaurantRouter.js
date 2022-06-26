@@ -3,6 +3,7 @@ const RestaurantModel = require("../../models/Restaurant").model
 const router = express.Router();
 const MenuModel = require("../../models/Menu")
 const ArticleModel = require("../../models/Article")
+const CategoryModel = require("../../models/Category").model;
 
 router.post("/:id", async (req, res) => {
     try {
@@ -125,6 +126,7 @@ router.get("/articles/:id", async (req, res) => {
     try {
         let article = await ArticleModel.find({made_by:req.params.id})
             .populate('made_by')
+            .populate('Category')
         if (article) {
             res.status(200).json({
                 article,
@@ -137,6 +139,26 @@ router.get("/articles/:id", async (req, res) => {
         })
     }
 })
+
+
+//GET tous les categories d'un
+/*
+router.get("/categories/:id", async (req, res) => {
+    try {
+        let categorie = await CategoryModel.find({belongs_to:req.params.id})
+        if (categorie) {
+            res.status(200).json({
+                categorie,
+            });
+        }
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        })
+    }
+})*/
+
 
 
 router.get("/", async (req, res) => {

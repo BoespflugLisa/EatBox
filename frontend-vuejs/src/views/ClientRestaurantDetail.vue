@@ -1,11 +1,31 @@
 <template>
-    <div class="side-padding">
+    <div class="side-padding mt-5">
 
+        <v-item-group
+          v-model="selected"
+        >
+            <v-item v-slot="{ active, toggle }"
+                    v-model="selected">
+                <v-img
+                  :src=restaurantImage
+                  height="200px"
+                  class="text-right pa-2"
+                >
+                    <v-btn
+                      icon
+                      dark
+                      @click="toggle"
+                    >
+                        <v-icon>
+                            {{ active ? 'mdi-heart-outline' : 'mdi-heart' }}
+                        </v-icon>
 
-        <v-img
-          :src=restaurantImage
-          height="200px"
-        ></v-img>
+                    </v-btn>
+
+                </v-img>
+
+            </v-item>
+        </v-item-group>
 
         <h1 class="mt-3"> {{ restaurantName }}</h1>
         <p>Frais de livraisons : {{ faisDeLivraison }} € </p>
@@ -56,20 +76,26 @@
         </h2>
 
 
-            <div
+        <div
+
+          class="ml-2 mt-5 ml-2 "
+          v-for="(categorie) in this.categories"
+          v-bind:key=categorie._id
+        >
+            <p class="mt-10 font-20">
+                {{ categorie.name }}
+            </p>
+
+            <v-card
 
               class="ml-2 mt-5 ml-2 "
-              v-for="(categorie) in categories"
-              v-bind:key=categorie._id
-            >
-                <v-card
+              v-for="(article) in articles"
+              v-bind:key=article._id
+              :src=article.ArticleImg
+              @click="AddToCard()"
 
-                  class="ml-2 mt-5 ml-2 "
-                  v-for="(article) in articles"
-                  v-bind:key=article._id
-                  :src=article.ArticleImg
-                  @click="AddToCard()"
-                >
+            >
+                <div v-if="article.Category._id === categorie.id">
                     <v-img
                       rounded
                       height="100px"
@@ -84,11 +110,13 @@
                         {{ article.Description }}
 
                     </VCardText>
+                </div>
 
-                </v-card>
-            </div>
 
+            </v-card>
         </div>
+
+    </div>
 
 
 </template>
@@ -109,14 +137,15 @@ export default class ClientRestaurantDetail extends Vue {
     menus = []
     restaurantID = ''
     articles = []
-    categories = []
+    categories: Array<object> = []
+    selected = 0
 
     async mounted() {
         await this.$axios.get(`restaurants/menus/` + this.restaurantID)
           .then(response => {
               this.restaurantType = response.data.menu[0].made_by.Type
               this.restaurantName = response.data.menu[0].made_by.Name
-              this.restaurantImage =  response.data.menu[0].made_by.CoverImg
+              this.restaurantImage = response.data.menu[0].made_by.CoverImg
               this.menus = response.data.menu
 
           })
@@ -125,17 +154,20 @@ export default class ClientRestaurantDetail extends Vue {
           .then(response => {
 
               this.articles = response.data.article
-          })
-
-        await this.$axios.get(`restaurants/categories/` + this.restaurantID)
-          .then(response => {
-
-              this.categories = response.data.categorie
-
-
+              response.data.article.forEach(element => this.categories.push({
+                  name: element.Category.Name,
+                  id: element.Category._id
+              }));
+              this.categories = this.categories.filter((ele, pos) => {
+                  return this.categories.indexOf(ele) == pos;
+              })
           })
 
     }
+
+
+
+
 
     created() {
         this.restaurantID = this.$route.params.id;
@@ -143,6 +175,7 @@ export default class ClientRestaurantDetail extends Vue {
 
     AddToCard() {
         console.log("prout")
+        console.log(this.selected)
     }
 
 }

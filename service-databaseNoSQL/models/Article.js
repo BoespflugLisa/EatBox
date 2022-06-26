@@ -9,6 +9,7 @@ let ArticleSchema = new Schema(
         Image_path: String,
         Description: String,
         Price: Number,
+        Category: {type: Schema.Types.ObjectId, ref: 'CategoryModel'},
         Available: Boolean,
         Promotions: {
             UnPour2: Boolean,
