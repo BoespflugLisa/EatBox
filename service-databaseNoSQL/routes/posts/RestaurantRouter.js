@@ -6,7 +6,10 @@ router.post("/:id", async (req, res) => {
     try {
         let restaurant = new RestaurantModel({
             Name: req.body.Username,
+            Role: "Restaurant",
             Type: req.body.Type,
+            CoverImg : req.body.CoverImg,
+            ProfileImg: req.body.ProfileImg,
             Legal: {AccountName: "", IBAN: req.body.Legal.IBAN, SIRET: req.body.Legal.SIRET},
             belongs_to: req.params.id,
             hours: {
@@ -69,6 +72,11 @@ router.post("/:id", async (req, res) => {
             },
             Address: {Number: "", Street: "", Town: "", Code: ""},
             Phone: req.body.Phone,
+            Preferences: {
+                NotificationCommand: false,
+                NotificationDeliveryman: false,
+                NotificationActivities: false,
+            },
         })
 
         //console.log("restaurant ", restaurant)
@@ -128,7 +136,7 @@ router.get("/:id", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
     try {
-        RestaurantModel.updateOne({_id: req.params.id}, req.body.data).then(
+        RestaurantModel.findOneAndUpdate({_id: req.params.id}, req.body.data).then(
             () => {
                 res.status(204).json({
                     message: 'Restaurant updates successfully'

@@ -1,6 +1,18 @@
 <template>
     <div id="dashboard">
+        <div><v-alert
+            color="accent"
+            shaped
+            text
+            type="error"
+            @click="this.ReturnError = false"
+            v-show="this.ReturnError"
+        >
+            {{this.error_login}}
+        </v-alert>
+        </div>
         <div class="d-flex justify-center pt-7 ">
+
 
             <h2>
                 Bonjour, {{ this.stats.restaurantName }}
@@ -73,6 +85,9 @@ import {Component, Vue} from 'vue-property-decorator';
 
 export default class DashboardRestaurant extends Vue {
 
+    ReturnError = false
+    error_login = ""
+
     stats = {
         restaurantName : null,
         nbCommandes : null,
@@ -90,7 +105,9 @@ export default class DashboardRestaurant extends Vue {
                 this.stats.recetteDuMois = response.data.stat.Benefit;
             })
             .catch(err=>{
-                console.log(err)
+                console.log(err.response.data.message)
+                this.ReturnError = true;
+                this.error_login = err.response.data.message
             })
     }
 
