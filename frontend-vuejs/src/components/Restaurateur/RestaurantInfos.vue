@@ -192,15 +192,9 @@
             </validation-provider>
 
 
-<!--            <h3 class="mt-3 mb-3">Adresse mail</h3>
-            <p v-if="!editContact">{{ restaurantInfos.Mail }}</p>
-            <validation-provider name="Email" v-else rules="required|email" v-slot="{ errors, valid }">
-                <v-text-field
-                    v-model="editedMail"
-                    :error-messages="errors"
-                    :success="valid"
-                />
-            </validation-provider>-->
+            <h3 class="mt-3 mb-3">Adresse mail</h3>
+            <p>{{ restaurantInfos.belongs_to.Email }}</p>
+
 
             <h3 class="mt-3 mb-3">Numéro de SIRET</h3>
             <p v-if="!editContact">{{ restaurantInfos.Legal.SIRET }}</p>
@@ -337,7 +331,9 @@ export default class RestaurantInfos extends Vue {
         Phone: "",
         ProfileImg: "",
         CoverImg: "",
-        /*Mail: "",*/
+        belongs_to: {
+            Email: "",
+        },
         Address: {
             Number: 0,
             Street: "",
@@ -373,7 +369,6 @@ export default class RestaurantInfos extends Vue {
     editContact = false
     loadingContact = false
     editedPhone = ""
-    /*editedMail = ""*/
     editedSiret = ""
 
     editBank = false
@@ -384,10 +379,6 @@ export default class RestaurantInfos extends Vue {
 
     snackbarSuccess = false
     snackbarError = false
-
-    /*mounted() {
-        this.restaurantId = this.$store.state.User.id
-    }*/
 
     getData(data, id) {
         this.restaurantId = id;
@@ -428,7 +419,6 @@ export default class RestaurantInfos extends Vue {
 
     showEditContact() {
         this.editedPhone = this.restaurantInfos.Phone;
-        /*this.editedMail = this.restaurantInfos.Mail;*/
         this.editedSiret = this.restaurantInfos.Legal.SIRET;
         this.editContact = true;
     }
@@ -469,7 +459,6 @@ export default class RestaurantInfos extends Vue {
             if (success) {
                 this.loadingContact = true
                 this.restaurantInfos.Phone = this.editedPhone;
-                /*this.restaurantInfos.Mail = this.editedMail;*/
                 this.restaurantInfos.Legal.SIRET = this.editedSiret
                 this.updateRestaurant()
             }
