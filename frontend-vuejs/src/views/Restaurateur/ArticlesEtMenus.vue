@@ -150,7 +150,7 @@
                         rounded
                         width="200px"
                         height="100px"
-                        v-bind:src=article.Image_path
+                        :src=article.ArticleImg
                     ></v-img>
 
                     <div class="ma-2 align-self text-center">
