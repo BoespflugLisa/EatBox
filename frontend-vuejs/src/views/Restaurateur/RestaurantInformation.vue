@@ -32,7 +32,7 @@ import RestaurantSponsorship from "../../components/Restaurateur/RestaurantSpons
 
 export default class RestaurantInformation extends Vue {
 
-    restaurantId = "62b47acd5997e91af99f7c37"
+    restaurantId = "62b04dcfff5bc1bbf9802446"
 
     tab = 0;
     items = [
