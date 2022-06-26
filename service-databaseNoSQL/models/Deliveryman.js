@@ -3,19 +3,21 @@ let Schema = mongoose.Schema;
 
 let DeliverymanSchema = new Schema(
     {
-        belongs_to : {type: Schema.Types.ObjectId, ref: 'UsersLogModel'},
-        Name: String,
+        belongs_to: {type: Schema.Types.ObjectId, ref: 'UsersLogModel'},
         Firstname: String,
-        Picture: String,
+        Lastname: String,
+        Phone: String,
+        ProfileImg: String,
         Open_to_work: Boolean,
-        Free : Boolean,
-
+        Free: Boolean,
+        AccountName: String,
+        IBAN: String,
     }
 );
 
 let Deliveryman = mongoose.model("Deliveryman", DeliverymanSchema, "deliverymen");
 
 module.exports = {
-        model: Deliveryman,
-        schema: DeliverymanSchema
+    model: Deliveryman,
+    schema: DeliverymanSchema
 };
