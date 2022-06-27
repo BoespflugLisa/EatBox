@@ -1,5 +1,5 @@
 <template v-if="connectedUserRole === 'Restaurant'">
-    <div id="restaurateur-notification-display">
+    <div id="restaurateur-notification">
         <h2 class="mt-7">
             Notifications des commandes
         </h2>
@@ -89,10 +89,12 @@ import {Component, Vue} from 'vue-property-decorator';
     components: {},
 })
 
-export default class NotificationDisplay extends Vue {
+export default class RestaurateurNotification extends Vue {
     command: Array<unknown> = []
     deliveryman: Array<unknown> = []
     recentActivities: Array<unknown> = []
+
+    connectedUserRole = "Restaurant";
 
     notifications = [
         {
@@ -149,8 +151,6 @@ export default class NotificationDisplay extends Vue {
         });
     }
 
-    connectedUserRole = "Restaurant";
-
     delNotification(index, datatable: string) {
         switch (datatable) {
             case "command":
@@ -168,8 +168,4 @@ export default class NotificationDisplay extends Vue {
 </script>
 
 <style scoped>
-.vertical-line {
-    height: 100%;
-    border-left: 10px solid black;
-}
 </style>

@@ -3,17 +3,17 @@
         <v-btn block rounded color="secondary" large class="mt-7">
             Tout marquer comme lu
         </v-btn>
-        <restaurateur-display v-if="isUserConnected" />
+        <restaurateur-notification v-if="isUserConnected" />
     </div>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import RestaurateurDisplay from '../components/Restaurateur/NotificationDisplay.vue'
+import RestaurateurNotification from '../components/Notifications/RestaurateurNotification.vue'
 
 @Component({
     components: {
-        RestaurateurDisplay
+        RestaurateurNotification
     },
 })
 

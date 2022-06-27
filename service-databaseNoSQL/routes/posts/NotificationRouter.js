@@ -111,9 +111,8 @@ router.get("/:id", async (req, res) => {
     }
 })
 
-router.ws('/echo', function(ws, req) {
+router.ws('/socket', function(ws, req) {
     NotificationModel.watch().on('change', (data) => {
-        console.log(data)
         ws.send(JSON.stringify(data))
     })
 });
