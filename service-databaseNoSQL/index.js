@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const expressWs = require('express-ws')(app);
+
 require('events').EventEmitter.defaultMaxListeners = 15;
 
 
@@ -19,6 +21,8 @@ const NotificationsRouter = require("./routes/posts/NotificationRouter");
 const CategoriesRouter = require("./routes/posts/CategoryRouter");
 const MenusRouter = require("./routes/posts/MenuRouter");
 const PerformancesRouter = require("./routes/posts/PerformanceRouter");
+
+
 
 app.use(logger("dev"));
 app.use(cors());
