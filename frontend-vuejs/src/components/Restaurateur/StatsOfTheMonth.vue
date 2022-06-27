@@ -76,7 +76,7 @@ export default class StatsOfTheMonth extends Vue {
         bestSales : HorizontalBar
     }
 
-    labelsRate = ['5⭐', '4⭐', '3⭐', '2⭐', '1⭐'];
+    labelsRate = ['5⭐', '4⭐', '3⭐', '2⭐', '1⭐', '0⭐'];
     backgroundColorRate = [
         'rgba(24,255,5,0.5)',
         'rgba(109,255,99,0.5)',
@@ -109,7 +109,7 @@ export default class StatsOfTheMonth extends Vue {
 
 
     async mounted() {
-        await this.$axios.get('stats/' + this.$cookies.get('restaurant_id')).then(response => {
+        await this.$axios.get('stats/' + this.$cookies.get('user_id')).then(response => {
             this.rating = {
                 '5': response.data.stats.Ratings['5'],
                 '4': response.data.stats.Ratings['4'],
@@ -122,9 +122,20 @@ export default class StatsOfTheMonth extends Vue {
             this.meanRating = response.data.stat.MeanNotes
             this.dataRate = [this.rating["5"], this.rating["4"], this.rating["3"], this.rating["2"], this.rating["1"], this.rating["0"]]
 
-            //this.dataBestSale = [this.]
+            this.dataBestSale = response.data.stats.BestSales.map(x => {
+                if (x) {
+                    return x.count
+                }
+            })
+
+            this.labelsBestSale = response.data.stats.BestSales.map(x => {
+                if (x) {
+                    return x.name
+                }
+            })
+
             this.recette = response.data.stat.Benefit
-            this.nbCommand = response.data.stat.nborders
+            this.nbCommand = response.data.stat.NbOrders
         }).finally(()=>{
             this.$refs.ratings.createChart()
             this.$refs.bestSales.createChart()

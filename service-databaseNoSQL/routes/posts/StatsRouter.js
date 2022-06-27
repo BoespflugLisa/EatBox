@@ -22,12 +22,14 @@ async function getDetails(id) {
                 $facet: {
                     "Menus": [
                         {$unwind: '$Detail.Menus'},
+                        {$match: {"Detail.Menus": {$exists: 1}}},
                         {$sortByCount: '$Detail.Menus'},
                         {$limit: 3}
                     ],
 
                     "Articles": [
                         {$unwind: '$Detail.Articles'},
+                        {$match: {"Detail.Articles": {$exists: 1}}},
                         {$sortByCount: '$Detail.Articles'},
                         {$limit: 2}
                     ],
@@ -45,7 +47,23 @@ async function getDetails(id) {
                         }
                     ]
                 }
-            }
+            },
+            {
+                $lookup: {
+                    from: "articles",
+                    localField: "Articles._id",
+                    foreignField: "_id",
+                    as: "articles"
+                }
+            },
+            {
+                $lookup: {
+                    from: "menus",
+                    localField: "Menus._id",
+                    foreignField: "_id",
+                    as: "menus"
+                }
+            },
         ],
         function (err, result) {
             if (err) {
@@ -53,7 +71,6 @@ async function getDetails(id) {
                 return {}
 
             } else {
-                console.log(result[0].Ratings)
                 return result
             }
         }
@@ -153,13 +170,19 @@ router.get("/:id", async (req, res) => {
         })
 
         let articlesDetails = await getDetails(req.params.id).then(result => {
-            const sortable1 = [
-                result[0].Menus[0],
-                result[0].Menus[1],
-                result[0].Menus[3],
-                result[0].Articles[0],
-                result[0].Articles[1]]
-                .sort((a, b) => parseFloat(b.count) - parseFloat(a.count));
+
+
+            const sortable1 = result[0].Menus.map((x, index) => {
+                if(x){
+                    return {_id : x._id, count : x.count, name : result[0].menus[index].Name}
+                }
+
+            }).concat(result[0].Articles.map((x, index) => {
+                if(x){
+                    return {_id : x._id, count : x.count, name : result[0].articles[index].Name}
+                }
+            }))
+
 
 
             const sortable2 = [
@@ -176,9 +199,7 @@ router.get("/:id", async (req, res) => {
                         if (x.count && x._id === 4) return x.count; else return undefined})],
                 result[0].Ratings[result[0].Ratings.findIndex(x => {
                         if (x.count && x._id === 5) return x.count; else return undefined})],
-            ]//.sort((a, b) => parseFloat(b.count) - parseFloat(a.count));
-
-           console.log(sortable2)
+            ]
 
             return {
                 BestSales: sortable1,

@@ -32,7 +32,7 @@ import RestaurantSponsorship from "../../components/Restaurateur/RestaurantSpons
 
 export default class RestaurantInformation extends Vue {
 
-    restaurantId = this.$cookies.get('restaurant_id')
+    restaurantId = this.$cookies.get('user_id')
 
     tab = 0;
     items = [
@@ -56,7 +56,7 @@ export default class RestaurantInformation extends Vue {
     }
 
     getData() {
-        this.$axios.get('restaurants/'+this.$cookies.get('restaurant_id'))
+        this.$axios.get('restaurants/'+this.$cookies.get('user_id'))
             .then(response => {
                 console.log(response.data)
                 this.restaurant = response.data.restaurant;

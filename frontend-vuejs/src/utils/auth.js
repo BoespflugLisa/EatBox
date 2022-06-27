@@ -56,14 +56,33 @@ export function loginUser(username, password, role) {
                 }
             })
 
+            console.log(res.data.user)
+
             setAuthToken(res.data.auth, res.data.token)
             setRole(role)
-            setUser({
-                id: res.data.user._id,
-                restaurant: res.data.user.restaurant,
-                livreur: res.data.user.livreur,
-                client : res.data.user.client,
-            })
+            switch(role){
+                case "Restaurant":
+                    setUser({
+                        id: res.data.user._id,
+                        client_id: res.data.user.restaurant._id,
+                    })
+                    break;
+
+                case "Client":
+                    setUser({
+                        id: res.data.user._id,
+                        client_id: res.data.user.client,
+                    })
+                    break;
+
+                case "Livreur":
+                    setUser({
+                        id: res.data.user._id,
+                        client_id: res.data.user.livreur,
+                    })
+                    break;
+            }
+
 
 
             resolve()
@@ -108,7 +127,7 @@ export function setUser(user) {
     store.commit('changeUser', user)
 
     Vue.$cookies.set('_id', user.id, '80000s')
-    Vue.$cookies.set('restaurant_id', user.restaurant, '80000s')
+    Vue.$cookies.set('user_id', user.client_id, '80000s')
 }
 
 export function getAuthToken() {
@@ -128,6 +147,8 @@ export function clearAuthToken() {
     Vue.$cookies.remove('token')
     Vue.$cookies.remove('auth')
     Vue.$cookies.remove('role')
+    Vue.$cookies.remove('user_id')
+    Vue.$cookies.remove('_id')
 
     localStorage.clear()
 }
