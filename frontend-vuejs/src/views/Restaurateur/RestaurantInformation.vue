@@ -36,7 +36,7 @@ export default class RestaurantInformation extends Vue {
         pref: RestaurantPref,
     }
 
-    restaurantId = this.$cookies.get('restaurant_id')
+    restaurantId = this.$cookies.get('user_id')
 
     tab = 0;
     items = [
@@ -55,7 +55,7 @@ export default class RestaurantInformation extends Vue {
     }
 
     getData() {
-        this.$axios.get('restaurants/' + this.restaurantId)
+        this.$axios.get('restaurants/'+this.$cookies.get('user_id'))
             .then(response => {
                 this.restaurant = response.data.restaurant;
                 this.$refs.infos.getData(response.data.restaurant, this.restaurantId);
