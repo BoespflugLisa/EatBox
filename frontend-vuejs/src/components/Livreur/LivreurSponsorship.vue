@@ -1,5 +1,5 @@
 <template>
-    <div id="restaurant-sponsorship">
+    <div id="livreur-sponsorship">
         <h2 class=" pt-7">Parrainer un Livreur</h2>
         <v-card
 
