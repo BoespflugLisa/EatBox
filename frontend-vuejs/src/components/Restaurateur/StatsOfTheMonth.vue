@@ -31,6 +31,7 @@
             </div>
         </div>
 
+<!--
         <h3 class="mt-7">Vous êtes le restaurant favori de</h3>
         <div class="d-flex flex-row flex-wrap justify-space-around mt-7 mb-2">
             <v-card
@@ -46,10 +47,11 @@
                 </v-card-text>
             </v-card>
             <div class="w-45">
-                <p class="font-40 text-center light-green--text">+ 10</p>
+                <p class="font-40 text-center light-green&#45;&#45;text">+ 10</p>
                 <p class="text-center">depuis le début du mois</p>
             </div>
         </div>
+-->
 
 
     </div>

@@ -109,14 +109,15 @@ async function getGrouped(id, current = false) {
                 nborders: {$sum: 1},
                 benefits: {$sum: '$Detail.Price'},
             }
-        }
+        },
+        {$project : {_id: new mongoose.Types.ObjectId(id)}}
     ], function (err, result) {
         if (err) {
-            //console.log(err);
-            return {meannotes: null, nborders: 0, benefits: 0}
+            console.log(result);
+            return {_id: new mongoose.Types.ObjectId(id), meannotes: null, nborders: 0, benefits: 0}
 
         } else {
-            //console.log(result);
+            console.log(result);
             return result;
         }
     })
@@ -168,69 +169,80 @@ router.get("/:id", async (req, res) => {
         let stats = await getGrouped(req.params.id, true).then(r => {
             return r[0]
         })
+        //console.log(stats)
 
         let articlesDetails = await getDetails(req.params.id).then(result => {
 
 
+            //console.log(result[0])
             const sortable1 = result[0].Menus.map((x, index) => {
-                if(x){
-                    return {_id : x._id, count : x.count, name : result[0].menus[index].Name}
+                if (x) {
+                    return {_id: x._id, count: x.count, name: result[0].menus[index].Name}
                 }
 
             }).concat(result[0].Articles.map((x, index) => {
-                if(x){
-                    return {_id : x._id, count : x.count, name : result[0].articles[index].Name}
+                if (x) {
+                    return {_id: x._id, count: x.count, name: result[0].articles[index].Name}
                 }
             }))
 
 
-
             const sortable2 = [
                 result[0].Ratings[result[0].Ratings.findIndex(x => {
-                        if (x.count && x._id === 0) return x.count; else return undefined})],
+                    if (x.count && x._id === 0) return x.count; else return undefined
+                })],
 
                 result[0].Ratings[result[0].Ratings.findIndex(x => {
-                        if (x.count && x._id === 1) return x.count; else return undefined})],
+                    if (x.count && x._id === 1) return x.count; else return undefined
+                })],
                 result[0].Ratings[result[0].Ratings.findIndex(x => {
-                        if (x.count && x._id === 2) return x.count; else return undefined})],
+                    if (x.count && x._id === 2) return x.count; else return undefined
+                })],
                 result[0].Ratings[result[0].Ratings.findIndex(x => {
-                        if (x.count && x._id === 3) return x.count; else return undefined})],
+                    if (x.count && x._id === 3) return x.count; else return undefined
+                })],
                 result[0].Ratings[result[0].Ratings.findIndex(x => {
-                        if (x.count && x._id === 4) return x.count; else return undefined})],
+                    if (x.count && x._id === 4) return x.count; else return undefined
+                })],
                 result[0].Ratings[result[0].Ratings.findIndex(x => {
-                        if (x.count && x._id === 5) return x.count; else return undefined})],
+                    if (x.count && x._id === 5) return x.count; else return undefined
+                })],
             ]
 
             return {
                 BestSales: sortable1,
                 Ratings: {
-                    0 : sortable2[0] ? sortable2[0].count : null ,
-                    1 : sortable2[1]? sortable2[1].count : null ,
-                    2 : sortable2[2]? sortable2[2].count : null ,
-                    3 : sortable2[3]? sortable2[3].count : null ,
-                    4 : sortable2[4]? sortable2[4].count : null ,
-                    5 : sortable2[5]? sortable2[5].count : null ,
+                    0: sortable2[0] ? sortable2[0].count : null,
+                    1: sortable2[1] ? sortable2[1].count : null,
+                    2: sortable2[2] ? sortable2[2].count : null,
+                    3: sortable2[3] ? sortable2[3].count : null,
+                    4: sortable2[4] ? sortable2[4].count : null,
+                    5: sortable2[5] ? sortable2[5].count : null,
                 },
             }
         })
 
-        let stat = await new StatsModel({
-            belongs_to: stats._id.Restaurant,
-            MeanNotes: stats.meannotes,
-            NbOrders: stats.nborders,
-            Benefit: stats.benefits,
-            //NewFave : Number,
-        }).populate('belongs_to', 'Name')
+        let stat = await StatsModel.findOne({
+                belongs_to: req.params.id
+            }).populate('belongs_to');
+        /*} else {
+            stat = await new StatsModel({
+                belongs_to: new mongoose.Types.ObjectId(req.params.id),
+                MeanNotes: stats.meannotes,
+                NbOrders: stats.nborders,
+                Benefit: stats.benefits,
+                //NewFave : Number,
+            }).populate('belongs_to',)
+        }*/
 
-        /*let stat = await StatsModel.findOne({
-            belongs_to: req.params.id
-        }).populate('belongs_to');*/
         if (stat) {
+            console.log(stats)
             res.status(200).json({
                 stats: articlesDetails,
-                //stats,
                 stat
             });
+
+            console.log(res)
         } else {
             res.status(200).json({
                 stat: null

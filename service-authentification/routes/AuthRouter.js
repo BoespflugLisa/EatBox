@@ -10,13 +10,13 @@ const mongoose = require("mongoose");
 
 // Register
 router.post('/register', async function (req, res) {
+    console.log(req.body)
+
     let newUser = new UserModel.model({
         Username: req.body.username,
         Email: req.body.email,
         Password: bcrypt.hashSync(req.body.password, 8),
         restaurant: null,
-        livreur: null,
-        client: null
     });
 
 
@@ -93,9 +93,71 @@ router.post('/login', async (req, res) => {
     let pwdIsValid = false
 
     try {
-        let user = await UserModel.model.findOne({Email: req.body.email}).then(r => {
+        let user = await UserModel.model.findOne({Email: req.body.email, Role : {$ne : "Restaurant"}}).then(r => {
             return r;
         })
+
+        if (user != null) {
+            pwdIsValid = bcrypt.compareSync(req.body.password, user.Password);
+        }
+        if (!!!user || !pwdIsValid) {
+            throw "Aucun utilisateur avec ce couple email/mot de passe n'a été trouvé"
+        }
+
+        let token = jwt.sign(
+            {id: user._id},
+            config.secret,
+            {expiresIn: 86400} //24h
+        );
+
+        if (req.body.Role === "Livreur" && !!user.livreur) {
+            await user.populate('livreur')
+                .then(p => console.log(p))
+                .catch(error => console.log(error));
+            user = {
+                _id: user._id,
+                Role: req.body.Role,
+                user_id: user.livreur._id,
+            }
+        }
+
+        if (req.body.Role === "Client" && !!user.client) {
+            await user.populate('client')
+                .then(p => console.log(p))
+                .catch(error => console.log(error));
+            user = {
+                _id: user._id,
+                Role: req.body.Role,
+                user_id: user.client._id,
+            }
+        }
+
+        res.status(200).json({
+            auth: true,
+            token: token,
+            user
+        })
+
+    } catch (err) {
+        console.log(err)
+        res.status(400).json({
+            message: err,
+        })
+        return res
+    }
+});
+
+router.post('/loginRestaurant', async (req, res) => {
+    //https://www.digitalocean.com/community/tutorials/how-to-set-up-vue-js-authentication-and-route-handling-using-vue-router
+    let pwdIsValid = false
+    console.log(req.body)
+
+
+    try {
+        let user = await UserModel.model.findOne({Email: req.body.email, Role : {$eq : req.body.Role}}).then(r => {
+            return r;
+        })
+        console.log()
 
         if (user != null) {
             pwdIsValid = bcrypt.compareSync(req.body.password, user.Password);
@@ -118,31 +180,12 @@ router.post('/login', async (req, res) => {
         //console.log(user)
 
 
-        switch (req.body.Role) {
-            case "Restaurant":
-                user = {
-                    _id: user._id,
-                    Role: req.body.Role,
-                    user_id: user.restaurant._id,
-                }
-                break;
-
-            case "Client":
-                user = {
-                    _id: user._id,
-                    Role: req.body.Role,
-                    user_id: user.client._id,
-                }
-                break;
-
-            case "Livreur":
-                user = {
-                    _id: user._id,
-                    Role: req.body.Role,
-                    user_id: user.livreur._id,
-                }
-                break;
+        user = {
+            _id: user._id,
+            Role: req.body.Role,
+            user_id: user.restaurant._id,
         }
+
 
         res.status(200).json({
             auth: true,

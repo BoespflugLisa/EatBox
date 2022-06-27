@@ -47,47 +47,91 @@ export function loginUser(username, password, role) {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
         try {
-            let res = await axios({
-                url: `${REST_ENDPOINT}login`,
-                method: 'POST',
-                data: {
-                    email: username,
-                    password: password,
-                }
-            })
-
-            console.log(res.data.user)
-
-            setAuthToken(res.data.auth, res.data.token)
-            setRole(role)
+            let res;
             switch(role){
                 case "Restaurant":
-                    setUser({
-                        id: res.data.user._id,
-                        client_id: res.data.user.restaurant._id,
+                    res = await axios({
+                        url: `${REST_ENDPOINT}loginRestaurant`,
+                        method: 'POST',
+                        data: {
+                            email: username,
+                            password: password,
+                        }
+                    }).then(response => {
+                        console.log(response)
+                        if(!response.data.user.user_id){
+                            throw "Il n'y a pas de compte restaurant sous cet e-mail"
+                        }
+                        setUser({
+                            id: response.data.user._id,
+                            client_id: response.data.user.user_id,
+                        })
+                        setRole(role)
+                        setAuthToken(response.data.auth, response.data.token)
+                        resolve()
+                    }).catch(function(error){
+                        if(error.response) throw error.response.data.message
+                        else throw error
                     })
                     break;
 
                 case "Client":
-                    setUser({
-                        id: res.data.user._id,
-                        client_id: res.data.user.client,
+                    res = await axios({
+                        url: `${REST_ENDPOINT}login`,
+                        method: 'POST',
+                        data: {
+                            email: username,
+                            password: password,
+                            Role : role
+                        }
+                    }).then(response => {
+                        console.log(response)
+                        if(!response.data.user.user_id){
+                            throw "Il n'y a pas de compte client sous cet e-mail"
+                        }
+                        setUser({
+                            id: response.data.user._id,
+                            client_id: response.data.user.user_id,
+                        })
+                        setRole(role)
+                        setAuthToken(response.data.auth, response.data.token)
+                        resolve()
+                    }).catch(function(error){
+                        console.error('Erreur lors de la connexion:', error)
+                        throw error
                     })
                     break;
 
                 case "Livreur":
-                    setUser({
-                        id: res.data.user._id,
-                        client_id: res.data.user.livreur,
+                    res = await axios({
+                        url: `${REST_ENDPOINT}login`,
+                        method: 'POST',
+                        data: {
+                            email: username,
+                            password: password,
+                            Role : role
+                        }
+                    }).then(response => {
+                        console.log(response)
+                        if(!response.data.user.user_id){
+                            throw "Il n'y a pas de compte livreur sous cet e-mail"
+                        }
+                        setUser({
+                            id: response.data.user._id,
+                            client_id: response.data.user.user_id,
+                        })
+                        setRole(role)
+                        setAuthToken(response.data.auth, response.data.token)
+                        resolve()
+                    }).catch(function(error){
+                        //console.error('Erreur lors de la connexion:', error)
+                        throw error
                     })
                     break;
             }
 
-
-
-            resolve()
         } catch (err) {
-            console.error('Erreur lors de la connexion:', err.response.data.message)
+            //console.error('Erreur lors de la connexion:', err)
             reject(err)
         }
     })
