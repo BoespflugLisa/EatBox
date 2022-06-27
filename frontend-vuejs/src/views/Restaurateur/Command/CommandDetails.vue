@@ -169,8 +169,13 @@ export default class CommandsDetails extends Vue {
                 this.menus = response.data.order.Detail.Menus;
                 this.articles = response.data.order.Detail.Articles;
                 this.client = response.data.order.Client.Client_ID;
-                console.log(this.order)
             })
+    }
+
+    updated () {
+        if (!this.checkDeliveryman){
+            this.$refs.scan.pause();
+        }
     }
 
     HoursFormater(order, orderTime) {
@@ -209,7 +214,6 @@ export default class CommandsDetails extends Vue {
     scanQrCode() {
         this.checkDeliveryman = true;
         this.$refs.scan.getOrderToDeliver(this.order);
-        // this.$router.push('/ScanRestaurant');
     }
 
     goBack() {

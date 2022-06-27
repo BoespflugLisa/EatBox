@@ -1,23 +1,25 @@
 <template>
-    <div id="scan-restaurant" class="mt-5 side-padding">
-        <h2 class="mt-5 align-center text-center">Scanez le code de votre livreur</h2>
+    <div id="scan-restaurant">
+        <h2 class="pt-2 align-center text-center">Scanez le code de votre livreur</h2>
         <qrcode-stream class=" mt-5" :camera="camera" @decode="onDecode" @init="onInit">
-            <div v-if="showScanConfirmation === true" class="scan-confirmation align-center">
-                <img v-show="showScanConfirmation" src="../../assets/img/coche.png" alt="CheckmarkValidate"
-                     width="128px" height="128px"/>
+            <div v-if="showScanError || showScanConfirmation" class="scan-confirmation align-center">
+                <div v-if="showScanConfirmation">
+                    <img v-show="showScanConfirmation" src="../../assets/img/coche.png" alt="CheckmarkValidate"
+                         width="128px" height="128px"/>
+                </div>
+                <div v-if="showScanError">
+                    <img v-show="showScanError" src="../../assets/img/close.png" alt="CheckmarkError" width="128px"
+                         height="128px"/>
+                </div>
             </div>
-<!--            <div v-if="showScanError === true" class="scan-confirmation align-center">
-                <img v-show="showScanError" src="../../assets/img/close.png" alt="CheckmarkError" width="128px"
-                     height="128px"/>
-            </div>-->
         </qrcode-stream>
-        <p class="decode-result"><b>{{ result }}</b></p>
+        <p class="decode-result pt-2 align-center text-center"><b>{{ result }}</b></p>
     </div>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import {QrcodeStream, QrcodeDropZone, QrcodeCapture} from 'vue-qrcode-reader'
+import {QrcodeStream} from 'vue-qrcode-reader'
 
 @Component({
     components: {
@@ -27,9 +29,7 @@ import {QrcodeStream, QrcodeDropZone, QrcodeCapture} from 'vue-qrcode-reader'
 
 export default class ScanRestaurant extends Vue {
     name = "ScanRestaurant"
-
-
-    camera = 'auto'
+    camera = 'off'
     result: null | string = null
     showScanConfirmation = false
     showScanError = false
@@ -47,6 +47,7 @@ export default class ScanRestaurant extends Vue {
     }
 
     getOrderToDeliver(orderToDeliver) {
+        this.unpause()
         this.order = orderToDeliver;
     }
 
@@ -55,27 +56,24 @@ export default class ScanRestaurant extends Vue {
             await promise
         } catch (e) {
             console.error(e)
-        } finally {
-            this.showScanConfirmation = this.camera === "off"
-            //this.showScanError = this.camera === "off"
         }
     }
 
     async onDecode(content) {
-        console.log(content)
         this.result = content
         if (this.result === this.order.Deliveryman_token) {
             this.pause()
             await this.timeout(500)
             this.unpause()
 
+            this.showScanConfirmation = true;
+
             this.order.State = 3;
             this.order.CheckTime.Pickedup_at = Date.now();
-            console.log(this.order);
-            /*this.$axios.put(`orders/` + this.order._id, {data: this.order}).then(response => {
+            this.$axios.put(`orders/` + this.order._id, {data: this.order}).then(response => {
                 response.data;
-            })*/
-
+            })
+            await this.timeout(2000);
             this.$router.push('/commandes');
 
         } else {
@@ -83,6 +81,9 @@ export default class ScanRestaurant extends Vue {
             this.pause()
             await this.timeout(500)
             this.unpause()
+            this.showScanError = true;
+            await this.timeout(2000);
+            this.showScanError = false;
         }
     }
 
@@ -99,17 +100,6 @@ export default class ScanRestaurant extends Vue {
             window.setTimeout(resolve, ms)
         })
     }
-
-    /* scanQrCode(){
-         this.$router.push('/ScanRestaurant');
-         this.order.State = 3;
-         this.order.CheckTime.Pickedup_at = PickedupDate;
-         this.$axios.put(`orders/` + this.order._id, {data: this.order}).then(response => {
-             response.data;
-         })}
- */
-
-
 }
 </script>
 

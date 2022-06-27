@@ -131,9 +131,9 @@ export default {
     },
 
     methods: {
-        test(dataUrl, id) {
+        /*test(dataUrl, id) {
             console.log(this.token, id, dataUrl)
-        },
+        },*/
 
     },
 
