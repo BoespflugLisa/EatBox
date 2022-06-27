@@ -14,7 +14,7 @@ const routes: Array<RouteConfig> = [
 
   },
   {
-    path: '/card',
+    path: '/carte',
     name: ' ArticlesEtMenus',
     component: () => import('../views/Restaurateur/ArticlesEtMenus.vue'),
    // meta: { requiresAuth: true, isUser : 'Restaurant' }
@@ -73,7 +73,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/ScanRestaurant',
     name: 'ScanRestaurant',
-    component: () => import('../views/ScanRestaurant.vue'),
+    component: () => import('../components/Restaurateur/ScanRestaurant.vue'),
     //meta: { requiresAuth: true, isUser: 'Restaurant'},
   },
 

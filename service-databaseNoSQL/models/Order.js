@@ -12,6 +12,7 @@ let OrderSchema = new Schema(
             Client_ID : {type: Schema.Types.ObjectId, ref:'ClientModel'},
             Favorite : Boolean,
         },
+        Deliveryman_token : String,
         Complementary : String,
         Detail : {
             Price : Number,

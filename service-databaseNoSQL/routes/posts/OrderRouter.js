@@ -80,7 +80,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     try {
         let order = await OrderModel.findById(req.params.id)
-            .populate('Client.Client_ID', 'Address Phone')
+            .populate('Client.Client_ID', 'Address Phone Name Firstname')
             .populate('Restaurant', 'Address')
             .populate('Detail.Menus', 'Name Articles Price _id')
             .populate('Detail.Menus.Articles', 'Name')
