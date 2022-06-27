@@ -7,7 +7,8 @@
             :labels="this.labelsRate"
             :background-color="this.backgroundColorRate"
             :border-color="this.borderColorRate"
-            :data="this.dataRate"
+            :data="this.dataRate" ref="ratings"
+            :id="0"
         />
 
         <h3 class="mt-7">Vos plats et menus les plus célèbres</h3>
@@ -16,6 +17,7 @@
             :background-color="this.backgroundColorBestSale"
             :border-color="this.borderColorBestSale"
             :data="this.dataBestSale"
+            :id="1" ref="bestSales"
         />
 
         <div class="d-flex flex-row flex-wrap mt-7">
@@ -38,8 +40,8 @@
                 class="align-center"
             >
                 <v-card-text class="text-center">
-                        <p class="font-40 mt-3 mb-2">500</p>
-                        <p>personnes !</p>
+                    <p class="font-40 mt-3 mb-2">500</p>
+                    <p>personnes !</p>
 
                 </v-card-text>
             </v-card>
@@ -48,8 +50,6 @@
                 <p class="text-center">depuis le début du mois</p>
             </div>
         </div>
-
-
 
 
     </div>
@@ -66,14 +66,14 @@ import HorizontalBar from "../charts/HorizontalBar.vue";
 })
 
 export default class StatsOfTheMonth extends Vue {
+    rating = {}
+
     nbRate = 0
     meanRating = 0
-    rating = {
-        '5': 44,
-        '4': 24,
-        '3': 17,
-        '2': 11,
-        '1': 1,
+
+    $refs!: {
+        ratings: HorizontalBar,
+        bestSales : HorizontalBar
     }
 
     labelsRate = ['5⭐', '4⭐', '3⭐', '2⭐', '1⭐'];
@@ -91,7 +91,8 @@ export default class StatsOfTheMonth extends Vue {
         'rgb(255,97,0)',
         'rgb(255,0,0)',
     ];
-    dataRate: Array<number> = [];
+
+    dataRate: Array<number> =  []
 
     labelsBestSale = ['French Burger', 'Le taco de Bruno', 'Menu gourmant', 'Coockies tout choco', 'Frites'];
     backgroundColorBestSale = [
@@ -102,15 +103,32 @@ export default class StatsOfTheMonth extends Vue {
     ];
     dataBestSale: Array<number> = [51, 43, 42, 20, 12];
 
-    nbCommand = 140;
-    recette = 1940;
+    nbCommand = 0;
+    recette = 0;
 
 
-    created() {
-        this.nbRate = this.rating["1"] + this.rating["2"] + this.rating["3"] + this.rating["4"] + this.rating["5"];
-        this.meanRating = (this.rating["1"] + this.rating["2"] * 2 + this.rating["3"] * 3 + this.rating["4"] * 4 + this.rating["5"] * 5) / this.nbRate;
-        this.meanRating = Math.round(this.meanRating * 100) / 100;
-        this.dataRate = [this.rating["5"], this.rating["4"], this.rating["3"], this.rating["2"], this.rating["1"]]
+
+    async mounted() {
+        await this.$axios.get('stats/' + this.$cookies.get('restaurant_id')).then(response => {
+            this.rating = {
+                '5': response.data.stats.Ratings['5'],
+                '4': response.data.stats.Ratings['4'],
+                '3': response.data.stats.Ratings['3'],
+                '2': response.data.stats.Ratings['2'],
+                '1': response.data.stats.Ratings['1'],
+                '0': response.data.stats.Ratings['0'],
+            }
+            this.nbRate = this.rating["1"] + this.rating["2"] + this.rating["3"] + this.rating["4"] + this.rating["5"] + this.rating['0'];
+            this.meanRating = response.data.stat.MeanNotes
+            this.dataRate = [this.rating["5"], this.rating["4"], this.rating["3"], this.rating["2"], this.rating["1"], this.rating["0"]]
+
+            //this.dataBestSale = [this.]
+            this.recette = response.data.stat.Benefit
+            this.nbCommand = response.data.stat.nborders
+        }).finally(()=>{
+            this.$refs.ratings.createChart()
+            this.$refs.bestSales.createChart()
+        })
     }
 
 

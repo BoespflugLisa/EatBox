@@ -53,6 +53,34 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
+import  dateFormat, { i18n } from "dateformat"
+
+i18n.monthNames = [
+    "janv.",
+    "févr.",
+    "mars",
+    "avr.",
+    "mai",
+    "juin",
+    "juill.",
+    "août",
+    "sept.",
+    "oct.",
+    "nov.",
+    "déc.",
+    "Janvier",
+    "Février",
+    "Mars",
+    "Avril",
+    "Mai",
+    "Juin",
+    "Juillet",
+    "Août",
+    "Septembre",
+    "Octobre",
+    "Novembre",
+    "Décembre",
+];
 
 @Component({
     components: {},
@@ -63,36 +91,11 @@ export default class StatsHistory extends Vue {
     search = '';
 
     headers = [
-        {text: 'Historique', value: 'date', sortable: false},
+        {text: 'Historique', value: 'Date', sortable: false},
         {text: 'Actions', value: 'actions', sortable: false}
     ];
 
-    items = [
-        {
-            id: 1,
-            date: 'Mai 2022',
-            meanRating: 4.02,
-            nbRate: 92,
-            nbCommand: 140,
-            recette: 1940,
-        },
-        {
-            id: 2,
-            date: 'Avril 2022',
-            meanRating: 3.98,
-            nbRate: 60,
-            nbCommand: 128,
-            recette: 1650,
-        },
-        {
-            id: 3,
-            date: 'Mars 2022',
-            meanRating: 4.22,
-            nbRate: 108,
-            nbCommand: 164,
-            recette: 2080,
-        }
-    ]
+    items = []
 
     displayHistory = false;
     title = '';
@@ -101,12 +104,21 @@ export default class StatsHistory extends Vue {
     nbCommand = 0;
     recette = 0;
 
+
+    async mounted(){
+        await this.$axios.get('stats/history/'+this.$cookies.get('restaurant_id'))
+            .then (response => {
+                response.data.stat.forEach(element => element.Date = dateFormat(new Date(element.Date), 'mmmm yyyy'))
+                this.items = response.data.stat
+            })
+    }
+
     showHistoryDetail(item) {
-        this.title = item.date;
-        this.meanRating = item.meanRating;
+        this.title = item.Date;
+        this.meanRating = item.MeanNotes;
         this.nbRate = item.nbRate;
-        this.nbCommand = item.nbCommand;
-        this.recette = item.recette;
+        this.nbCommand = item.NbOrders;
+        this.recette = item.Benefit;
 
         this.displayHistory = true;
     }

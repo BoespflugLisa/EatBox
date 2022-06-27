@@ -14,9 +14,9 @@ router.post('/register', async function (req, res) {
         Username: req.body.username,
         Email: req.body.email,
         Password: bcrypt.hashSync(req.body.password, 8),
-        restaurant : null,
-        livreur : null,
-        client : null
+        restaurant: null,
+        livreur: null,
+        client: null
     });
 
 
@@ -32,7 +32,7 @@ router.post('/register', async function (req, res) {
 
 
         newUser.save()
-            .then( async function (r) {
+            .then(async function (r) {
                 let token = jwt.sign(
                     {id: newUser._id},
                     config.secret,
@@ -41,7 +41,7 @@ router.post('/register', async function (req, res) {
 
                 try {
                     await utils.createProfile({
-                        _id : newUser._id,
+                        _id: newUser._id,
                         ProfileImg: req.body.ProfileImg,
                         CoverImg: req.body.CoverImg,
                         Username: req.body.username,
@@ -71,8 +71,8 @@ router.post('/register', async function (req, res) {
                     auth: true,
                     token: token,
                     user: {
-                        _id : newUser._id,
-                        Role : req.body.role,
+                        _id: newUser._id,
+                        Role: req.body.role,
                     },
 
                 });
@@ -110,24 +110,44 @@ router.post('/login', async (req, res) => {
             {expiresIn: 86400} //24h
         );
 
-        if(!user.populated('restaurant')){
+        if (!user.populated('restaurant')) {
             await user.populate('restaurant')
-                .then(p=>console.log(p))
-                .catch(error=>console.log(error));
+                .then(p => console.log(p))
+                .catch(error => console.log(error));
         }
-        console.log(user)
+        //console.log(user)
+
+
+        switch (req.body.Role) {
+            case "Restaurant":
+                user = {
+                    _id: user._id,
+                    Role: req.body.Role,
+                    restaurant: user.restaurant._id,
+                }
+                break;
+
+            case "Client":
+                user = {
+                    _id: user._id,
+                    Role: req.body.Role,
+                    restaurant: user.client._id,
+                }
+                break;
+
+            case "Livreur":
+                user = {
+                    _id: user._id,
+                    Role: req.body.Role,
+                    livreur: user.livreur._id,
+                }
+                break;
+        }
 
         res.status(200).json({
             auth: true,
             token: token,
-            user: {
-                _id : user._id,
-                Role : req.body.Role,
-                restaurant : user.restaurant._id,
-                livreur : user.livreur,
-                client : user.client
-
-            }
+            user
         })
 
     } catch (err) {
