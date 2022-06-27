@@ -7,8 +7,8 @@ router.post("/:id", async(req, res) => {
         let client = new ClientModel({
             "Name": "Bonnet",
             "Firstname": "Grosvenor",
+            "Phone": "0685543684",
             "belongs_to": req.params.id,
-            "Picture": "Photo de profil",
             "Address": {"Number": "86", "Street": "rue Cazade", "Town": "DREUX", "Code": "28100"},
         });
 
@@ -42,7 +42,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     try {
-        let client = await ClientModel.findById(req.params.id).exec();
+        let client = await ClientModel.findById(req.params.id).populate('belongs_to', "Email");
         if (client) {
             res.status(200).json({
                 client,
@@ -54,6 +54,23 @@ router.get("/:id", async (req, res) => {
             message : err.message,
         })
     }
+})
+
+router.put("/:id", async (req, res) => {
+    try {
+        ClientModel.findByIdAndUpdate(req.params.id, req.body.data).then(
+            () => {
+                res.status(204).json({
+                    message: 'Client updates successfully'
+                })
+            })
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        });
+    }
+
 })
 
 module.exports = router;

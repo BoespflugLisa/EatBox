@@ -104,7 +104,6 @@
                     restaurantInfos.Address.Number + ' ' + restaurantInfos.Address.Street + ' - ' + restaurantInfos.Address.Code + ' ' + restaurantInfos.Address.Town
                 }}</p>
             <div v-else>
-
                 <validation-provider name="Numéro" rules="required" v-slot="{ errors, valid }">
                     <v-text-field
                         v-model="editedAddress.Number"

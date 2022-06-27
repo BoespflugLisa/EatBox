@@ -29,8 +29,8 @@ const routes: Array<RouteConfig> = [
   {
     path: '/mon_profil',
     name: 'ProfileView',
-    component: () => import('../views/Livreur/ProfileView.vue'),
-    meta: { requiresAuth: true}
+    component: () => import('../views/UserProfile.vue'),
+    //meta: { requiresAuth: true}
   },
 
   {

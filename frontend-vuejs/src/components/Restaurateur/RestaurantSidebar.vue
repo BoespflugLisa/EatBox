@@ -3,7 +3,7 @@
         <v-btn
             color="tertiary black--text"
             class="pr-10 pl-10"
-            to="/mon_Restaurant"
+            to="/mon_restaurant"
         >
             Mon restaurant
         </v-btn>

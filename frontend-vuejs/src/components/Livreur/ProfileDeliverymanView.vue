@@ -6,9 +6,6 @@
                 <livreur-infos ref="infos"/>
             </v-tab-item>
             <v-tab-item>
-                <livreur-pref/>
-            </v-tab-item>
-            <v-tab-item>
                 <livreur-sponsorship/>
             </v-tab-item>
         </v-tabs>
@@ -18,15 +15,13 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import LivreurInfos from "../../components/Livreur/LivreurInfos.vue";
-import LivreurPref from "../../components/Livreur/LivreurPref.vue";
-import LivreurSponsorship from "../../components/Livreur/LivreurSponsorship.vue";
+import LivreurInfos from "./LivreurInfos.vue";
+import LivreurSponsorship from "./LivreurSponsorship.vue";
 
 
 @Component({
     components: {
         LivreurInfos,
-        LivreurPref,
         LivreurSponsorship
     },
 })
@@ -41,7 +36,6 @@ export default class ArticlesEtMenus extends Vue {
     tab = 0
     items = [
         {tab: "Info"},
-        {tab: "Préférences"},
         {tab: "Parrainage"},
     ]
 
@@ -49,8 +43,8 @@ export default class ArticlesEtMenus extends Vue {
 
     mounted() {
         this.getData()
-        if (this.$route.query.tab === '2') {
-            this.tab = 2;
+        if (this.$route.query.tab === '1') {
+            this.tab = 1;
         }
     }
 
