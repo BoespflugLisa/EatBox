@@ -2,39 +2,8 @@
 
     <div class="side-padding" id="ArticlesEtMenus">
         <h1 class="mt-3"> Ma carte</h1>
-        <div class="d-flex">
-            <v-autocomplete
-                v-model="searchArticles"
-                :items="categories"
-                item-text="Name"
-                label="Trier les articles par catégorie"
-                persistent-hint
-                prepend-icon="mdi-food"
-                :search-input="searchArticles"
-            />
-        </div>
-
-
-        <h2 class="mt-3"> Mes catégories</h2>
-
-        <div class="mt-4 d-flex">
-            <v-chip-group
-                column>
-                <template
-                    v-for="(category, index) in this.categories">
-                    <v-chip
-                        v-bind:key=index
-                        v-bind:title=category
-                        class="mr-3 mb-3 font-40" rounded
-                        @click="openDialogUpdateCategory(category)">
-                        {{ category.Name }}
-                        <v-icon right>
-                            mdi-pencil-remove
-                        </v-icon>
-                    </v-chip>
-                </template>
-            </v-chip-group>
-
+        <div class="mt-4 d-flex justify-space-between">
+            <h2> Mes catégories</h2>
             <div>
                 <v-dialog
                     v-model="showDialogAddCategory"
@@ -42,7 +11,6 @@
 
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn
-                            class="mr-3 mt-2 mb-3"
                             icon
                             color="primary"
                             v-bind="attrs"
@@ -87,6 +55,25 @@
             </div>
         </div>
 
+        <div class="mt-4 d-flex justify-space-between">
+            <v-chip-group
+                column>
+                <template
+                    v-for="(category, index) in this.categories">
+                    <v-chip
+                        v-bind:key=index
+                        v-bind:title=category
+                        class="mr-3 mb-3 font-40" rounded
+                        @click="openDialogUpdateCategory(category)">
+                        {{ category.Name }}
+                        <v-icon right>
+                            mdi-pencil-remove
+                        </v-icon>
+                    </v-chip>
+                </template>
+            </v-chip-group>
+        </div>
+
         <v-dialog
             v-model="showDialogUpdateAndDeleteCategory"
             width="500">
@@ -117,7 +104,7 @@
                     </v-btn>
                     <v-spacer></v-spacer>
                     <v-btn
-                        @click="deleteCategory(editedCategory)"
+                        @click="() => { this.categoryToDelete = true; showDialogConfirmDelete = true; deletedCategory = editedCategory}"
                         color="primary"
                         text>
                         Supprimer
@@ -134,123 +121,8 @@
         </v-dialog>
 
 
-        <h2 class="mt-3"> Mes articles</h2>
-        <div class="d-flex flex-wrap">
-            <v-card
-                class="ml-2 mt-5 ml-2"
-                max-width="160px"
-                v-for="(article, index) in this.articles"
-                v-bind:key=index
-                v-bind:src=article
-                @click="openDialogUpdateArticle(article)"
-            >
-                <v-img
-                    rounded
-                    width="200px"
-                    height="100px"
-                    :src=article.ArticleImg
-                ></v-img>
-                <v-card-text class=text-center>
-                    {{ article.Name }}
-                </v-card-text>
-            </v-card>
-
-            <v-dialog
-                v-model="showDialogUpdateAndDeleteArticle"
-                width="500">
-                <v-card :loading="loadingCategory">
-                    <v-card-title>
-                        Modifier l'article
-                    </v-card-title>
-                    <validation-observer ref="obsUpdateArticle">
-                        <v-card-text>
-                            <validation-provider name="Nom de l'article" rules="required|max:30"
-                                                 v-slot="{ errors, valid }">
-                                <v-text-field
-                                    prepend-icon="mdi-food"
-                                    v-model="editedArticle.Name"
-                                    :counter="25"
-                                    label="Nom de l'article"
-                                    :error-messages="errors"
-                                    :success="valid"
-                                ></v-text-field>
-                            </validation-provider>
-                            <validation-provider name="Description de l'article" rules="required|max:140"
-                                                 v-slot="{ errors, valid }">
-                                <v-text-field
-                                    prepend-icon="mdi-image-text"
-                                    v-model="editedArticle.Description"
-                                    :counter="140"
-                                    label="Description de l'article"
-                                    :error-messages="errors"
-                                    :success="valid">
-                                </v-text-field>
-                            </validation-provider>
-
-                            <validation-provider name="Catégorie" rules="required" v-slot="{ errors, valid }">
-                                <v-autocomplete
-                                    v-model="editedArticle.Category"
-                                    prepend-icon="mdi-shape-square-rounded-plus"
-                                    :items="categories"
-                                    item-text="Name"
-                                    label="Catégorie"
-                                    persistent-hint
-                                    :error-messages="errors"
-                                    :success="valid"
-                                    return-object
-                                />
-                            </validation-provider>
-
-                            <validation-provider name="Prix de l'article" rules="required|max:500|min:0"
-                                                 v-slot="{ errors, valid }">
-                                <v-text-field
-                                    prepend-icon="mdi-currency-eur"
-                                    v-model="editedArticle.Price"
-                                    label="Prix de l'article"
-                                    type="number"
-                                    :error-messages="errors"
-                                    :success="valid"
-                                />
-                            </validation-provider>
-
-                            <v-file-input
-                                v-model="editedArticleImg"
-                                show-size
-                                label="Photo de l'article"
-                                prepend-icon="mdi-image"
-                                @change="uploadArticleImg()"
-                                truncate-length="15"
-                                accept="image/*">
-                            </v-file-input>
-
-                            <v-divider></v-divider>
-                            <v-card-actions>
-                                <v-btn
-                                    @click="showDialogUpdateAndDeleteArticle = false"
-                                    color="primary"
-                                    text>
-                                    Retour
-                                </v-btn>
-                                <v-spacer></v-spacer>
-                                <v-btn
-                                    @click="deleteArticle(editedArticle)"
-                                    color="primary"
-                                    text>
-                                    Supprimer
-                                </v-btn>
-                                <v-spacer></v-spacer>
-                                <v-btn
-                                    @click=" updateArticle()"
-                                    color="primary"
-                                    text>
-                                    Mettre à jour
-                                </v-btn>
-
-                            </v-card-actions>
-                        </v-card-text>
-                    </validation-observer>
-                </v-card>
-            </v-dialog>
+        <div class="mt-3 d-flex justify-space-between">
+            <h2> Mes articles</h2>
             <div>
                 <v-dialog
                     v-model="showDialogAddArticle"
@@ -260,12 +132,10 @@
                         <v-btn
                             icon
                             color="primary"
-                            class="ma-16 d-flex justify-center"
-                            x-large
                             v-bind="attrs"
                             @click="showDialogAddArticle = true"
                             v-on="on">
-                            <v-icon size="70">mdi-plus-circle-outline</v-icon>
+                            <v-icon size="30">mdi-plus-circle-outline</v-icon>
                         </v-btn>
                     </template>
 
@@ -358,6 +228,152 @@
                 </v-dialog>
             </div>
         </div>
+        <div >
+            <div class="d-flex flex-wrap">
+                <v-card
+                    class="ml-2 mt-5 ml-2"
+                    max-width="160px"
+                    v-for="(article, index) in this.articles"
+                    v-bind:key=index
+                    v-bind:src=article
+                    @click="openDialogUpdateArticle(article)"
+                >
+                    <v-img
+                        rounded
+                        width="200px"
+                        height="100px"
+                        :src=article.ArticleImg
+                    ></v-img>
+                    <v-card-text class="text-center">
+                        <v-tooltip bottom v-if="article.Category === null">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon
+                                    color="primary"
+                                    v-bind="attrs"
+                                    v-on="on"
+                                >
+                                    mdi-alert
+                                    mdi-alert
+                                </v-icon>
+                            </template>
+                            <span>Ajouter une catégorie à l'article!</span>
+                        </v-tooltip>
+                        {{ article.Name }}
+                    </v-card-text>
+                </v-card>
+
+                <v-dialog
+                    v-model="showDialogUpdateAndDeleteArticle"
+                    width="500">
+                    <v-card :loading="loadingCategory">
+                        <v-card-title>
+                            Modifier l'article
+                        </v-card-title>
+                        <validation-observer ref="obsUpdateArticle">
+                            <v-card-text>
+                                <validation-provider name="Nom de l'article" rules="required|max:30"
+                                                     v-slot="{ errors, valid }">
+                                    <v-text-field
+                                        prepend-icon="mdi-food"
+                                        v-model="editedArticle.Name"
+                                        :counter="25"
+                                        label="Nom de l'article"
+                                        :error-messages="errors"
+                                        :success="valid"
+                                    ></v-text-field>
+                                </validation-provider>
+                                <validation-provider name="Description de l'article" rules="required|max:140"
+                                                     v-slot="{ errors, valid }">
+                                    <v-text-field
+                                        prepend-icon="mdi-image-text"
+                                        v-model="editedArticle.Description"
+                                        :counter="140"
+                                        label="Description de l'article"
+                                        :error-messages="errors"
+                                        :success="valid">
+                                    </v-text-field>
+                                </validation-provider>
+
+                                <validation-provider name="Catégorie" rules="required" v-slot="{ errors, valid }">
+                                    <v-autocomplete
+                                        v-model="editedArticle.Category"
+                                        prepend-icon="mdi-shape-square-rounded-plus"
+                                        :items="categories"
+                                        item-text="Name"
+                                        label="Catégorie"
+                                        persistent-hint
+                                        :error-messages="errors"
+                                        :success="valid"
+                                        return-object
+                                    />
+                                </validation-provider>
+
+                                <validation-provider name="Prix de l'article" rules="required|max:500|min:0"
+                                                     v-slot="{ errors, valid }">
+                                    <v-text-field
+                                        prepend-icon="mdi-currency-eur"
+                                        v-model="editedArticle.Price"
+                                        label="Prix de l'article"
+                                        type="number"
+                                        :error-messages="errors"
+                                        :success="valid"
+                                    />
+                                </validation-provider>
+
+                                <v-file-input
+                                    v-model="editedArticleImg"
+                                    show-size
+                                    label="Photo de l'article"
+                                    prepend-icon="mdi-image"
+                                    @change="uploadArticleImg()"
+                                    truncate-length="15"
+                                    accept="image/*">
+                                </v-file-input>
+
+                                <v-divider></v-divider>
+                                <v-card-actions>
+                                    <v-btn
+                                        @click="showDialogUpdateAndDeleteArticle = false"
+                                        color="primary"
+                                        text>
+                                        Retour
+                                    </v-btn>
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        @click="() => { this.articleToDelete = true; showDialogConfirmDelete = true; deletedArticle = editedArticle}"
+                                        color="primary"
+                                        text>
+                                        Supprimer
+                                    </v-btn>
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        @click=" updateArticle()"
+                                        color="primary"
+                                        text>
+                                        Mettre à jour
+                                    </v-btn>
+
+                                </v-card-actions>
+                            </v-card-text>
+                        </validation-observer>
+                    </v-card>
+                </v-dialog>
+            </div>
+            <div class="d-flex justify-center">
+                <v-btn
+                       v-if="loadingArticle"
+                       icon
+                       color="primary"
+                       :loading="loadingArticle"
+                >
+                    <v-icon>
+                        mdi-loading
+                    </v-icon>
+                </v-btn>
+            </div>
+
+        </div>
+
 
         <h2 class="mt-7">Mes menus</h2>
         <v-card>
@@ -383,6 +399,7 @@
                 :headers="headers"
                 :items="menus"
                 :search="search"
+                :loading="loadingMenu"
             >
                 <template v-slot:[`item.MenuImg`]="{ item }">
                     <v-img width="100px" :src="item.MenuImg">
@@ -421,7 +438,7 @@
                         </v-btn>
                         <v-spacer></v-spacer>
                         <v-btn
-                            @click="openDialogDelete(item)"
+                            @click="() => {menuToDelete = true; showDialogConfirmDelete = true; deletedMenu = item}"
                             color="primary"
                             icon>
                             <v-icon>
@@ -619,6 +636,85 @@
             </v-card>
         </v-dialog>
 
+        <v-dialog
+            v-model="showDialogConfirmDelete"
+            width="500">
+            <v-card v-if="categoryToDelete === true">
+                <v-card-title>
+                    Supprimer la catégorie : {{ deletedCategory.Name }}
+                </v-card-title>
+                <v-card-text>
+                    Tous les articles possédant cette catégorie ne seront pas mis en vente.
+                    Il faut attribuer une nouvelle catégorie à ces articles.
+
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                        <v-btn
+                            @click="() => { this.categoryToDelete = false; showDialogConfirmDelete = false}"
+                            color="primary"
+                            text>
+                            Retour
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            @click="deleteCategory(deletedCategory)"
+                            color="primary"
+                            text>
+                            Valider
+                        </v-btn>
+                    </v-card-actions>
+                </v-card-text>
+            </v-card>
+
+            <v-card v-if="articleToDelete === true">
+                <v-card-title>
+                    Supprimer l'article : {{ deletedArticle.Name }}
+                </v-card-title>
+                <v-card-text>
+                    L'article sera supprimé des menus dans lesquels il se trouve.
+                    <v-card-actions>
+                        <v-btn
+                            @click="() => { this.articleToDelete = false; showDialogConfirmDelete = false}"
+                            color="primary"
+                            text>
+                            Retour
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            @click="deleteArticle(deletedArticle)"
+                            color="primary"
+                            text>
+                            Valider
+                        </v-btn>
+                    </v-card-actions>
+                </v-card-text>
+            </v-card>
+
+            <v-card v-if="menuToDelete === true">
+                <v-card-title>
+                    Supprimer le menu : {{ deletedMenu.Name }}
+                </v-card-title>
+                <v-card-text>
+                    Les articles de ce menu ne seront pas supprimés
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                        <v-btn
+                            @click="() => { this.menuToDelete = false; showDialogConfirmDelete = false}"
+                            color="primary"
+                            text>
+                            Retour
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            @click="deleteMenu(deletedMenu)"
+                            color="primary"
+                            text>
+                            Valider
+                        </v-btn>
+                    </v-card-actions>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -681,9 +777,17 @@ export default class ArticlesEtMenus extends Vue {
     editedMenuImg = null;
     resultMenuImg: ArrayBuffer | string | null = null;
 
+    deletedCategory = {};
+    deletedArticle = {};
+    deletedMenu = {};
 
     loadingCategory = false;
     loadingArticle = false;
+    loadingMenu = false;
+
+    categoryToDelete = false;
+    articleToDelete = false;
+    menuToDelete = false;
 
     showDialogUpdateAndDeleteCategory = false;
     showDialogUpdateAndDeleteArticle = false;
@@ -693,10 +797,11 @@ export default class ArticlesEtMenus extends Vue {
     showDialogAddArticle = false;
     showDialogAddMenu = false;
 
+    showDialogConfirmDelete = false;
+
     restaurantId = this.$cookies.get('restaurant_id');
 
     search = "";
-    searchArticles = "";
 
     $refs!: {
         obsAddCategory: InstanceType<typeof ValidationObserver>
@@ -715,24 +820,31 @@ export default class ArticlesEtMenus extends Vue {
     }
 
     getAllCategories() {
+        this.loadingCategory = true;
         return this.$axios.get(`categories`)
             .then(response => {
                 this.categories = response.data.categories;
+            }).finally(() => {
+                this.loadingCategory = false;
             })
     }
 
     getAllArticles() {
+        this.loadingArticle = true;
         return this.$axios.get(`articles`)
             .then(response => {
                 this.articles = response.data.articles;
+            }).finally(() => {
+                this.loadingArticle = false;
             })
     }
 
     getAllMenus() {
+        this.loadingMenu = true;
         return this.$axios.get(`menus`)
             .then(response => {
                 this.menus = response.data.menus;
-            })
+            }).finally(() => this.loadingMenu = false)
     }
 
     openDialogUpdateArticle(article) {
@@ -745,9 +857,11 @@ export default class ArticlesEtMenus extends Vue {
         this.editedArticle = JSON.parse(JSON.stringify(article));
         this.editedArticleId = article._id;
         this.showDialogUpdateAndDeleteArticle = true;
+        this.articleToDelete = true;
     }
 
     openDialogUpdateCategory(category) {
+        this.articleToDelete = false;
         this.editedCategory = JSON.parse(JSON.stringify(category));
         this.editedCategoryId = category._id;
         this.showDialogUpdateAndDeleteCategory = true;
@@ -817,6 +931,7 @@ export default class ArticlesEtMenus extends Vue {
                     this.getAllArticles();
                 }).finally(() => {
                     this.showDialogUpdateAndDeleteArticle = false;
+                    this.articleToDelete = false;
                 })
             }
         });
@@ -829,6 +944,7 @@ export default class ArticlesEtMenus extends Vue {
                     this.getAllCategories();
                 }).finally(() => {
                     this.showDialogUpdateAndDeleteCategory = false;
+                    this.categoryToDelete = false;
                 })
             }
         });
@@ -850,25 +966,52 @@ export default class ArticlesEtMenus extends Vue {
     }
 
     deleteArticle(article) {
+        this.categoryToDelete = false;
+        this.menuToDelete = false;
         this.$axios.delete(`articles/` + article._id, {data: article}).then(() => {
             this.getAllArticles();
+            this.getAllMenus();
         }).finally(() => {
             this.showDialogUpdateAndDeleteArticle = false;
+            this.showDialogConfirmDelete = false;
+            this.articleToDelete = false;
         });
     }
 
     deleteCategory(category) {
-        this.$axios.delete(`categories/` + category._id, {data: category}).then(() => {
-            this.getAllCategories();
+        this.articleToDelete = false;
+        this.menuToDelete = false;
+        this.$axios.get('articles/').then((response) => {
+            const articles = response.data.articles;
+            articles.forEach(article => {
+                if (article.Category === category._id) {
+                    article.Category = null;
+                    this.$axios.put(`articles/` + article._id, {data: article}).then()
+                }
+            })
+        }).then(() => {
+            this.$axios.delete(`categories/` + category._id, {data: category}).then(() => {
+                this.getAllCategories();
+                this.getAllArticles();
+            })
+        })
+        .finally(() => {
+             this.showDialogUpdateAndDeleteCategory = false;
+             this.showDialogConfirmDelete = false;
+             this.categoryToDelete = false;
+         });
+    }
+
+    deleteMenu(menu) {
+        this.articleToDelete = false;
+        this.categoryToDelete = false;
+        this.$axios.delete(`menus/` + menu._id, {data: menu}).then(() => {
+            this.getAllMenus();
         }).finally(() => {
-            this.showDialogUpdateAndDeleteCategory = false;
+            this.menuToDelete = false;
+            this.showDialogConfirmDelete = false
         });
     }
-
-    openDialogDelete(object) {
-        console.log(object);
-    }
-
 
     uploadArticleImg() {
         if (this.editedArticleImg !== null) {
@@ -917,6 +1060,7 @@ export default class ArticlesEtMenus extends Vue {
             this.resultMenuImg = null;
         }
     }
+
 }
 
 </script>

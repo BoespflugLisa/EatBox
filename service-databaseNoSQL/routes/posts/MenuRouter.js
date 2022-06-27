@@ -8,14 +8,13 @@ const router = express.Router();
 router.post("/:id", async (req, res) => {
     try {
         let restaurant = await RestaurantModel.findById(req.params.id).exec();
-        let articles = await ArticleModel.find({}).select('_id').exec()
         let menu = new MenuModel({
             made_by: restaurant._id,
             Name: req.body.data.Name,
             MenuImg: req.body.data.MenuImg,
             Description: req.body.data.Description,
             Price: req.body.data.Price,
-            Articles: articles,
+            Articles: req.body.data.Articles,
         })
         if (!menu.populated('made_by')) {
             await menu.populate('made_by Articles')

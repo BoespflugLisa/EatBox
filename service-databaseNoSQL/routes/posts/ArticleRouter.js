@@ -14,6 +14,7 @@ router.post("/:id", async (req, res) => {
             ArticleImg : req.body.data.ArticleImg,
             Description : req.body.data.Description,
             Price : req.body.data.Price,
+            Category: req.body.data.Category
         })
         if(!article.populated('made_by')){
             await article.populate('made_by')
@@ -68,6 +69,7 @@ router.get("/:id", async (req, res) => {
 
 router.put("/:id", async(req, res) => {
     try {
+        console.log(req.body.data);
         ArticleModel.updateOne({_id: req.params.id}, req.body.data).then(
             () => {
                 res.status(204).json({
@@ -85,7 +87,7 @@ router.put("/:id", async(req, res) => {
 
 router.delete('/:id', function(req, res, next) {
     try {
-        ArticleModel.remove({_id: req.params.id}).then(
+        ArticleModel.deleteOne({_id: req.params.id}).then(
             () => {
                 res.status(204).json({
                     message: 'Article deleted successfully!'
