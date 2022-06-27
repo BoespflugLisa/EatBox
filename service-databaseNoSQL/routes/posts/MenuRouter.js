@@ -8,24 +8,13 @@ const router = express.Router();
 router.post("/:id", async (req, res) => {
     try {
         let restaurant = await RestaurantModel.findById(req.params.id).exec();
-        let articles = await ArticleModel.find({}).select('_id').exec()
         let menu = new MenuModel({
             made_by: restaurant._id,
-            Name: "Special Burger",
-            Image: "data://image.png",
-            Description: "Le menu le plus appétissant qui existe",
-            Price: 9.50,
-            Available: true,
-            Articles: articles,
-            Promotions: {
-                UnPour2: false,
-                Remise: {
-                    5: false,
-                    10: false,
-                    15: false,
-                    20: false,
-                },
-            },
+            Name: req.body.data.Name,
+            MenuImg: req.body.data.MenuImg,
+            Description: req.body.data.Description,
+            Price: req.body.data.Price,
+            Articles: req.body.data.Articles,
         })
         if (!menu.populated('made_by')) {
             await menu.populate('made_by Articles')
@@ -48,7 +37,7 @@ router.post("/:id", async (req, res) => {
 
 router.get("/", async (req, res) => {
     try {
-        let menus = await MenuModel.find();
+        let menus = await MenuModel.find().populate('Articles', 'Name').exec();
         res.status(200).json({
             menus,
         });
@@ -78,23 +67,38 @@ router.get("/:id", async (req, res) => {
     }
 })
 
-router.put("/:id", async (req, res) => {
-    const filter = {connected: 'true', _id: req.params.id};
-
+router.put("/:id", async(req, res) => {
     try {
-        let menu = await MenuModel.findOne(filter, update, {new: true})
-
-        if (menu) {
-            res.status(200).json({
-                menu,
-            });
-        }
-    } catch (err) {
+        MenuModel.updateOne({_id: req.params.id}, req.body.data).then(
+            () => {
+                res.status(204).json({
+                    message: 'Menu updated successfully!'
+                });
+            })
+    }
+    catch(err) {
         res.status(400).json({
             status: 400,
             message: err.message,
-        })
+        });
     }
 })
+
+router.delete('/:id', function(req, res, next) {
+    try {
+        MenuModel.remove({_id: req.params.id}).then(
+            () => {
+                res.status(204).json({
+                    message: 'Menu deleted successfully!'
+                });
+            }
+        )}
+    catch(err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        });
+    }
+});
 
 module.exports = router;
