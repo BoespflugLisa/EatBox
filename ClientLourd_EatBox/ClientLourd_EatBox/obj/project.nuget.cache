@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "uAQdBodCVqmL0Cq9lFq9QYQPyjrL0fUdfU0CXxIN4aZRAd9Sy5dto6GOQxzJ/pZ6BwVRtslfTNbgDsOVYFM2cw==",
+  "dgSpecHash": "pcV1wOtA2xzmn5b1HG01U/XdoO4tElwGhuB+xbnkx4qduSk84/NObs5F4xN3BPBPZIYcXeKLcJchy5AslLwRzA==",
   "success": true,
   "projectFilePath": "C:\\Users\\quent\\WebstormProjects\\EatBox\\ClientLourd_EatBox\\ClientLourd_EatBox\\ClientLourd_EatBox.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\quent\\.nuget\\packages\\mahapps.metro.iconpacks\\4.11.0\\mahapps.metro.iconpacks.4.11.0.nupkg.sha512"
+    "C:\\Users\\quent\\.nuget\\packages\\materialdesigncolors\\2.0.6\\materialdesigncolors.2.0.6.nupkg.sha512",
+    "C:\\Users\\quent\\.nuget\\packages\\materialdesignthemes\\4.5.0\\materialdesignthemes.4.5.0.nupkg.sha512"
   ],
   "logs": []
 }
