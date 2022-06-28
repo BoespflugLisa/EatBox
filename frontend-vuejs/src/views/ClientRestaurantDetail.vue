@@ -6,9 +6,10 @@
             <v-item
               v-model="active">
                 <v-img
+
                   :src=restaurantImage
                   height="200px"
-                  class="text-right pa-2"
+                  class="text-right pa-2 rounded"
                 >
                     <v-btn
                       icon
@@ -45,13 +46,13 @@
               class="ml-2 mt-5 ml-2 "
               v-for="(menu) in menus"
               v-bind:key=menu._id
-              :src=menu.Image
-              @click="AddToCard()"
+              :src=menu.MenuImg
+              @click="AddToCartMenu(menu._id)"
             >
                 <v-img
                   rounded
                   height="100px"
-                  :src=menu.Image
+                  :src=menu.MenuImg
                 ></v-img>
 
                 <VCardTitle>
@@ -91,9 +92,10 @@
                   v-for="(article) in articles"
                   v-bind:key=article._id
                   :src=article.ArticleImg
-                  @click="AddToCard()"
+                  @click="AddToCartArticle(article._id)"
 
                 >
+                    <div v-if="!!article.Category">
                     <div v-if="article.Category._id === categorie.id">
                         <v-img
                           rounded
@@ -110,14 +112,33 @@
 
                         </VCardText>
                     </div>
+                    </div>
 
 
                 </v-card>
             </div>
         </div>
 
+        <div class="btn-cart">
+            <v-btn
+              large
+              fab
+              dark
+              small
+              color="primary"
+              to="/Cart"
+            >
+
+                <v-icon>
+                    mdi-basket
+
+                </v-icon>
+
+            </v-btn>
+        </div>
+
         <div class="justify-center text-center mt-10" v-if=" articles.length == 0 &&  menus.length == 0 ">
-            <h1 > On dirait que {{ restaurantName }} n'as pas encore publié sa carte ! Reviens plus tard (っ˘ڡ˘ς) </h1>
+            <h1> On dirait que {{ restaurantName }} n'as pas encore publié sa carte ! Reviens plus tard (っ˘ڡ˘ς) </h1>
         </div>
         <eatbox-snackbar ref="snack"/>
     </div>
@@ -128,6 +149,7 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import EatboxSnackbar from "../components/Snack/EatboxSnackbar.vue";
+
 
 @Component({
     components: {
@@ -144,8 +166,14 @@ export default class ClientRestaurantDetail extends Vue {
     menus = []
     restaurantID = ''
     articles = []
-    categories: Array<object> = []
+    categories: Array<object> = [{
+        Name: "",
+    }]
     active = false
+    CartArticle: Array<string> = []
+    CartMenu: Array<string> = []
+    newCategoryArray: Array<any> = []
+    duplicatedCategoryArray: Array<any> = []
 
     async mounted() {
         await this.$axios.get(`restaurants/menus/` + this.restaurantID)
@@ -166,14 +194,28 @@ export default class ClientRestaurantDetail extends Vue {
           .then(response => {
 
               this.articles = response.data.article
-              response.data.article.forEach(element => this.categories.push({
-                  name: element.Category.Name,
-                  id: element.Category._id
-              }));
-              this.categories = this.categories.filter((ele, pos) => {
-                  return this.categories.indexOf(ele) == pos;
-              })
+
+              response.data.article.forEach(element => {
+                  let boolAdd = true;
+                  if(element.Category!=null){
+                  this.categories.forEach(categorie => {
+
+                      if (categorie["id"] === element.Category._id) {
+                          boolAdd = false;
+                      }
+                  });
+
+                  if (boolAdd) {
+                      this.categories.push({
+                          name: element.Category.Name,
+                          id: element.Category._id
+                      })
+                  }}
+              });
+              console.log(this.categories);
+              this.newCategoryArray = [...new Set(this.categories)]
           })
+
 
     }
 
@@ -196,14 +238,39 @@ export default class ClientRestaurantDetail extends Vue {
         this.restaurantID = this.$route.params.id;
     }
 
-    AddToCard() {
-        console.log("prout")
+    AddToCartMenu(_id) {
+
+        this.CartMenu.push(_id)
+        console.log(this.CartMenu)
 
     }
+
+    AddToCartArticle(_id) {
+
+        this.CartArticle.push(_id)
+        console.log(this.CartArticle)
+
+    }
+
+    beforeDestroy() {
+
+        this.$cookies.set("menu", [...new Set(this.CartMenu)])
+        this.$cookies.set("Articles", [...new Set(this.CartArticle)])
+        this.CartMenu = []
+        this.CartArticle = []
+        this.categories = [];
+    }
+
 
 }
 </script>
 
 <style scoped>
 
+.btn-cart {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+
+}
 </style>

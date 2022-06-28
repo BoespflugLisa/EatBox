@@ -5,6 +5,7 @@ const RestaurantModel = require("../../models/Restaurant").model;
 const router = express.Router();
 
 
+
 router.post("/:id", async (req, res) => {
     try {
         let restaurant = await RestaurantModel.findById(req.params.id).exec();
@@ -61,28 +62,6 @@ router.get("/", async (req, res) => {
         })
     }
     return 0
-})
-
-router.get("/:id", async (req, res) => {
-    try {
-        let article = await ArticleModel.findOne({
-            type: req.params.id,
-        });
-        if (article) {
-            res.status(200).json({
-                article,
-            });
-        }
-        res.status(400).json({
-            status: 400,
-            message: "L'article n'a pas été trouvé.",
-        });
-    } catch (err) {
-        res.status(400).json({
-            status: 400,
-            message: err.message,
-        })
-    }
 })
 
 router.put("/:id", async(req, res) => {

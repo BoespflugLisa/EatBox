@@ -10,48 +10,48 @@ const routes: Array<RouteConfig> = [
     path: '/',
     name: 'DashBoard',
     component: () => import('../views/DashBoard.vue'),
-    //meta: { requiresAuth: true }
+    meta: { requiresAuth: true }
 
   },
   {
     path: '/card',
     name: ' ArticlesEtMenus',
     component: () => import('../views/Restaurateur/ArticlesEtMenus.vue'),
-   // meta: { requiresAuth: true, isUser : 'Restaurant' }
+    meta: { requiresAuth: true, isUser : 'Restaurant' }
   },
   {
     path: '/mon_restaurant',
     name: 'MonRestaurant',
     component: () => import('../views/Restaurateur/RestaurantInformation.vue'),
-    //meta: { requiresAuth: true, isUser : 'Restaurant' }
+    meta: { requiresAuth: true, isUser : 'Restaurant' }
   },
 
   {
     path: '/mon_profil',
     name: 'ProfileView',
     component: () => import('../views/ProfileView.vue'),
-    //meta: { requiresAuth: true}
+    meta: { requiresAuth: true}
   },
 
   {
     path: '/OpenToWork',
     name: 'OpenToWork',
     component: () => import('../views/OpenToWork.vue'),
-    //meta: { requiresAuth: true, isUser: 'Livreur'}
+    meta: { requiresAuth: true, isUser: 'Livreur'}
   },
 
   {
     path: '/DeliveryList',
     name: 'DeliveryList',
     component: () => import('../views/DeliveryList.vue'),
-    //meta: { requiresAuth: true, isUser: 'Livreur'}
+    meta: { requiresAuth: true, isUser: 'Livreur'}
   },
 
   {
     path: '/DeliveryDetail/:id',
     name: 'DeliveryDetail',
     component: () => import('../views/DeliveryDetail.vue'),
-    //meta: { requiresAuth: true, isUser: 'Livreur'}
+    meta: { requiresAuth: true, isUser: 'Livreur'}
   },
 
 
@@ -59,14 +59,21 @@ const routes: Array<RouteConfig> = [
     path: '/Accueil',
     name: 'AccueilClient',
     component: () => import('../views/AccueilClient.vue'),
-    //meta: { requiresAuth: true, isUser: 'Client'},
+    meta: { requiresAuth: true, isUser: 'Client'},
   },
 
   {
     path: '/DetailRestaurant/:id',
     name: 'ClientRestaurantDetail',
     component: () => import('../views/ClientRestaurantDetail.vue'),
-    //meta: { requiresAuth: true, isUser: 'Client'},
+    meta: { requiresAuth: true, isUser: 'Client'},
+  },
+
+  {
+    path: '/Cart',
+    name: 'Cart',
+    component: () => import('../views/Cart.vue'),
+    meta: { requiresAuth: true, isUser: 'Client'},
   },
 
 
@@ -74,38 +81,38 @@ const routes: Array<RouteConfig> = [
     path: '/ScanRestaurant',
     name: 'ScanRestaurant',
     component: () => import('../views/ScanRestaurant.vue'),
-    //meta: { requiresAuth: true, isUser: 'Restaurant'},
+    meta: { requiresAuth: true, isUser: 'Restaurant'},
   },
 
   {
     path: '/notifications',
     name: 'Notifications',
     component: () => import('../views/NotificationList.vue'),
-    //meta: { requiresAuth: true }
+    meta: { requiresAuth: true }
   },
   {
     path: '/stats',
     name: 'Stats',
     component: () => import('../views/Restaurateur/RestaurantStats.vue'),
-    //meta : {requiresAuth: true, isUser : 'Restaurant'}
+    meta : {requiresAuth: true, isUser : 'Restaurant'}
   },
   {
     path: '/commandes',
     name: 'commandes',
     component: () => import('../views/Restaurateur/Command/CommandsList.vue'),
-    //meta: { requiresAuth: true, isUser : 'Restaurant' }
+    meta: { requiresAuth: true, isUser : 'Restaurant' }
   },
   {
     path: '/commandes/details/:id',
     name: 'commandeDetails',
     component: () => import('../views/Restaurateur/Command/CommandDetails.vue'),
-    //meta: { requiresAuth: true, isUser : 'Restaurant' }
+    meta: { requiresAuth: true, isUser : 'Restaurant' }
   },
   {
     path: '/connexion',
     name: 'LoginRegister',
     component: () => import('../views/LoginRegister.vue'),
-    //meta: { requiresAuth: false }
+    meta: { requiresAuth: false }
   },
 ]
 
