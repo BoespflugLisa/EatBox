@@ -11,7 +11,7 @@
         <v-btn
             color="tertiary black--text"
             class="pr-10 pl-10 mt-5"
-            to="/card"
+            to="/carte"
         >
             Gestion de la carte
         </v-btn>
