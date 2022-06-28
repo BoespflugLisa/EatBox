@@ -3,9 +3,9 @@
         <v-btn block rounded color="secondary" large class="mt-7" @click="readAll">
             Tout marquer comme lu
         </v-btn>
-        <restaurateur-notification
-            ref="notifRestaurant"
-            v-if="isUserConnected && userRole === 'Restaurant'"
+        <display-notification
+            ref="notif"
+            v-if="isUserConnected"
             v-on:remove-notif="$emit('remove-notif')"
             v-on:remove-all-notif="$emit('remove-all-notif')"
         />
@@ -14,17 +14,17 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import RestaurateurNotification from '../components/Notifications/RestaurateurNotification.vue'
+import DisplayNotification from '../components/Notifications/DisplayNotification.vue'
 
 @Component({
     components: {
-        RestaurateurNotification
+        DisplayNotification
     },
 })
 
 export default class NotificationList extends Vue {
     $refs!: {
-        notifRestaurant: RestaurateurNotification
+        notif: DisplayNotification
     }
 
     isUserConnected = this.$cookies.get('auth');
@@ -33,7 +33,7 @@ export default class NotificationList extends Vue {
     readAll() {
         switch (this.userRole) {
             case "Restaurant" :
-                this.$refs.notifRestaurant.readAll();
+                this.$refs.notif.readAll();
         }
     }
 }

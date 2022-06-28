@@ -1,5 +1,5 @@
 <template>
-    <div id="restaurateur-notification">
+    <div id="display-notification">
         <h2 class="mt-7">
             Notifications des commandes
         </h2>
