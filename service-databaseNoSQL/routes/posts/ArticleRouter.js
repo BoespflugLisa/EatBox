@@ -10,25 +10,11 @@ router.post("/:id", async (req, res) => {
         let restaurant = await RestaurantModel.findById(req.params.id).exec();
         let article = new ArticleModel({
             made_by : restaurant._id,
-            Name : "Frites",
-            Image_path : "../image.png",
-            Description : "Les meilleurs que vous avez goûtés depuis très longtemps",
-            Price : 1.10,
-            Available: true,
-            Promotions : {
-                UnPour2 : false,
-                Remise : {
-                    5 : true,
-                    10 : false,
-                    15 : false,
-                    20 : false,
-                },
-            },
-            Options : {
-                Taille : {Petit: true, Moyen: false, Large: true},
-                Sauce : {Ketchup: true, Mayonnaise: true, Moutarde: false, Barbecue: false, Maison: true, Andalouse:false},
-                Prix : {Taille :[0,0,0.30], Sauce : [0]},
-            }
+            Name : req.body.data.Name,
+            ArticleImg : req.body.data.ArticleImg,
+            Description : req.body.data.Description,
+            Price : req.body.data.Price,
+            Category: req.body.data.Category
         })
         if(!article.populated('made_by')){
             await article.populate('made_by')
@@ -65,18 +51,14 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     try {
-        let article = await ArticleModel.findOne({
-            type: req.params.id,
-        });
+        let article = await ArticleModel.findById(req.params.id)
+            .populate('Category', 'Name').exec();
+
         if (article) {
             res.status(200).json({
                 article,
             });
         }
-        res.status(400).json({
-            status: 400,
-            message: "L'article n'a pas été trouvé.",
-        });
     } catch (err) {
         res.status(400).json({
             status: 400,
@@ -90,7 +72,7 @@ router.put("/:id", async(req, res) => {
         ArticleModel.updateOne({_id: req.params.id}, req.body.data).then(
             () => {
                 res.status(204).json({
-                    message: 'Category updated successfully!'
+                    message: 'Article updated successfully!'
                 });
             })
     }
@@ -101,5 +83,22 @@ router.put("/:id", async(req, res) => {
         });
     }
 })
+
+router.delete('/:id', function(req, res, next) {
+    try {
+        ArticleModel.deleteOne({_id: req.params.id}).then(
+            () => {
+                res.status(204).json({
+                    message: 'Article deleted successfully!'
+                });
+            }
+        )}
+    catch(err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        });
+    }
+});
 
 module.exports = router;

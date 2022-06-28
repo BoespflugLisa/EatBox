@@ -3,9 +3,9 @@
 
 
         <v-card
-          class="mx-auto mt-3"
-          max-width="470"
-          outlined
+            class="mx-auto mt-3"
+            max-width="470"
+            outlined
         >
             <v-card-title>
                 Etat de la commande
@@ -19,22 +19,21 @@
                 </v-list-item-content>
 
                 <v-list-item-avatar
-                  tile
-                  size="70"
-                  color="grey">
+                    tile
+                    size="70"
+                    color="grey">
                     <v-img
-                      src="../assets/img/sacrifice.gif">
+                        src="../assets/img/sacrifice.gif">
                     </v-img>
                 </v-list-item-avatar>
             </v-list-item>
-
         </v-card>
 
 
         <v-card
-          class="mx-auto mt-3"
-          max-width="470"
-          outlined
+            class="mx-auto mt-3"
+            max-width="470"
+            outlined
         >
             <v-card-title>Contact</v-card-title>
 
@@ -42,21 +41,22 @@
                 <p class="mb-2 font-weight-bold">Adresse du restaurant : {{ this.RestaurantAdresse }}</p>
                 <p class="mb-2 font-weight-bold">Adresse de livraison : {{ this.myAdresse }}</p>
                 <p class="mb-2 font-weight-bold">Numéro de téléphone client : {{ this.numTel }}</p>
-
             </v-card-text>
 
         </v-card>
 
         <v-card
-          class="mx-auto mt-3"
-          max-width="470"
-          outlined
-          v-if="this.stateNumber === 2"
+            class="mx-auto mt-3"
+            max-width="470"
+            outlined
+            v-if="this.stateNumber === 2"
         >
-            <v-card-title>QR code de la commande </v-card-title>
-        <div class="align-center d-flex justify-center">
-            <vue-qr :text=this.token :callback="test" qid="testid"></vue-qr>
-        </div>
+            <v-card-title>QR code de la commande</v-card-title>
+            <v-card-text>
+                <div class="align-center d-flex justify-center">
+                    <vue-qr :text=this.token :callback="test" qid="testid"></vue-qr>
+                </div>
+            </v-card-text>
         </v-card>
 
 
@@ -68,9 +68,9 @@
 
 
         <v-dialog
-          v-model="dialogDelete"
-          width="300"
-          v-if="dialogDelete"
+            v-model="dialogDelete"
+            width="300"
+            v-if="dialogDelete"
         >
             <v-card class="text-end">
                 <v-card-title>
@@ -79,22 +79,19 @@
 
                 <v-btn
 
-                  to="/DeliveryList"
-                  color="primary"
-                  text
+                    to="/DeliveryList"
+                    color="primary"
+                    text
                 >
                     Valider
                 </v-btn>
                 <v-btn
-
-                  @click="dialogDelete =false"
-                  color="primary"
-                  text
+                    @click="dialogDelete =false"
+                    color="primary"
+                    text
                 >
                     Retour
                 </v-btn>
-
-
             </v-card>
 
         </v-dialog>
@@ -104,61 +101,51 @@
 
 <script>
 import VueQr from 'vue-qr';
-import axios from "axios";
 
 
 export default {
-
-
     components: {
         VueQr,
 
     },
 
-
-
-
     data() {
         return {
             dialogDelete: false,
-            token: "string",
+            token: this.$cookies.get('user_id'),
             src: '',
             commandState: '',
             idClient: '',
-            states: ['En attente de validation restaurant', 'En préparation', 'Restaurant en attente du livreur', 'En livraison', 'Livré', '','Commande refusée'],
+            states: ['En attente de validation restaurant', 'En préparation', 'Restaurant en attente du livreur', 'En livraison', 'Livré', '', 'Commande refusée'],
             numTel: '',
             myAdresse: null,
-            stateNumber:0,
+            stateNumber: 0,
             RestaurantAdresse: null,
             orderID : ""
         }
 
     },
 
-
-
     created() {
         this.orderID = this.$route.params.id;
     },
 
     methods: {
-        test(dataUrl, id) {
-            console.log(this.token, id)
-        },
+        /*test(dataUrl, id) {
+            console.log(this.token, id, dataUrl)
+        },*/
 
     },
 
     async mounted() {
         await this.$axios.get(`orders/` + this.orderID )
-          .then(response => {
-              this.stateNumber = response.data.order.State
-              this.commandState = this.states[response.data.order.State]
-              this.idClient = response.data.order.Client.Client_ID._id
-              this.myAdresse = response.data.order.Client.Client_ID.Address.Number + ' ' + response.data.order.Client.Client_ID.Address.Street + ' , ' + response.data.order.Client.Client_ID.Address.Town + ' , ' + response.data.order.Client.Client_ID.Address.Code
-              this.RestaurantAdresse =  response.data.order.Restaurant.Address.Number + ' ' + response.data.order.Restaurant.Address.Street + ' , ' +  response.data.order.Restaurant.Address.Town + ' , ' + response.data.order.Client.Client_ID.Address.Town
-console.log(response.data.order)
-
-          })
+            .then(response => {
+                this.stateNumber = response.data.order.State
+                this.commandState = this.states[response.data.order.State]
+                this.idClient = response.data.order.Client.Client_ID._id
+                this.myAdresse = response.data.order.Client.Client_ID.Address.Number + ' ' + response.data.order.Client.Client_ID.Address.Street + ' , ' + response.data.order.Client.Client_ID.Address.Town + ' , ' + response.data.order.Client.Client_ID.Address.Code
+                this.RestaurantAdresse = response.data.order.Restaurant.Address.Number + ' ' + response.data.order.Restaurant.Address.Street + ' , ' + response.data.order.Restaurant.Address.Town + ' , ' + response.data.order.Client.Client_ID.Address.Town
+            })
 
 
     }

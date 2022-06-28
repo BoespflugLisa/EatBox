@@ -197,6 +197,7 @@ router.get("/:id", async (req, res) => {
     }
 })
 
+
 router.put("/:id", async (req, res) => {
     try {
         RestaurantModel.findOneAndUpdate({_id: req.params.id}, req.body.data).then(

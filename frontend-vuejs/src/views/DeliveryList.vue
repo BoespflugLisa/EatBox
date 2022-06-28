@@ -73,11 +73,12 @@ import {Component, Vue} from 'vue-property-decorator';
     components: {}
 })
 
-export default class IncomingOrders extends Vue {
-    name = "IncomingOrders"
+export default class DeliveryList extends Vue {
+    name = "DeliveryList"
     showDialog = false
     orders = [];
     dialogDelete: Array<boolean> = []
+    deliverymanId = this.$cookies.get('user_id');
     clickedOrder={}
 
     async mounted() {
@@ -100,13 +101,12 @@ export default class IncomingOrders extends Vue {
         this.dialogDelete[order] = !this.dialogDelete[order]
         this.showDialog = true
         this.clickedOrder = order
-
     }
 
 
     showDetails(order) {
-
-        order.State =0;
+        order.State = 0;
+        order.Deliveryman_token = this.deliverymanId;
         this.$axios.put(`orders/` + order._id, {data: order}).then(response => {
             response.data;
         })
@@ -114,8 +114,6 @@ export default class IncomingOrders extends Vue {
         this.$router.push({name: 'DeliveryDetail', params: {id: order._id}});
 
     }
-
-    //TODO : Le déplacement de l'order en fonction de son état ("A valider" à "En prép", "En prép" à "En Attente du livreur"
 
 }
 </script>

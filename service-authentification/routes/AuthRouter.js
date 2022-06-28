@@ -10,13 +10,13 @@ const mongoose = require("mongoose");
 
 // Register
 router.post('/register', async function (req, res) {
+    console.log(req.body)
+
     let newUser = new UserModel.model({
         Username: req.body.username,
         Email: req.body.email,
         Password: bcrypt.hashSync(req.body.password, 8),
-        restaurant : null,
-        livreur : null,
-        client : null
+        restaurant: null,
     });
 
 
@@ -32,7 +32,7 @@ router.post('/register', async function (req, res) {
 
 
         newUser.save()
-            .then( async function (r) {
+            .then(async function (r) {
                 let token = jwt.sign(
                     {id: newUser._id},
                     config.secret,
@@ -41,7 +41,7 @@ router.post('/register', async function (req, res) {
 
                 try {
                     await utils.createProfile({
-                        _id : newUser._id,
+                        _id: newUser._id,
                         ProfileImg: req.body.ProfileImg,
                         CoverImg: req.body.CoverImg,
                         Username: req.body.username,
@@ -71,8 +71,8 @@ router.post('/register', async function (req, res) {
                     auth: true,
                     token: token,
                     user: {
-                        _id : newUser._id,
-                        Role : req.body.role,
+                        _id: newUser._id,
+                        Role: req.body.role,
                     },
 
                 });
@@ -93,7 +93,7 @@ router.post('/login', async (req, res) => {
     let pwdIsValid = false
 
     try {
-        let user = await UserModel.model.findOne({Email: req.body.email}).then(r => {
+        let user = await UserModel.model.findOne({Email: req.body.email, Role : {$ne : "Restaurant"}}).then(r => {
             return r;
         })
 
@@ -110,24 +110,87 @@ router.post('/login', async (req, res) => {
             {expiresIn: 86400} //24h
         );
 
-        if(!user.populated('restaurant')){
-            await user.populate('restaurant')
-                .then(p=>console.log(p))
-                .catch(error=>console.log(error));
+        if (req.body.Role === "Livreur" && !!user.livreur) {
+            await user.populate('livreur')
+                .then(p => console.log(p))
+                .catch(error => console.log(error));
+            user = {
+                _id: user._id,
+                Role: req.body.Role,
+                user_id: user.livreur._id,
+            }
         }
-        console.log(user)
+
+        if (req.body.Role === "Client" && !!user.client) {
+            await user.populate('client')
+                .then(p => console.log(p))
+                .catch(error => console.log(error));
+            user = {
+                _id: user._id,
+                Role: req.body.Role,
+                user_id: user.client._id,
+            }
+        }
 
         res.status(200).json({
             auth: true,
             token: token,
-            user: {
-                _id : user._id,
-                Role : req.body.Role,
-                restaurant : user.restaurant._id,
-                livreur : user.livreur,
-                client : user.client
+            user
+        })
 
-            }
+    } catch (err) {
+        console.log(err)
+        res.status(400).json({
+            message: err,
+        })
+        return res
+    }
+});
+
+router.post('/loginRestaurant', async (req, res) => {
+    //https://www.digitalocean.com/community/tutorials/how-to-set-up-vue-js-authentication-and-route-handling-using-vue-router
+    let pwdIsValid = false
+    console.log(req.body)
+
+
+    try {
+        let user = await UserModel.model.findOne({Email: req.body.email, Role : {$eq : req.body.Role}}).then(r => {
+            return r;
+        })
+        console.log()
+
+        if (user != null) {
+            pwdIsValid = bcrypt.compareSync(req.body.password, user.Password);
+        }
+        if (!!!user || !pwdIsValid) {
+            throw "Aucun utilisateur avec ce couple email/mot de passe n'a été trouvé"
+        }
+
+        let token = jwt.sign(
+            {id: user._id},
+            config.secret,
+            {expiresIn: 86400} //24h
+        );
+
+        if (!user.populated('restaurant')) {
+            await user.populate('restaurant')
+                .then(p => console.log(p))
+                .catch(error => console.log(error));
+        }
+        //console.log(user)
+
+
+        user = {
+            _id: user._id,
+            Role: req.body.Role,
+            user_id: user.restaurant._id,
+        }
+
+
+        res.status(200).json({
+            auth: true,
+            token: token,
+            user
         })
 
     } catch (err) {
