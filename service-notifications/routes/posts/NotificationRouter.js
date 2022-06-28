@@ -75,7 +75,7 @@ router.get("/", async (req, res) => {
     }
 })
 
-router.get("/restaurant/:id", async (req, res) => {
+router.get("/user/:id", async (req, res) => {
     try {
         let notifications = await NotificationModel.find({
             belong_to: new mongoose.Types.ObjectId(req.params.id),
@@ -85,6 +85,25 @@ router.get("/restaurant/:id", async (req, res) => {
         res.status(200).json({
             status: 200,
             notifications,
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        })
+    }
+});
+
+router.get("/userCount/:id", async (req, res) => {
+    try {
+        let count = await NotificationModel.count({
+            belong_to: new mongoose.Types.ObjectId(req.params.id),
+            Read: false
+        })
+
+        res.status(200).json({
+            status: 200,
+            count,
         });
     } catch (err) {
         res.status(400).json({
@@ -133,7 +152,7 @@ router.put("/:id", async (req, res) => {
     }
 });
 
-router.put("/restaurant/:id/readAll", async (req, res) => {
+router.put("/user/:id/readAll", async (req, res) => {
     try {
         NotificationModel.updateMany({
             belong_to: new mongoose.Types.ObjectId(req.params.id),
@@ -153,22 +172,14 @@ router.put("/restaurant/:id/readAll", async (req, res) => {
     }
 });
 
-router.ws('/socket/:id', function (ws, req) {
-
+router.ws('/socket/notifications/:id', function (ws, req) {
     ws.id = req.params.id
-    wsNotificationClients.push({
-        "id": ws.id,
-        "websocket": ws
-    });
-
-    ws.on('close', function() {
-        console.log(req.params.id)
-    })
 
     NotificationModel.watch().on('change', (data) => {
-
         if (data.operationType === "insert") {
-            ws.send(JSON.stringify(data))
+            if (ws.id === data.fullDocument.belongs_to.toString()) {
+                ws.send("New notification");
+            }
         }
     })
 });

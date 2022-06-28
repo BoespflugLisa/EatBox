@@ -77,19 +77,20 @@ export default class RestaurateurNotification extends Vue {
     command: Array<unknown> = [];
     deliveryman: Array<unknown> = [];
 
-    restaurantId = this.$cookies.get('user_id');
+    userId = this.$cookies.get('user_id');
 
-    data = {}
+    notificationConnection: WebSocket | null = null;
 
     mounted() {
-        this.getNotifications()
+        this.$emit('notif-page-ready')
+        this.getNotifications();
+        this.connectNotificationWS();
     }
 
     getNotifications() {
         this.command = [];
         this.deliveryman = [];
-        this.$axios_notifications.get("/notifications/restaurant/" + this.restaurantId).then(response => {
-            this.data = response.data;
+        this.$axios_notifications.get("/notifications/user/" + this.userId).then(response => {
             response.data.notifications.forEach(notification => {
                 if (notification.Types.Command) {
                     this.command.push(notification);
@@ -100,15 +101,30 @@ export default class RestaurateurNotification extends Vue {
         })
     }
 
+    async connectNotificationWS() {
+        if (this.$cookies.get("auth") && this.notificationConnection === null) {
+            this.notificationConnection = await new WebSocket("ws://localhost:3033/notifications/socket/notifications/" + this.$cookies.get("user_id"))
+
+            this.notificationConnection.onmessage = () => {
+                this.getNotifications();
+            }
+
+            this.notificationConnection.onclose = () => {
+                this.notificationConnection = null
+            }
+        }
+    }
+
     displayDate(date) {
         moment.locale('fr')
         return moment(date).format('LLL');
     }
 
     readAll() {
-        this.$axios_notifications.put("notifications/restaurant/" + this.restaurantId + "/readAll").then(() => {
+        this.$axios_notifications.put("notifications/user/" + this.userId + "/readAll").then(() => {
             this.command = []
             this.deliveryman = []
+            this.$emit('remove-all-notif')
         })
     }
 
@@ -122,7 +138,9 @@ export default class RestaurateurNotification extends Vue {
                 break;
         }
         notif.Read = true;
-        this.$axios_notifications.put("notifications/" + notif._id, {data: notif}).catch(() => {
+        this.$axios_notifications.put("notifications/" + notif._id, {data: notif}).then(() => {
+            this.$emit('remove-notif')
+        }).catch(() => {
             this.$refs.snack.openSnackbar("Erreur lors de la suppression de la notification", "error")
         });
     }

@@ -3,7 +3,12 @@
         <v-btn block rounded color="secondary" large class="mt-7" @click="readAll">
             Tout marquer comme lu
         </v-btn>
-        <restaurateur-notification ref="notifRestaurant" v-if="isUserConnected && userRole === 'Restaurant'"/>
+        <restaurateur-notification
+            ref="notifRestaurant"
+            v-if="isUserConnected && userRole === 'Restaurant'"
+            v-on:remove-notif="$emit('remove-notif')"
+            v-on:remove-all-notif="$emit('remove-all-notif')"
+        />
     </div>
 </template>
 
