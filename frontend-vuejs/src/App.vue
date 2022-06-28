@@ -112,8 +112,12 @@ export default class App extends Vue {
     drawer = false;
     value = '';
 
+    notificationConnection: WebSocket|null = null
+
     mounted() {
         this.changeTheme()
+        if (this.$cookies.get("auth"))
+            this.connectNotificationWS()
     }
 
     logout() {
@@ -162,6 +166,20 @@ export default class App extends Vue {
         }
     }
 
+    async connectNotificationWS() {
+        this.notificationConnection = await new WebSocket("ws://localhost:3033/notifications/socket/idclem"/*+this.$cookies.get("user_id")*/)
+
+
+
+        this.notificationConnection.onopen = function(event) {
+            console.log(event)
+            console.log("Successfully connected to the echo websocket server...")
+        }
+
+        this.notificationConnection.onmessage = function(event) {
+            console.log(event);
+        }
+    }
 
 }
 </script>

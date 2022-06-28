@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 
 const router = express.Router();
 
+let wsNotificationClients = [];
+
 router.post("/:id/:action", async (req, res) => {
     try {
         let notification = new NotificationModel({
@@ -151,9 +153,23 @@ router.put("/restaurant/:id/readAll", async (req, res) => {
     }
 });
 
-router.ws('/socket', function (ws, req) {
+router.ws('/socket/:id', function (ws, req) {
+
+    ws.id = req.params.id
+    wsNotificationClients.push({
+        "id": ws.id,
+        "websocket": ws
+    });
+
+    ws.on('close', function() {
+        console.log(req.params.id)
+    })
+
     NotificationModel.watch().on('change', (data) => {
-        ws.send(JSON.stringify(data))
+
+        if (data.operationType === "insert") {
+            ws.send(JSON.stringify(data))
+        }
     })
 });
 
