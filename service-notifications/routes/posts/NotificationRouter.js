@@ -12,7 +12,6 @@ router.post("/:id/:action", async (req, res) => {
                 "belongs_to": req.params.id,
                 "Types": {
                     "Command": false,
-                    "Activity": true,
                     "Delivery": false,
                 },
             }
@@ -38,23 +37,10 @@ router.post("/:id/:action", async (req, res) => {
                     notification.Message = "Le livreur est en retard.";
                     break;
                 case "DeliverymanIsComming":
-                    notification.Message = "Le livreur est arrivé!";
+                    notification.Message = "Le livreur est arrivé !";
                     break;
                 case "NoDeliverymanAvailable":
                     notification.Message = "Aucun livreur n'est disponible dans votre secteur";
-                    break;
-            }
-        } else if (notification.Types.Activity === true) {
-            switch (req.params.action) {
-                case "newClients":
-                    notification.Message = "Vous avez été sélectionné comme favori";
-                    break;
-                case "tresholdTenClients":
-                    notification.Message = "Vous avez séduit 10 clients";
-                    /*case "tresholdClients":
-                        return notification.Message = "Vous avez séduit " + {{req.body.treshold}} + " client";*/
-                    /*case "tresholdOrders":
-                        return notification.Message = "Vous avez vendu " + {{req.body.treshold}} + " commandes";*/
                     break;
             }
         }
@@ -89,9 +75,8 @@ router.get("/", async (req, res) => {
 
 router.get("/restaurant/:id", async (req, res) => {
     try {
-        console.log(req.params.id)
         let notifications = await NotificationModel.find({
-            id_Restaurant: new mongoose.Types.ObjectId(req.params.id),
+            belong_to: new mongoose.Types.ObjectId(req.params.id),
             Read: false
         })
 
@@ -138,6 +123,26 @@ router.put("/:id", async (req, res) => {
                 })
             }
         )
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        });
+    }
+});
+
+router.put("/restaurant/:id/readAll", async (req, res) => {
+    try {
+        NotificationModel.updateMany({
+            belong_to: new mongoose.Types.ObjectId(req.params.id),
+            Read: false
+        }, {
+            $set: {Read: true}
+        }).then(() => {
+            res.status(204).json({
+                message: 'Notifications updates successfully'
+            })
+        });
     } catch (err) {
         res.status(400).json({
             status: 400,
