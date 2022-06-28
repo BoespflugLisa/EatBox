@@ -1,6 +1,7 @@
 const express = require("express");
 const NotificationModel = require("../../models/Notification")
-const {now} = require("mongoose");
+const mongoose = require("mongoose");
+
 const router = express.Router();
 
 router.post("/:id/:action", async (req, res) => {
@@ -29,10 +30,9 @@ router.post("/:id/:action", async (req, res) => {
                     break;
                 case "orderIsComming":
                     notification.Message = "Votre commande arrive!";
-                break;
+                    break;
             }
-        }
-        else if (notification.Types.Delivery === true) {
+        } else if (notification.Types.Delivery === true) {
             switch (req.params.action) {
                 case "DeliverymanIsLate":
                     notification.Message = "Le livreur est en retard.";
@@ -42,21 +42,20 @@ router.post("/:id/:action", async (req, res) => {
                     break;
                 case "NoDeliverymanAvailable":
                     notification.Message = "Aucun livreur n'est disponible dans votre secteur";
-                break;
+                    break;
             }
-        }
-        else if (notification.Types.Activity === true) {
+        } else if (notification.Types.Activity === true) {
             switch (req.params.action) {
                 case "newClients":
                     notification.Message = "Vous avez été sélectionné comme favori";
                     break;
                 case "tresholdTenClients":
                     notification.Message = "Vous avez séduit 10 clients";
-                /*case "tresholdClients":
-                    return notification.Message = "Vous avez séduit " + {{req.body.treshold}} + " client";*/
-                /*case "tresholdOrders":
-                    return notification.Message = "Vous avez vendu " + {{req.body.treshold}} + " commandes";*/
-                break;
+                    /*case "tresholdClients":
+                        return notification.Message = "Vous avez séduit " + {{req.body.treshold}} + " client";*/
+                    /*case "tresholdOrders":
+                        return notification.Message = "Vous avez vendu " + {{req.body.treshold}} + " commandes";*/
+                    break;
             }
         }
 
@@ -88,6 +87,26 @@ router.get("/", async (req, res) => {
     }
 })
 
+router.get("/restaurant/:id", async (req, res) => {
+    try {
+        console.log(req.params.id)
+        let notifications = await NotificationModel.find({
+            id_Restaurant: new mongoose.Types.ObjectId(req.params.id),
+            Read: false
+        })
+
+        res.status(200).json({
+            status: 200,
+            notifications,
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        })
+    }
+});
+
 router.get("/:id", async (req, res) => {
     try {
         let notification = await NotificationModel.findOne({
@@ -111,7 +130,23 @@ router.get("/:id", async (req, res) => {
     }
 })
 
-router.ws('/socket', function(ws, req) {
+router.put("/:id", async (req, res) => {
+    try {
+        NotificationModel.findByIdAndUpdate(req.params.id, req.body.data).then(() => {
+                res.status(204).json({
+                    message: 'Notification updates successfully'
+                })
+            }
+        )
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        });
+    }
+});
+
+router.ws('/socket', function (ws, req) {
     NotificationModel.watch().on('change', (data) => {
         ws.send(JSON.stringify(data))
     })

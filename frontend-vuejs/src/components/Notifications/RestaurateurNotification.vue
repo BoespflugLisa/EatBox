@@ -1,4 +1,4 @@
-<template v-if="connectedUserRole === 'Restaurant'">
+<template>
     <div id="restaurateur-notification">
         <h2 class="mt-7">
             Notifications des commandes
@@ -15,11 +15,11 @@
             <v-card-text>
                 <div class="d-flex justify-space-between align-center">
                     <div class="font-16">
-                        <p>{{ notif.date }}</p>
-                        <p>{{ notif.message }}</p>
+                        <p>{{ notif.Date }}</p>
+                        <p>{{ notif.Message }}</p>
                     </div>
 
-                    <v-btn icon  @click="delNotification(index, 'command')">
+                    <v-btn icon @click="delNotification(notif, index, 'command')">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
 
@@ -42,11 +42,11 @@
             <v-card-text>
                 <div class="d-flex justify-space-between align-center">
                     <div class="font-16">
-                        <p>{{ notif.date }}</p>
-                        <p>{{ notif.message }}</p>
+                        <p>{{ notif.Date }}</p>
+                        <p>{{ notif.Message }}</p>
                     </div>
 
-                    <v-btn icon  @click="delNotification(index, 'deliveryman')">
+                    <v-btn icon @click="delNotification(notif, index, 'deliveryman')">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
 
@@ -69,90 +69,63 @@
             <v-card-text>
                 <div class="d-flex justify-space-between align-center">
                     <div class="font-16">
-                        <p>{{ notif.date }}</p>
-                        <p>{{ notif.message }}</p>
+                        <p>{{ notif.Date }}</p>
+                        <p>{{ notif.Message }}</p>
                     </div>
-                    <v-btn icon @click="delNotification(index, 'recentActivities')">
+                    <v-btn icon @click="delNotification(notif, index, 'recentActivities')">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </div>
             </v-card-text>
         </v-card>
-
+        <eatbox-snackbar ref="snack"/>
     </div>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
+import EatboxSnackbar from "../Snack/EatboxSnackbar.vue";
 
 @Component({
-    components: {},
+    components: {
+        EatboxSnackbar
+    },
 })
 
 export default class RestaurateurNotification extends Vue {
+    $refs!: {
+        snack: EatboxSnackbar,
+    }
+
     command: Array<unknown> = []
     deliveryman: Array<unknown> = []
     recentActivities: Array<unknown> = []
 
-    connectedUserRole = "Restaurant";
+    restaurantId = this.$cookies.get('user_id');
 
-    notifications = [
-        {
-            id: "1",
-            date: "16:11 - 13/06/2022",
-            type: "command",
-            message: "Nouvelle commande !",
-        },
-        {
-            id: "2",
-            date: "14:15 - 13/06/2022",
-            type: "command",
-            message: "Nouvelle commande !",
-        },
-        {
-            id: "3",
-            date: "16:23 - 13/06/2022",
-            type: "deliveryman",
-            message: "Livreur arrivé !",
-        },
-        {
-            id: "4",
-            date: "14:31 - 13/06/2022",
-            type: "deliveryman",
-            message: "Livreur arrivé !",
-        },
-        {
-            id: "5",
-            date: "17:00 - 13/06/2022",
-            type: "recent_activities",
-            message: "Bravo ! 10 commandes aujourd'hui",
-        },
-    ]
+    data = {}
 
-    created() {
+    mounted() {
         this.getNotifications()
     }
 
     getNotifications() {
-        this.notifications.forEach(notification => {
-            switch (notification.type) {
-                case "command":
-                    this.command.push(notification);
-                    break;
-
-                case "deliveryman":
-                    this.deliveryman.push(notification);
-                    break;
-
-                case "recent_activities":
+        this.$axios_notifications.get("/notifications/restaurant/" + this.restaurantId).then(response => {
+            this.data = response.data;
+            response.data.notifications.forEach(notification => {
+                if (notification.Types.Activity) {
                     this.recentActivities.push(notification);
-                    break;
-            }
-        });
+                } else if (notification.Types.Command) {
+                    this.command.push(notification);
+                } else if (notification.Types.Delivery) {
+                    this.deliveryman.push(notification);
+                }
+            });
+        })
     }
 
-    delNotification(index, datatable: string) {
-        switch (datatable) {
+    delNotification(notif, index, table) {
+        switch (table) {
             case "command":
                 this.command.splice(index, 1);
                 break;
@@ -163,6 +136,12 @@ export default class RestaurateurNotification extends Vue {
                 this.recentActivities.splice(index, 1);
                 break;
         }
+        notif.Read = true;
+        this.$axios_notifications.put("notifications/" + notif._id, {data: notif}).then(() => {
+            this.getNotifications();
+        }).catch(() => {
+            this.$refs.snack.openSnackbar("Erreur lors de la suppression de la notification", "error")
+        });
     }
 }
 </script>
