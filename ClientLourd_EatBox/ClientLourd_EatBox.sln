@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientLourd_EatBox", "ClientLourd_EatBox\ClientLourd_EatBox.csproj", "{5625489B-AC2E-4761-A217-AFDCF3BFB81C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientLourd_EatBox", "ClientLourd_EatBox\ClientLourd_EatBox.csproj", "{5625489B-AC2E-4761-A217-AFDCF3BFB81C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

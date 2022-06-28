@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Ye6FvaRWQ0e3ItO3HdRe0ERNZPJ8Ve7aloUWkwUkHjEceM+uTQsD6MB7Mrcw/QRYc+Dy79GaQw3M6mwHbIEAvQ==",
+  "dgSpecHash": "uAQdBodCVqmL0Cq9lFq9QYQPyjrL0fUdfU0CXxIN4aZRAd9Sy5dto6GOQxzJ/pZ6BwVRtslfTNbgDsOVYFM2cw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Elekt\\source\\repos\\ClientLourd_EatBox\\ClientLourd_EatBox\\ClientLourd_EatBox.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\quent\\WebstormProjects\\EatBox\\ClientLourd_EatBox\\ClientLourd_EatBox\\ClientLourd_EatBox.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\quent\\.nuget\\packages\\mahapps.metro.iconpacks\\4.11.0\\mahapps.metro.iconpacks.4.11.0.nupkg.sha512"
+  ],
   "logs": []
 }
