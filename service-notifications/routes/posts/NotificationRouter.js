@@ -7,12 +7,12 @@ const router = express.Router();
 router.post("/:id/:action", async (req, res) => {
     try {
         let notification = new NotificationModel({
-                "Date": "2022-06-21T19:10:30.000+00:00",
+                "Date": new Date(),
                 "Read": false,
-                "belongs_to": req.params.id,
+                "belongs_to": new mongoose.Types.ObjectId(req.params.id),
                 "Types": {
-                    "Command": false,
-                    "Delivery": false,
+                    "Command": req.body.data.Types.Command,
+                    "Delivery": req.body.data.Types.Delivery,
                 },
             }
         );

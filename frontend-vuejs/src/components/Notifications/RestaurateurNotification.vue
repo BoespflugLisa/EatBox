@@ -15,7 +15,7 @@
             <v-card-text>
                 <div class="d-flex justify-space-between align-center">
                     <div class="font-16">
-                        <p>{{ notif.Date }}</p>
+                        <p>{{ displayDate(notif.Date) }}</p>
                         <p>{{ notif.Message }}</p>
                     </div>
 
@@ -42,7 +42,7 @@
             <v-card-text>
                 <div class="d-flex justify-space-between align-center">
                     <div class="font-16">
-                        <p>{{ notif.Date }}</p>
+                        <p>{{ displayDate(notif.Date) }}</p>
                         <p>{{ notif.Message }}</p>
                     </div>
 
@@ -60,6 +60,7 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
+import moment from "moment";
 import EatboxSnackbar from "../Snack/EatboxSnackbar.vue";
 
 @Component({
@@ -97,6 +98,11 @@ export default class RestaurateurNotification extends Vue {
                 }
             });
         })
+    }
+
+    displayDate(date) {
+        moment.locale('fr')
+        return moment(date).format('LLL');
     }
 
     readAll() {
