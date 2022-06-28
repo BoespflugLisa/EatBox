@@ -1,6 +1,6 @@
 <template>
-    <div id="horizontal-bar">
-        <canvas ref="horizontalBar"/>
+    <div>
+        <canvas :id="`horizontal-bar${this.id}`" ref="horizontalBar"/>
     </div>
 </template>
 
@@ -12,21 +12,31 @@ import Chart from 'chart.js/auto';
     components: {},
 })
 export default class HorizontalBar extends Vue {
-    @Prop({default: []}) readonly labels!: Array<string>
-    @Prop({default: []}) readonly backgroundColor!: Array<string>
-    @Prop({default: []}) readonly borderColor!: Array<string>
-    @Prop({default: []}) readonly data!: Array<number>
+    @Prop({default: []}) labels!: Array<string>
+    @Prop({default: []}) backgroundColor!: Array<string>
+    @Prop({default: []}) borderColor!: Array<string>
+    @Prop({default: []}) data!: Array<number>
+    @Prop({default: []}) readonly id!: number
+
+    chart: Chart|null = null
+
+
 
     $refs!: {
         horizontalBar: HTMLCanvasElement
     }
 
     mounted() {
-        this.createChart()
+        //this.createChart()
+        this.updateChart()
+    }
+
+    updateChart() {
+        this.chart?.update()
     }
 
     createChart() {
-        new Chart(this.$refs.horizontalBar, {
+        this.chart = new Chart(this.$refs.horizontalBar, {
             type: 'bar',
             data: {
                 datasets: [
@@ -48,6 +58,7 @@ export default class HorizontalBar extends Vue {
                 }
             }
         })
+        this.chart?.update()
     }
 }
 </script>

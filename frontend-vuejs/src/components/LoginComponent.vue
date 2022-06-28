@@ -83,19 +83,17 @@ export default class LoginComponent extends Vue {
 
     async login() {
         try {
+            console.log(this.form)
             await loginUser(this.form.email, this.form.password, this.form.Role)
                 .then(r => {
-                    if(this.urlParams.get('redirect') != null){
-                        this.$router.push(this.urlParams.get('redirect').toString())
-                    } else {
-                        this.$router.push('/')
-                    }
+                    this.$router.push('/')
                 })
 
         } catch (err:any) {
             //console.log(`Erreur: ${err.response.data.message}`)
             this.ReturnError = true;
-            this.error_login = err.response.data.message
+            if(err.response) this.error_login = err.response.data.message
+            else this.error_login = err
         }
     }
 }

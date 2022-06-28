@@ -1,6 +1,6 @@
 <template>
     <div id="restaurant-infos">
-        <div class="d-flex mt-3">
+        <div class="d-flex mt-3 justify-space-between">
             <h2>Image du restaurant</h2>
             <v-btn
                 icon class="ml-3"
@@ -58,9 +58,8 @@
             />
         </div>
 
-
-        <h2 class="mt-3">
-            Informations du restaurant
+        <div class="d-flex mt-3 justify-space-between">
+            <h2 class="mt-3">Informations du restaurant</h2>
             <v-btn
                 icon
                 color="primary"
@@ -86,7 +85,7 @@
                     <v-icon size="25">mdi-close</v-icon>
                 </v-btn>
             </div>
-        </h2>
+        </div>
 
         <validation-observer ref="obsInfo">
             <h3 class="mt-3 mb-3">Nom du restaurant</h3>
@@ -105,7 +104,6 @@
                     restaurantInfos.Address.Number + ' ' + restaurantInfos.Address.Street + ' - ' + restaurantInfos.Address.Code + ' ' + restaurantInfos.Address.Town
                 }}</p>
             <div v-else>
-
                 <validation-provider name="Numéro" rules="required" v-slot="{ errors, valid }">
                     <v-text-field
                         v-model="editedAddress.Number"
@@ -151,8 +149,8 @@
 
         <v-divider class="mt-4 mb-4"/>
 
-        <h2 class="mt-3 mb-3">
-            Informations de contact
+        <div class="d-flex mt-3 justify-space-between">
+            <h2 class="mt-3 mb-3">Informations de contact</h2>
             <v-btn
                 icon
                 color="primary"
@@ -178,7 +176,8 @@
                     <v-icon size="25">mdi-close</v-icon>
                 </v-btn>
             </div>
-        </h2>
+        </div>
+
 
         <validation-observer ref="obsContact">
             <h3 class="mt-3 mb-3">Numéro de téléphone</h3>
@@ -209,8 +208,8 @@
 
         <v-divider class="mt-4 mb-4"/>
 
-        <h2 class="mt-3 mb-3">
-            Informations banquaires
+        <div class="d-flex mt-3 justify-space-between">
+            <h2 class="mt-3 mb-3">Informations banquaires</h2>
             <v-btn
                 icon
                 color="primary"
@@ -236,7 +235,7 @@
                     <v-icon size="25">mdi-close</v-icon>
                 </v-btn>
             </div>
-        </h2>
+        </div>
 
         <validation-observer ref="obsBank">
             <h3 class="mt-3 mb-3">Nom du compte</h3>
@@ -408,7 +407,7 @@ export default class RestaurantInfos extends Vue {
                 this.restaurantInfos.CoverImg = this.resultCoverImg.toString();
 
             if (this.resultProfileImg !== null)
-                this.restaurantInfos.CoverImg = this.resultProfileImg.toString();
+                this.restaurantInfos.ProfileImg = this.resultProfileImg.toString();
 
             this.updateRestaurant();
         }

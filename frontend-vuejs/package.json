@@ -13,6 +13,7 @@
     "axios": "^0.27.2",
     "chart.js": "^3.8.0",
     "core-js": "^3.8.3",
+    "dateformat": "^5.0.3",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.3",
     "number-shortener": "^1.0.1",
@@ -29,6 +30,7 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
+    "@types/dateformat": "^5.0.0",
     "@types/qrcode": "^1.4.2",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",

@@ -6,11 +6,13 @@ let OrderSchema = new Schema(
         N_Order : String,
         State : Number,
         Payment : String,
+        Rating: Number,
         Restaurant : {type:Schema.Types.ObjectId, ref: 'RestaurantModel'},
         Client : {
             Client_ID : {type: Schema.Types.ObjectId, ref:'ClientModel'},
             Favorite : Boolean,
         },
+        Deliveryman_token : String,
         Complementary : String,
         Detail : {
             Price : Number,

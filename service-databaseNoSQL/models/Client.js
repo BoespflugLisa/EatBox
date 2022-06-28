@@ -6,7 +6,7 @@ let ClientSchema = new Schema(
         belongs_to: {type: Schema.Types.ObjectId, ref: 'UsersLogModel'},
         Name: String,
         Firstname: String,
-        Picture: String,
+        Phone: String,
         Address: {
             Number: String,
             Street: String,
