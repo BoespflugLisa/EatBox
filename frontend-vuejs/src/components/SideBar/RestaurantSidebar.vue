@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-center flex-column pa-5 pt-2">
+    <div id="restaurant-sidebar" class="d-flex justify-center flex-column pa-5 pt-2">
         <v-btn
             color="tertiary black--text"
             class="pr-10 pl-10"

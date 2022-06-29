@@ -45,7 +45,8 @@
                 </v-btn>
             </div>
             <!--  MENU @Restaurant-->
-            <RestaurantSidebar v-if="this.$cookies.get('role')==='Restaurant'"/>
+            <restaurant-sidebar v-if="this.$cookies.get('role')==='Restaurant'"/>
+            <client-sidebar v-if="this.$cookies.get('role')==='Client'"/>
             <template v-slot:append>
                 <div class="d-flex justify-center flex-column pa-5">
                     <v-btn
@@ -106,7 +107,8 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import {ValidationObserver, ValidationProvider} from 'vee-validate';
-import RestaurantSidebar from "./components/Restaurateur/RestaurantSidebar.vue"
+import RestaurantSidebar from "./components/SideBar/RestaurantSidebar.vue"
+import ClientSidebar from "./components/SideBar/ClientSidebar.vue"
 import {logoutUser} from './utils/auth.js'
 
 @Component({
@@ -114,6 +116,7 @@ import {logoutUser} from './utils/auth.js'
         ValidationObserver,
         ValidationProvider,
         RestaurantSidebar,
+        ClientSidebar,
     },
 })
 
