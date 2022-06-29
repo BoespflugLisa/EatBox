@@ -65,10 +65,6 @@ export default class AccueilClient extends Vue {
 
 
     showRestoDetail(resto) {
-
-
-
-
         this.$router.push({name: 'ClientRestaurantDetail', params: {id: resto._id}});
 
     }
