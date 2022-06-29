@@ -1,38 +1,29 @@
 const express = require("express");
 const OrderModel = require("../../models/Order")
-const ClientModel = require("../../models/Client").model
-const ArticleModel = require("../../models/Article");
-const MenuModel = require("../../models/Menu");
 const router = express.Router();
 
 router.post("/:id", async (req, res) => {
     try {
-        let client = await ClientModel.findById(req.params.id).exec();
-        let restaurant = {_id: "62b04d2058f414638a677ce9"};
-        let menus = await MenuModel.find({}).select('_id').exec()
-        let articles = await ArticleModel.find({}).select('_id').exec()
         let order = new OrderModel({
-                N_Order: "0012BON",
-                State: 1, //0 En attente de validation / 1 En préparation / 2 Prête et en attente du livreur / 3 En livraison / 4 Livrée
-                Payment: "CB",
-                Restaurant: restaurant._id,
-                Rating: null,
-                Client: {
-                    Client_ID: client,
-                    Favorite: true,
-                },
-                Complementary: "",
+                N_Order: req.body.data.N_Order,
+                State: req.body.data.State, //0 En attente de validation / 1 En préparation / 2 Prête et en attente du livreur / 3 En livraison / 4 Livrée / 5 Acceptée par le livreur / 6 Annulée
+                Payment: req.body.data.Payment,
+                Restaurant: req.body.data.Restaurant,
+                Rating: req.body.data.Rating,
+                Client: req.body.data.Client,
+                Complementary: req.body.data.Complementary,
                 Detail: {
-                    Price: 19,
-                    Menus: null,
-                    Articles: ["62b1f0f2259c5c3129f2038f", "62b0ba0402b85723b2dd78ea", "62b1f1b8259c5c3129f20392", "62b1f1b8259c5c3129f20392"],
+                    Price: req.body.data.Detail.Price,
+                    Menus: req.body.data.Detail.Menus,
+                    Articles: req.body.data.Detail.Articles,
+                    Paid: req.body.data.Detail.Paid,
                 },
                 CheckTime: {
-                    Created_at: "2022-06-21T20:10:30.000+00:00",
-                    Accepted_at: "2022-06-21T20:30:30.000+00:00",
-                    Ready_at: null,
-                    Pickedup_at: null,
-                    Delivered_at: null,
+                    Created_at: req.body.data.CheckTime.Created_at,
+                    Accepted_at: req.body.data.CheckTime.Accepted_at,
+                    Ready_at: req.body.data.CheckTime.Ready_at,
+                    Pickedup_at: req.body.data.CheckTime.Pickedup_at,
+                    Delivered_at: req.body.data.CheckTime.Delivered_at,
                 },
             }
         );

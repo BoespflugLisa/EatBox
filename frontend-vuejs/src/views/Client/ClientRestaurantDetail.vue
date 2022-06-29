@@ -10,20 +10,7 @@
                     :src=restaurantImage
                     height="200px"
                     class="text-right pa-2 rounded"
-                >
-                    <v-btn
-                        icon
-                        dark
-                        @click="toggleAndSnack()"
-                    >
-                        <v-icon>
-                            {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}
-                        </v-icon>
-
-                    </v-btn>
-
-                </v-img>
-
+                />
             </v-item>
         </v-item-group>
 
@@ -63,6 +50,7 @@
 
                 <VCardTitle>
                     {{ menu.Name }}
+                    {{ menu.Price }}
 
                 </VCardTitle>
                 <VCardText class="d-flex justify-space-between">
@@ -118,6 +106,7 @@
 
                             <VCardTitle>
                                 {{ article.Name }}
+                                {{article.Price}}
 
                             </VCardTitle>
                             <VCardText class=" d-flex justify-space-between">
@@ -260,16 +249,6 @@ export default class ClientRestaurantDetail extends Vue {
         snack: EatboxSnackbar,
     }
 
-
-    toggleAndSnack() {
-        this.active = !this.active
-        if (this.active) {
-            this.$refs.snack.openSnackbar("Ajouté au favoris", "success");
-        } else {
-            this.$refs.snack.openSnackbar("Retiré des favoris", "error");
-        }
-    }
-
     created() {
         this.restaurantID = this.$route.params.id;
     }
@@ -289,7 +268,8 @@ export default class ClientRestaurantDetail extends Vue {
     goToBasketPage() {
         this.$cookies.set("menus", this.CartMenus)
         this.$cookies.set("articles", this.CartArticles)
-        this.$router.push({name: 'Cart', params: {id: this.restaurantID}})
+        this.$cookies.set("retaurant_id", this.restaurantID)
+        this.$router.push('/Cart');
     }
 
     beforeDestroy() {

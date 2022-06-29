@@ -142,9 +142,9 @@ export default {
             .then(response => {
                 this.stateNumber = response.data.order.State
                 this.commandState = this.states[response.data.order.State]
-                this.idClient = response.data.order.Client.Client_ID._id
-                this.myAdresse = response.data.order.Client.Client_ID.Address.Number + ' ' + response.data.order.Client.Client_ID.Address.Street + ' , ' + response.data.order.Client.Client_ID.Address.Town + ' , ' + response.data.order.Client.Client_ID.Address.Code
-                this.RestaurantAdresse = response.data.order.Restaurant.Address.Number + ' ' + response.data.order.Restaurant.Address.Street + ' , ' + response.data.order.Restaurant.Address.Town + ' , ' + response.data.order.Client.Client_ID.Address.Town
+                this.idClient = response.data.order.Client._id
+                this.myAdresse = response.data.order.Client.Address.Number + ' ' + response.data.order.Client.Address.Street + ' , ' + response.data.order.Client.Address.Town + ' , ' + response.data.order.Client.Address.Code
+                this.RestaurantAdresse = response.data.order.Restaurant.Address.Number + ' ' + response.data.order.Restaurant.Address.Street + ' , ' + response.data.order.Restaurant.Address.Town + ' , ' + response.data.order.Restaurant.Address.Code
             })
 
 
