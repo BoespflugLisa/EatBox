@@ -12,7 +12,7 @@
                 <EasingDoubleKeyFrame KeyTime="0" Value="250"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="GridBackground">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="TecFrame">
                 <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
@@ -22,73 +22,81 @@
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="250"/>
             </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="GridBackground">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="TecFrame">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Page.Resources>
-    <Page.Triggers>
+    <!--<Page.Triggers>
         <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonClose">
             <BeginStoryboard x:Name="CloseMenu_BeginStoryboard" Storyboard="{StaticResource CloseMenu}"/>
         </EventTrigger>
         <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonOpen">
             <BeginStoryboard Storyboard="{StaticResource OpenMenu}"/>
-        </EventTrigger>
-    </Page.Triggers>
-    <Grid>
-        <Grid x:Name="GridBackground" Background="#55313131" Opacity="0"/>
-        <Button x:Name="ButtonOpen" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">
-            <materialDesign:PackIcon Kind="Menu" Foreground="#FF313131"/>
-        </Button>
-        <Grid x:Name="GridMenu" Width="250" HorizontalAlignment="Left" Margin="-250 0 0 0" Background="White" RenderTransformOrigin="0.5,0.5">
-            <Grid.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Grid.RenderTransform>
-            <StackPanel >
-                <Image Height="100" Source="/Assets/EatBox.png" Stretch="Uniform" HorizontalAlignment="left" />
-                <ListView Foreground="#FF313131" FontFamily="Champagne &amp; Limousines" FontSize="18">
-                    <ListViewItem Height="45" Padding="0">
-                        <StackPanel Orientation="Horizontal" Margin="10 0">
-                            <materialDesign:PackIcon Kind="AccountWrench" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center"/>
-                            <TextBlock Text="Logs" Margin="10"/>
-                        </StackPanel>
-                    </ListViewItem>
-                    <ListViewItem Height="45" Padding="0">
-                        <StackPanel Orientation="Horizontal" Margin="10 0">
-                            <materialDesign:PackIcon Kind="EyeOutline" Width="20" Height="20" Foreground="#FFF08033" Margin="5" VerticalAlignment="Center"/>
-                            <TextBlock Text="Supervision" Margin="10"/>
-                        </StackPanel>
-                    </ListViewItem>
-                    <ListViewItem Height="45" Padding="0">
-                        <StackPanel Orientation="Horizontal" Margin="10 0">
-                            <materialDesign:PackIcon Kind="Connection" Width="20" Height="20" Foreground="Green" Margin="5" VerticalAlignment="Center"/>
-                            <TextBlock Text="Reseau" Margin="10"/>
-                        </StackPanel>
-                    </ListViewItem>
-                    <ListViewItem x:Name="Technicien1" Height="45" Padding="0">
-                        <StackPanel Orientation="Horizontal" Margin="10 0">
-                            <materialDesign:PackIcon Kind="HandCoin" Width="20" Height="20" Foreground="#FFD41515" Margin="5" VerticalAlignment="Center"/>
-                            <TextBlock Text="Services" Margin="10"/>
-                        </StackPanel>
-                    </ListViewItem>
-                    <ListViewItem Height="45" Padding="0">
-                        <StackPanel Orientation="Horizontal" Margin="10 0">
-                            <materialDesign:PackIcon Kind="HammerWrench" Width="20" Height="20" Foreground="#FFE6A701" Margin="5" VerticalAlignment="Center"/>
-                            <TextBlock Text="Composants" Margin="10"/>
-                        </StackPanel>
-                    </ListViewItem>
-                  
-                </ListView>
+        </EventTrigger
+    </Page.Triggers>>-->
+    <Grid HorizontalAlignment="Left" Width="1070">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="99*"/>
+            <RowDefinition Height="101*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="29*"/>
+            <ColumnDefinition Width="91*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid x:Name="GridMenu" Width="250" HorizontalAlignment="Center" Background="White" Grid.RowSpan="2" Margin="0,3,0,0">
+
+            <StackPanel>
+                <Image Height="100" Source="/Assets/EatBox.png" Stretch="Uniform" />
+                <ListBox>
+                    <ListBoxItem>
+                        <Button Background="Transparent" Height="45" Padding="0" Width="229" BorderThickness="0" Cursor="Hand" Click="Logs_Click">
+                            <StackPanel Orientation="Horizontal" Width="230" >
+                                <materialDesign:PackIcon Kind="AccountWrench" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
+                                <TextBlock Text="Logs" FontFamily="Champagne &amp; Limousines" Margin="10" Foreground="Black" FontSize="18"/>
+                            </StackPanel>
+                        </Button>
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <Button Background="Transparent" Height="45" Padding="0" Width="229" BorderThickness="0" Cursor="Hand" >
+                            <StackPanel Orientation="Horizontal" Width="230" >
+                                <materialDesign:PackIcon Kind="EyeOutline" Width="20" Height="20" Foreground="#FFF08033" Margin="5" VerticalAlignment="Center"/>
+                                <TextBlock Text="Supervision" FontFamily="Champagne &amp; Limousines" Margin="10" Foreground="Black" FontSize="18"/>
+                            </StackPanel>
+                        </Button>
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <Button Background="Transparent" Height="45" Padding="0" Width="229" BorderThickness="0" Cursor="Hand" >
+                            <StackPanel Orientation="Horizontal" Width="230" >
+                                <materialDesign:PackIcon Kind="Connection" Width="20" Height="20" Foreground="Green" Margin="5" VerticalAlignment="Center"/>
+                                <TextBlock Text="Reseau" FontFamily="Champagne &amp; Limousines" Margin="10" Foreground="Black" FontSize="18"/>
+                            </StackPanel>
+                        </Button>
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <Button Background="Transparent" Height="45" Padding="0" Width="229" BorderThickness="0" Cursor="Hand" >
+                            <StackPanel Orientation="Horizontal" Width="230" >
+                                <materialDesign:PackIcon Kind="HandCoin" Width="20" Height="20" Foreground="#FFD41515" Margin="5" VerticalAlignment="Center"/>
+                                <TextBlock Text="Services" FontFamily="Champagne &amp; Limousines" Margin="10" Foreground="Black" FontSize="18"/>
+                            </StackPanel>
+                        </Button>
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <Button Background="Transparent" Height="45" Padding="0" Width="229" BorderThickness="0" Cursor="Hand" >
+                            <StackPanel Orientation="Horizontal" Width="230" >
+                                <materialDesign:PackIcon Kind="HammerWrench" Width="20" Height="20" Foreground="#FFE6A701" Margin="5" VerticalAlignment="Center"/>
+                                <TextBlock Text="Composants" FontFamily="Champagne &amp; Limousines" Margin="10" Foreground="Black" FontSize="18"/>
+                            </StackPanel>
+                        </Button>
+                    </ListBoxItem>
+                </ListBox>
             </StackPanel>
-            <Button x:Name="ButtonClose" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">
-                <materialDesign:PackIcon Kind="Close"/>
-            </Button>
         </Grid>
+        <Frame x:Name="TecFrame" Background="#55313131" Grid.ColumnSpan="2" Margin="254,3,10,0" Grid.RowSpan="2"  />
+
+
     </Grid>
+
 </Page>

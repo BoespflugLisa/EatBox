@@ -27,7 +27,7 @@ namespace ClientLourd_EatBox.Pages
             InitializeComponent();
             MainFrame = main;
             tec = new Technicien();
-
+            
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)

@@ -21,9 +21,18 @@ namespace ClientLourd_EatBox.Pages
     /// </summary>
     public partial class Technicien : Page
     {
+
+        public Logs Log;
         public Technicien()
         {
             InitializeComponent();
+            this.Log = new Logs();
+
+        }
+
+        private void Logs_Click(object sender, RoutedEventArgs e)
+        {
+            TecFrame.Content = this.Log;
         }
     }
 }
