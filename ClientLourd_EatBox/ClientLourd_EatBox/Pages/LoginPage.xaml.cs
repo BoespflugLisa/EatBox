@@ -13,26 +13,31 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ClientLourd_EatBox
+namespace ClientLourd_EatBox.Pages
 {
     /// <summary>
-    /// Logique d'interaction pour LoginScreen.xaml
+    /// Logique d'interaction pour LoginPage.xaml
     /// </summary>
-    public partial class LoginScreen : Page
+    public partial class LoginPage : Page
     {
-        public LoginScreen()
+        private Frame MainFrame;
+        public Technicien tec;
+        public LoginPage(Frame main)
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
+            MainFrame = main;
+            tec = new Technicien();
 
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Content = tec;
         }
     }
 }

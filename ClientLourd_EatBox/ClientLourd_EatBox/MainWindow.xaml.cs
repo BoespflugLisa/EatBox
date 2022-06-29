@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ClientLourd_EatBox.Pages;
+
 
 namespace ClientLourd_EatBox
 {
@@ -22,12 +24,18 @@ namespace ClientLourd_EatBox
 
     public partial class MainWindow : Window
     {
-        public LoginScreen loginpage;
+       
+        
+        
         public MainWindow()
         {
             InitializeComponent();
-            this.loginpage = new LoginScreen();
-            this.Content = loginpage;
+            
+            MainFrame.Content = new LoginPage(this.MainFrame);
+            
+
+
         }
+        
     }
 }

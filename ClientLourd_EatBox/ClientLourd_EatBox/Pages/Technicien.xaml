@@ -71,7 +71,7 @@
                             <TextBlock Text="Reseau" Margin="10"/>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem Height="45" Padding="0">
+                    <ListViewItem x:Name="Technicien1" Height="45" Padding="0">
                         <StackPanel Orientation="Horizontal" Margin="10 0">
                             <materialDesign:PackIcon Kind="HandCoin" Width="20" Height="20" Foreground="#FFD41515" Margin="5" VerticalAlignment="Center"/>
                             <TextBlock Text="Services" Margin="10"/>

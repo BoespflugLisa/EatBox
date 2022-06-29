@@ -7,7 +7,7 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Pages\LoginScreen.xaml.cs">
+    <Compile Update="Pages\LoginPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\Technicien.xaml.cs">
@@ -15,10 +15,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Pages\LoginScreen.xaml">
+    <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="MainWindow.xaml">
+    <Page Update="Pages\LoginPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Technicien.xaml">

@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 
 namespace ClientLourd_EatBox.Pages
 {
+
     /// <summary>
     /// Logique d'interaction pour Technicien.xaml
     /// </summary>
