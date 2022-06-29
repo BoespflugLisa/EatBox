@@ -38,7 +38,7 @@
                                     ></v-text-field>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn color="primary" v-on:click="login">Login
+                                        <v-btn color="primary" :loading="loading" v-on:click="login">Login
                                         </v-btn>
                                     </v-card-actions>
                                 </v-form>
@@ -63,6 +63,7 @@ import {loginUser} from '../utils/auth'
 export default class LoginComponent extends Vue {
     name = 'LoginComponent'
 
+    loading = false
     ReturnError = false
     error_login = ""
     form = {
@@ -82,6 +83,7 @@ export default class LoginComponent extends Vue {
     urlParams:any = new URLSearchParams(window.location.search)
 
     async login() {
+        this.loading = true
         try {
             console.log(this.form)
             await loginUser(this.form.email, this.form.password, this.form.Role)
@@ -90,6 +92,7 @@ export default class LoginComponent extends Vue {
                 })
 
         } catch (err:any) {
+            this.loading = false
             //console.log(`Erreur: ${err.response.data.message}`)
             this.ReturnError = true;
             if(err.response) this.error_login = err.response.data.message
