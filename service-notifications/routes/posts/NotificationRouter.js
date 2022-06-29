@@ -1,18 +1,20 @@
 const express = require("express");
 const NotificationModel = require("../../models/Notification")
-const {now} = require("mongoose");
+const mongoose = require("mongoose");
+
 const router = express.Router();
+
+let wsNotificationClients = [];
 
 router.post("/:id/:action", async (req, res) => {
     try {
         let notification = new NotificationModel({
-                "Date": "2022-06-21T19:10:30.000+00:00",
+                "Date": new Date(),
                 "Read": false,
-                "belongs_to": req.params.id,
+                "belongs_to": new mongoose.Types.ObjectId(req.params.id),
                 "Types": {
-                    "Command": false,
-                    "Activity": true,
-                    "Delivery": false,
+                    "Command": req.body.data.Types.Command,
+                    "Delivery": req.body.data.Types.Delivery,
                 },
             }
         );
@@ -29,34 +31,19 @@ router.post("/:id/:action", async (req, res) => {
                     break;
                 case "orderIsComming":
                     notification.Message = "Votre commande arrive!";
-                break;
+                    break;
             }
-        }
-        else if (notification.Types.Delivery === true) {
+        } else if (notification.Types.Delivery === true) {
             switch (req.params.action) {
                 case "DeliverymanIsLate":
                     notification.Message = "Le livreur est en retard.";
                     break;
                 case "DeliverymanIsComming":
-                    notification.Message = "Le livreur est arrivé!";
+                    notification.Message = "Le livreur est arrivé !";
                     break;
                 case "NoDeliverymanAvailable":
                     notification.Message = "Aucun livreur n'est disponible dans votre secteur";
-                break;
-            }
-        }
-        else if (notification.Types.Activity === true) {
-            switch (req.params.action) {
-                case "newClients":
-                    notification.Message = "Vous avez été sélectionné comme favori";
                     break;
-                case "tresholdTenClients":
-                    notification.Message = "Vous avez séduit 10 clients";
-                /*case "tresholdClients":
-                    return notification.Message = "Vous avez séduit " + {{req.body.treshold}} + " client";*/
-                /*case "tresholdOrders":
-                    return notification.Message = "Vous avez vendu " + {{req.body.treshold}} + " commandes";*/
-                break;
             }
         }
 
@@ -88,6 +75,44 @@ router.get("/", async (req, res) => {
     }
 })
 
+router.get("/user/:id", async (req, res) => {
+    try {
+        let notifications = await NotificationModel.find({
+            belong_to: new mongoose.Types.ObjectId(req.params.id),
+            Read: false
+        })
+
+        res.status(200).json({
+            status: 200,
+            notifications,
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        })
+    }
+});
+
+router.get("/userCount/:id", async (req, res) => {
+    try {
+        let count = await NotificationModel.count({
+            belong_to: new mongoose.Types.ObjectId(req.params.id),
+            Read: false
+        })
+
+        res.status(200).json({
+            status: 200,
+            count,
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        })
+    }
+});
+
 router.get("/:id", async (req, res) => {
     try {
         let notification = await NotificationModel.findOne({
@@ -110,5 +135,53 @@ router.get("/:id", async (req, res) => {
         })
     }
 })
+
+router.put("/:id", async (req, res) => {
+    try {
+        NotificationModel.findByIdAndUpdate(req.params.id, req.body.data).then(() => {
+                res.status(204).json({
+                    message: 'Notification updates successfully'
+                })
+            }
+        )
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        });
+    }
+});
+
+router.put("/user/:id/readAll", async (req, res) => {
+    try {
+        NotificationModel.updateMany({
+            belong_to: new mongoose.Types.ObjectId(req.params.id),
+            Read: false
+        }, {
+            $set: {Read: true}
+        }).then(() => {
+            res.status(204).json({
+                message: 'Notifications updates successfully'
+            })
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        });
+    }
+});
+
+router.ws('/socket/notifications/:id', function (ws, req) {
+    ws.id = req.params.id
+
+    NotificationModel.watch().on('change', (data) => {
+        if (data.operationType === "insert") {
+            if (ws.id === data.fullDocument.belongs_to.toString()) {
+                ws.send("New notification");
+            }
+        }
+    })
+});
 
 module.exports = router;

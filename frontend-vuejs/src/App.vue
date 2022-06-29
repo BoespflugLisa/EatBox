@@ -16,9 +16,16 @@
             </router-link>
 
             <v-btn v-if="this.$cookies.get('auth')" icon to="/notifications">
-                <v-icon color="white">
-                    mdi-bell
-                </v-icon>
+                <v-badge
+                    :content="notifDisplay"
+                    :value="notifDisplay"
+                    color="red"
+                    overlap
+                >
+                    <v-icon color="white">
+                        mdi-bell
+                    </v-icon>
+                </v-badge>
             </v-btn>
         </v-app-bar>
 
@@ -87,7 +94,11 @@
         </v-navigation-drawer>
 
         <div class="content">
-            <router-view v-on:change-theme="changeTheme()"/>
+            <router-view
+                v-on:change-theme="changeTheme()"
+                v-on:remove-notif="removeNotification()"
+                v-on:remove-all-notif="removeAllNotification()"
+            />
         </div>
     </v-app>
 </template>
@@ -108,12 +119,23 @@ import {logoutUser} from './utils/auth.js'
 
 export default class App extends Vue {
 
+
+
     eatBoxLogo = '';
     drawer = false;
     value = '';
+    notifCount = 0;
+    notifDisplay: number|string = 0;
+
+    notificationConnection: WebSocket | null = null;
 
     mounted() {
         this.changeTheme()
+        this.getNotificationCount()
+    }
+
+    updated() {
+        this.connectNotificationWS()
     }
 
     logout() {
@@ -162,6 +184,52 @@ export default class App extends Vue {
         }
     }
 
+    getNotificationCount() {
+        if (this.$cookies.get("auth")) {
+            this.$axios_notifications.get("/notifications/userCount/" + this.$cookies.get('user_id')).then(response => {
+                this.notifCount = response.data.count;
+                if (response.data.count > 9)
+                    this.notifDisplay = "9+";
+                else
+                    this.notifDisplay = response.data.count;
+            });
+        }
+    }
+
+    removeNotification() {
+        this.notifCount--;
+        if (this.notifCount > 9)
+            this.notifDisplay = "9+";
+        else
+            this.notifDisplay = this.notifCount;
+    }
+
+    removeAllNotification() {
+        this.notifCount = 0;
+        this.notifDisplay = 0;
+    }
+
+    addNotification() {
+        this.notifCount++;
+        if (this.notifCount > 9)
+            this.notifDisplay = "9+";
+        else
+            this.notifDisplay = this.notifCount;
+    }
+
+    async connectNotificationWS() {
+        if (this.$cookies.get("auth") && this.notificationConnection === null) {
+            this.notificationConnection = await new WebSocket("ws://localhost:3033/notifications/socket/notifications/" + this.$cookies.get("user_id"))
+
+            this.notificationConnection.onmessage = () => {
+                this.addNotification();
+            }
+
+            this.notificationConnection.onclose = () => {
+                this.notificationConnection = null
+            }
+        }
+    }
 
 }
 </script>

@@ -21,13 +21,19 @@ const axios_login = axios.create({
     baseURL:'http://localhost:3032',
 });
 
+const axios_notifications = axios.create({
+    baseURL:'http://localhost:3033',
+});
+
 Vue.prototype.$axios = axios_nosql;
 Vue.prototype.$axios_login = axios_login;
+Vue.prototype.$axios_notifications = axios_notifications;
 
 declare module 'vue/types/vue' {
     interface Vue {
         $axios: AxiosStatic;
         $axios_login: AxiosStatic;
+        $axios_notifications: AxiosStatic;
     }
 }
 

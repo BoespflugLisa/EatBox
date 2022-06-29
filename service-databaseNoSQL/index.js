@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+
 require('events').EventEmitter.defaultMaxListeners = 15;
 
 
@@ -15,10 +16,11 @@ const DeliverymansRouter = require("./routes/posts/DeliverymanRouter");
 const OrdersRouter = require("./routes/posts/OrderRouter");
 const ArticlesRouter = require("./routes/posts/ArticleRouter");
 const StatsRouter = require("./routes/posts/StatsRouter");
-const NotificationsRouter = require("./routes/posts/NotificationRouter");
 const CategoriesRouter = require("./routes/posts/CategoryRouter");
 const MenusRouter = require("./routes/posts/MenuRouter");
 const PerformancesRouter = require("./routes/posts/PerformanceRouter");
+
+
 
 app.use(logger("dev"));
 app.use(cors());
@@ -44,7 +46,6 @@ app.use("/menus", MenusRouter);
 app.use("/performance", PerformancesRouter);
 app.use("/deliverymans", DeliverymansRouter);
 app.use("/clients", ClientsRouter);
-app.use("/notifications", NotificationsRouter);
 app.use("/categories", CategoriesRouter);
 
 app.listen(port, function () {
