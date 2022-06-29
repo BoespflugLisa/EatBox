@@ -50,7 +50,7 @@
             <template v-slot:append>
                 <div class="d-flex justify-center flex-column pa-5">
                     <v-btn
-                        to="/mon_Restaurant?tab=2"
+                        :to="role === 'Restaurant' ? '/MonRestaurant?tab=2' : '/MonProfil?tab=1'"
                         color="tertiary black--text"
                         class="pr-10 pl-10"
                     >
@@ -121,14 +121,13 @@ import {logoutUser} from './utils/auth.js'
 })
 
 export default class App extends Vue {
-
-
-
     eatBoxLogo = '';
     drawer = false;
     value = '';
     notifCount = 0;
-    notifDisplay: number|string = 0;
+    notifDisplay: number | string = 0;
+
+    role = this.$cookies.get('role');
 
     notificationConnection: WebSocket | null = null;
 
