@@ -296,6 +296,7 @@
                     <v-btn
                         text
                         color="error"
+                        @click="deleteAccount()"
                     >
                         Supprimer
                     </v-btn>
@@ -312,6 +313,7 @@ import {Component, Vue} from 'vue-property-decorator';
 import SelectSchedule from './SelectSchedule.vue'
 import {ValidationObserver, ValidationProvider} from "vee-validate";
 import EatboxSnackbar from "../Snack/EatboxSnackbar.vue";
+import {logoutUser} from "../../utils/auth";
 
 @Component({
     components: {
@@ -507,6 +509,15 @@ export default class RestaurantInfos extends Vue {
 
     openConfirmDelete() {
         this.showDialogConfirmDelete = true;
+    }
+
+    deleteAccount() {
+        this.$axios.delete("/restaurants/" + this.$cookies.get('user_id')).then(() => {
+            this.$axios_login.delete('/' + this.$cookies.get('_id')).then(() => {
+                logoutUser()
+                this.$router.push('/connexion')
+            })
+        })
     }
 
 }

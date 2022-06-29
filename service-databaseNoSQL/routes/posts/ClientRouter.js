@@ -71,6 +71,21 @@ router.put("/:id", async (req, res) => {
         });
     }
 
-})
+});
+
+router.delete('/:id', function (req, res) {
+    try {
+        ClientModel.findByIdAndDelete(req.params.id).then(() => {
+            res.status(204).json({
+                message: 'Restaurant deleted successfully!'
+            });
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        });
+    }
+});
 
 module.exports = router;

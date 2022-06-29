@@ -38,12 +38,12 @@
         </div>
 
         <v-file-input v-else
-            show-size v-model="editedProfileImg"
-            truncate-length="15"
-            prepend-icon="mdi-image"
-            label="Image de profil"
-            @change="uploadImg()"
-            accept="image/*"
+                      show-size v-model="editedProfileImg"
+                      truncate-length="15"
+                      prepend-icon="mdi-image"
+                      label="Image de profil"
+                      @change="uploadImg()"
+                      accept="image/*"
         />
 
         <div class="d-flex mt-3 justify-space-between">
@@ -224,6 +224,7 @@
                     <v-btn
                         text
                         color="error"
+                        @click="deleteAccount()"
                     >
                         Supprimer
                     </v-btn>
@@ -239,6 +240,7 @@
 import {Component, Vue} from 'vue-property-decorator';
 import {ValidationObserver, ValidationProvider} from "vee-validate";
 import EatboxSnackbar from "../Snack/EatboxSnackbar.vue";
+import {logoutUser} from "../../utils/auth";
 
 @Component({
     components: {
@@ -363,7 +365,7 @@ export default class LivreurInfos extends Vue {
     }
 
     updateDeliveryman() {
-        this.$axios.put("/deliverymans/" + this.deliverymanId, {data : this.deliverymanInfos}).then(() => {
+        this.$axios.put("/deliverymans/" + this.deliverymanId, {data: this.deliverymanInfos}).then(() => {
             this.$refs.snack.openSnackbar("Mise à jour efféctué avec succès", "success");
         }).catch(() => {
             this.$refs.snack.openSnackbar("Erreur lors de la mise à jour", "error");
@@ -381,6 +383,15 @@ export default class LivreurInfos extends Vue {
 
     openConfirmDelete() {
         this.showDialogConfirmDelete = true;
+    }
+
+    deleteAccount() {
+        this.$axios.delete("/deliverymans/" + this.$cookies.get('user_id')).then(() => {
+            this.$axios_login.delete('/' + this.$cookies.get('_id')).then(() => {
+                logoutUser()
+                this.$router.push('/connexion')
+            })
+        })
     }
 
 }
