@@ -19,7 +19,7 @@ import ProfileClientView from '../components/Client/ProfileClientView.vue'
 })
 
 export default class UserProfile extends Vue{
-    role = "Client"/*this.$cookies.get('role')*/;
+    role = this.$cookies.get('role');
 }
 </script>
 

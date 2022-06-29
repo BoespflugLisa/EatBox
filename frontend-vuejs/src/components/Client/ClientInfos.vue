@@ -104,6 +104,40 @@
             </div>
         </validation-observer>
 
+        <v-divider class="mt-4 mb-4"/>
+
+        <div class="d-flex justify-center mb-3">
+            <v-btn color="error" rounded @click="openConfirmDelete()">
+                Supprimer mon compte
+            </v-btn>
+        </div>
+
+        <v-dialog v-model="showDialogConfirmDelete" width="600px">
+            <v-card>
+                <v-card-title>
+                    Comfirmez-vous la suppression de votre compte ?
+                </v-card-title>
+                <v-card-text class="red--text">
+                    Attention, cette action sera irréversible !
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn
+                        text
+                        @click="showDialogConfirmDelete = !showDialogConfirmDelete"
+                    >
+                        Annuler
+                    </v-btn>
+                    <v-spacer/>
+                    <v-btn
+                        text
+                        color="error"
+                    >
+                        Supprimer
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
         <eatbox-snackbar ref="snack"/>
 
     </div>
@@ -156,6 +190,8 @@ export default class ClientInfos extends Vue {
         Code: 0
     }
 
+    showDialogConfirmDelete = false
+
     getData(data, id) {
         this.clientId = id
         this.clientInfos = data
@@ -186,6 +222,10 @@ export default class ClientInfos extends Vue {
                 })
             }
         })
+    }
+
+    openConfirmDelete() {
+        this.showDialogConfirmDelete = true;
     }
 
 }
