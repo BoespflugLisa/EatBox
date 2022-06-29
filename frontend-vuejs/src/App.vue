@@ -47,7 +47,7 @@
             <!--  MENU @Restaurant-->
             <restaurant-sidebar v-if="this.$cookies.get('role') ==='Restaurant'"/>
             <client-sidebar v-if="this.$cookies.get('role') ==='Client'"/>
-            <deliveryman-sidebar v-if="this.$cookies.get('role') ==='Livreur'"/>
+            <deliveryman-sidebar v-on:no-order="showSnackNoOrder()" v-if="this.$cookies.get('role') ==='Livreur'"/>
             <template v-slot:append>
                 <div class="d-flex justify-center flex-column pa-5">
                     <v-btn
@@ -101,6 +101,7 @@
                 v-on:remove-notif="removeNotification()"
                 v-on:remove-all-notif="removeAllNotification()"
             />
+            <eatbox-snackbar ref="snack"/>
         </div>
     </v-app>
 </template>
@@ -111,6 +112,7 @@ import {ValidationObserver, ValidationProvider} from 'vee-validate';
 import RestaurantSidebar from "./components/SideBar/RestaurantSidebar.vue"
 import ClientSidebar from "./components/SideBar/ClientSidebar.vue"
 import DeliverymanSidebar from "./components/SideBar/DeliverymanSidebar.vue"
+import EatboxSnackbar from "./components/Snack/EatboxSnackbar.vue";
 import {logoutUser} from './utils/auth.js'
 
 @Component({
@@ -120,10 +122,15 @@ import {logoutUser} from './utils/auth.js'
         RestaurantSidebar,
         ClientSidebar,
         DeliverymanSidebar,
+        EatboxSnackbar,
     },
 })
 
 export default class App extends Vue {
+    $refs!: {
+        snack: EatboxSnackbar,
+    }
+
     eatBoxLogo = '';
     drawer = false;
     value = '';
@@ -234,6 +241,10 @@ export default class App extends Vue {
                 this.notificationConnection = null
             }
         }
+    }
+
+    showSnackNoOrder() {
+        this.$refs.snack.openSnackbar("Vous n'avez pas encore choisi de commande. Rendez-vous sur la liste des commandes pour en accepter une.", "warning");
     }
 
 }

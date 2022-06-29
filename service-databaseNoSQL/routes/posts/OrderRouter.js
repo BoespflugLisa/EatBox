@@ -87,16 +87,45 @@ router.get("/:id", async (req, res) => {
             .populate('Detail.Articles', 'Name Price').exec();
         if (order) {
             res.status(200).json({
-                order,
+                status: 200,
+                data: order,
             });
         }
     } catch (err) {
         res.status(400).json({
             status: 400,
             message: err.message,
-        })
+        });
     }
 })
+
+router.get('/deliverymanCurrentOrder/:id', async (req, res) => {
+    try {
+
+        let order = await OrderModel.findOne({
+            Deliveryman_token: req.params.id,
+            $or: [{State: 0}, {State: 1}, {State: 2}, {State: 3}]
+        })
+        console.log(order)
+        if (order) {
+            res.status(200).json({
+                    order,
+                }
+            )
+        } else {
+            res.status(204).json({
+                message: 'Not found'
+            })
+        }
+
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        })
+    }
+
+});
 
 router.put("/:id", async (req, res) => {
     try {

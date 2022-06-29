@@ -25,7 +25,7 @@ const routes: Array<RouteConfig> = [
                     break;
 
                 case "Livreur":
-                    next({name: 'OpenToWork'})
+                    next({name: 'DeliveryList'})
                     break;
             }
         }
@@ -75,23 +75,16 @@ const routes: Array<RouteConfig> = [
 
     // DELIVERYMAN
     {
-        path: '/OpenToWork',
-        name: 'OpenToWork',
-        component: () => import('../views/OpenToWork.vue'),
-        meta: {requiresAuth: true, isUser: 'Livreur'}
-    },
-
-    {
         path: '/DeliveryList',
         name: 'DeliveryList',
-        component: () => import('../views/DeliveryList.vue'),
+        component: () => import('../views/Livreur/DeliveryList.vue'),
         meta: {requiresAuth: true, isUser: 'Livreur'}
     },
 
     {
         path: '/DeliveryDetail/:id',
         name: 'DeliveryDetail',
-        component: () => import('../views/DeliveryDetail.vue'),
+        component: () => import('../views/Livreur/DeliveryDetail.vue'),
         meta: {requiresAuth: true, isUser: 'Livreur'}
     },
 
