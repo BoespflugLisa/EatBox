@@ -24,7 +24,7 @@
         <div v-else class="text-center">
             <p>Je suis un...</p>
             <div v-for="(type, index) in types" :key="index">
-                <v-btn color="secondary" class="mt-7" rounded v-on:click=setForms(index)>
+                <v-btn color="secondary" width="150px" class="mt-7" rounded v-on:click=setForms(index)>
                     {{ type }}
                 </v-btn>
             </div>
