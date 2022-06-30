@@ -20,7 +20,8 @@
                             <v-form>
                                 <v-card class="elevation-12">
                                     <v-card-text>
-                                        <validation-provider v-slot="{ errors, valid }" rules="required|email" name="e-mail">
+                                        <validation-provider v-slot="{ errors, valid }" rules="required|email"
+                                                             name="e-mail">
                                             <v-text-field
                                                 prepend-icon="mdi-account"
                                                 v-model="form.email"
@@ -29,7 +30,8 @@
                                                 :success="valid"
                                             ></v-text-field>
                                         </validation-provider>
-                                        <validation-provider name="mot de passe" rules="required|min:8" v-slot="{ errors, valid }">
+                                        <validation-provider name="mot de passe" rules="required|min:8"
+                                                             v-slot="{ errors, valid }">
                                             <v-text-field
                                                 v-model="form.password"
                                                 label="Password"
@@ -42,45 +44,68 @@
                                                 :success="valid"
                                             ></v-text-field>
                                         </validation-provider>
-                                            <validation-provider name="photo du restaurant" rules="required" v-slot="{ errors, validated }">
-                                                <v-file-input
-                                                    show-size v-model="CoverImg"
-                                                    truncate-length="15"
-                                                    prepend-icon="mdi-image-area"
-                                                    label="Image de couverture"
-                                                    @change="uploadImg()"
-                                                    accept="image/*"
-                                                    :error-messages="errors"
-                                                    :success="validated"
-                                                />
-                                            </validation-provider>
+                                        <validation-provider name="photo du restaurant" rules="required"
+                                                             v-slot="{ errors, validated }">
+                                            <v-file-input
+                                                show-size v-model="CoverImg"
+                                                truncate-length="15"
+                                                prepend-icon="mdi-image-area"
+                                                label="Image de couverture"
+                                                @change="uploadImg()"
+                                                accept="image/*"
+                                                :error-messages="errors"
+                                                :success="validated"
+                                            />
+                                        </validation-provider>
+
+                                        <validation-provider name="nom du restaurant" rules="required"
+                                                             v-slot="{ errors, validated }">
                                             <v-text-field
-                                                v-model="form.username"
-                                                label="Nom"
+                                                v-model="form.name"
+                                                label="Nom du restaurant"
+                                                :error-messages="errors"
+                                                :success="validated"
                                             ></v-text-field>
-                                            <v-autocomplete
-                                                v-model="form.type"
-                                                :items="types"
-                                                :readonly="isEditing"
-                                                label="Type de nourriture"
-                                                :rules="[rules.required]"
-                                                prepend-icon="mdi-food"
-                                            ></v-autocomplete>
+                                        </validation-provider>
+
+                                        <v-autocomplete
+                                            v-model="form.type"
+                                            :items="types"
+                                            :readonly="isEditing"
+                                            label="Type de nourriture"
+                                            :rules="[rules.required]"
+                                            prepend-icon="mdi-food"
+                                        ></v-autocomplete>
+                                        <validation-provider name="téléphone" rules="required|digits:10"
+                                                             v-slot="{ errors, validated }">
                                             <v-text-field
                                                 v-model="form.phone"
                                                 label="Numéro de téléphone"
-                                                :rules="[rules.required, /*rules.phone*/]"
                                                 prepend-icon="mdi-phone"
+                                                :error-messages="errors"
+                                                :success="validated"
                                             ></v-text-field>
+                                        </validation-provider>
 
+                                        <validation-provider name="numéro de SIRET" rules="required"
+                                                             v-slot="{ errors, validated }">
                                             <v-text-field
                                                 v-model="form.legal.siret"
                                                 label="Numéro de SIRET"
+                                                :error-messages="errors"
+                                                :success="validated"
                                             ></v-text-field>
+                                        </validation-provider>
+                                        <validation-provider name="numéro IBAN" rules="required"
+                                                             v-slot="{ errors, validated }">
                                             <v-text-field
                                                 v-model="form.legal.iban"
                                                 label="Numéro IBAN"
+                                                :error-messages="errors"
+                                                :success="validated"
                                             ></v-text-field>
+                                        </validation-provider>
+
 
                                         <h3>Adresse</h3>
 
@@ -101,7 +126,8 @@
                                             />
                                         </validation-provider>
 
-                                        <validation-provider name="code postal" rules="required|numeric" v-slot="{ errors, valid }">
+                                        <validation-provider name="code postal" rules="required|numeric"
+                                                             v-slot="{ errors, valid }">
                                             <v-text-field
                                                 type="number"
                                                 v-model="form.address.code" label="Code postal"
@@ -142,8 +168,7 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import {registerUser} from "../../utils/auth";
-import {extend, ValidationObserver, ValidationProvider} from "vee-validate";
-import {required, email, min} from 'vee-validate/dist/rules';
+import {ValidationObserver, ValidationProvider} from "vee-validate";
 
 @Component({
     components: {
@@ -157,12 +182,6 @@ export default class RegisterComponent extends Vue {
 
     loading = false
 
-    created(){
-        extend('required', required)
-        extend('email', email)
-        extend('min', min)
-    }
-
     types = ['Fast-Food', 'Asiatique', 'Mexicain', 'Italien']
     isEditing = false
 
@@ -175,21 +194,10 @@ export default class RegisterComponent extends Vue {
     }
 
     resultCoverImg: ArrayBuffer | string | null = null
-    ProfileImg = null
-    resultProfileImg: ArrayBuffer | string | null = null
     CoverImg = null
 
     uploadImg() {
         const reader = new FileReader();
-        if (this.ProfileImg !== null) {
-            reader.onloadend = () => {
-                this.form.ProfileImg = reader.result;
-            }
-            reader.readAsDataURL(this.ProfileImg);
-        } else {
-            this.form.ProfileImg = null;
-        }
-
         if (this.CoverImg !== null) {
             reader.onloadend = () => {
                 this.form.CoverImg = reader.result;
@@ -201,11 +209,10 @@ export default class RegisterComponent extends Vue {
     }
 
     form = {
-        CoverImg: this.resultProfileImg,
-        ProfileImg: this.resultCoverImg,
+        CoverImg: this.resultCoverImg,
         email: "",
         password: "",
-        username: "",
+        name: "",
         legal: {
             siret: "",
             iban: "",
@@ -223,26 +230,8 @@ export default class RegisterComponent extends Vue {
 
     show2 = false
 
-    rules = {
-        required: value => !!value || 'Champ requis.',
-        email: value => {
-            const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}])|(([a-zA-Z\-\d]+\.)+[a-zA-Z]{2,}))$/
-            return pattern.test(value) || 'Format e-mail non respecté.'
-        },
-        phone: value => {
-            const pattern = /^((\+)33|0)[1-9](\d{2}){4}$/
-            return pattern.test(value) || "Format invalide : '+33665840125' ou '0123456789"
-        },
-        password: value => value.length >= 8 || 'Au moins 8 caractères',
-        iban: value => {
-            const pattern = /^FR\d{12}[A-Z\d]{11}\d{2}$/
-            return pattern.test(value) || "IBAN invalide"
-        }
-    }
-
-
     async register() {
-        this.loading=true
+        this.loading = true
         this.$refs.obsForm.validate().then(async success => {
             if (success) {
                 try {
@@ -255,7 +244,6 @@ export default class RegisterComponent extends Vue {
                         })
 
                 } catch (err: any) {
-                    console.log(`Erreur: ${err.response.data.message}`)
                     this.loading = false
                     this.ReturnError = true;
                     this.error_login = err.response.data.message

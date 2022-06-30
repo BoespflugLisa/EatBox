@@ -10,83 +10,132 @@ const mongoose = require("mongoose");
 
 // Register
 router.post('/register', async function (req, res) {
-    console.log(req.body)
 
-    let newUser = new UserModel.model({
-        Username: req.body.username,
-        Email: req.body.email,
-        Password: bcrypt.hashSync(req.body.password, 8),
-        restaurant: null,
-    });
-
-
-    try {
-        let r = await UserModel.model.findOne({Email: req.body.email}).exec().then(r => {
-            return r;
-        })
-
-        if (r != null) {
-            console.log("Already existing: ", r)
-            throw "un utilisateur est déjà enregistré sous cet email"
+        let newUser;
+        if (req.body.role === 'Restaurant') {
+            newUser = new UserModel.model({
+                Email: req.body.email,
+                Password: bcrypt.hashSync(req.body.password, 8),
+                restaurant: null,
+            });
+        } else {
+            newUser = new UserModel.model({
+                Email: req.body.email,
+                Password: bcrypt.hashSync(req.body.password, 8),
+                livreur: null,
+                client: null,
+            });
         }
 
+        try {
+            let r = await UserModel.model.findOne({Email: req.body.email}).exec().then(r => {
+                return r;
+            })
 
-        newUser.save()
-            .then(async function (r) {
-                let token = jwt.sign(
-                    {id: newUser._id},
-                    config.secret,
-                    {expiresIn: 86400} //24h
-                )
+            if (r != null) {
+                console.log("Already existing: ", r)
+                throw "un utilisateur est déjà enregistré sous cet email"
+            }
 
-                try {
-                    await utils.createProfile({
-                        _id: newUser._id,
-                        ProfileImg: req.body.ProfileImg,
-                        CoverImg: req.body.CoverImg,
-                        Username: req.body.username,
-                        Phone: req.body.phone,
-                        Type: req.body.type,
-                        Role: req.body.role,
-                        Legal: {
-                            SIRET: req.body.legal.siret,
-                            IBAN: req.body.legal.iban,
-                        }
-                    }).then(r => console.log("CreateProfile: ", r))
-                        .catch(err => {
-                            throw err
 
+            newUser.save()
+                .then(async function (r) {
+                    let token = jwt.sign(
+                        {id: newUser._id},
+                        config.secret,
+                        {expiresIn: 86400} //24h
+                    )
+
+                    let userInfos;
+
+                    switch (req.body.role) {
+                        case 'Restaurant':
+                            userInfos = {
+                                _id: newUser._id,
+                                CoverImg: req.body.CoverImg,
+                                Name: req.body.name,
+                                Phone: req.body.phone,
+                                Type: req.body.type,
+                                Role: req.body.role,
+                                Legal: {
+                                    SIRET: req.body.legal.siret,
+                                    IBAN: req.body.legal.iban,
+                                },
+                                Address: {
+                                    Number: req.body.address.number,
+                                    Street: req.body.address.street,
+                                    Town: req.body.address.town,
+                                    Code: req.body.address.code,
+                                }
+                            };
+                            break;
+
+                        case 'Client' :
+                            userInfos = {
+                                _id: newUser._id,
+                                Name: req.body.name,
+                                Lastname: req.body.lastname,
+                                Phone: req.body.phone,
+                                Role: req.body.role,
+                                Address: {
+                                    Number: req.body.address.number,
+                                    Street: req.body.address.street,
+                                    Town: req.body.address.town,
+                                    Code: req.body.address.code,
+                                }
+                            };
+                            break;
+
+                        case 'Livreur' :
+                            userInfos = {
+                                _id: newUser._id,
+                                Name: req.body.name,
+                                Lastname: req.body.lastname,
+                                ProfileImg: req.body.ProfileImg,
+                                Phone: req.body.phone,
+                                Role: req.body.role,
+                                IBAN: req.body.iban,
+                            }
+                    }
+
+                    try {
+                        await utils.createProfile(userInfos)
+                            .catch(err => {
+                                throw err
+
+                            })
+                    } catch (e) {
+                        console.log(e)
+                        res.status(400).json({
+                            message: e,
                         })
-                } catch (e) {
-                    console.log(e)
-                    res.status(400).json({
-                        message: e,
-                    })
-                    return res
-                }
+                        return res
+                    }
 
-                console.log(newUser)
+                    console.log(newUser)
 
-                res.status(200).json({
-                    auth: true,
-                    token: token,
-                    user: {
-                        _id: newUser._id,
-                        Role: req.body.role,
-                    },
+                    res.status(200).json({
+                        auth: true,
+                        token: token,
+                        user: {
+                            _id: newUser._id,
+                            Role: req.body.role,
+                        },
 
+                    });
                 });
-            });
 
-    } catch (err) {
-        console.log(err)
-        res.status(400).json({
-            message: err,
-        })
-        return res
+        } catch (err) {
+            console.log(err)
+            res.status(400).json({
+                message: err,
+            })
+            return res
+        }
+
     }
-
-});
+)
+;
 
 router.post('/login', async (req, res) => {
     //https://www.digitalocean.com/community/tutorials/how-to-set-up-vue-js-authentication-and-route-handling-using-vue-router

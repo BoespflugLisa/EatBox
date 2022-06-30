@@ -61,7 +61,7 @@
                                         <validation-provider name="nom" rules="required"
                                                              v-slot="{ errors, validated }">
                                             <v-text-field
-                                                v-model="form.name"
+                                                v-model="form.lastname"
                                                 label="Nom"
                                                 prepend-icon="mdi-card-account-details"
                                                 :error-messages="errors"
@@ -72,7 +72,7 @@
                                         <validation-provider name="prénom" rules="required"
                                                              v-slot="{ errors, validated }">
                                             <v-text-field
-                                                v-model="form.lastname"
+                                                v-model="form.name"
                                                 label="Prénom"
                                                 prepend-icon="mdi-card-account-details"
                                                 :error-messages="errors"
@@ -91,10 +91,10 @@
                                             ></v-text-field>
                                         </validation-provider>
 
-                                        <validation-provider name="téléphone" rules="required"
+                                        <validation-provider name="numéro IBAN" rules="required"
                                                              v-slot="{ errors, validated }">
                                             <v-text-field
-                                                v-model="form.legal.iban"
+                                                v-model="form.iban"
                                                 label="Numéro IBAN"
                                                 prepend-icon="mdi-bank"
                                                 :error-messages="errors"
@@ -167,7 +167,7 @@ export default class RegisterComponent extends Vue {
         const reader = new FileReader();
         if (this.ProfileImg !== null) {
             reader.onloadend = () => {
-                this.resultProfileImg = reader.result;
+                this.form.ProfileImg = reader.result;
             }
             reader.readAsDataURL(this.ProfileImg);
         } else {
@@ -187,24 +187,6 @@ export default class RegisterComponent extends Vue {
     }
 
     show2 = false
-
-    rules = {
-        required: value => !!value || 'Champ requis.',
-        email: value => {
-            const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}])|(([a-zA-Z\-\d]+\.)+[a-zA-Z]{2,}))$/
-            return pattern.test(value) || 'Format e-mail non respecté.'
-        },
-        phone: value => {
-            const pattern = /^((\+)33|0)[1-9](\d{2}){4}$/
-            return pattern.test(value) || "Format invalide : '+33665840125' ou '0123456789"
-        },
-        password: value => value.length >= 8 || 'Au moins 8 caractères',
-        iban: value => {
-            const pattern = /^FR\d{12}[A-Z\d]{11}\d{2}$/
-            return pattern.test(value) || "IBAN invalide"
-        }
-    }
-
 
     async register() {
         this.loading = true

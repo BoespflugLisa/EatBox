@@ -8,7 +8,7 @@ const CategoryModel = require("../../models/Category").model;
 router.post("/:id", async (req, res) => {
     try {
         let restaurant = new RestaurantModel({
-            Name: req.body.Username,
+            Name: req.body.Name,
             Role: "Restaurant",
             Type: req.body.Type,
             CoverImg : req.body.CoverImg,
@@ -73,12 +73,12 @@ router.post("/:id", async (req, res) => {
                     endHour2: "",
                 },
             },
-            Address: {Number: "", Street: "", Town: "", Code: ""},
+            Address: {Number: req.body.Address.Number, Street: req.body.Address.Street, Town: req.body.Address.Town, Code: req.body.Address.Code},
             Phone: req.body.Phone,
             Preferences: {
-                NotificationCommand: false,
-                NotificationDeliveryman: false,
-                NotificationActivities: false,
+                NotificationCommand: true,
+                NotificationDeliveryman: true,
+                NotificationActivities: true,
             },
         })
 
