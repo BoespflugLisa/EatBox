@@ -86,7 +86,7 @@ export default class ClientOrdersHistory extends Vue {
 
     timeToBeReady(orderTime) {
         const additionalTime = moment(orderTime).add(moment.duration(50, 'minutes'))
-        return additionalTime;
+        return additionalTime.format('DD/MM/YYYY HH:mm');
     }
 
     showDetails(order) {

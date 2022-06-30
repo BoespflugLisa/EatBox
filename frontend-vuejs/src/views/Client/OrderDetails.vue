@@ -210,7 +210,7 @@ export default class OrderDetails extends Vue {
         'En préparation...', 'Le livreur prend en charge votre commande',
         'Le livreur arrive!', 'Livrée!!', "A la recherche d'un livreur", 'Commande Annulée']
     commandState = "";
-    clientID = ""
+    client: any = {}
     clientAddress = ""
     restaurantAddress = "";
     rateRestaurant = false;
@@ -229,9 +229,9 @@ export default class OrderDetails extends Vue {
                 console.log(this.order)
                 this.stateNumber = response.data.order.State
                 this.commandState = this.states[response.data.order.State]
-                this.clientID = response.data.order.Client
+                this.client = response.data.order.Client
                 this.restaurantAddress = response.data.order.Restaurant.Address.Number + ' ' + response.data.order.Restaurant.Address.Street + ' , ' + response.data.order.Restaurant.Address.Town + ' , ' + response.data.order.Restaurant.Address.Code;
-                this.$axios.get('clients/' + this.clientID).then(response => {
+                this.$axios.get('clients/' + this.client._id).then(response => {
                     this.clientAddress = response.data.client.Address.Number + ' ' + response.data.client.Address.Street + ' , ' + response.data.client.Address.Town + ' , ' + response.data.client.Address.Code
                 })
             }

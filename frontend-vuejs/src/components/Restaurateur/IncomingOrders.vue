@@ -4,6 +4,7 @@
         <div v-if="this.orders.length > 0">
             <div v-for="order in this.orders" :key="order._id">
                 <div class="d-flex">
+                    
                     <div class="command-tab border-tab">
                         <p class="font-weight-bold">
                             N°{{ order.N_Order }}
