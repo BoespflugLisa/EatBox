@@ -126,13 +126,7 @@ export default {
 
     created() {
         this.orderID = this.$route.params.id;
-    },
-
-    methods: {
-        /*test(dataUrl, id) {
-            console.log(this.token, id, dataUrl)
-        },*/
-
+        console.log(this.orderID)
     },
 
     async mounted() {
@@ -140,7 +134,8 @@ export default {
             .then(response => {
                 this.stateNumber = response.data.order.State
                 this.commandState = this.states[response.data.order.State]
-                this.idClient = response.data.order.Client._id
+                this.idClient = response.data.order.Client
+                this.numTel = response.data.order.Client.Phone
                 this.myAdresse = response.data.order.Client.Address.Number + ' ' + response.data.order.Client.Address.Street + ' , ' + response.data.order.Client.Address.Town + ' , ' + response.data.order.Client.Address.Code
                 this.RestaurantAdresse = response.data.order.Restaurant.Address.Number + ' ' + response.data.order.Restaurant.Address.Street + ' , ' + response.data.order.Restaurant.Address.Town + ' , ' + response.data.order.Restaurant.Address.Code
             })
