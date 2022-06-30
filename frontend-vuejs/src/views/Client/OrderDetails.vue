@@ -264,7 +264,7 @@ export default class OrderDetails extends Vue {
 
     async connectOrderWS() {
         if (this.orderConnection === null) {
-            this.orderConnection = await new WebSocket("ws://localhost:3031/orders/socket/" + this.$cookies.get("user_id"));
+            this.orderConnection = await new WebSocket("ws://localhost:3031/orders/socket/" + this.$cookies.get('role') + "/" + this.$cookies.get("user_id"));
 
             this.orderConnection.onmessage = () => {
                 this.getData()
