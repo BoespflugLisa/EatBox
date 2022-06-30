@@ -16,7 +16,7 @@
             VOTRE CODE
         </p>
         <div class="d-flex justify-center">
-            <v-btn color="secondary" class="mt-7" @click="  expand =true" rounded>
+            <v-btn color="secondary" class="mt-7" @click="buttonParrainage()" rounded>
                 {{ RandomNumParrainage }}
             </v-btn>
         </div>
@@ -44,6 +44,13 @@ import {Component, Vue} from "vue-property-decorator";
 export default class ClientSponsorship extends Vue {
     RandomNumParrainage = "EatBox-9KJI9u"
     expand = false
+
+
+    buttonParrainage(){
+        this.expand =true
+
+        navigator.clipboard.writeText(this.RandomNumParrainage)
+    }
 }
 </script>
 
