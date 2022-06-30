@@ -231,14 +231,14 @@ export default class App extends Vue {
 
     async connectNotificationWS() {
         if (this.$cookies.get("auth") && this.notificationConnection === null) {
-            this.notificationConnection = await new WebSocket("ws://localhost:3033/notifications/socket/notifications/" + this.$cookies.get("user_id"))
+            this.notificationConnection = await new WebSocket("ws://localhost:3033/notifications/socket/notifications/" + this.$cookies.get("user_id"));
 
             this.notificationConnection.onmessage = () => {
                 this.addNotification();
             }
 
             this.notificationConnection.onclose = () => {
-                this.notificationConnection = null
+                this.notificationConnection = null;
             }
         }
     }

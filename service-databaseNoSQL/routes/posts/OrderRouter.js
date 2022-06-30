@@ -24,7 +24,7 @@ router.post("/:id", async (req, res) => {
                     Ready_at: req.body.data.CheckTime.Ready_at,
                     Pickedup_at: req.body.data.CheckTime.Pickedup_at,
                     Delivered_at: req.body.data.CheckTime.Delivered_at,
-                    Cancelled_at : req.body.data.CheckTime.Cancelled_at,
+                    Cancelled_at: req.body.data.CheckTime.Cancelled_at,
                 },
             }
         );
@@ -124,7 +124,7 @@ router.get('/deliverymanCurrentOrder/:id', async (req, res) => {
 router.get("/client/:id", async (req, res) => {
     try {
         let currentOrder = await OrderModel.findOne({
-            Client : req.params.id,
+            Client: req.params.id,
             $or: [{State: 0}, {State: 1}, {State: 2}, {State: 3}]
         })
         if (currentOrder) {
@@ -139,7 +139,6 @@ router.get("/client/:id", async (req, res) => {
         })
     }
 })
-
 
 
 router.put("/:id", async (req, res) => {
@@ -158,5 +157,15 @@ router.put("/:id", async (req, res) => {
     }
 })
 
+router.ws('/socket/:id', async function (ws, req) {
+    ws.id = req.params.id;
+
+    OrderModel.watch().on('change', async (data) => {
+        let order = await OrderModel.findById(data.documentKey._id)
+        if (ws.id === order.Client.toString() || ws.id === order.Restaurant.toString() || ws.id === order.Deliveryman_token) {
+            ws.send("Order update");
+        }
+    })
+});
 
 module.exports = router;

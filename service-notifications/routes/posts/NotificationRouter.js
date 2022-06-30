@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 
 const router = express.Router();
 
-let wsNotificationClients = [];
 
 router.post("/:id/:action", async (req, res) => {
     try {
