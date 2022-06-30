@@ -206,7 +206,7 @@ export default class OrderDetails extends Vue {
     }
     orderID = "";
     stateNumber = null;
-    states = ['En attente de validation restaurant',
+    states = ['En attente de validation du restaurant',
         'En préparation...', 'Le livreur prend en charge votre commande',
         'Le livreur arrive !', 'Livrée!!', "A la recherche d'un livreur", 'Commande Annulée']
     commandState = "";
@@ -227,9 +227,6 @@ export default class OrderDetails extends Vue {
 
     mounted() {
         this.getData();
-    }
-
-    updated() {
         this.connectOrderWS()
     }
 
