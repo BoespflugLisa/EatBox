@@ -125,7 +125,7 @@ router.get("/client/:id", async (req, res) => {
     try {
         let currentOrders = await OrderModel.find({
             Client: req.params.id,
-            $or: [{State: 0}, {State: 1}, {State: 2}, {State: 3}]
+            $or: [{State: 0}, {State: 1}, {State: 2}, {State: 3}, {State: 5}]
         })
 
         res.status(200).json({
