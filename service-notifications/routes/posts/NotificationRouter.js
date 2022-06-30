@@ -5,8 +5,9 @@ const mongoose = require("mongoose");
 const router = express.Router();
 
 
-router.post("/:id/:action", async (req, res) => {
+router.post("/:id", async (req, res) => {
     try {
+        console.log("test")
         let notification = new NotificationModel({
                 "Date": new Date(),
                 "Read": false,
@@ -18,9 +19,12 @@ router.post("/:id/:action", async (req, res) => {
             }
         );
         if (notification.Types.Command === true) {
-            switch (req.params.action) {
+            switch (req.body.data.action) {
                 case "newOrder":
                     notification.Message = "Nouvelle Commande!";
+                    break;
+                case "orderAcceptedRestaurant":
+                    notification.Message = "Le restaurant a accpté votre commande.";
                     break;
                 case "canceledOrder":
                     notification.Message = "La commande a été annulée.";
@@ -33,7 +37,7 @@ router.post("/:id/:action", async (req, res) => {
                     break;
             }
         } else if (notification.Types.Delivery === true) {
-            switch (req.params.action) {
+            switch (req.body.data.action) {
                 case "DeliverymanIsLate":
                     notification.Message = "Le livreur est en retard.";
                     break;
@@ -42,6 +46,9 @@ router.post("/:id/:action", async (req, res) => {
                     break;
                 case "NoDeliverymanAvailable":
                     notification.Message = "Aucun livreur n'est disponible dans votre secteur";
+                    break;
+                case "orderAcceptedDeliveryman":
+                    notification.Message = "Un livreur est disponible pour votre commande.";
                     break;
             }
         }
@@ -77,8 +84,10 @@ router.get("/", async (req, res) => {
 router.get("/user/:id", async (req, res) => {
     try {
         let notifications = await NotificationModel.find({
-            belong_to: new mongoose.Types.ObjectId(req.params.id),
-            Read: false
+            $and: [
+                {belongs_to: req.params.id},
+                {Read: false}
+            ]
         })
 
         res.status(200).json({
@@ -95,9 +104,12 @@ router.get("/user/:id", async (req, res) => {
 
 router.get("/userCount/:id", async (req, res) => {
     try {
+        console.log(req.params.id)
         let count = await NotificationModel.count({
-            belong_to: new mongoose.Types.ObjectId(req.params.id),
-            Read: false
+            $and: [
+                {belongs_to: req.params.id},
+                {Read: false}
+            ]
         })
 
         res.status(200).json({
