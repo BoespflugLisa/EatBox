@@ -1,7 +1,6 @@
 <template>
     <div class="side-padding">
 
-
         <v-card
             class="mx-auto mt-3"
             max-width="470"
@@ -12,7 +11,6 @@
             </v-card-title>
             <v-list-item three-line>
                 <v-list-item-content>
-
                     <div class="flex-wrap d-flex text-h5 mb-1">
                         {{ this.commandState }}
                     </div>
@@ -23,7 +21,7 @@
                     size="70"
                     color="grey">
                     <v-img
-                        src="../assets/img/sacrifice.gif">
+                        :src="require('@/assets/img/sacrifice.gif')">
                     </v-img>
                 </v-list-item-avatar>
             </v-list-item>
@@ -106,7 +104,6 @@ import VueQr from 'vue-qr';
 export default {
     components: {
         VueQr,
-
     },
 
     data() {
@@ -121,7 +118,8 @@ export default {
             myAdresse: null,
             stateNumber: 0,
             RestaurantAdresse: null,
-            orderID : ""
+            orderID : "",
+
         }
 
     },

@@ -45,11 +45,13 @@
                 </v-btn>
             </div>
             <!--  MENU @Restaurant-->
-            <RestaurantSidebar v-if="this.$cookies.get('role')==='Restaurant'"/>
+            <restaurant-sidebar v-if="this.$cookies.get('role') ==='Restaurant'"/>
+            <client-sidebar v-if="this.$cookies.get('role') ==='Client'"/>
+            <deliveryman-sidebar v-on:no-order="showSnackNoOrder()" v-if="this.$cookies.get('role') ==='Livreur'"/>
             <template v-slot:append>
                 <div class="d-flex justify-center flex-column pa-5">
                     <v-btn
-                        to="/mon_Restaurant?tab=2"
+                        :to="role === 'Restaurant' ? '/MonRestaurant?tab=2' : '/MonProfil?tab=1'"
                         color="tertiary black--text"
                         class="pr-10 pl-10"
                     >
@@ -99,6 +101,7 @@
                 v-on:remove-notif="removeNotification()"
                 v-on:remove-all-notif="removeAllNotification()"
             />
+            <eatbox-snackbar ref="snack"/>
         </div>
     </v-app>
 </template>
@@ -106,7 +109,10 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import {ValidationObserver, ValidationProvider} from 'vee-validate';
-import RestaurantSidebar from "./components/Restaurateur/RestaurantSidebar.vue"
+import RestaurantSidebar from "./components/SideBar/RestaurantSidebar.vue"
+import ClientSidebar from "./components/SideBar/ClientSidebar.vue"
+import DeliverymanSidebar from "./components/SideBar/DeliverymanSidebar.vue"
+import EatboxSnackbar from "./components/Snack/EatboxSnackbar.vue";
 import {logoutUser} from './utils/auth.js'
 
 @Component({
@@ -114,18 +120,24 @@ import {logoutUser} from './utils/auth.js'
         ValidationObserver,
         ValidationProvider,
         RestaurantSidebar,
+        ClientSidebar,
+        DeliverymanSidebar,
+        EatboxSnackbar,
     },
 })
 
 export default class App extends Vue {
-
-
+    $refs!: {
+        snack: EatboxSnackbar,
+    }
 
     eatBoxLogo = '';
     drawer = false;
     value = '';
     notifCount = 0;
-    notifDisplay: number|string = 0;
+    notifDisplay: number | string = 0;
+
+    role = this.$cookies.get('role');
 
     notificationConnection: WebSocket | null = null;
 
@@ -229,6 +241,10 @@ export default class App extends Vue {
                 this.notificationConnection = null
             }
         }
+    }
+
+    showSnackNoOrder() {
+        this.$refs.snack.openSnackbar("Vous n'avez pas encore choisi de commande. Rendez-vous sur la liste des commandes pour en accepter une.", "warning");
     }
 
 }

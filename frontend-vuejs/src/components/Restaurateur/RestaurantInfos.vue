@@ -269,6 +269,41 @@
             </validation-provider>
         </validation-observer>
 
+        <v-divider class="mt-4 mb-4"/>
+
+        <div class="d-flex justify-center mb-3">
+            <v-btn color="error" rounded @click="openConfirmDelete()">
+                Supprimer mon compte
+            </v-btn>
+        </div>
+
+        <v-dialog v-model="showDialogConfirmDelete" width="600px">
+            <v-card>
+                <v-card-title>
+                    Comfirmez-vous la suppression de votre compte ?
+                </v-card-title>
+                <v-card-text class="red--text">
+                    Attention, cette action sera irréversible !
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn
+                        text
+                        @click="showDialogConfirmDelete = !showDialogConfirmDelete"
+                    >
+                        Annuler
+                    </v-btn>
+                    <v-spacer/>
+                    <v-btn
+                        text
+                        color="error"
+                        @click="deleteAccount()"
+                    >
+                        Supprimer
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
         <eatbox-snackbar ref="snack"/>
     </div>
 </template>
@@ -278,6 +313,7 @@ import {Component, Vue} from 'vue-property-decorator';
 import SelectSchedule from './SelectSchedule.vue'
 import {ValidationObserver, ValidationProvider} from "vee-validate";
 import EatboxSnackbar from "../Snack/EatboxSnackbar.vue";
+import {logoutUser} from "../../utils/auth";
 
 @Component({
     components: {
@@ -349,6 +385,8 @@ export default class RestaurantInfos extends Vue {
     editedAccountName = ""
     editedBic = ""
     editedIban = ""
+
+    showDialogConfirmDelete = false
 
     getData(data, id) {
         this.restaurantId = id;
@@ -466,6 +504,19 @@ export default class RestaurantInfos extends Vue {
             this.editInfo = false;
             this.editContact = false;
             this.editBank = false;
+        })
+    }
+
+    openConfirmDelete() {
+        this.showDialogConfirmDelete = true;
+    }
+
+    deleteAccount() {
+        this.$axios.delete("/restaurants/" + this.$cookies.get('user_id')).then(() => {
+            this.$axios_login.delete('/' + this.$cookies.get('_id')).then(() => {
+                logoutUser()
+                this.$router.push('/connexion')
+            })
         })
     }
 

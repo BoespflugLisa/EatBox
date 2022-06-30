@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="register-restaurant">
         <v-main>
             <p class="text-center">Veuillez renseigner tous les champs pour inscrire votre restaurant à la liste de nos
                 heureux partenaires.</p>
@@ -72,7 +72,7 @@
                                                 :rules="[rules.required, /*rules.phone*/]"
                                                 prepend-icon="mdi-phone"
                                             ></v-text-field>
-                                            <!--                                    +33123456789-->
+
                                             <v-text-field
                                                 v-model="form.legal.siret"
                                                 label="Numéro de SIRET"
@@ -81,7 +81,42 @@
                                                 v-model="form.legal.iban"
                                                 label="Numéro IBAN"
                                             ></v-text-field>
-                                            <!--FR1420041010050500013M02606-->
+
+                                        <h3>Adresse</h3>
+
+                                        <validation-provider name="numéro" rules="required" v-slot="{ errors, valid }">
+                                            <v-text-field
+                                                v-model="form.address.number"
+                                                label="Numéro"
+                                                :error-messages="errors"
+                                                :success="valid"
+                                            />
+                                        </validation-provider>
+
+                                        <validation-provider name="rue" rules="required" v-slot="{ errors, valid }">
+                                            <v-text-field
+                                                v-model="form.address.street" label="Rue"
+                                                :error-messages="errors"
+                                                :success="valid"
+                                            />
+                                        </validation-provider>
+
+                                        <validation-provider name="code postal" rules="required|numeric" v-slot="{ errors, valid }">
+                                            <v-text-field
+                                                type="number"
+                                                v-model="form.address.code" label="Code postal"
+                                                :error-messages="errors"
+                                                :success="valid"
+                                            />
+                                        </validation-provider>
+
+                                        <validation-provider name="ville" rules="required" v-slot="{ errors, valid }">
+                                            <v-text-field
+                                                v-model="form.address.town" label="Ville"
+                                                :error-messages="errors"
+                                                :success="valid"
+                                            />
+                                        </validation-provider>
                                     </v-card-text>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
@@ -118,7 +153,7 @@ import {required, email, min} from 'vee-validate/dist/rules';
 })
 
 export default class RegisterComponent extends Vue {
-    name = 'RegisterComponent'
+    name = 'RegisterRestaurant.vue'
 
     loading = false
 
@@ -177,6 +212,12 @@ export default class RegisterComponent extends Vue {
         },
         phone: "",
         type: "",
+        address: {
+            number: "",
+            street: "",
+            code: "",
+            town: "",
+        },
         role: this.$cookies.get('role')
     }
 

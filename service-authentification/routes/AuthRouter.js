@@ -93,7 +93,7 @@ router.post('/login', async (req, res) => {
     let pwdIsValid = false
 
     try {
-        let user = await UserModel.model.findOne({Email: req.body.email, Role : {$ne : "Restaurant"}}).then(r => {
+        let user = await UserModel.model.findOne({Email: req.body.email, Role: {$ne: "Restaurant"}}).then(r => {
             return r;
         })
 
@@ -154,7 +154,7 @@ router.post('/loginRestaurant', async (req, res) => {
 
 
     try {
-        let user = await UserModel.model.findOne({Email: req.body.email, Role : {$eq : req.body.Role}}).then(r => {
+        let user = await UserModel.model.findOne({Email: req.body.email, Role: {$eq: req.body.Role}}).then(r => {
             return r;
         })
         console.log()
@@ -223,13 +223,19 @@ router.get('/:token', function (req, res) {
 });
 
 router.delete('/:id', function (req, res) {
-    UserModel.model.remove({UserId: req.params.id}, function (err, data) {
-        if (err) {
-            console.log(err);
-        } else {
-            res.send(data);
-        }
-    });
+    try {
+        UserModel.model.findByIdAndDelete(req.params.id).then(() => {
+            res.status(204).json({
+                message: 'User deleted successfully!'
+            });
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        });
+    }
+
 });
 
 module.exports = router;

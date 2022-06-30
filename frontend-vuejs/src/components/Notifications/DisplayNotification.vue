@@ -27,33 +27,34 @@
             </v-card-text>
         </v-card>
 
-        <h2 class="mt-7">
-            Notifications des livreurs
-        </h2>
+        <div v-if="this.$cookies.get('role') !== 'Livreur'">
+            <h2 class="mt-7">
+                Notifications des livreurs
+            </h2>
 
-        <p v-if="deliveryman.length === 0">Tout est calme pour le moment...</p>
+            <p v-if="deliveryman.length === 0">Tout est calme pour le moment...</p>
 
-        <v-card
-            color="tertiary"
-            v-for="(notif, index) in deliveryman"
-            :key="notif.id"
-            class="mt-3 rounded-lg"
-        >
-            <v-card-text>
-                <div class="d-flex justify-space-between align-center">
-                    <div class="font-16">
-                        <p>{{ displayDate(notif.Date) }}</p>
-                        <p>{{ notif.Message }}</p>
+            <v-card
+                color="tertiary"
+                v-for="(notif, index) in deliveryman"
+                :key="notif.id"
+                class="mt-3 rounded-lg"
+            >
+                <v-card-text>
+                    <div class="d-flex justify-space-between align-center">
+                        <div class="font-16">
+                            <p>{{ displayDate(notif.Date) }}</p>
+                            <p>{{ notif.Message }}</p>
+                        </div>
+
+                        <v-btn icon @click="delNotification(notif, index, 'deliveryman')">
+                            <v-icon>mdi-close</v-icon>
+                        </v-btn>
+
                     </div>
-
-                    <v-btn icon @click="delNotification(notif, index, 'deliveryman')">
-                        <v-icon>mdi-close</v-icon>
-                    </v-btn>
-
-                </div>
-            </v-card-text>
-        </v-card>
-
+                </v-card-text>
+            </v-card>
+        </div>
         <eatbox-snackbar ref="snack"/>
     </div>
 </template>

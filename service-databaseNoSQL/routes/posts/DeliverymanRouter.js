@@ -80,4 +80,19 @@ router.put("/:id", async (req, res) => {
 
 })
 
+router.delete("/:id", async(req, res) => {
+    try {
+        DeliverymanModel.findByIdAndDelete(req.params.id).then(() => {
+            res.status(204).json({
+                message: 'Deliveryman deleted successfully!'
+            });
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        });
+    }
+})
+
 module.exports = router;

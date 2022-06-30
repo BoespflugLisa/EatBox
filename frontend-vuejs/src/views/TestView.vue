@@ -20,7 +20,7 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import LoginComponent from '../components/LoginComponent.vue'
-import RegisterComponent from "../components/Restaurateur/RegisterComponent.vue";
+import RegisterComponent from "../components/Register/RegisterRestaurant.vue";
 
 @Component({
     components: {

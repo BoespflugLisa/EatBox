@@ -31,7 +31,7 @@ export default class ArticlesEtMenus extends Vue {
         infos: LivreurInfos,
     }
 
-    deliverymanId = "62b84d664efef62b653708de"/*this.$cookies.get('deliveryman_id')*/
+    deliverymanId = this.$cookies.get('user_id')
 
     tab = 0
     items = [
