@@ -159,6 +159,8 @@ export default class CommandsDetails extends Vue {
     }
 
     created() {
+        this.$cookies.remove('menus')
+        this.$cookies.remove('articles')
         this.orderID = this.$route.params.id;
     }
 

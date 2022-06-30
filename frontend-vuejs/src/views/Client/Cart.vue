@@ -14,6 +14,7 @@
                 </v-btn>
                 <v-btn
                     rounded
+                    :disabled="hasNotItems()"
                     @click="goToPayment()"
                     color="primary"
                 >
@@ -23,7 +24,7 @@
             <div class="small-screen">
                 <v-btn
                     rounded
-                    @click="addItems()"
+                    @click="$router.go(-1)"
                     fab
                     color="primary"
                 >
@@ -33,6 +34,7 @@
                 </v-btn>
                 <v-btn
                     rounded
+                    :disabled="hasNotItems()"
                     @click="goToPayment()"
                     fab
                     color="primary"
@@ -97,7 +99,7 @@
                     class="ml-2 mt-5 ml-2 small-articles"
                     max-width="200px"
                     v-for="(article, index) in this.CartArticles"
-                    v-bind:key=index
+                    v-bind:key=(index+1)*2
                     v-bind:src=article
                 >
                     <v-img
@@ -172,8 +174,6 @@ export default class Cart extends Vue {
     CartArticles: Array<object> = []
     MenusID: Array<object> = []
     ArticlesID: Array<object> = []
-    restaurantID = ""
-    clientID = ""
     client = {}
 
     res: object[] | any = []
@@ -181,9 +181,8 @@ export default class Cart extends Vue {
     tempArticle: any = {}
     tempMenu: any = {}
 
-    created() {
-        this.restaurantID = this.$route.params.id;
-    }
+    noItems = false;
+
 
     update() {
         this.$cookies.set('menus', this.CartMenus)
@@ -213,13 +212,9 @@ export default class Cart extends Vue {
         }
     }
 
-    addItems() {
-        const route = 'DetailRestaurant/' + this.restaurantID
-        this.$router.push(route);
-    }
-
     removeArticleFromBasket(index) {
         this.CartArticles.splice(index, 1)
+        this.ArticlesID = [];
         this.CartArticles.forEach(article => {
             this.tempArticle = article;
             this.ArticlesID.push(this.tempArticle._id)
@@ -229,6 +224,7 @@ export default class Cart extends Vue {
 
     removeMenuFromBasket(index) {
         this.CartMenus.splice(index, 1)
+        this.MenusID = [];
         this.CartMenus.forEach(menu => {
             this.tempMenu = menu;
             this.MenusID.push(this.tempMenu._id)
@@ -238,6 +234,16 @@ export default class Cart extends Vue {
 
     goToPayment() {
         this.$router.push('/payement')
+    }
+
+    hasNotItems() {
+        if (!this.CartMenus.length && !this.CartArticles.length) {
+            return this.noItems = true;
+
+        }
+        if (this.CartMenus.length || this.CartArticles.length) {
+            return this.noItems = false;
+        }
     }
 
 

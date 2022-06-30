@@ -95,25 +95,38 @@ const routes: Array<RouteConfig> = [
         component: () => import('../views/Client/AccueilClient.vue'),
         meta: {requiresAuth: true, isUser: 'Client'},
 
-    },
-    {
-        path: '/DetailRestaurant/:id',
-        name: 'ClientRestaurantDetail',
-        component: () => import('../views/Client/ClientRestaurantDetail.vue'),
-        meta: {requiresAuth: true, isUser: 'Client'},
-    },
-    {
-        path: '/Cart',
-        name: 'Cart',
-        component: () => import('../views/Client/Cart.vue'),
-        meta: {requiresAuth: true, isUser: 'Client'},
-    },
-    /*  {
-        path: '/Payement',
-        name: 'PaymentClient',
-        component: () => import('../views/Client/PaymentClient.vue'),
-        meta: { requiresAuth: true, isUser: 'Client'},
-      },*/
+  },
+  {
+    path: '/DetailRestaurant/:id',
+    name: 'ClientRestaurantDetail',
+    component: () => import('../views/Client/ClientRestaurantDetail.vue'),
+    meta: { requiresAuth: true, isUser: 'Client'},
+  },
+  {
+    path: '/Cart',
+    name: 'Cart',
+    component: () => import('../views/Client/Cart.vue'),
+    meta: { requiresAuth: true, isUser: 'Client'},
+  },
+  {
+    path: '/payement',
+    name: 'PaymentClient',
+    component: () => import('../views/Client/PaymentClient.vue'),
+    meta: { requiresAuth: true, isUser: 'Client'},
+  },
+
+  {
+    path: '/suivi_commande/:id',
+    name: 'OrderDetails',
+    component: () => import('../views/Client/OrderDetails.vue'),
+    meta: { requiresAuth: true, isUser: 'Client'},
+  },
+  {
+    path: '/historique_des_commandes',
+    name: 'ClientOrdersHistory',
+    component: () => import('../views/Client/ClientOrdersHistory.vue'),
+    meta: { requiresAuth: true, isUser: 'Client'},
+  },
 
     // COMMUN
 

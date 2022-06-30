@@ -19,6 +19,7 @@
     "number-shortener": "^1.0.1",
     "vee-validate": "^3.4.14",
     "vue": "^2.6.14",
+    "vue-ccard": "^1.0.6",
     "vue-class-component": "^7.2.3",
     "vue-cookies": "^1.8.1",
     "vue-property-decorator": "^9.1.2",
