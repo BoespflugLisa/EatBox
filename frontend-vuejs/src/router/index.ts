@@ -128,6 +128,14 @@ const routes: Array<RouteConfig> = [
     meta: { requiresAuth: true, isUser: 'Client'},
   },
 
+    // DEVELOPPEUR
+    {
+        path: '/AccueilDeveloppeur',
+        name: 'DeveloperHomepage',
+        component: () => import('../views/Developpeur/DeveloperHomepage.vue'),
+        // meta: {requiresAuth: true, isUser: 'Developpeur'},
+    },
+
     // COMMUN
 
     {

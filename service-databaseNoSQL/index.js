@@ -38,6 +38,7 @@ const StatsRouter = require("./routes/posts/StatsRouter");
 const CategoriesRouter = require("./routes/posts/CategoryRouter");
 const MenusRouter = require("./routes/posts/MenuRouter");
 const PerformancesRouter = require("./routes/posts/PerformanceRouter");
+const DevelopersRouter = require("./routes/posts/DevelopersRouter");
 
 app.use("/restaurants", RestaurantsRouter);
 app.use("/articles", ArticlesRouter);
@@ -48,6 +49,7 @@ app.use("/performance", PerformancesRouter);
 app.use("/deliverymans", DeliverymansRouter);
 app.use("/clients", ClientsRouter);
 app.use("/categories", CategoriesRouter);
+app.use("/developers", DevelopersRouter);
 
 app.listen(port, function () {
     console.log("Runnning on " + port);
