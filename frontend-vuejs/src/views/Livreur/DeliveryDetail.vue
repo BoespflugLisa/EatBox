@@ -77,7 +77,7 @@
                 </v-card-title>
 
                 <v-btn
-
+                    @click="finishDelivery()"
                     to="/DeliveryList"
                     color="primary"
                     text
@@ -122,6 +122,7 @@ export default {
             restaurantAdresse: null,
             orderID: "",
             orderConnection: null,
+            order: {},
         }
     },
 
@@ -138,6 +139,7 @@ export default {
         async getData() {
             await this.$axios.get(`orders/` + this.orderID)
                 .then(response => {
+                    this.order = response.data.order;
                     this.stateNumber = response.data.order.State;
                     this.commandState = this.states[response.data.order.State];
                     this.idClient = response.data.order.Client;
@@ -145,6 +147,21 @@ export default {
                     this.myAdresse = response.data.order.Client.Address.Number + ' ' + response.data.order.Client.Address.Street + ' , ' + response.data.order.Client.Address.Town + ' , ' + response.data.order.Client.Address.Code;
                     this.restaurantName = response.data.order.Restaurant.Name;
                     this.restaurantAdresse = response.data.order.Restaurant.Address.Number + ' ' + response.data.order.Restaurant.Address.Street + ' , ' + response.data.order.Restaurant.Address.Town + ' , ' + response.data.order.Restaurant.Address.Code;
+                })
+        },
+
+        finishDelivery() {
+                this.order.State = 4
+                this.$axios.put('orders/' + this.orderID, {data: this.order}).then(() => {
+                    this.$axios_notifications.post("/notifications/" + this.order.Client._id, {
+                        data: {
+                            action: "OrderIsFinish",
+                            Types: {
+                                Command: true,
+                                Delivery: false,
+                            }
+                        }
+                    })
                 })
         },
 

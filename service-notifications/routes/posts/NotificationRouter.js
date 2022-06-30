@@ -40,6 +40,9 @@ router.post("/:id", async (req, res) => {
                 case "OrderIsComming":
                     notification.Message = "Votre commande arrive!";
                     break;
+                case "OrderIsFinish":
+                    notification.Message = "Qu'avez vous pensé de votre commande ? Pensez à donner une note au restaurant.";
+                    break;
             }
         } else if (notification.Types.Delivery === true) {
             switch (req.body.data.action) {

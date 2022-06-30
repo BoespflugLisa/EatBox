@@ -202,7 +202,11 @@ export default class OrderDetails extends Vue {
             Menus: [],
             Articles: [],
             Price: 0,
-        }
+        },
+        Restaurant: {
+            _id: ""
+        },
+        Deliveryman_token: "",
     }
     orderID = "";
     stateNumber = null;
@@ -259,6 +263,27 @@ export default class OrderDetails extends Vue {
         this.order.State = 6;
         this.order.Payment = "Canceled";
         this.order.CheckTime.Cancelled_at = Date.now()
+
+        this.$axios_notifications.post("/notifications/" + this.order.Restaurant._id, {
+            data: {
+                action: "CanceledOrder",
+                Types: {
+                    Command: true,
+                    Delivery: false,
+                }
+            }
+        }).then(() => {
+            this.$axios_notifications.post("/notifications/" + this.order.Deliveryman_token, {
+                data: {
+                    action: "CanceledOrder",
+                    Types: {
+                        Command: true,
+                        Delivery: false,
+                    }
+                }
+            });
+        });
+
         this.goToOrdersHistory();
     }
 
