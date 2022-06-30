@@ -75,25 +75,56 @@
                     </div>
 
                     <div v-if="this.order.State === 0" class="d-flex flex-row justify-center">
-                        <v-btn rounded color="secondary" @click="RefuseOrder()" class="ma-2"
-                               width="30%">
-                            Refuser
-                        </v-btn>
-                        <v-btn rounded color="secondary" @click="validateOrder()" class="ma-2"
-                               width="30%">
-                            Accepter
-                        </v-btn>
+                        <div class="large-screen">
+                            <v-btn rounded color="secondary" @click="RefuseOrder()" class="ma-2"
+                                   width="100px">
+                                Refuser
+                            </v-btn>
+                            <v-btn rounded color="secondary" @click="validateOrder()" class="ma-2"
+                                   width="100px">
+                                Accepter
+                            </v-btn>
+                        </div>
+                        <div class="small-screen">
+                            <v-btn rounded color="secondary" @click="RefuseOrder()" class="ma-2"
+                                   width="30%">
+                                <v-icon>
+                                    mdi-close
+                                </v-icon>
+                            </v-btn>
+                            <v-btn rounded color="secondary" @click="validateOrder()" class="ma-2"
+                                   width="30%">
+                                <v-icon>
+                                    mdi-check
+                                </v-icon>
+                            </v-btn>
+                        </div>
                     </div>
 
                     <div v-if="this.order.State === 1"
                          class="d-flex flex-row justify-center">
-                        <v-btn rounded color="secondary" @click="goBack()" class="ma-2" width="30%">
-                            Retour
-                        </v-btn>
-                        <v-btn rounded color="secondary" @click="orderIsReady(Date.now())" class="ma-2"
-                               width="30%">
-                            Prêt!
-                        </v-btn>
+                        <div class="large-screen">
+                            <v-btn rounded color="secondary" @click="goBack()" class="ma-2" width="100px">
+                                Retour
+                            </v-btn>
+                            <v-btn rounded color="secondary" @click="orderIsReady(Date.now())" class="ma-2"
+                                   width="100px">
+                                Prêt!
+                            </v-btn>
+                        </div>
+                        <div class="small-screen">
+                            <v-btn rounded color="secondary" @click="goBack()" class="ma-2" width="30%">
+                                <v-icon>
+                                    mdi-keyboard-backspace
+                                </v-icon>
+                            </v-btn>
+                            <v-btn rounded color="secondary" @click="orderIsReady(Date.now())" class="ma-2"
+                                   width="30%">
+                                <v-icon>
+                                    mdi-basket-check
+                                </v-icon>
+                            </v-btn>
+                        </div>
                     </div>
                     <div class="d-flex">
                         <div class="button-position" v-if="this.order.State === 2">
@@ -231,5 +262,31 @@ export default class CommandsDetails extends Vue {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+}
+
+
+@media screen and (max-width: 960px) {
+
+    .large-screen {
+        display: none;
+    }
+
+    .small-screen {
+        display: flex;
+        justify-content: space-around;
+    }
+}
+
+@media screen and (min-width: 960px) {
+
+    .large-screen {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 2%;
+    }
+
+    .small-screen {
+        display: none;
+    }
 }
 </style>

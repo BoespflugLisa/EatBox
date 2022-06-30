@@ -226,7 +226,6 @@ export default class OrderDetails extends Vue {
     async mounted() {
         await this.$axios.get('orders/' + this.orderID).then(response => {
                 this.order = response.data.order;
-                console.log(this.order)
                 this.stateNumber = response.data.order.State
                 this.commandState = this.states[response.data.order.State]
                 this.client = response.data.order.Client

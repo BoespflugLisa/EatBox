@@ -3,23 +3,22 @@
         <h2 class="mt-3">Historique des commandes</h2>
         <h3 class="mt-3">Commandes en cours de livraison</h3>
         <div v-if="this.ordersWithDeliveryman.length > 0">
-            <div v-for="order in this.ordersWithDeliveryman" :key="order._id">
-                <div class="d-flex border-tab align-content-space-between"
-                     v-if="order.State === 3">
-                    <div class="command-tab">
-                        <p class="font-weight-bold">
+            <div class="mt-3" v-for="order in this.ordersWithDeliveryman" :key="order._id">
+                <v-card v-if="order.State === 3" class="d-flex justify-space-between mb-2">
+                    <div>
+                        <v-card-title>
                             N°{{ order.N_Order }}
-                        </p>
-                        <p>
-                            Total : {{ order.Detail.Price }}€
-                        </p>
+                        </v-card-title>
+                        <v-card-text class="font-14">
+                            <p>Total : {{ order.Detail.Price }}€</p>
+                        </v-card-text>
                     </div>
-                    <div class="info-tab">
+                    <v-card-actions class="mr-3">
                         <v-btn @click="showDetails(order)" rounded color="secondary">
                             Détails
                         </v-btn>
-                    </div>
-                </div>
+                    </v-card-actions>
+                </v-card>
             </div>
         </div>
         <div v-else class="mt-5">
@@ -28,23 +27,22 @@
 
         <h3 class="mt-3">Commandes Livrées</h3>
         <div v-if="this.ordersFinished.length > 0">
-            <div v-for="order in this.ordersFinished" :key="order._id">
-                <div class="d-flex border-tab align-content-space-between"
-                     v-if="order.State === 4">
-                    <div class="command-tab">
-                        <p class="font-weight-bold">
+            <div class="mt-3" v-for="order in this.ordersFinished" :key="order._id">
+                <v-card v-if="order.State === 4" class="d-flex justify-space-between mb-2">
+                    <div>
+                        <v-card-title>
                             N°{{ order.N_Order }}
-                        </p>
-                        <p>
-                            Total : {{ order.Detail.Price }}€
-                        </p>
+                        </v-card-title>
+                        <v-card-text class="font-14">
+                            <p>Total : {{ order.Detail.Price }}€</p>
+                        </v-card-text>
                     </div>
-                    <div class="info-tab">
+                    <v-card-actions class="mr-3">
                         <v-btn @click="showDetails(order)" rounded color="secondary">
                             Détails
                         </v-btn>
-                    </div>
-                </div>
+                    </v-card-actions>
+                </v-card>
             </div>
         </div>
         <div v-else class="mt-5">
@@ -56,6 +54,7 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
+import moment from "moment";
 
 @Component({
     components: {}
@@ -67,17 +66,21 @@ export default class OrdersHistory extends Vue {
     ordersWithDeliveryman = [];
     ordersFinished = [];
 
-    mounted (){
+    mounted() {
         this.$emit('ready');
     }
 
-    getOrders(ordersInDelivery, ordersOver){
+    getOrders(ordersInDelivery, ordersOver) {
         this.ordersWithDeliveryman = ordersInDelivery;
         this.ordersFinished = ordersOver;
     }
 
     showDetails(order) {
         this.$router.push({name: 'commandeDetails', params: {id: order._id}});
+    }
+
+    formatTime(date) {
+        return moment(date).format('DD/MM/YYYY HH:mm');
     }
 }
 

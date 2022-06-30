@@ -126,7 +126,6 @@ export default {
 
     created() {
         this.orderID = this.$route.params.id;
-        console.log(this.orderID)
     },
 
     async mounted() {

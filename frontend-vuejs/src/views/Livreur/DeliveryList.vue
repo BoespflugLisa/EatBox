@@ -24,30 +24,31 @@
                         mdi-shopping-search-outline
                     </v-icon>
                 </div>
-                <div v-else v-for="(order) in this.orders" :key="order._id">
-                    <div class="d-flex">
-                        <div class="command-tab border-tab">
-                            <p class="font-weight-bold">
+                <div class="mt-3" v-else v-for="(order) in this.orders" :key="order._id">
+                    <v-card class="d-flex justify-space-between mt-2 mb-2">
+                        <div>
+                            <v-card-title>
                                 N°{{ order.N_Order }}
-                            </p>
-                            <p>
-                                Adresse client :
-                                {{
-                                    order.Client.Address.Number + ' ' + order.Client.Address.Street + ' ' + order.Client.Address.Town + ' , ' + order.Client.Address.Code
-                                }}
-                            </p>
+                            </v-card-title>
+                            <v-card-text>
+                                <p class="font-16">{{ formatTime(order.CheckTime.Created_at) }}</p>
+                                <p>
+                                    Adresse client :
+                                    {{
+                                        order.Client.Address.Number + ' ' +
+                                        order.Client.Address.Street + ' ' +
+                                        order.Client.Address.Town + ' , ' +
+                                        order.Client.Address.Code
+                                    }}
+                                </p>
+                            </v-card-text>
                         </div>
-                        <div class="info-tab border-tab">
-                            <p class="text-center">
-                                {{ HoursFormater(order.CheckTime.Created_at, false) }}
-                            </p>
-                        </div>
-                        <div class="info-tab border-tab">
+                        <v-card-actions class="mr-3">
                             <v-btn @click="UpdateDialogue(order)" rounded color="secondary">
                                 Accepter
                             </v-btn>
-                        </div>
-                    </div>
+                        </v-card-actions>
+                    </v-card>
                 </div>
             </div>
         </div>
@@ -64,8 +65,8 @@
         </div>
 
         <v-dialog
-          v-model="showDialog"
-          width="300"
+            v-model="showDialog"
+            width="300"
         >
             <v-card class="text-end">
                 <v-card-title>
@@ -97,6 +98,7 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import OpenToWork from "../../components/Livreur/OpenToWork.vue";
+import moment from "moment";
 
 @Component({
     components: {
@@ -116,22 +118,20 @@ export default class DeliveryList extends Vue {
         Free: false,
     }
 
-    clickedOrder={}
+    clickedOrder = {}
 
     async mounted() {
         this.getDeliveryman()
         await this.$axios.get(`orders`)
-          .then(response => {
-              this.orders = response.data.ordersToAcceptByDeliveryman;
-              this.orders.forEach(element => this.dialogDelete.push(false));
-          })
+            .then(response => {
+                this.orders = response.data.ordersToAcceptByDeliveryman;
+                this.orders.forEach(element => this.dialogDelete.push(false));
+            })
     }
 
-    HoursFormater(orderTime) {
-        const hours = new Date(orderTime).getHours();
-        const minutes = new Date(orderTime).getMinutes();
-        const time = hours + "h" + minutes
-        return time
+    formatTime(orderTime) {
+        return moment(orderTime).format('HH:mm');
+
     }
 
     UpdateDialogue(order) {
