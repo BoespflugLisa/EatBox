@@ -5,9 +5,9 @@ const router = express.Router();
 router.post("/:id", async(req, res) => {
     try {
         let developer = new DeveloperModel({
-            Name: req.body.Lastname,
-            Firstname: req.body.Name,
-            Phone: req.body.Phone,
+            Lastname: req.body.Lastname,
+            Firstname: req.body.Firstname,
+            Role: req.body.Role,
             belongs_to: req.params.id,
         });
 

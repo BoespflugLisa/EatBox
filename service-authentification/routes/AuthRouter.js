@@ -16,12 +16,21 @@ router.post('/register', async function (req, res) {
             newUser = new UserModel.model({
                 Email: req.body.email,
                 Password: bcrypt.hashSync(req.body.password, 8),
+                Role: req.body.role,
                 restaurant: null,
+            });
+        } else if (req.body.role === 'Developpeur') {
+            newUser = new UserModel.model({
+                Email: req.body.email,
+                Password: bcrypt.hashSync(req.body.password, 8),
+                Role: req.body.role,
+                developer: null,
             });
         } else {
             newUser = new UserModel.model({
                 Email: req.body.email,
                 Password: bcrypt.hashSync(req.body.password, 8),
+                Role: req.body.role,
                 livreur: null,
                 client: null,
             });
@@ -95,6 +104,14 @@ router.post('/register', async function (req, res) {
                                 Phone: req.body.phone,
                                 Role: req.body.role,
                                 IBAN: req.body.iban,
+                            }
+
+                        case 'Developpeur':
+                            userInfos = {
+                                _id: newUser._id,
+                                Firstname: req.body.name,
+                                Lastname: req.body.lastname,
+                                Role: req.body.role,
                             }
                     }
 
@@ -178,6 +195,17 @@ router.post('/login', async (req, res) => {
                 _id: user._id,
                 Role: req.body.Role,
                 user_id: user.client._id,
+            }
+        }
+
+        if (req.body.Role === "Developpeur" && !!user.developpeur) {
+            await user.populate('developpeur')
+                .then(p => console.log(p))
+                .catch(error => console.log(error));
+            user = {
+                _id: user._id,
+                Role: req.body.Role,
+                user_id: user.developpeur._id,
             }
         }
 

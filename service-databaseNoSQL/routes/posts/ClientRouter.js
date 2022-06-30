@@ -10,6 +10,7 @@ router.post("/:id", async(req, res) => {
             Phone: req.body.Phone,
             belongs_to: req.params.id,
             Address: {Number: req.body.Address.Number, Street: req.body.Address.Street, Town: req.body.Address.Town, Code: req.body.Address.Code},
+            Role: req.body.Role,
         });
 
         client = await client.save();
