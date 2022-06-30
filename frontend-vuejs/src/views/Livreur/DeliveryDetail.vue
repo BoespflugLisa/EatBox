@@ -36,7 +36,8 @@
             <v-card-title>Contact</v-card-title>
 
             <v-card-text>
-                <p class="mb-2 font-weight-bold">Adresse du restaurant : {{ this.RestaurantAdresse }}</p>
+                <p class="mb-2 font-weight-bold">Nom du restaurant : {{ this.restaurantName }}</p>
+                <p class="mb-2 font-weight-bold">Adresse du restaurant : {{ this.restaurantAdresse }}</p>
                 <p class="mb-2 font-weight-bold">Adresse de livraison : {{ this.myAdresse }}</p>
                 <p class="mb-2 font-weight-bold">Numéro de téléphone client : {{ this.numTel }}</p>
             </v-card-text>
@@ -117,30 +118,51 @@ export default {
             numTel: '',
             myAdresse: null,
             stateNumber: 0,
-            RestaurantAdresse: null,
-            orderID : "",
-
+            restaurantName: null,
+            restaurantAdresse: null,
+            orderID: "",
+            orderConnection: null,
         }
-
     },
 
     created() {
         this.orderID = this.$route.params.id;
     },
 
-    async mounted() {
-        await this.$axios.get(`orders/` + this.orderID )
-            .then(response => {
-                this.stateNumber = response.data.order.State
-                this.commandState = this.states[response.data.order.State]
-                this.idClient = response.data.order.Client
-                this.numTel = response.data.order.Client.Phone
-                this.myAdresse = response.data.order.Client.Address.Number + ' ' + response.data.order.Client.Address.Street + ' , ' + response.data.order.Client.Address.Town + ' , ' + response.data.order.Client.Address.Code
-                this.RestaurantAdresse = response.data.order.Restaurant.Address.Number + ' ' + response.data.order.Restaurant.Address.Street + ' , ' + response.data.order.Restaurant.Address.Town + ' , ' + response.data.order.Restaurant.Address.Code
-            })
+    mounted() {
+        this.getData();
+        this.connectOrderWS();
+    },
 
+    methods: {
+        async getData() {
+            await this.$axios.get(`orders/` + this.orderID)
+                .then(response => {
+                    this.stateNumber = response.data.order.State;
+                    this.commandState = this.states[response.data.order.State];
+                    this.idClient = response.data.order.Client;
+                    this.numTel = response.data.order.Client.Phone;
+                    this.myAdresse = response.data.order.Client.Address.Number + ' ' + response.data.order.Client.Address.Street + ' , ' + response.data.order.Client.Address.Town + ' , ' + response.data.order.Client.Address.Code;
+                    this.restaurantName = response.data.order.Restaurant.Name;
+                    this.restaurantAdresse = response.data.order.Restaurant.Address.Number + ' ' + response.data.order.Restaurant.Address.Street + ' , ' + response.data.order.Restaurant.Address.Town + ' , ' + response.data.order.Restaurant.Address.Code;
+                })
+        },
 
-    }
+        async connectOrderWS() {
+            if (this.orderConnection === null) {
+                this.orderConnection = await new WebSocket("ws://localhost:3033/orders/socket/" + this.$cookies.get('role') + "/" + this.$cookies.get("user_id"));
+
+                this.orderConnection.onmessage = () => {
+                    this.getData();
+                }
+
+                this.orderConnection.onclose = () => {
+                    this.orderConnection = null;
+                }
+            }
+        }
+    },
+
 
 }
 </script>

@@ -120,13 +120,20 @@ export default class DeliveryList extends Vue {
 
     clickedOrder = {}
 
-    async mounted() {
-        this.getDeliveryman()
-        await this.$axios.get(`orders`)
-            .then(response => {
-                this.orders = response.data.ordersToAcceptByDeliveryman;
-                this.orders.forEach(element => this.dialogDelete.push(false));
-            })
+    orderConnection: WebSocket | null = null
+
+    mounted() {
+        this.getDeliveryman();
+    }
+
+    async getData() {
+        if (this.deliveryman.Open_to_work) {
+            await this.$axios.get(`orders`)
+                .then(response => {
+                    this.orders = response.data.ordersToAcceptByDeliveryman;
+                    this.orders.forEach(() => this.dialogDelete.push(false));
+                })
+        }
     }
 
     formatTime(orderTime) {
@@ -156,17 +163,38 @@ export default class DeliveryList extends Vue {
     getDeliveryman() {
         this.$axios.get('/deliverymans/' + this.deliverymanId).then((response) => {
             this.deliveryman = response.data.deliveryman;
+            this.getData();
+            this.connectOrderWS();
         })
     }
 
     setDeliverymanOpen() {
-        this.deliveryman.Open_to_work = true
+        this.deliveryman.Open_to_work = true;
         this.$axios.put('/deliverymans/' + this.deliverymanId, {data: this.deliveryman})
+            .then(() => {
+                this.getData();
+                this.connectOrderWS();
+        })
     }
 
     setDeliverymanNotOpen() {
-        this.deliveryman.Open_to_work = false
+        this.deliveryman.Open_to_work = false;
+        this.orderConnection?.close();
         this.$axios.put('/deliverymans/' + this.deliverymanId, {data: this.deliveryman})
+    }
+
+    async connectOrderWS() {
+        if (this.deliveryman.Open_to_work && this.orderConnection === null) {
+            this.orderConnection = await new WebSocket("ws://localhost:3031/orders/socket/" + this.$cookies.get('role') + "/" + this.$cookies.get("user_id"));
+
+            this.orderConnection.onmessage = () => {
+                this.getData();
+            }
+
+            this.orderConnection.onclose = () => {
+                this.orderConnection = null;
+            }
+        }
     }
 
 }
