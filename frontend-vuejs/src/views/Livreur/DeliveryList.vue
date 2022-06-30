@@ -33,7 +33,7 @@
                             <p>
                                 Adresse client :
                                 {{
-                                    order.Client.Client_ID.Address.Number + ' ' + order.Client.Client_ID.Address.Street + ' ' + order.Client.Client_ID.Address.Town + ' , ' + order.Client.Client_ID.Address.Code
+                                    order.Client.Address.Number + ' ' + order.Client.Address.Street + ' ' + order.Client.Address.Town + ' , ' + order.Client.Address.Code
                                 }}
                             </p>
                         </div>

@@ -242,7 +242,7 @@ export default class OrderDetails extends Vue {
         this.rateRestaurant = false;
         this.orderToCancel = false;
         this.$axios.put('orders/' + this.orderID, {data: this.order}).then().finally(() => {
-            this.$router.push('/historique_des_commandes')
+            this.$router.push('/HistoriqueCommandes')
         })
     }
 

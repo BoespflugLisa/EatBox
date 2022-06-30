@@ -170,7 +170,7 @@ export default class CommandsDetails extends Vue {
                 this.order = response.data.order;
                 this.menus = response.data.order.Detail.Menus;
                 this.articles = response.data.order.Detail.Articles;
-                this.client = response.data.order.Client.Client_ID;
+                this.client = response.data.order.Client;
             })
     }
 
