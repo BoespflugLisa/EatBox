@@ -151,12 +151,38 @@ export default class DeliveryList extends Vue {
     showDetails(order) {
         order.State = 0;
         order.Deliveryman_token = this.deliverymanId;
+
+        console.log(order)
         this.$axios.put(`orders/` + order._id, {data: order}).then(response => {
             response.data;
         })
 
-        this.deliveryman.Free = false
-        this.$axios.put('/deliverymans/' + this.deliverymanId, {data: this.deliveryman})
+        this.deliveryman.Free = false;
+        this.$axios.put('/deliverymans/' + this.deliverymanId, {data: this.deliveryman});
+
+        this.$axios_notifications.post("/notifications/" + order.Restaurant, {
+            data: {
+                action: "NewOrder",
+                Types: {
+                    Command: true,
+                    Delivery: false,
+                }
+            }
+        }).then(() => {
+            this.$axios_notifications.post("/notifications/" + order.Client._id, {
+                data: {
+                    action: "OrderAcceptedDeliveryman",
+                    Types: {
+                        Command: false,
+                        Delivery: true,
+                    }
+                }
+            });
+        })
+
+
+
+
         this.$router.push({name: 'DeliveryDetail', params: {id: order._id}});
     }
 
@@ -174,7 +200,7 @@ export default class DeliveryList extends Vue {
             .then(() => {
                 this.getData();
                 this.connectOrderWS();
-        })
+            })
     }
 
     setDeliverymanNotOpen() {

@@ -7,7 +7,6 @@ const router = express.Router();
 
 router.post("/:id", async (req, res) => {
     try {
-        console.log("test")
         let notification = new NotificationModel({
                 "Date": new Date(),
                 "Read": false,
@@ -20,19 +19,25 @@ router.post("/:id", async (req, res) => {
         );
         if (notification.Types.Command === true) {
             switch (req.body.data.action) {
-                case "newOrder":
+                case "NewOrder":
                     notification.Message = "Nouvelle Commande!";
                     break;
-                case "orderAcceptedRestaurant":
-                    notification.Message = "Le restaurant a accpté votre commande.";
+                case "OrderAcceptedRestaurant":
+                    notification.Message = "Le restaurant a accepté votre commande.";
                     break;
-                case "canceledOrder":
+                case "OrderAcceptedRestaurantDelivery":
+                    notification.Message = "Le restaurant a accepté votre livraison.";
+                    break;
+                case "OrderReady":
+                    notification.Message = "Le restaurant a fini de préparer la commande.";
+                    break;
+                case "CanceledOrder":
                     notification.Message = "La commande a été annulée.";
                     break;
-                case "orderLate":
+                case "OrderLate":
                     notification.Message = "Vous êtes en retard sur cette commande.";
                     break;
-                case "orderIsComming":
+                case "OrderIsComming":
                     notification.Message = "Votre commande arrive!";
                     break;
             }
@@ -47,8 +52,11 @@ router.post("/:id", async (req, res) => {
                 case "NoDeliverymanAvailable":
                     notification.Message = "Aucun livreur n'est disponible dans votre secteur";
                     break;
-                case "orderAcceptedDeliveryman":
+                case "OrderAcceptedDeliveryman":
                     notification.Message = "Un livreur est disponible pour votre commande.";
+                    break;
+                case "DeliverymanWillTakeOrder":
+                    notification.Message = "Votre livreur va prendre en charge votre commande.";
                     break;
             }
         }
@@ -104,7 +112,6 @@ router.get("/user/:id", async (req, res) => {
 
 router.get("/userCount/:id", async (req, res) => {
     try {
-        console.log(req.params.id)
         let count = await NotificationModel.count({
             $and: [
                 {belongs_to: req.params.id},

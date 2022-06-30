@@ -28,13 +28,9 @@ export default class NotificationList extends Vue {
     }
 
     isUserConnected = this.$cookies.get('auth');
-    userRole = this.$cookies.get('role');
 
     readAll() {
-        switch (this.userRole) {
-            case "Restaurant" :
-                this.$refs.notif.readAll();
-        }
+        this.$refs.notif.readAll();
     }
 }
 </script>
