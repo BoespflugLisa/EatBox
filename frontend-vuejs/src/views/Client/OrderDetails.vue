@@ -222,6 +222,9 @@ export default class OrderDetails extends Vue {
 
 
     created() {
+        this.$cookies.remove('menus')
+        this.$cookies.remove('articles')
+        this.$cookies.remove('restaurant_id')
         this.orderID = this.$route.params.id;
     }
 

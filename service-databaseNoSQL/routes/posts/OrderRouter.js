@@ -123,15 +123,14 @@ router.get('/deliverymanCurrentOrder/:id', async (req, res) => {
 
 router.get("/client/:id", async (req, res) => {
     try {
-        let currentOrder = await OrderModel.findOne({
+        let currentOrders = await OrderModel.find({
             Client: req.params.id,
             $or: [{State: 0}, {State: 1}, {State: 2}, {State: 3}]
         })
-        if (currentOrder) {
-            res.status(200).json({
-                currentOrder,
-            });
-        }
+
+        res.status(200).json({
+            currentOrders,
+        });
     } catch (err) {
         res.status(400).json({
             status: 400,
