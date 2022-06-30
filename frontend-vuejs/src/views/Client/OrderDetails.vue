@@ -49,28 +49,28 @@
             <v-card-text>
                 <div>
                     <v-row no-gutters>
-                            <v-col v-if="order.Detail.Menus.length"
-                                cols="12"
-                                sm="6"
-                            >
-                                <p class="font-16 font-weight-bold">Menus commandés</p>
-                                <ul>
-                                    <li v-for="(menu, index) in order.Detail.Menus" :key="index">
-                                        {{ menu.Name }}
-                                    </li>
-                                </ul>
-                            </v-col>
-                            <v-col v-if="order.Detail.Articles.length"
-                                cols="12"
-                                sm="6"
-                            >
-                                <p class="font-16 font-weight-bold">Articles commandés</p>
-                                <ul>
-                                    <li v-for="(article, index) in order.Detail.Articles" :key="(index+1)*2">
-                                        {{ article.Name }}
-                                    </li>
-                                </ul>
-                            </v-col>
+                        <v-col v-if="order.Detail.Menus.length"
+                               cols="12"
+                               sm="6"
+                        >
+                            <p class="font-16 font-weight-bold">Menus commandés</p>
+                            <ul>
+                                <li v-for="(menu, index) in order.Detail.Menus" :key="index">
+                                    {{ menu.Name }}
+                                </li>
+                            </ul>
+                        </v-col>
+                        <v-col v-if="order.Detail.Articles.length"
+                               cols="12"
+                               sm="6"
+                        >
+                            <p class="font-16 font-weight-bold">Articles commandés</p>
+                            <ul>
+                                <li v-for="(article, index) in order.Detail.Articles" :key="(index+1)*2">
+                                    {{ article.Name }}
+                                </li>
+                            </ul>
+                        </v-col>
 
                     </v-row>
                 </div>
@@ -208,7 +208,7 @@ export default class OrderDetails extends Vue {
     stateNumber = null;
     states = ['En attente de validation restaurant',
         'En préparation...', 'Le livreur prend en charge votre commande',
-        'Le livreur arrive!', 'Livrée!!', "A la recherche d'un livreur", 'Commande Annulée']
+        'Le livreur arrive !', 'Livrée!!', "A la recherche d'un livreur", 'Commande Annulée']
     commandState = "";
     client: any = {}
     clientAddress = ""
@@ -218,15 +218,24 @@ export default class OrderDetails extends Vue {
     menus = []
     articles = []
 
+    orderConnection: WebSocket | null = null
+
 
     created() {
         this.orderID = this.$route.params.id;
     }
 
-    async mounted() {
+    mounted() {
+        this.getData();
+    }
+
+    updated() {
+        this.connectOrderWS()
+    }
+
+    async getData() {
         await this.$axios.get('orders/' + this.orderID).then(response => {
                 this.order = response.data.order;
-                console.log(this.order)
                 this.stateNumber = response.data.order.State
                 this.commandState = this.states[response.data.order.State]
                 this.client = response.data.order.Client
@@ -251,6 +260,20 @@ export default class OrderDetails extends Vue {
         this.order.Payment = "Canceled";
         this.order.CheckTime.Cancelled_at = Date.now()
         this.goToOrdersHistory();
+    }
+
+    async connectOrderWS() {
+        if (this.orderConnection === null) {
+            this.orderConnection = await new WebSocket("ws://localhost:3031/orders/socket/" + this.$cookies.get("user_id"));
+
+            this.orderConnection.onmessage = () => {
+                this.getData()
+            }
+
+            this.orderConnection.onclose = () => {
+                this.orderConnection = null;
+            }
+        }
     }
 
 

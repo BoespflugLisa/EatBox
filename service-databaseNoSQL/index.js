@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const expressWs = require('express-ws')(app);
 
 require('events').EventEmitter.defaultMaxListeners = 15;
 
@@ -9,16 +10,6 @@ const bodyParser = require("body-parser");
 const logger = require("morgan");
 
 const port = 3031;
-
-const RestaurantsRouter = require("./routes/posts/RestaurantRouter");
-const ClientsRouter = require("./routes/posts/ClientRouter");
-const DeliverymansRouter = require("./routes/posts/DeliverymanRouter");
-const OrdersRouter = require("./routes/posts/OrderRouter");
-const ArticlesRouter = require("./routes/posts/ArticleRouter");
-const StatsRouter = require("./routes/posts/StatsRouter");
-const CategoriesRouter = require("./routes/posts/CategoryRouter");
-const MenusRouter = require("./routes/posts/MenuRouter");
-const PerformancesRouter = require("./routes/posts/PerformanceRouter");
 
 
 
@@ -37,6 +28,16 @@ db.mongoose.connect(db.url, db.options)
         console.log("Cannot connect to the database!", err);
         process.exit();
     });
+
+const RestaurantsRouter = require("./routes/posts/RestaurantRouter");
+const ClientsRouter = require("./routes/posts/ClientRouter");
+const DeliverymansRouter = require("./routes/posts/DeliverymanRouter");
+const OrdersRouter = require("./routes/posts/OrderRouter");
+const ArticlesRouter = require("./routes/posts/ArticleRouter");
+const StatsRouter = require("./routes/posts/StatsRouter");
+const CategoriesRouter = require("./routes/posts/CategoryRouter");
+const MenusRouter = require("./routes/posts/MenuRouter");
+const PerformancesRouter = require("./routes/posts/PerformanceRouter");
 
 app.use("/restaurants", RestaurantsRouter);
 app.use("/articles", ArticlesRouter);
