@@ -48,9 +48,9 @@
                     </v-item>
                 </v-item-group>
 
-                <VCardTitle>
-                    {{ menu.Name }}
-                    {{ menu.Price }}
+                <VCardTitle class="d-flex justify-space-between">
+                <p>{{ menu.Name }}</p>
+                <p>{{menu.Price}} €</p>
 
                 </VCardTitle>
                 <VCardText class="d-flex justify-space-between">
@@ -104,9 +104,9 @@
                                 :src=article.ArticleImg
                             ></v-img>
 
-                            <VCardTitle>
-                                {{ article.Name }}
-                                {{article.Price}}
+                            <VCardTitle class="d-flex justify-space-between">
+                                <p>{{ article.Name }}</p>
+                                <p>{{article.Price}} €</p>
 
                             </VCardTitle>
                             <VCardText class=" d-flex justify-space-between">

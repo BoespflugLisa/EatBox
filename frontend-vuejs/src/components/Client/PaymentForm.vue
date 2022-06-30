@@ -165,12 +165,12 @@ export default {
                     this.order.Detail.Paid = false;
                     this.order.Detail.Price = this.price;
                     this.order.Complementary = this.comment;
-                    console.log(this.order)
+                    this.$axios.post("/orders/" + this.restaurantID, {data: this.order}).then(response => {
+                        this.$router.push('/suivi_commande/' + response.data.order._id);
+                    })
 
                 }
-                this.$axios.post("/orders/" + this.restaurantID, {data: this.order}).then(response => {
-                    this.$router.push({name:'/suivi_commande', params : {id: response.data.order._id}})
-                })
+
 
 
             })

@@ -23,6 +23,7 @@ let OrderSchema = new Schema(
             Ready_at: Date,
             Pickedup_at: Date,
             Delivered_at: Date,
+            Cancelled_at: Date,
         },
     }
 );

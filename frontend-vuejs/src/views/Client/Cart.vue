@@ -14,6 +14,7 @@
                 </v-btn>
                 <v-btn
                     rounded
+                    :disabled="hasNotItems()"
                     @click="goToPayment()"
                     color="primary"
                 >
@@ -33,6 +34,7 @@
                 </v-btn>
                 <v-btn
                     rounded
+                    :disabled="hasNotItems()"
                     @click="goToPayment()"
                     fab
                     color="primary"
@@ -97,7 +99,7 @@
                     class="ml-2 mt-5 ml-2 small-articles"
                     max-width="200px"
                     v-for="(article, index) in this.CartArticles"
-                    v-bind:key=index
+                    v-bind:key=(index+1)*2
                     v-bind:src=article
                 >
                     <v-img
@@ -172,14 +174,14 @@ export default class Cart extends Vue {
     CartArticles: Array<object> = []
     MenusID: Array<object> = []
     ArticlesID: Array<object> = []
-    restaurantID: Array<string> = []
-    clientID = ""
     client = {}
 
     res: object[] | any = []
 
     tempArticle: any = {}
     tempMenu: any = {}
+
+    noItems = false;
 
 
     update() {
@@ -232,6 +234,16 @@ export default class Cart extends Vue {
 
     goToPayment() {
         this.$router.push('/payement')
+    }
+
+    hasNotItems() {
+        if (!this.CartMenus.length && !this.CartArticles.length) {
+            return this.noItems = true;
+
+        }
+        if (this.CartMenus.length || this.CartArticles.length) {
+            return this.noItems = false;
+        }
     }
 
 

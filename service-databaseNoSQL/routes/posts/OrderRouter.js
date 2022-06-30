@@ -24,6 +24,7 @@ router.post("/:id", async (req, res) => {
                     Ready_at: req.body.data.CheckTime.Ready_at,
                     Pickedup_at: req.body.data.CheckTime.Pickedup_at,
                     Delivered_at: req.body.data.CheckTime.Delivered_at,
+                    Cancelled_at : req.body.data.CheckTime.Cancelled_at,
                 },
             }
         );
@@ -42,15 +43,18 @@ router.post("/:id", async (req, res) => {
 
 router.get("/", async (req, res) => {
     try {
+        let orders = await OrderModel.find().exec();
         let ordersToAcceptByDeliveryman = await OrderModel.find({State: 5})
-            .populate('Client.Client_ID').exec();
+            .populate('Client').exec();
         let ordersToAcceptByRestaurant = await OrderModel.find({State: 0}).exec();
         let ordersToPrepare = await OrderModel.find({State: 1}).exec();
         let ordersToDeliver = await OrderModel.find({State: 2}).exec();
         let ordersInDelivery = await OrderModel.find({State: 3}).exec();
-        let ordersOver = await OrderModel.find({State: 4}).exec();
+        let ordersOver = await OrderModel.find({State: 4})
+            .populate('Client').exec();
         let ordersRefused = await OrderModel.find({State: 6}).exec();
         res.status(200).json({
+            orders,
             ordersToAcceptByDeliveryman,
             ordersToAcceptByRestaurant,
             ordersToPrepare,
@@ -88,6 +92,27 @@ router.get("/:id", async (req, res) => {
         })
     }
 })
+
+router.get("/client/:id", async (req, res) => {
+    try {
+        let currentOrder = await OrderModel.findOne({
+            Client : req.params.id,
+            $or: [{State: 0}, {State: 1}, {State: 2}, {State: 3}]
+        })
+        if (currentOrder) {
+            res.status(200).json({
+                currentOrder,
+            });
+        }
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        })
+    }
+})
+
+
 
 router.put("/:id", async (req, res) => {
     try {

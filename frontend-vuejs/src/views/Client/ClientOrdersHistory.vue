@@ -2,31 +2,46 @@
     <div id="orders-history" class="side-padding">
         <h2 class="mt-3">Historique des commandes</h2>
 
+        <h3 class="mt-3">Ma commande en cours</h3>
+        <div v-if="this.currentOrder !== null" class="mt-3">
+            <v-card class="d-flex justify-space-between">
+                <div>
+                    <v-card-title>
+                        {{ timeToBeReady(currentOrder.CheckTime.Created_at) }}
+                    </v-card-title>
+                    <v-card-text class="font-14">
+                        <p>N°{{ currentOrder.N_Order }}</p>
+                        <p>Total : {{ currentOrder.Detail.Price }}€</p>
+                    </v-card-text>
+                </div>
+                <v-card-actions class="mr-3">
+                    <v-btn @click="showDetails(currentOrder)" rounded color="secondary">
+                        Détails
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </div>
+        <div v-else class="d-flex justify-center">
+            <p>Vous n'avez aucune commande en cours.</p>
+        </div>
         <h3 class="mt-3">Mes commandes terminées</h3>
-        <div v-if="ordersFinished.length > 0">
-            <div v-for="order in this.ordersFinished" :key="order._id">
-                <v-card class="d-flex justify-space-between" v-if="order.State === 4">
-                    <div>
-                        <v-card-title>
-                            N°{{ order.N_Order }}
-                        </v-card-title>
-                        <v-card-text>
-                            <ul v-for="(menu, index) in order.Detail.Menus" :key="index">
-                                <li> {{menu.Name}}</li>
-                            </ul>
-                            <ul v-for="(article,index) in order.Detail.Articles" :key="index*2">
-                                <li> {{article.Name}}</li>
-                            </ul>
-                            Total : {{ order.Detail.Price }}€
-                        </v-card-text>
-                    </div>
-                    <v-card-actions class="mr-3">
-                        <v-btn @click="showDetails(order)" rounded color="secondary">
-                            Détails
-                        </v-btn>
-                    </v-card-actions>
-                </v-card>
-            </div>
+        <div class="mt-3" v-for="order in this.ordersFinished" :key="order._id">
+            <v-card class="d-flex justify-space-between">
+                <div>
+                    <v-card-title>
+                        {{ formatTime(order.CheckTime.Delivered_at) }}
+                    </v-card-title>
+                    <v-card-text class="font-14">
+                        <p>N°{{ order.N_Order }}</p>
+                        <p>Total : {{ order.Detail.Price }}€</p>
+                    </v-card-text>
+                </div>
+                <v-card-actions class="mr-3">
+                    <v-btn @click="showDetails(order)" rounded color="secondary">
+                        Détails
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
         </div>
 
     </div>
@@ -36,6 +51,7 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
+import moment from "moment";
 
 @Component({
     components: {}
@@ -43,19 +59,38 @@ import {Component, Vue} from 'vue-property-decorator';
 
 export default class ClientOrdersHistory extends Vue {
 
-    ordersFinished = null;
+    ordersFinished: any = [];
+    currentOrder: any = null;
 
     mounted() {
-        this.$axios.get(`orders`)
+        const clientId = this.$cookies.get('user_id');
+        this.$axios.get(`orders/`)
             .then(response => {
-                this.ordersFinished = response.data.ordersOver;
-            })
+                const allFinishedOrders = response.data.ordersOver
+                allFinishedOrders.find(orderF => {
+                    if (orderF.Client._id === clientId) {
+                        this.ordersFinished.push(orderF);
+                    }
+                })
 
+            })
+        this.$axios.get('orders/client/' + clientId).then(response => {
+            this.currentOrder = response.data.currentOrder;
+        })
 
     }
 
+    formatTime(date) {
+        return moment(date).format('DD/MM/YYYY HH:mm');
+    }
+
+    timeToBeReady(orderTime) {
+        const additionalTime = moment(orderTime).add(moment.duration(50, 'minutes'))
+        return additionalTime;
+    }
+
     showDetails(order) {
-        this.$router.push('/suivi_commande/'+ order._id);
+        this.$router.push('/suivi_commande/' + order._id);
     }
 
 }
