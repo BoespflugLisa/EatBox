@@ -116,13 +116,13 @@ const routes: Array<RouteConfig> = [
   },
 
   {
-    path: '/suivi_commande/:id',
+    path: '/SuiviCommande/:id',
     name: 'OrderDetails',
     component: () => import('../views/Client/OrderDetails.vue'),
     meta: { requiresAuth: true, isUser: 'Client'},
   },
   {
-    path: '/historique_des_commandes',
+    path: '/HistoriqueCommandes',
     name: 'ClientOrdersHistory',
     component: () => import('../views/Client/ClientOrdersHistory.vue'),
     meta: { requiresAuth: true, isUser: 'Client'},

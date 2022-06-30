@@ -90,7 +90,7 @@ export default class ClientOrdersHistory extends Vue {
     }
 
     showDetails(order) {
-        this.$router.push('/suivi_commande/' + order._id);
+        this.$router.push('/SuiviCommande/' + order._id);
     }
 
 }

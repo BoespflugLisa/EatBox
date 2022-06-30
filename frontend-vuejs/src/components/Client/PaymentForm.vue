@@ -166,7 +166,7 @@ export default {
                     this.order.Detail.Price = this.price;
                     this.order.Complementary = this.comment;
                     this.$axios.post("/orders/" + this.restaurantID, {data: this.order}).then(response => {
-                        this.$router.push('/suivi_commande/' + response.data.order._id);
+                        this.$router.push('/SuiviCommande/' + response.data.order._id);
                     })
 
                 }
