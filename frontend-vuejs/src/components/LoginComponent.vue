@@ -85,7 +85,6 @@ export default class LoginComponent extends Vue {
     async login() {
         this.loading = true
         try {
-            console.log(this.form)
             await loginUser(this.form.email, this.form.password, this.form.Role)
                 .then(r => {
                     this.$router.push('/')

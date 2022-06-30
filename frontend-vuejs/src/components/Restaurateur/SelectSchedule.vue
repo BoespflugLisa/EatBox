@@ -388,7 +388,6 @@ export default class SelectSchedule extends Vue {
     validHours() {
         this.$refs.obs.validate().then(success => {
             if (success) {
-                console.log('test')
                 this.hours[this.editedDay] = this.schedule;
                 this.editedDay = "";
                 this.showDialog = false;

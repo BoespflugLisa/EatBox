@@ -98,14 +98,12 @@ export default class DashboardRestaurant extends Vue {
     mounted() {
         this.$axios.get(`stats/`+this.$cookies.get('user_id'))
             .then(response => {
-                console.log(response.data)
                 this.stats.restaurantName = response.data.stat.belongs_to.Name;
                 this.stats.nbCommandes = response.data.stat.NbOrders;
                 this.stats.moyenneNote = response.data.stat.MeanNotes;
                 this.stats.recetteDuMois = response.data.stat.Benefit;
             })
             .catch(err=>{
-                console.log(err.response.data.message)
                 this.ReturnError = true;
                 this.error_login = err.response.data.message
             })

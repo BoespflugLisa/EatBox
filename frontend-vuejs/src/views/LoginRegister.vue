@@ -21,8 +21,8 @@
 
             </v-tabs>
         </div>
-        <div v-else class="text-center">
-            <p>Je suis un...</p>
+        <div v-else class="text-center mt-7">
+            <h1>Je suis un...</h1>
             <div v-for="(type, index) in types" :key="index">
                 <v-btn color="secondary" width="150px" class="mt-7" rounded v-on:click=setForms(index)>
                     {{ type }}
