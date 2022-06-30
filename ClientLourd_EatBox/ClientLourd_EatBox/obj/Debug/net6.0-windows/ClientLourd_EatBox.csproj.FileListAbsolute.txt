@@ -29,3 +29,7 @@ C:\Users\quent\WebstormProjects\EatBox\ClientLourd_EatBox\ClientLourd_EatBox\obj
 C:\Users\quent\WebstormProjects\EatBox\ClientLourd_EatBox\ClientLourd_EatBox\obj\Debug\net6.0-windows\Pages\LoginPage.baml
 C:\Users\quent\WebstormProjects\EatBox\ClientLourd_EatBox\ClientLourd_EatBox\obj\Debug\net6.0-windows\Pages\Logs.g.cs
 C:\Users\quent\WebstormProjects\EatBox\ClientLourd_EatBox\ClientLourd_EatBox\obj\Debug\net6.0-windows\Pages\Logs.baml
+C:\Users\quent\WebstormProjects\EatBox\ClientLourd_EatBox\ClientLourd_EatBox\obj\Debug\net6.0-windows\Pages\Supervision.g.cs
+C:\Users\quent\WebstormProjects\EatBox\ClientLourd_EatBox\ClientLourd_EatBox\obj\Debug\net6.0-windows\Pages\Supervision.baml
+C:\Users\quent\WebstormProjects\EatBox\ClientLourd_EatBox\ClientLourd_EatBox\obj\Debug\net6.0-windows\Pages\Commercial.g.cs
+C:\Users\quent\WebstormProjects\EatBox\ClientLourd_EatBox\ClientLourd_EatBox\obj\Debug\net6.0-windows\Pages\Commercial.baml

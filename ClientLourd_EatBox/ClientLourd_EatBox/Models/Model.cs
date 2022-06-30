@@ -10,8 +10,8 @@ namespace ClientLourd_EatBox.Models
     internal class Model
     {
 
-        private readonly IHttpClientFactory _httpClientFactory;
-        public Model(IHttpClientFactory httpClientFactory) => _httpClientFactory = httpClientFactory;
+       // private readonly IHttpClientFactory _httpClientFactory;
+       // public Model(IHttpClientFactory httpClientFactory) => _httpClientFactory = httpClientFactory;
 
     }
 
