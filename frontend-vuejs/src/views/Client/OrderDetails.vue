@@ -77,7 +77,7 @@
                 <v-divider class="mt-2 mb-2"></v-divider>
                 <div class="d-flex justify-space-between font-14 mt-3">
                     <p class="font-weight-bold">Prix total:</p>
-                    <p>{{ this.order.Detail.Price }} €</p>
+                    <p>{{ parseFloat(this.order.Detail.Price).toFixed(2) }} €</p>
                 </div>
 
             </v-card-text>
