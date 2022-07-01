@@ -799,7 +799,7 @@ export default class ArticlesEtMenus extends Vue {
 
     showDialogConfirmDelete = false;
 
-    restaurantId = this.$cookies.get('restaurant_id');
+    restaurantId = this.$cookies.get('user_id');
 
     search = "";
 
