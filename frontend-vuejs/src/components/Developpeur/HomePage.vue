@@ -31,7 +31,7 @@
 
         <validation-observer ref="obsInfo">
             <h3 class="mt-3 mb-3">Nom</h3>
-            <p v-if="!editInfo">{{ clientInfos.Firstname }}</p>
+            <p v-if="!editInfo">{{ devInfos.Firstname }}</p>
             <validation-provider v-else name="Nom" rules="required" v-slot="{ errors, valid }">
                 <v-text-field
                     v-model="editedFirstname"
@@ -41,68 +41,18 @@
             </validation-provider>
 
             <h3 class="mt-3 mb-3">Prénom</h3>
-            <p v-if="!editInfo">{{ clientInfos.Name }}</p>
+            <p v-if="!editInfo">{{ devInfos.Lastname }}</p>
             <validation-provider v-else name="Prénom" rules="required" v-slot="{ errors, valid }">
                 <v-text-field
-                    v-model="editedName"
+                    v-model="editedLastname"
                     :error-messages="errors"
                     :success="valid"
                 />
             </validation-provider>
-
-            <h3 class="mt-3 mb-3">Numéro de téléphone</h3>
-            <p v-if="!editInfo">{{ clientInfos.Phone }}</p>
-            <validation-provider name="Telephone" v-else rules="required|digits:10" v-slot="{ errors, valid }">
-                <v-text-field
-                    v-model="editedPhone"
-                    :error-messages="errors"
-                    :success="valid"
-                />
-            </validation-provider>
-
-            <h3 class="mt-3 mb-3">Adresse mail</h3>
-            <p>{{ clientInfos.belongs_to.Email }}</p>
-
-            <h3 class="mt-3 mb-3">Adresse</h3>
-            <p v-if="!editInfo">{{
-                    clientInfos.Address.Number + ' ' + clientInfos.Address.Street + ' - ' + clientInfos.Address.Code + ' ' + clientInfos.Address.Town
-                }}</p>
-            <div v-else>
-                <validation-provider name="Numéro" rules="required" v-slot="{ errors, valid }">
-                    <v-text-field
-                        v-model="editedAddress.Number"
-                        label="Numéro"
-                        :error-messages="errors"
-                        :success="valid"
-                    />
-                </validation-provider>
-
-                <validation-provider name="Rue" rules="required" v-slot="{ errors, valid }">
-                    <v-text-field
-                        v-model="editedAddress.Street" label="Rue"
-                        :error-messages="errors"
-                        :success="valid"
-                    />
-                </validation-provider>
-
-                <validation-provider name="Code postal" rules="required|numeric" v-slot="{ errors, valid }">
-                    <v-text-field
-                        type="number"
-                        v-model="editedAddress.Code" label="Code postal"
-                        :error-messages="errors"
-                        :success="valid"
-                    />
-                </validation-provider>
-
-                <validation-provider name="Ville" rules="required" v-slot="{ errors, valid }">
-                    <v-text-field
-                        v-model="editedAddress.Town" label="Ville"
-                        :error-messages="errors"
-                        :success="valid"
-                    />
-                </validation-provider>
-            </div>
         </validation-observer>
+
+        <h3 class="mt-3 mb-3">Adresse mail</h3>
+        <p>{{ devInfos.belongs_to.Email }}</p>
 
         <v-divider class="mt-4 mb-4"/>
 
@@ -147,15 +97,86 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
+import {ValidationObserver, ValidationProvider} from "vee-validate";
+import EatboxSnackbar from "../Snack/EatboxSnackbar.vue";
+import {logoutUser} from "../../utils/auth";
 
 @Component({
     components: {
+        ValidationObserver,
+        ValidationProvider,
+        EatboxSnackbar,
     },
 })
 
-export default class HomePage extends Vue{
-    name = "HomePage"
-    role = this.$cookies.get('role');
+export default class HomePage extends Vue {
+
+    $refs!: {
+        obsInfo: InstanceType<typeof ValidationObserver>,
+        snack: EatboxSnackbar
+    }
+
+    devInfos = {
+        _id: "",
+        Firstname: "",
+        Lastname: "",
+        belongs_to: {
+            Mail: "",
+        }
+    }
+
+    editInfo = false
+    loadingInfo = false
+    editedFirstname = ""
+    editedLastname = ""
+
+    showDialogConfirmDelete = false
+
+    mounted() {
+        this.getData()
+    }
+
+    getData() {
+        this.$axios.get('/developers/' + this.$cookies.get('user_id')).then((response) => {
+            this.devInfos = response.data.developer;
+        })
+    }
+
+    showEditInfo() {
+        this.editedFirstname = this.devInfos.Firstname;
+        this.editedLastname = this.devInfos.Lastname;
+        this.editInfo = true;
+    }
+
+    updateInfo() {
+        this.$refs.obsInfo.validate().then(success => {
+            if (success) {
+                this.devInfos.Lastname = this.editedLastname;
+                this.devInfos.Firstname = this.editedFirstname;
+                this.$axios.put("/developers/" + this.devInfos._id, {data: this.devInfos}).then(() => {
+                    this.$refs.snack.openSnackbar("Mise à jour efféctué avec succès", "success");
+                }).catch(() => {
+                    this.$refs.snack.openSnackbar("Erreur lors de la mise à jour", "error");
+                }).finally(() => {
+                    this.loadingInfo = false
+                    this.editInfo = false
+                })
+            }
+        })
+    }
+
+    openConfirmDelete() {
+        this.showDialogConfirmDelete = true;
+    }
+
+    deleteAccount() {
+        this.$axios.delete("/developers/" + this.$cookies.get('user_id')).then(() => {
+            this.$axios_login.delete('/' + this.$cookies.get('_id')).then(() => {
+                logoutUser()
+                this.$router.push('/connexion')
+            })
+        })
+    }
 }
 </script>
 
