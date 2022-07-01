@@ -151,18 +151,22 @@ export default {
         },
 
         finishDelivery() {
-                this.order.State = 4
-                this.$axios.put('orders/' + this.orderID, {data: this.order}).then(() => {
-                    this.$axios_notifications.post("/notifications/" + this.order.Client._id, {
-                        data: {
-                            action: "OrderIsFinish",
-                            Types: {
-                                Command: true,
-                                Delivery: false,
-                            }
+            this.order.State = 4
+            this.$axios.put('orders/' + this.orderID, {data: this.order}).then(() => {
+                this.$axios_notifications.post("/notifications/" + this.order.Client._id, {
+                    data: {
+                        action: "OrderIsFinish",
+                        Types: {
+                            Command: true,
+                            Delivery: false,
                         }
-                    })
+                    }
                 })
+            })
+            this.$axios.get('/deliveryman/' + this.$cookies.get('user_id')).then((response) => {
+                response.data.deliveryman.Free = true;
+                this.$axios.put("/deliverymans/" + this.$cookies.get('user_id'), {data: response.data.deliveryman})
+            })
         },
 
         async connectOrderWS() {
