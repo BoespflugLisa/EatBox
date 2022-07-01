@@ -73,7 +73,6 @@
                                             :items="types"
                                             :readonly="isEditing"
                                             label="Type de nourriture"
-                                            :rules="[rules.required]"
                                             prepend-icon="mdi-food"
                                         ></v-autocomplete>
                                         <validation-provider name="téléphone" rules="required|digits:10"
