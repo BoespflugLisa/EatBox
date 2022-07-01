@@ -18,6 +18,7 @@ router.post('/register', async function (req, res) {
                 Password: bcrypt.hashSync(req.body.password, 8),
                 Role: req.body.role,
                 restaurant: null,
+                suspended: false,
             });
         } else if (req.body.role === 'Developpeur') {
             newUser = new UserModel.model({
@@ -25,6 +26,7 @@ router.post('/register', async function (req, res) {
                 Password: bcrypt.hashSync(req.body.password, 8),
                 Role: req.body.role,
                 developer: null,
+                suspended: false,
             });
         } else {
             newUser = new UserModel.model({
@@ -33,6 +35,7 @@ router.post('/register', async function (req, res) {
                 Role: req.body.role,
                 livreur: null,
                 client: null,
+                suspended: false,
             });
         }
 
