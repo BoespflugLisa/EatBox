@@ -60,7 +60,7 @@
                         </Button>
                     </ListBoxItem>
                     <ListBoxItem>
-                        <Button Background="Transparent" Height="45" Padding="0" Width="229" BorderThickness="0" Cursor="Hand" >
+                        <Button Click="Supervision_Click" Background="Transparent" Height="45" Padding="0" Width="229" BorderThickness="0" Cursor="Hand" >
                             <StackPanel Orientation="Horizontal" Width="230" >
                                 <materialDesign:PackIcon Kind="EyeOutline" Width="20" Height="20" Foreground="#FFF08033" Margin="5" VerticalAlignment="Center"/>
                                 <TextBlock Text="Supervision" FontFamily="Champagne &amp; Limousines" Margin="10" Foreground="Black" FontSize="18"/>

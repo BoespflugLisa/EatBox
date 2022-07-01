@@ -20,14 +20,22 @@ namespace ClientLourd_EatBox.Pages
     /// </summary>
     public partial class LoginPage : Page
     {
+       
         private Frame MainFrame;
         public Technicien tec;
+        public Commercial com;
+        public bool IsCommercial;
+
         public LoginPage(Frame main)
         {
             InitializeComponent();
             MainFrame = main;
+            com= new Commercial();
             tec = new Technicien();
-            
+            IsCommercial = false;
+           
+
+
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -37,7 +45,14 @@ namespace ClientLourd_EatBox.Pages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Content = tec;
+            if (!IsCommercial)
+            {
+                MainFrame.Content = tec;
+            }
+           else
+            {
+                MainFrame.Content = com;
+            }
         }
     }
 }

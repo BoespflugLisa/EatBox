@@ -23,16 +23,25 @@ namespace ClientLourd_EatBox.Pages
     {
 
         public Logs Log;
+        public Supervision Supervision;
+        
         public Technicien()
         {
             InitializeComponent();
             this.Log = new Logs();
+            this.Supervision = new Supervision();
+           
 
         }
 
         private void Logs_Click(object sender, RoutedEventArgs e)
         {
             TecFrame.Content = this.Log;
+        }
+
+        private void Supervision_Click(object sender, RoutedEventArgs e)
+        {
+            TecFrame.Content = this.Supervision;
         }
     }
 }
