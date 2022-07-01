@@ -175,13 +175,13 @@ router.ws('/socket/:type/:id', async function (ws, req) {
                     break;
 
                 case 1:
-                case 3:
                 case 4:
                     if (ws.id === order.Client.toString() || ws.type === "Commercial")
                         ws.send("Order updated");
                     break;
 
                 case 2:
+                case 3:
                     if (ws.id === order.Client.toString() || ws.id === order.Deliveryman_token || ws.type === "Commercial")
                         ws.send("Order updated");
                     break;
