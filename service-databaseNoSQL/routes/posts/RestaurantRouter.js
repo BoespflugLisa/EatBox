@@ -141,8 +141,7 @@ router.get("/articles/:id", async (req, res) => {
 })
 
 
-//GET tous les categories d'un
-/*
+//GET tous les categories d'un restaurant
 router.get("/categories/:id", async (req, res) => {
     try {
         let categorie = await CategoryModel.find({belongs_to:req.params.id})
@@ -157,7 +156,7 @@ router.get("/categories/:id", async (req, res) => {
             message: err.message,
         })
     }
-})*/
+})
 
 
 

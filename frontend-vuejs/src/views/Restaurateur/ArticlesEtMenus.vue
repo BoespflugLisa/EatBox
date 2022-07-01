@@ -821,7 +821,7 @@ export default class ArticlesEtMenus extends Vue {
 
     getAllCategories() {
         this.loadingCategory = true;
-        return this.$axios.get(`categories`)
+        return this.$axios.get(`categories`+ this.restaurantId)
             .then(response => {
                 this.categories = response.data.categories;
             }).finally(() => {
