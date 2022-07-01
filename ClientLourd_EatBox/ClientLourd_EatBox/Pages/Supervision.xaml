@@ -14,7 +14,6 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="First Name"  Binding="{Binding FirstName}"/>
                 <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" />
-                <!--The Email property contains a URI.  For example "mailto:lucy0@adventure-works.com"-->
                 <DataGridCheckBoxColumn Header="Member?" Binding="{Binding IsMember}" />
             </DataGrid.Columns>
         </DataGrid>

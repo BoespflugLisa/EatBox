@@ -21,16 +21,24 @@ namespace ClientLourd_EatBox.Pages
     public partial class Commercial : Page
     {
         public UsersView users;
+        public OrdersView orders;
         public Commercial()
         {
             InitializeComponent();
             this.users = new UsersView();
+            this.orders = new OrdersView();
         }
 
         private void UsersView_Click(object sender, RoutedEventArgs e)
         {
             ComFrame.Content = this.users;
         }
+
+        private void Orders_Click(object sender, RoutedEventArgs e)
+        {
+            ComFrame.Content = this.orders;
+        }
+
 
 
     }

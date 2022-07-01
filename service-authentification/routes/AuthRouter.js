@@ -237,7 +237,6 @@ router.post('/loginRestaurant', async (req, res) => {
         let user = await UserModel.model.findOne({Email: req.body.email, Role: {$eq: req.body.Role}}).then(r => {
             return r;
         })
-        console.log()
 
         if (user != null) {
             pwdIsValid = bcrypt.compareSync(req.body.password, user.Password);

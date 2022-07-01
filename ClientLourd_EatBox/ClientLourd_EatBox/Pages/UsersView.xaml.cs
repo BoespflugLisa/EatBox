@@ -82,7 +82,6 @@ namespace ClientLourd_EatBox.Pages
         public async void GetUsersfromDB(Action callback)
         {
 
-            //users = JObject.Parse(await clients.GetUsersWithHttpClientFactory());
             (livreurs, resto, clients, developers) = await httpclient.GetUsersWithHttpClientFactory();
 
 

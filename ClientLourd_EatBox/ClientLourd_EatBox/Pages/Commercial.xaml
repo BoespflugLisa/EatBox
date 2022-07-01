@@ -41,7 +41,7 @@
                         </Button>
                     </ListBoxItem>
                     <ListBoxItem>
-                        <Button  Background="Transparent" Height="45" Padding="0" Width="229" BorderThickness="0" Cursor="Hand" >
+                        <Button  Background="Transparent" Height="45" Padding="0" Width="229" BorderThickness="0" Cursor="Hand" Click="Orders_Click">
                             <StackPanel Orientation="Horizontal" Width="230" >
                                 <materialDesign:PackIcon Kind="EyeOutline" Width="20" Height="20" Foreground="#FFF08033" Margin="5" VerticalAlignment="Center"/>
                                 <TextBlock FontFamily="Champagne &amp; Limousines" Margin="10" Foreground="Black" FontSize="18"><Run Text="S"/><Run Language="fr-fr" Text="uivi de commande"/></TextBlock>
