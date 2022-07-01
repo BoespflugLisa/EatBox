@@ -61,7 +61,7 @@
 
         <div v-if="this.stateNumber === 3" class="align-center d-flex justify-center mt-5">
             <v-btn rounded color="secondary" large @click="dialogDelete=true">
-                Livaison terminée
+                Livaison terminée ?
             </v-btn>
         </div>
 

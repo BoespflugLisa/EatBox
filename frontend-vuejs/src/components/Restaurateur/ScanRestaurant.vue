@@ -74,6 +74,7 @@ export default class ScanRestaurant extends Vue {
             this.order.State = 3;
             this.order.CheckTime.Pickedup_at = Date.now();
 
+            await this.$axios.put('/orders/'+ this.order._id, {data:this.order});
             await this.$axios_notifications.post("/notifications/" + this.order.Client._id, {
                 data: {
                     action: "OrderIsComming",
