@@ -16,23 +16,28 @@ namespace ClientLourd_EatBox.Models
         public string Type { get; set; }
         public string _id { get; set; }
 
+        public bool suspended { get; set; }
+
         public UserModel() { }
-        public UserModel(string id, string email, string firstname, string lastname, string role) //Création de livreur ou client
+        public UserModel(string id, string email, string firstname, string lastname, string role, bool suspend) //Création de livreur ou client
         {
             _id = id;
             Email = email;
             Role = role;
             FirstName = firstname;
             LastName = lastname;
+            suspended = suspend;
+            
         }
 
-        public UserModel(string id, string email, string name, string type) //Création de restaurant
+        public UserModel(string id, string email, string name, string type, bool suspend) //Création de restaurant
         {
             _id = id;
             Email = email;
             Role = "Restaurant";
             Name = name;
             Type = type;
+            suspended = suspend;
 
         }
     }

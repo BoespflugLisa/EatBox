@@ -7,16 +7,10 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Pages\Commercial.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Pages\LoginPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\Logs.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Pages\Supervision.xaml.cs">
+    <Compile Update="Pages\UsersView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\Technicien.xaml.cs">
@@ -27,16 +21,10 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Pages\Commercial.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Pages\LoginPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Pages\Logs.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Pages\Supervision.xaml">
+    <Page Update="Pages\UsersView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Technicien.xaml">

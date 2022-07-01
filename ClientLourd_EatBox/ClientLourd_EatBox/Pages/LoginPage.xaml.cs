@@ -32,7 +32,7 @@ namespace ClientLourd_EatBox.Pages
             MainFrame = main;
             com= new Commercial();
             tec = new Technicien();
-            IsCommercial = false;
+            IsCommercial = true;
            
 
 

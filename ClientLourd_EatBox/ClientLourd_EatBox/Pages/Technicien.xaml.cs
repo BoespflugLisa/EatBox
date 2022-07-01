@@ -22,13 +22,13 @@ namespace ClientLourd_EatBox.Pages
     public partial class Technicien : Page
     {
 
-        public Logs Log;
+        //public Logs Log;
         public Supervision Supervision;
         
         public Technicien()
         {
             InitializeComponent();
-            this.Log = new Logs();
+            //this.Log = new Logs();
             this.Supervision = new Supervision();
            
 
@@ -36,7 +36,7 @@ namespace ClientLourd_EatBox.Pages
 
         private void Logs_Click(object sender, RoutedEventArgs e)
         {
-            TecFrame.Content = this.Log;
+            //TecFrame.Content = this.Log;
         }
 
         private void Supervision_Click(object sender, RoutedEventArgs e)

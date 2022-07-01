@@ -27,6 +27,7 @@ namespace ClientLourd_EatBox.Functions
         public List<UserModel> ClientsObjects { get; }
         public List<UserModel> LivreursObjects { get; }
         public List<UserModel> RestoObjects { get; }
+        public List<UserModel> DevelopersObjects { get; }
 
 
         private Users(HttpClient client)
@@ -37,6 +38,7 @@ namespace ClientLourd_EatBox.Functions
             ClientsObjects = new List<UserModel>();
             LivreursObjects = new List<UserModel>();
             RestoObjects = new List<UserModel>();
+            DevelopersObjects = new List<UserModel>();
 
         }
 
@@ -62,15 +64,15 @@ namespace ClientLourd_EatBox.Functions
         public string? Value { get; set; }
 
 
-        public UserModel CreateNewUser(string id, string email, string name, string firstname, string role)
+        public UserModel CreateNewUser(string id, string email, string name, string firstname, string role, bool susp)
         {
-            return new UserModel(id, email, firstname, name, role);
+            return new UserModel(id, email, firstname, name, role, susp);
         }
 
 
-        public UserModel CreateNewUser(string id, string email, string name, string type)
+        public UserModel CreateNewUser(string id, string email, string name, string type, bool susp)
         {
-            return new UserModel(id, email, name, type);
+            return new UserModel(id, email, name, type, susp);
         }
 
         /*public static UserModel CreateNewLivreur(string name, string firstname, string email, string role)
@@ -80,12 +82,28 @@ namespace ClientLourd_EatBox.Functions
 
         public async void SuspendUserWithHttpClientFactory(string id)
         {
-            using (var response = await Client.DeleteAsync(url+id.ToString()))
+            UserModel modified = ClientsObjects.Concat(RestoObjects).Concat(LivreursObjects).Concat(DevelopersObjects).FirstOrDefault(e => e._id == id);
+            HttpContent payload = new StringContent($"{{\"suspended\":\"{!modified.suspended}\"}}", Encoding.UTF8, "application/json");
+            using (var response = await Client.PutAsync(url + "suspend/" + id.ToString(), payload))
             {
+                response.EnsureSuccessStatusCode();
+                modified.suspended = !modified.suspended;
             }
         }
 
-        public async Task<(List<UserModel>, List<UserModel>, List<UserModel>)> GetUsersWithHttpClientFactory()
+        public async void DeleteUserWithHttpClientFactory(string id)
+        {
+            UserModel modified = ClientsObjects.Concat(RestoObjects).Concat(LivreursObjects).Concat(DevelopersObjects).FirstOrDefault(e => e._id == id);
+            //HttpContent payload = new StringContent($"{{\"suspended\":\"{!modified.suspended}\"}}", Encoding.UTF8, "application/json");
+            using (var response = await Client.DeleteAsync(url+id.ToString()))
+            {
+                response.EnsureSuccessStatusCode();
+                List<UserModel> all = ClientsObjects.Concat(RestoObjects).Concat(LivreursObjects).Concat(DevelopersObjects).ToList();
+                all.Remove(modified);
+            }
+        }
+
+        public async Task<(List<UserModel>, List<UserModel>, List<UserModel>, List<UserModel>)> GetUsersWithHttpClientFactory()
         {
             using (var response = await Client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead))
             {
@@ -101,37 +119,40 @@ namespace ClientLourd_EatBox.Functions
                     {
                         if (item["livreur"].Type != JTokenType.Null)
                         {
-                            this.LivreursObjects.Add(this.CreateNewUser(item["_id"].ToString(), item["Email"].ToString(), item["livreur"]["Firstname"].ToString(), item["livreur"]["Lastname"].ToString(), "Livreur"));
+                            this.LivreursObjects.Add(this.CreateNewUser(item["_id"].ToString(), item["Email"].ToString(), item["livreur"]["Firstname"].ToString(), item["livreur"]["Lastname"].ToString(), "Livreur", (bool)item["suspended"]));
                         }
-                        //this.LivreursObjects.Add(this.CreateNewUser(item.Item, item.Values("livreur").Value<string>("FirstName"), item.Value<string>("Email"), "Livreur"));
+                        
                     }
 
                     if (item.GetValue("client") is not null)
                     {
                         if (item["client"].Type != JTokenType.Null)
                         {
-                            this.ClientsObjects.Add(this.CreateNewUser(item["_id"].ToString(), item["Email"].ToString(), item["client"]["Firstname"].ToString(), item["client"]["Name"].ToString(), "Client"));
+                            this.ClientsObjects.Add(this.CreateNewUser(item["_id"].ToString(), item["Email"].ToString(), item["client"]["Firstname"].ToString(), item["client"]["Name"].ToString(), "Client", (bool)item["suspended"]));
 
-                            // this.ClientsObjects.Add(this.CreateNewUser(item["client"].Value<string>("Name"), item["client"].Value<string>("FirstName"), item.Value<string>("Email"), "Client"));
                         }
                     }
 
                     if (item.GetValue("restaurant") is not null)
                     {
-                        //this.RestoObjects.Add(item.ToObject<UserModel>());
                         if (item["restaurant"].Type != JTokenType.Null)
                         {
-                            this.RestoObjects.Add(this.CreateNewUser(item["_id"].ToString(), item["Email"].ToString(), item["restaurant"]["Name"].ToString(), item["restaurant"]["Type"].ToString()));
+                            this.RestoObjects.Add(this.CreateNewUser(item["_id"].ToString(), item["Email"].ToString(), item["restaurant"]["Name"].ToString(), item["restaurant"]["Type"].ToString(), (bool)item["suspended"]));
+                        }
+                    }
+
+                    if (item.GetValue("developpeur") is not null)
+                    {
+                        if (item["developpeur"].Type != JTokenType.Null)
+                        {
+                            //this.DevelopersObjects.Add(this.CreateNewUser(item["_id"].ToString(), item["Email"].ToString(), item["developpeur"]["Firstname"].ToString(), item["developpeur"]["Lastname"].ToString(), "Developpeur", (bool)item["suspended"]));
                         }
                     }
                 }
-                /*if Développeur != null
-                    this.UsersObjects.Add(clients.CreateNewUser(item.GetValue("Name"), item.GetValue("FirstName")));
-                   */
             }
 
 
-            return (this.LivreursObjects, this.RestoObjects, this.ClientsObjects);
+            return (this.LivreursObjects, this.RestoObjects, this.ClientsObjects, this.DevelopersObjects);
 
         }
     }

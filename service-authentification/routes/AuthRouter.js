@@ -211,7 +211,7 @@ router.get('/', function (req, res) {
             console.log(data)
             res.json(data);
         }
-    }).populate('restaurant', 'Name Type Address Legal Phone').populate('livreur', 'Lastname Firstname AccountName IBAN Phone').populate('client', 'Firstname Name Phone Address');
+    }).populate('restaurant', 'Name Type Address Legal Phone').populate('livreur', 'Lastname Firstname AccountName IBAN Phone').populate('client', 'Firstname Name Phone Address');//.populate('developpeur', 'Firstname LastName');
 });
 
 router.get('/:token', function (req, res) {
@@ -225,21 +225,25 @@ router.get('/:token', function (req, res) {
 });
 
 router.delete('/:id', function (req, res) {
+    console.log(req.params.id)
     UserModel.model.findOneAndDelete({_id: new mongoose.Types.ObjectId(req.params.id)}, function (err, data) {
         if (err) {
             console.log(err);
         } else {
-            res.send(data);
+            res.status(200).json(data);
         }
     });
 });
 
 router.put('/suspend/:id', function (req, res) {
-    UserModel.model.findByIdAndUpdate({_id: new mongoose.Types.ObjectId(req.params.id)}, {"$set": {"suspended": {"$eq": [false, "$suspended"]}}}, function (err, data) {
+
+    console.log(req.body.suspended)
+    UserModel.model.findByIdAndUpdate({_id: new mongoose.Types.ObjectId(req.params.id)}, {suspended: (req.body.suspended === "True")}, function (err, data) {
         if (err) {
             console.log(err);
         } else {
-            res.send(data);
+            console.log(data)
+            res.status(200).json(data);
         }
     });
 });
