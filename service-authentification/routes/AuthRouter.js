@@ -132,8 +132,6 @@ router.post('/register', async function (req, res) {
                         return res
                     }
 
-                    console.log(newUser)
-
                     res.status(200).json({
                         auth: true,
                         token: token,
@@ -181,7 +179,7 @@ router.post('/login', async (req, res) => {
 
         if (req.body.Role === "Livreur" && !!user.livreur) {
             await user.populate('livreur')
-                .then(p => console.log(p))
+                .then()
                 .catch(error => console.log(error));
             user = {
                 _id: user._id,
@@ -192,7 +190,7 @@ router.post('/login', async (req, res) => {
 
         if (req.body.Role === "Client" && !!user.client) {
             await user.populate('client')
-                .then(p => console.log(p))
+                .then()
                 .catch(error => console.log(error));
             user = {
                 _id: user._id,
@@ -203,7 +201,7 @@ router.post('/login', async (req, res) => {
 
         if (req.body.Role === "Developpeur" && !!user.developpeur) {
             await user.populate('developpeur')
-                .then(p => console.log(p))
+                .then()
                 .catch(error => console.log(error));
             user = {
                 _id: user._id,
@@ -212,11 +210,23 @@ router.post('/login', async (req, res) => {
             }
         }
 
+        try {
+            await utils.createLogConnection(user._id);
+        }
+        catch (err) {
+                throw err;
+        }
+
+
+
         res.status(200).json({
             auth: true,
             token: token,
             user
         })
+
+
+
 
     } catch (err) {
         console.log(err)
@@ -230,8 +240,6 @@ router.post('/login', async (req, res) => {
 router.post('/loginRestaurant', async (req, res) => {
     //https://www.digitalocean.com/community/tutorials/how-to-set-up-vue-js-authentication-and-route-handling-using-vue-router
     let pwdIsValid = false
-    console.log(req.body)
-
 
     try {
         let user = await UserModel.model.findOne({Email: req.body.email, Role: {$eq: req.body.Role}}).then(r => {
@@ -254,10 +262,11 @@ router.post('/loginRestaurant', async (req, res) => {
 
         if (!user.populated('restaurant')) {
             await user.populate('restaurant')
-                .then(p => console.log(p))
+                .then()
                 .catch(error => console.log(error));
         }
-        //console.log(user)
+
+        LogConnectionModel
 
 
         user = {

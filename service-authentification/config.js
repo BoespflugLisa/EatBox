@@ -14,15 +14,16 @@ let config = {
 
 };
 
-const mongoose = require("mongoose");
+
+const mongoose = require("mongoose")
 mongoose.Promise = global.Promise;
 const db = {};
+
 
 db.mongoose = mongoose;
 db.url = config.dbUrl
 db.options = config.options;
 db.secret = config.secret;
-
 const UsersModel = require("./models/User");
 
 const RestaurantsSchema = require('../service-databaseNoSQL/models/Restaurant').schema
@@ -36,6 +37,9 @@ db.mongoose.model("ClientModel", ClientSchema, 'clients');
 
 const DeveloperSchema = require('../service-databaseNoSQL/models/Developer').schema
 db.mongoose.model("DeveloperModel", DeveloperSchema, 'developers');
+
+const LogConnectionSchema = require('../service-databaseNoSQL/models/LogConnection').schema
+db.mongoose.model("LogConnectionModel", LogConnectionSchema, 'logsconnection');
 
 /*const RestaurantsModel = require("../service-databaseNoSQL/models/Restaurant");
 const OrdersModel = require("../service-databaseNoSQL/models/Order");

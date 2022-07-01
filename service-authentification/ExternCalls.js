@@ -77,4 +77,23 @@ function createProfile(newUser) {
     })
 }
 
-module.exports = {createProfile}
+function createLogConnection (userID) {
+
+    return new Promise(async (resolve, reject) => {
+
+        try {
+            await axios({
+                url: `${REST_ENDPOINT}/logs/${userID}`,
+                method: 'POST',
+            })
+            resolve()
+        } catch (err) {
+            console.error('Erreur lors de la récupération du log de connexion', err)
+            reject()
+            return err
+            //throw "Erreur lors de l'inscription du restaurant"
+        }
+    })
+}
+
+module.exports = {createProfile, createLogConnection}
