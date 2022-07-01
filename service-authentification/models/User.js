@@ -7,6 +7,7 @@ let UserSchema = new Schema({
     restaurant : {type: Schema.Types.ObjectId, ref: 'RestaurantModel'},
     livreur : {type: Schema.Types.ObjectId, ref: 'LivreurModel'},
     client : {type: Schema.Types.ObjectId, ref: 'ClientModel'},
+    suspended : Boolean
 });
 
 let UserLogin = mongoose.model("UsersLogModel", UserSchema, "users_login");

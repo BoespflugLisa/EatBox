@@ -17,6 +17,7 @@ router.post('/register', async function (req, res) {
         Email: req.body.email,
         Password: bcrypt.hashSync(req.body.password, 8),
         restaurant: null,
+        suspended: false,
     });
 
 
@@ -93,7 +94,7 @@ router.post('/login', async (req, res) => {
     let pwdIsValid = false
 
     try {
-        let user = await UserModel.model.findOne({Email: req.body.email, Role : {$ne : "Restaurant"}}).then(r => {
+        let user = await UserModel.model.findOne({Email: req.body.email, Role: {$ne: "Restaurant"}}).then(r => {
             return r;
         })
 
@@ -154,7 +155,7 @@ router.post('/loginRestaurant', async (req, res) => {
 
 
     try {
-        let user = await UserModel.model.findOne({Email: req.body.email, Role : {$eq : req.body.Role}}).then(r => {
+        let user = await UserModel.model.findOne({Email: req.body.email, Role: {$eq: req.body.Role}}).then(r => {
             return r;
         })
         console.log()
@@ -207,9 +208,10 @@ router.get('/', function (req, res) {
         if (err) {
             console.log(err);
         } else {
-            res.send(data);
+            console.log(data)
+            res.json(data);
         }
-    });
+    }).populate('restaurant', 'Name Type Address Legal Phone').populate('livreur', 'Lastname Firstname AccountName IBAN Phone').populate('client', 'Firstname Name Phone Address');
 });
 
 router.get('/:token', function (req, res) {
@@ -223,7 +225,7 @@ router.get('/:token', function (req, res) {
 });
 
 router.delete('/:id', function (req, res) {
-    UserModel.model.remove({UserId: req.params.id}, function (err, data) {
+    UserModel.model.findOneAndDelete({_id: new mongoose.Types.ObjectId(req.params.id)}, function (err, data) {
         if (err) {
             console.log(err);
         } else {
@@ -231,5 +233,16 @@ router.delete('/:id', function (req, res) {
         }
     });
 });
+
+router.put('/suspend/:id', function (req, res) {
+    UserModel.model.findByIdAndUpdate({_id: new mongoose.Types.ObjectId(req.params.id)}, {"$set": {"suspended": {"$eq": [false, "$suspended"]}}}, function (err, data) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(data);
+        }
+    });
+});
+
 
 module.exports = router;

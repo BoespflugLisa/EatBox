@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ClientLourd_EatBox.Pages;
-
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ClientLourd_EatBox
 {
@@ -33,9 +33,16 @@ namespace ClientLourd_EatBox
             
             MainFrame.Content = new LoginPage(this.MainFrame);
             
-
+            
 
         }
-        
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddHttpClient();
+
+        }
     }
-}
+
+
+    }
+

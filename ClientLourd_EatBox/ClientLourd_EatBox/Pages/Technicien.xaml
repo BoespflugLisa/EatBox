@@ -55,7 +55,7 @@
                         <Button Background="Transparent" Height="45" Padding="0" Width="229" BorderThickness="0" Cursor="Hand" Click="Logs_Click">
                             <StackPanel Orientation="Horizontal" Width="230" >
                                 <materialDesign:PackIcon Kind="AccountWrench" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
-                                <TextBlock Text="Logs" FontFamily="Champagne &amp; Limousines" Margin="10" Foreground="Black" FontSize="18"/>
+                                <TextBlock Text="Gestion des comptes" FontFamily="Champagne &amp; Limousines" Margin="10" Foreground="Black" FontSize="18"/>
                             </StackPanel>
                         </Button>
                     </ListBoxItem>
@@ -94,9 +94,7 @@
                 </ListBox>
             </StackPanel>
         </Grid>
-        <Frame x:Name="TecFrame" Background="#55313131" Grid.ColumnSpan="2" Margin="254,3,10,0" Grid.RowSpan="2"  />
-
-
+        <Frame  x:Name="TecFrame" Background="#55313131" Grid.ColumnSpan="2" Margin="254,3,10,0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" NavigationUIVisibility="Hidden" />
     </Grid>
 
 </Page>
