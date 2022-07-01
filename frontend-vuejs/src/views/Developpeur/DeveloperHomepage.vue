@@ -16,12 +16,12 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import HomePage from "../../components/Developpeur/HomePage.vue";
-import ComponentPage from "../../components/Developpeur/ComponentPage.vue";
+import ComponentsPage from "../../components/Developpeur/ComponentsPage.vue";
 
 @Component({
     components: {
         HomePage,
-        ComponentPage
+        ComponentsPage
     },
 })
 
