@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const expressWs = require('express-ws')(app);
+
 require('events').EventEmitter.defaultMaxListeners = 15;
 
 
@@ -9,16 +11,7 @@ const logger = require("morgan");
 
 const port = 3031;
 
-const RestaurantsRouter = require("./routes/posts/RestaurantRouter");
-const ClientsRouter = require("./routes/posts/ClientRouter");
-const DeliverymansRouter = require("./routes/posts/DeliverymanRouter");
-const OrdersRouter = require("./routes/posts/OrderRouter");
-const ArticlesRouter = require("./routes/posts/ArticleRouter");
-const StatsRouter = require("./routes/posts/StatsRouter");
-const NotificationsRouter = require("./routes/posts/NotificationRouter");
-const CategoriesRouter = require("./routes/posts/CategoryRouter");
-const MenusRouter = require("./routes/posts/MenuRouter");
-const PerformancesRouter = require("./routes/posts/PerformanceRouter");
+
 
 app.use(logger("dev"));
 app.use(cors());
@@ -36,6 +29,17 @@ db.mongoose.connect(db.url, db.options)
         process.exit();
     });
 
+const RestaurantsRouter = require("./routes/posts/RestaurantRouter");
+const ClientsRouter = require("./routes/posts/ClientRouter");
+const DeliverymansRouter = require("./routes/posts/DeliverymanRouter");
+const OrdersRouter = require("./routes/posts/OrderRouter");
+const ArticlesRouter = require("./routes/posts/ArticleRouter");
+const StatsRouter = require("./routes/posts/StatsRouter");
+const CategoriesRouter = require("./routes/posts/CategoryRouter");
+const MenusRouter = require("./routes/posts/MenuRouter");
+const PerformancesRouter = require("./routes/posts/PerformanceRouter");
+const DevelopersRouter = require("./routes/posts/DevelopersRouter");
+
 app.use("/restaurants", RestaurantsRouter);
 app.use("/articles", ArticlesRouter);
 app.use("/orders", OrdersRouter);
@@ -44,8 +48,8 @@ app.use("/menus", MenusRouter);
 app.use("/performance", PerformancesRouter);
 app.use("/deliverymans", DeliverymansRouter);
 app.use("/clients", ClientsRouter);
-app.use("/notifications", NotificationsRouter);
 app.use("/categories", CategoriesRouter);
+app.use("/developers", DevelopersRouter);
 
 app.listen(port, function () {
     console.log("Runnning on " + port);

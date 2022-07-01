@@ -13,7 +13,6 @@ let RestaurantSchema = new Schema(
         Name: String,
         Type: String,
         CoverImg : String,
-        ProfileImg: String,
         hours: {
             monday: {
                 isOpen: Boolean,
@@ -76,7 +75,7 @@ let RestaurantSchema = new Schema(
             Number: String,
             Street: String,
             Town: String,
-            Code: Number
+            Code: String
         },
         Phone: String,
         Legal: {

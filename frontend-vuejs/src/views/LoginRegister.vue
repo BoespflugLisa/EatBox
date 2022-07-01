@@ -14,17 +14,18 @@
                     <LoginComponent class="pb-15 pl-5 pr-5"/>
                 </v-tab-item>
                 <v-tab-item>
-                    <RegisterComponentR class="pb-15 pl-5 pr-5" v-if="this.type.type==='Restaurant'"/>
-                    <!--            <RegisterComponentL class="pb-15 pl-5 pr-5" v-if="this.type==='Livreur'"/>
-                                    <RegisterComponentC class="pb-15 pl-5 pr-5" v-if="this.type==='Client'"/>-->
+                    <register-restaurant class="pb-15 pl-5 pr-5" v-if="this.type.type === 'Restaurant'"/>
+                    <register-deliveryman class="pb-15 pl-5 pr-5" v-if="this.type.type === 'Livreur'"/>
+                    <register-client class="pb-15 pl-5 pr-5" v-if="this.type.type === 'Client'"/>
+                    <register-dev class="pb-15 pl-5 pr-5" v-if="this.type.type === 'Developpeur'"/>
                 </v-tab-item>
 
             </v-tabs>
         </div>
-        <div v-else class="text-center">
-            <p>Je suis un...</p>
+        <div v-else class="text-center mt-7">
+            <h1>Je suis un...</h1>
             <div v-for="(type, index) in types" :key="index">
-                <v-btn color="secondary" class="mt-7" rounded v-on:click=setForms(index)>
+                <v-btn color="secondary" width="150px" class="mt-7" rounded v-on:click=setForms(index)>
                     {{ type }}
                 </v-btn>
             </div>
@@ -37,13 +38,19 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import LoginComponent from '../components/LoginComponent.vue'
-import RegisterComponentR from "../components/Restaurateur/RegisterComponent.vue";
+import RegisterRestaurant from "../components/Register/RegisterRestaurant.vue";
+import RegisterDeliveryman from "../components/Register/RegisterDeliveryman.vue";
+import RegisterClient from "../components/Register/RegisterClient.vue";
+import RegisterDev from "../components/Register/RegisterDev.vue";
 import {setRole} from '../utils/auth'
 
 @Component({
     components: {
         LoginComponent,
-        RegisterComponentR,
+        RegisterRestaurant,
+        RegisterDeliveryman,
+        RegisterClient,
+        RegisterDev,
     },
 })
 
@@ -55,7 +62,7 @@ export default class LoginRegister extends Vue {
         {tab: "Se Connecter"},
         {tab: "Créer un compte"},
     ]
-    types = ["Restaurant", "Client", "Livreur"]
+    types = ["Restaurant", "Client", "Livreur", "Developpeur"]
     type = {
         chosen: false,
         type: ""
@@ -68,7 +75,7 @@ export default class LoginRegister extends Vue {
         this.$emit('change-theme')
     }
 
-    choose(){
+    choose() {
         this.type.chosen = !this.type.chosen
         this.type.type = ""
     }

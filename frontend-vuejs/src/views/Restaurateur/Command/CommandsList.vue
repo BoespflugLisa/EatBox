@@ -50,8 +50,19 @@ export default class CommandsList extends Vue {
         history: OrdersHistory,
     }
 
+    orderConnection: WebSocket | null = null;
+
     mounted () {
-        this.$axios.get(`orders`)
+        this.getData()
+        this.connectOrderWS();
+    }
+
+    beforeDestroy() {
+        this.orderConnection?.close()
+    }
+
+    async getData() {
+        await this.$axios.get(`orders`)
             .then(response => {
                 this.orders = response.data.orders;
                 this.incomingOrders = response.data.ordersToAcceptByRestaurant;
@@ -60,7 +71,7 @@ export default class CommandsList extends Vue {
                 this.ordersWithDeliveryman = response.data.ordersInDelivery;
                 this.ordersFinished = response.data.ordersOver;
                 this.$refs.incoming.getOrders(this.incomingOrders);
-            })
+            });
     }
 
     getOrdersInPreparation() {
@@ -71,6 +82,19 @@ export default class CommandsList extends Vue {
         this.$refs.history.getOrders(this.ordersWithDeliveryman, this.ordersFinished);
     }
 
+    async connectOrderWS() {
+        if (this.orderConnection === null) {
+            this.orderConnection = new WebSocket("ws://localhost:3031/orders/socket/" + this.$cookies.get('role') + "/" + this.$cookies.get("user_id"))
+        }
+
+        this.orderConnection.onmessage = () => {
+            this.getData()
+        }
+
+        this.orderConnection.onclose = () => {
+            this.orderConnection = null
+        }
+    }
 }
 
 

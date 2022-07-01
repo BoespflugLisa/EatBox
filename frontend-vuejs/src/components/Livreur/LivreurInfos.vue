@@ -38,12 +38,12 @@
         </div>
 
         <v-file-input v-else
-            show-size v-model="editedProfileImg"
-            truncate-length="15"
-            prepend-icon="mdi-image"
-            label="Image de profil"
-            @change="uploadImg()"
-            accept="image/*"
+                      show-size v-model="editedProfileImg"
+                      truncate-length="15"
+                      prepend-icon="mdi-image"
+                      label="Image de profil"
+                      @change="uploadImg()"
+                      accept="image/*"
         />
 
         <div class="d-flex mt-3 justify-space-between">
@@ -197,6 +197,41 @@
             </validation-provider>
         </validation-observer>
 
+        <v-divider class="mt-4 mb-4"/>
+
+        <div class="d-flex justify-center mb-3">
+            <v-btn color="error" rounded @click="openConfirmDelete()">
+                Supprimer mon compte
+            </v-btn>
+        </div>
+
+        <v-dialog v-model="showDialogConfirmDelete" width="600px">
+            <v-card>
+                <v-card-title>
+                    Comfirmez-vous la suppression de votre compte ?
+                </v-card-title>
+                <v-card-text class="red--text">
+                    Attention, cette action sera irréversible !
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn
+                        text
+                        @click="showDialogConfirmDelete = !showDialogConfirmDelete"
+                    >
+                        Annuler
+                    </v-btn>
+                    <v-spacer/>
+                    <v-btn
+                        text
+                        color="error"
+                        @click="deleteAccount()"
+                    >
+                        Supprimer
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
         <eatbox-snackbar ref="snack"/>
     </div>
 </template>
@@ -205,6 +240,7 @@
 import {Component, Vue} from 'vue-property-decorator';
 import {ValidationObserver, ValidationProvider} from "vee-validate";
 import EatboxSnackbar from "../Snack/EatboxSnackbar.vue";
+import {logoutUser} from "../../utils/auth";
 
 @Component({
     components: {
@@ -255,6 +291,8 @@ export default class LivreurInfos extends Vue {
     loadingBank = false
     editedAccountName = ""
     editedIban = ""
+
+    showDialogConfirmDelete = false
 
     getData(data, id) {
         this.deliverymanId = id;
@@ -327,7 +365,7 @@ export default class LivreurInfos extends Vue {
     }
 
     updateDeliveryman() {
-        this.$axios.put("/deliverymans/" + this.deliverymanId, {data : this.deliverymanInfos}).then(() => {
+        this.$axios.put("/deliverymans/" + this.deliverymanId, {data: this.deliverymanInfos}).then(() => {
             this.$refs.snack.openSnackbar("Mise à jour efféctué avec succès", "success");
         }).catch(() => {
             this.$refs.snack.openSnackbar("Erreur lors de la mise à jour", "error");
@@ -340,6 +378,19 @@ export default class LivreurInfos extends Vue {
             this.editInfo = false;
             this.editContact = false;
             this.editBank = false;
+        })
+    }
+
+    openConfirmDelete() {
+        this.showDialogConfirmDelete = true;
+    }
+
+    deleteAccount() {
+        this.$axios.delete("/deliverymans/" + this.$cookies.get('user_id')).then(() => {
+            this.$axios_login.delete('/' + this.$cookies.get('_id')).then(() => {
+                logoutUser()
+                this.$router.push('/connexion')
+            })
         })
     }
 

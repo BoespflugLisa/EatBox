@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@types/chart.js": "^2.9.37",
+    "@vue-stripe/vue-stripe": "^4.4.2",
     "axios": "^0.27.2",
     "chart.js": "^3.8.0",
     "core-js": "^3.8.3",
@@ -18,6 +19,7 @@
     "number-shortener": "^1.0.1",
     "vee-validate": "^3.4.14",
     "vue": "^2.6.14",
+    "vue-ccard": "^1.0.6",
     "vue-class-component": "^7.2.3",
     "vue-cookies": "^1.8.1",
     "vue-property-decorator": "^9.1.2",

@@ -34,6 +34,8 @@ db.mongoose.model('LivreurModel', LivreursSchema, "deliverymen")
 const ClientSchema = require('../service-databaseNoSQL/models/Client').schema
 db.mongoose.model("ClientModel", ClientSchema, 'clients');
 
+const DeveloperSchema = require('../service-databaseNoSQL/models/Developer').schema
+db.mongoose.model("DeveloperModel", DeveloperSchema, 'developers');
 
 /*const RestaurantsModel = require("../service-databaseNoSQL/models/Restaurant");
 const OrdersModel = require("../service-databaseNoSQL/models/Order");

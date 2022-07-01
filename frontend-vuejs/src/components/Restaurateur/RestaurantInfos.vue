@@ -32,8 +32,6 @@
 
         <div class="mt-3 img-container" v-if="!editImg">
             <v-img height="200px" width="100%" :src="this.restaurantInfos.CoverImg" class="rounded-lg"/>
-            <v-img class="rounded-circle profile-img" height="150px" width="150px"
-                   :src="this.restaurantInfos.ProfileImg"/>
         </div>
 
         <div v-else>
@@ -43,16 +41,6 @@
                 truncate-length="15"
                 prepend-icon="mdi-image-area"
                 label="Image de couverture"
-                @change="uploadImg()"
-                accept="image/*"
-            />
-
-
-            <v-file-input
-                show-size v-model="editedProfileImg"
-                truncate-length="15"
-                prepend-icon="mdi-image"
-                label="Image de profil"
                 @change="uploadImg()"
                 accept="image/*"
             />
@@ -269,6 +257,41 @@
             </validation-provider>
         </validation-observer>
 
+        <v-divider class="mt-4 mb-4"/>
+
+        <div class="d-flex justify-center mb-3">
+            <v-btn color="error" rounded @click="openConfirmDelete()">
+                Supprimer mon compte
+            </v-btn>
+        </div>
+
+        <v-dialog v-model="showDialogConfirmDelete" width="600px">
+            <v-card>
+                <v-card-title>
+                    Comfirmez-vous la suppression de votre compte ?
+                </v-card-title>
+                <v-card-text class="red--text">
+                    Attention, cette action sera irréversible !
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn
+                        text
+                        @click="showDialogConfirmDelete = !showDialogConfirmDelete"
+                    >
+                        Annuler
+                    </v-btn>
+                    <v-spacer/>
+                    <v-btn
+                        text
+                        color="error"
+                        @click="deleteAccount()"
+                    >
+                        Supprimer
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
         <eatbox-snackbar ref="snack"/>
     </div>
 </template>
@@ -278,6 +301,7 @@ import {Component, Vue} from 'vue-property-decorator';
 import SelectSchedule from './SelectSchedule.vue'
 import {ValidationObserver, ValidationProvider} from "vee-validate";
 import EatboxSnackbar from "../Snack/EatboxSnackbar.vue";
+import {logoutUser} from "../../utils/auth";
 
 @Component({
     components: {
@@ -302,7 +326,6 @@ export default class RestaurantInfos extends Vue {
     restaurantInfos = {
         Name: "",
         Phone: "",
-        ProfileImg: "",
         CoverImg: "",
         belongs_to: {
             Email: "",
@@ -326,8 +349,6 @@ export default class RestaurantInfos extends Vue {
     loadingImg = false
     editedCoverImg = null
     resultCoverImg: ArrayBuffer | string | null = null
-    editedProfileImg = null
-    resultProfileImg: ArrayBuffer | string | null = null
 
     editInfo = false
     loadingInfo = false
@@ -350,6 +371,8 @@ export default class RestaurantInfos extends Vue {
     editedBic = ""
     editedIban = ""
 
+    showDialogConfirmDelete = false
+
     getData(data, id) {
         this.restaurantId = id;
         this.restaurantInfos = data;
@@ -362,15 +385,6 @@ export default class RestaurantInfos extends Vue {
 
     uploadImg() {
         const reader = new FileReader();
-        if (this.editedProfileImg !== null) {
-            reader.onloadend = () => {
-                this.resultProfileImg = reader.result;
-            }
-            reader.readAsDataURL(this.editedProfileImg);
-        } else {
-            this.resultProfileImg = null;
-        }
-
         if (this.editedCoverImg !== null) {
             reader.onloadend = () => {
                 this.resultCoverImg = reader.result;
@@ -401,13 +415,9 @@ export default class RestaurantInfos extends Vue {
     }
 
     updateImg() {
-        if (this.resultCoverImg !== null || this.resultProfileImg !== null) {
+        if (this.resultCoverImg !== null) {
             this.loadingImg = true;
-            if (this.resultCoverImg !== null)
-                this.restaurantInfos.CoverImg = this.resultCoverImg.toString();
-
-            if (this.resultProfileImg !== null)
-                this.restaurantInfos.ProfileImg = this.resultProfileImg.toString();
+            this.restaurantInfos.CoverImg = this.resultCoverImg.toString();
 
             this.updateRestaurant();
         }
@@ -466,6 +476,19 @@ export default class RestaurantInfos extends Vue {
             this.editInfo = false;
             this.editContact = false;
             this.editBank = false;
+        })
+    }
+
+    openConfirmDelete() {
+        this.showDialogConfirmDelete = true;
+    }
+
+    deleteAccount() {
+        this.$axios.delete("/restaurants/" + this.$cookies.get('user_id')).then(() => {
+            this.$axios_login.delete('/' + this.$cookies.get('_id')).then(() => {
+                logoutUser()
+                this.$router.push('/connexion')
+            })
         })
     }
 

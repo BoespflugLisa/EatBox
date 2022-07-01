@@ -16,9 +16,16 @@
             </router-link>
 
             <v-btn v-if="this.$cookies.get('auth')" icon to="/notifications">
-                <v-icon color="white">
-                    mdi-bell
-                </v-icon>
+                <v-badge
+                    :content="notifDisplay"
+                    :value="notifDisplay"
+                    color="red"
+                    overlap
+                >
+                    <v-icon color="white">
+                        mdi-bell
+                    </v-icon>
+                </v-badge>
             </v-btn>
         </v-app-bar>
 
@@ -38,11 +45,13 @@
                 </v-btn>
             </div>
             <!--  MENU @Restaurant-->
-            <RestaurantSidebar v-if="this.$cookies.get('role')==='Restaurant'"/>
+            <restaurant-sidebar v-if="this.$cookies.get('role') ==='Restaurant'"/>
+            <client-sidebar v-if="this.$cookies.get('role') ==='Client'"/>
+            <deliveryman-sidebar v-on:no-order="showSnackNoOrder()" v-if="this.$cookies.get('role') ==='Livreur'"/>
             <template v-slot:append>
                 <div class="d-flex justify-center flex-column pa-5">
                     <v-btn
-                        to="/mon_Restaurant?tab=2"
+                        :to="role === 'Restaurant' ? '/MonRestaurant?tab=2' : '/MonProfil?tab=1'"
                         color="tertiary black--text"
                         class="pr-10 pl-10"
                     >
@@ -87,7 +96,12 @@
         </v-navigation-drawer>
 
         <div class="content">
-            <router-view v-on:change-theme="changeTheme()"/>
+            <router-view
+                v-on:change-theme="changeTheme()"
+                v-on:remove-notif="removeNotification()"
+                v-on:remove-all-notif="removeAllNotification()"
+            />
+            <eatbox-snackbar ref="snack"/>
         </div>
     </v-app>
 </template>
@@ -95,7 +109,10 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import {ValidationObserver, ValidationProvider} from 'vee-validate';
-import RestaurantSidebar from "./components/Restaurateur/RestaurantSidebar.vue"
+import RestaurantSidebar from "./components/SideBar/RestaurantSidebar.vue"
+import ClientSidebar from "./components/SideBar/ClientSidebar.vue"
+import DeliverymanSidebar from "./components/SideBar/DeliverymanSidebar.vue"
+import EatboxSnackbar from "./components/Snack/EatboxSnackbar.vue";
 import {logoutUser} from './utils/auth.js'
 
 @Component({
@@ -103,17 +120,34 @@ import {logoutUser} from './utils/auth.js'
         ValidationObserver,
         ValidationProvider,
         RestaurantSidebar,
+        ClientSidebar,
+        DeliverymanSidebar,
+        EatboxSnackbar,
     },
 })
 
 export default class App extends Vue {
+    $refs!: {
+        snack: EatboxSnackbar,
+    }
 
     eatBoxLogo = '';
     drawer = false;
     value = '';
+    notifCount = 0;
+    notifDisplay: number | string = 0;
+
+    role = this.$cookies.get('role');
+
+    notificationConnection: WebSocket | null = null;
 
     mounted() {
         this.changeTheme()
+        this.getNotificationCount()
+    }
+
+    updated() {
+        this.connectNotificationWS()
     }
 
     logout() {
@@ -153,15 +187,65 @@ export default class App extends Vue {
                 break;
 
             default:
-                this.$vuetify.theme.themes.light.primary = '#2D5D62';
-                this.$vuetify.theme.themes.light.secondary = '#77A8A3';
-                this.$vuetify.theme.themes.light.accent = '#A1C7C7';
+                this.$vuetify.theme.themes.light.primary = '#09a5d5';
+                this.$vuetify.theme.themes.light.secondary = '#13c2d2';
+                this.$vuetify.theme.themes.light.accent = '#acbbbb';
                 this.$vuetify.theme.themes.light.tertiary = '#B9D3CD';
                 this.eatBoxLogo = require('./assets/img/EatBox.png');
                 break;
         }
     }
 
+    getNotificationCount() {
+        if (this.$cookies.get("auth")) {
+            this.$axios_notifications.get("/notifications/userCount/" + this.$cookies.get('user_id')).then(response => {
+                this.notifCount = response.data.count;
+                if (response.data.count > 9)
+                    this.notifDisplay = "9+";
+                else
+                    this.notifDisplay = response.data.count;
+            });
+        }
+    }
+
+    removeNotification() {
+        this.notifCount--;
+        if (this.notifCount > 9)
+            this.notifDisplay = "9+";
+        else
+            this.notifDisplay = this.notifCount;
+    }
+
+    removeAllNotification() {
+        this.notifCount = 0;
+        this.notifDisplay = 0;
+    }
+
+    addNotification() {
+        this.notifCount++;
+        if (this.notifCount > 9)
+            this.notifDisplay = "9+";
+        else
+            this.notifDisplay = this.notifCount;
+    }
+
+    async connectNotificationWS() {
+        if (this.$cookies.get("auth") && this.notificationConnection === null) {
+            this.notificationConnection = await new WebSocket("ws://localhost:3033/notifications/socket/notifications/" + this.$cookies.get("user_id"));
+
+            this.notificationConnection.onmessage = () => {
+                this.addNotification();
+            }
+
+            this.notificationConnection.onclose = () => {
+                this.notificationConnection = null;
+            }
+        }
+    }
+
+    showSnackNoOrder() {
+        this.$refs.snack.openSnackbar("Vous n'avez pas encore choisi de commande. Rendez-vous sur la liste des commandes pour en accepter une.", "warning");
+    }
 
 }
 </script>

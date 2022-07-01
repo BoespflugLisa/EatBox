@@ -16,16 +16,17 @@ export function registerUser(form) {
                     email: form.email,
                     password: form.password,
                     type: form.type,
-                    username: form.username,
+                    name: form.name,
+                    lastname: form.lastname,
                     legal: form.legal,
                     role: form.role,
                     phone: form.phone,
                     CoverImg : form.CoverImg,
-                    ProfileImg : form.ProfileImg
+                    ProfileImg : form.ProfileImg,
+                    address: form.address,
+                    iban: form.iban,
                 }
             })
-
-            console.log(res)
 
             /*setAuthToken(res.data.auth, res.data.token)
             setRole(res.data.user.Role)
@@ -58,7 +59,6 @@ export function loginUser(username, password, role) {
                             password: password,
                         }
                     }).then(response => {
-                        console.log(response)
                         if(!response.data.user.user_id){
                             throw "Il n'y a pas de compte restaurant sous cet e-mail"
                         }
@@ -85,7 +85,6 @@ export function loginUser(username, password, role) {
                             Role : role
                         }
                     }).then(response => {
-                        console.log(response)
                         if(!response.data.user.user_id){
                             throw "Il n'y a pas de compte client sous cet e-mail"
                         }
@@ -112,7 +111,6 @@ export function loginUser(username, password, role) {
                             Role : role
                         }
                     }).then(response => {
-                        console.log(response)
                         if(!response.data.user.user_id){
                             throw "Il n'y a pas de compte livreur sous cet e-mail"
                         }
@@ -125,6 +123,32 @@ export function loginUser(username, password, role) {
                         resolve()
                     }).catch(function(error){
                         //console.error('Erreur lors de la connexion:', error)
+                        throw error
+                    })
+                    break;
+
+                case "Developpeur":
+                    res = await axios({
+                        url: `${REST_ENDPOINT}login`,
+                        method: 'POST',
+                        data: {
+                            email: username,
+                            password: password,
+                            Role : role
+                        }
+                    }).then(response => {
+                        if(!response.data.user.user_id){
+                            throw "Il n'y a pas de compte developpeur sous cet e-mail"
+                        }
+                        setUser({
+                            id: response.data.user._id,
+                            client_id: response.data.user.user_id,
+                        })
+                        setRole(role)
+                        setAuthToken(response.data.auth, response.data.token)
+                        resolve()
+                    }).catch(function(error){
+                        console.error('Erreur lors de la connexion:', error)
                         throw error
                     })
                     break;

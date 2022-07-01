@@ -8,15 +8,14 @@ let OrderSchema = new Schema(
         Payment : String,
         Rating: Number,
         Restaurant : {type:Schema.Types.ObjectId, ref: 'RestaurantModel'},
-        Client : {
-            Client_ID : {type: Schema.Types.ObjectId, ref:'ClientModel'},
-            Favorite : Boolean,
-        },
+        Client : {type: Schema.Types.ObjectId, ref:'ClientModel'},
+        Deliveryman_token : String,
         Complementary : String,
         Detail : {
             Price : Number,
             Menus : {type: [Schema.Types.ObjectId], ref:"MenuModel"},
             Articles : {type: [Schema.Types.ObjectId], ref:"ArticleModel"},
+            Paid : Boolean,
         },
         CheckTime : {
             Created_at : Date,
@@ -24,6 +23,7 @@ let OrderSchema = new Schema(
             Ready_at: Date,
             Pickedup_at: Date,
             Delivered_at: Date,
+            Cancelled_at: Date,
         },
     }
 );

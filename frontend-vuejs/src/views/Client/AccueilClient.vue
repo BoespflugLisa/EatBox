@@ -1,7 +1,7 @@
 <template>
     <div class="side-padding">
 
-        <h2 class=" align-self text-center"> Restaurants près de chez vous</h2>
+        <h2 class="align-self text-center mt-7"> Restaurants près de chez vous</h2>
 
         <v-card
 
@@ -65,10 +65,6 @@ export default class AccueilClient extends Vue {
 
 
     showRestoDetail(resto) {
-
-
-
-
         this.$router.push({name: 'ClientRestaurantDetail', params: {id: resto._id}});
 
     }

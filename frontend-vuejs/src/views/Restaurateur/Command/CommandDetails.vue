@@ -22,98 +22,142 @@
                         {{ this.client.Name }}
                         <span v-if="this.order.Client.Favorite === true">⭐</span>
                     </p>
-                    <p v-if="this.order.State === 1">Commande à réaliser pour : {{ HoursFormater(order, this.order.CheckTime.Accepted_at) }}</p>
-                    <p v-else-if="this.order.State === 2">Commande prête depuis : {{ HoursFormater(order, this.order.CheckTime.Ready_at) }}</p>
-                <div>
-                    <div class="d-flex justify-space-between mr-5">
-                        <p class="font-weight-bold font-18">
-                            Détails de la commande :
-                        </p>
-                    </div>
+                    <p v-if="this.order.State === 1">Commande à réaliser pour :
+                        {{ HoursFormater(order, this.order.CheckTime.Accepted_at) }}</p>
+                    <p v-else-if="this.order.State === 2">Commande prête depuis :
+                        {{ HoursFormater(order, this.order.CheckTime.Ready_at) }}</p>
+                    <div>
+                        <div class="d-flex justify-space-between mr-5">
+                            <p class="font-weight-bold font-18">
+                                Détails de la commande :
+                            </p>
+                        </div>
 
-                    <div v-if="this.menus !== null">
-                        <p class="font-weight-bold">
-                            Menus
-                        </p>
-                        <ul v-for="(menu, indexMenu) in this.menus" :key="indexMenu">
-                            <li>
-                                {{ menu.Name }}
-                            </li>
-                        </ul>
-                    </div>
+                        <div v-if="this.menus !== null">
+                            <p class="font-weight-bold">
+                                Menus
+                            </p>
+                            <ul v-for="(menu, indexMenu) in this.menus" :key="indexMenu">
+                                <li>
+                                    {{ menu.Name }}
+                                </li>
+                            </ul>
+                        </div>
 
-                    <div v-if="this.articles !== null">
-                        <p class="font-weight-bold">
-                            Articles
-                        </p>
-                        <ul v-for="(article, indexArticle) in this.articles" :key="indexArticle">
-                            <li>
-                                {{ article.Name }}
-                            </li>
-                        </ul>
+                        <div v-if="this.articles !== null">
+                            <p class="font-weight-bold">
+                                Articles
+                            </p>
+                            <ul v-for="(article, indexArticle) in this.articles" :key="indexArticle">
+                                <li>
+                                    {{ article.Name }}
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div class="mt-3">
+                    <div class="mt-3">
                                 <span class="font-18 font-weight-bold">
                                     Prix total :
                                 </span>
-                    <span>{{ this.order.Detail.Price }} €</span>
-                    <div v-if="this.order.Complementary !== ''">
-                        <v-divider class="ma-auto" width="50%"></v-divider>
-                        <div class="mt-3 mb-3">
-                            <p class="font-18 font-weight-bold">
-                                Informations complémentaires :
-                            </p>
-                            <p class="font-14 font-italic">
-                                {{ this.order.Complementary }}
-                            </p>
+                        <span>{{ this.order.Detail.Price }} €</span>
+                        <div v-if="this.order.Complementary !== ''">
+                            <v-divider class="ma-auto" width="50%"></v-divider>
+                            <div class="mt-3 mb-3">
+                                <p class="font-18 font-weight-bold">
+                                    Informations complémentaires :
+                                </p>
+                                <p class="font-14 font-italic">
+                                    {{ this.order.Complementary }}
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div v-if="this.order.State === 0" class="d-flex flex-row justify-center">
+                        <div class="large-screen">
+                            <v-btn rounded color="secondary" @click="RefuseOrder()" class="ma-2"
+                                   width="100px">
+                                Refuser
+                            </v-btn>
+                            <v-btn rounded color="secondary" @click="validateOrder()" class="ma-2"
+                                   width="100px">
+                                Accepter
+                            </v-btn>
+                        </div>
+                        <div class="small-screen">
+                            <v-btn rounded color="secondary" @click="RefuseOrder()" class="ma-2"
+                                   width="30%">
+                                <v-icon>
+                                    mdi-close
+                                </v-icon>
+                            </v-btn>
+                            <v-btn rounded color="secondary" @click="validateOrder()" class="ma-2"
+                                   width="30%">
+                                <v-icon>
+                                    mdi-check
+                                </v-icon>
+                            </v-btn>
                         </div>
                     </div>
 
-                </div>
-
-                <div v-if="this.order.State === 0" class="d-flex flex-row justify-center">
-                    <v-btn rounded color="secondary" @click="RefuseOrder()" class="ma-2"
-                           width="30%">
-                        Refuser
-                    </v-btn>
-                    <v-btn rounded color="secondary" @click="validateOrder()" class="ma-2"
-                           width="30%">
-                        Accepter
-                    </v-btn>
-                </div>
-
-                <div v-if="this.order.State === 1"
-                     class="d-flex flex-row justify-center">
-                    <v-btn rounded color="secondary" @click="goBack()" class="ma-2" width="30%">
-                        Retour
-                    </v-btn>
-                    <v-btn rounded color="secondary" @click="orderIsReady(Date.now())" class="ma-2"
-                           width="30%">
-                        Prêt!
-                    </v-btn>
-                </div>
-                <div class="d-flex">
-                    <div class="button-position" v-if="this.order.State === 2">
-                        <p class="font-16">Le livreur est présent ?</p>
-                        <p class="font-14 font-italic">Scannez son QrCode :</p>
-                        <v-btn @click="scanQrCode(Date.now())" class="ma-2">
-                            <v-icon>
-                                mdi-qrcode-scan
-                            </v-icon>
-                        </v-btn>
+                    <div v-if="this.order.State === 1"
+                         class="d-flex flex-row justify-center">
+                        <div class="large-screen">
+                            <v-btn rounded color="secondary" @click="goBack()" class="ma-2" width="100px">
+                                Retour
+                            </v-btn>
+                            <v-btn rounded color="secondary" @click="orderIsReady(Date.now())" class="ma-2"
+                                   width="100px">
+                                Prêt!
+                            </v-btn>
+                        </div>
+                        <div class="small-screen">
+                            <v-btn rounded color="secondary" @click="goBack()" class="ma-2" width="30%">
+                                <v-icon>
+                                    mdi-keyboard-backspace
+                                </v-icon>
+                            </v-btn>
+                            <v-btn rounded color="secondary" @click="orderIsReady(Date.now())" class="ma-2"
+                                   width="30%">
+                                <v-icon>
+                                    mdi-basket-check
+                                </v-icon>
+                            </v-btn>
+                        </div>
                     </div>
-                </div>
-
-
-                <div>
-                    <div v-if="this.order.State === 4" class="d-flex flex-row justify-center">
-                        <v-btn rounded color="secondary" @click="goBack()" class="ma-2"
-                               width="30%">
-                            Retour
-                        </v-btn>
+                    <div class="d-flex">
+                        <div class="button-position" v-if="this.order.State === 2">
+                            <p class="font-16">Le livreur est présent ?</p>
+                            <p class="font-14 font-italic">Scannez son QrCode :</p>
+                            <v-btn @click="scanQrCode()" class="ma-2">
+                                <v-icon>
+                                    mdi-qrcode-scan
+                                </v-icon>
+                            </v-btn>
+                        </div>
                     </div>
-                </div>
+
+                    <v-dialog
+                        v-model="checkDeliveryman"
+                        width="500"
+                        eager
+                    >
+                        <v-card>
+                            <scan-restaurant ref="scan"/>
+                        </v-card>
+
+                    </v-dialog>
+
+
+                    <div>
+                        <div v-if="this.order.State === 4" class="d-flex flex-row justify-center">
+                            <v-btn rounded color="secondary" @click="goBack()" class="ma-2"
+                                   width="30%">
+                                Retour
+                            </v-btn>
+                        </div>
+                    </div>
                 </v-card-text>
             </v-card>
         </div>
@@ -124,10 +168,13 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import moment from "moment";
+import ScanRestaurant from "../../../components/Restaurateur/ScanRestaurant.vue";
 
 
 @Component({
-    components: {}
+    components: {
+        ScanRestaurant,
+    }
 })
 
 export default class CommandsDetails extends Vue {
@@ -136,8 +183,15 @@ export default class CommandsDetails extends Vue {
     client = null;
     menus: Array<never> = [];
     articles = [];
+    checkDeliveryman = false;
+
+    $refs!: {
+        scan: ScanRestaurant,
+    }
 
     created() {
+        this.$cookies.remove('menus')
+        this.$cookies.remove('articles')
         this.orderID = this.$route.params.id;
     }
 
@@ -147,16 +201,21 @@ export default class CommandsDetails extends Vue {
                 this.order = response.data.order;
                 this.menus = response.data.order.Detail.Menus;
                 this.articles = response.data.order.Detail.Articles;
-                this.client = response.data.order.Client.Client_ID;
+                this.client = response.data.order.Client;
             })
     }
 
+    updated () {
+        if (!this.checkDeliveryman){
+            this.$refs.scan.pause();
+        }
+    }
+
     HoursFormater(order, orderTime) {
-        if (order.State === 1){
+        if (order.State === 1) {
             const preparationTime = moment(orderTime).add(moment.duration(30, 'minutes'))
             return preparationTime.format('HH:mm');
-        }
-        else if (order.State === 2){
+        } else if (order.State === 2) {
             return moment(orderTime).format('HH:mm');
         }
     }
@@ -166,6 +225,27 @@ export default class CommandsDetails extends Vue {
         this.$axios.put(`orders/` + this.order._id, {data: this.order}).then(response => {
             response.data;
         })
+
+        this.$axios_notifications.post("/notifications/" + this.order.Client._id, {
+            data: {
+                action: "CanceledOrder",
+                Types: {
+                    Command: true,
+                    Delivery: false,
+                }
+            }
+        }).then(() => {
+            this.$axios_notifications.post("/notifications/" + this.order.Deliveryman_token, {
+                data: {
+                    action: "CanceledOrder",
+                    Types: {
+                        Command: true,
+                        Delivery: false,
+                    }
+                }
+            });
+        });
+
         this.goBack();
     }
 
@@ -175,6 +255,26 @@ export default class CommandsDetails extends Vue {
         this.$axios.put(`orders/` + this.order._id, {data: this.order}).then(response => {
             response.data;
         })
+
+        this.$axios_notifications.post("/notifications/" + this.order.Client._id, {
+            data: {
+                action: "OrderAcceptedRestaurant",
+                Types: {
+                    Command: true,
+                    Delivery: false,
+                }
+            }
+        }).then(() => {
+            this.$axios_notifications.post("/notifications/" + this.order.Deliveryman_token, {
+                data: {
+                    action: "OrderAcceptedRestaurantDelivery",
+                    Types: {
+                        Command: true,
+                        Delivery: false,
+                    }
+                }
+            });
+        });
     }
 
     orderIsReady(readyDate) {
@@ -183,14 +283,31 @@ export default class CommandsDetails extends Vue {
         this.$axios.put(`orders/` + this.order._id, {data: this.order}).then(response => {
             response.data;
         })
+
+        this.$axios_notifications.post("/notifications/" + this.order.Client._id, {
+            data: {
+                action: "DeliverymanWillTakeOrder",
+                Types: {
+                    Command: false,
+                    Delivery: true,
+                }
+            }
+        }).then(() => {
+            this.$axios_notifications.post("/notifications/" + this.order.Deliveryman_token, {
+                data: {
+                    action: "OrderReady",
+                    Types: {
+                        Command: true,
+                        Delivery: false,
+                    }
+                }
+            });
+        });
     }
 
-    scanQrCode(PickedupDate){
-        this.order.State = 3;
-        this.order.CheckTime.Pickedup_at = PickedupDate;
-        this.$axios.put(`orders/` + this.order._id, {data: this.order}).then(response => {
-            response.data;
-        })
+    scanQrCode() {
+        this.checkDeliveryman = true;
+        this.$refs.scan.getOrderToDeliver(this.order);
     }
 
     goBack() {
@@ -206,5 +323,31 @@ export default class CommandsDetails extends Vue {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+}
+
+
+@media screen and (max-width: 960px) {
+
+    .large-screen {
+        display: none;
+    }
+
+    .small-screen {
+        display: flex;
+        justify-content: space-around;
+    }
+}
+
+@media screen and (min-width: 960px) {
+
+    .large-screen {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 2%;
+    }
+
+    .small-screen {
+        display: none;
+    }
 }
 </style>

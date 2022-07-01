@@ -5,11 +5,12 @@
         </div>
         <div class="d-flex justify-center  mt-5">
             <v-btn
-              elevation="2"
-              outlined
-              x-large
-              @click="free=true"
-              class="ma-auto align-content-center align-self text-center">
+                elevation="2"
+                x-large
+                @click="$emit('open-to-work')"
+                class="ma-auto align-content-center align-self text-center"
+                color="primary"
+            >
                 Open to work
             </v-btn>
         </div>
@@ -33,7 +34,7 @@ export default class OpenToWork extends Vue {
 <style scoped>
 
 #openToWork {
-    background-image: url("../assets/img/undraw_on_the_way_re_swjt.svg");
+    background-image: url("../../assets/img/undraw_on_the_way_re_swjt.svg");
     background-position: center;
     background-size: contain;
     width: 300px;

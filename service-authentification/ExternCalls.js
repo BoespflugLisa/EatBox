@@ -18,6 +18,10 @@ function createProfile(newUser) {
         case "Livreur":
             chemin = "deliverymans"
             break;
+
+        case "Developpeur":
+            chemin = "developers"
+            break;
     }
 
     return new Promise(async (resolve, reject) => {
@@ -30,13 +34,29 @@ function createProfile(newUser) {
                 data: newUser
             })
 
-            console.log(res.data.restaurant);
-            stats = await axios({
-                url: `${REST_ENDPOINT}/stats/${res.data.restaurant._id}`,
-                method: 'POST'
-            })
+            switch (newUser.Role) {
+                case 'Restaurant':
+                    stats = await axios({
+                        url: `${REST_ENDPOINT}/stats/${res.data.restaurant._id}`,
+                        method: 'POST'
+                    })
+                    await UserModel.findByIdAndUpdate(newUser._id, {restaurant: new mongoose.Types.ObjectId(res.data.restaurant._id)})
+                    break;
 
-            await UserModel.findByIdAndUpdate(newUser._id, {restaurant: new mongoose.Types.ObjectId(res.data.restaurant._id)})
+                case 'Client':
+                    await UserModel.findByIdAndUpdate(newUser._id, {client: new mongoose.Types.ObjectId(res.data.client._id)})
+                    break;
+
+                case 'Livreur':
+                    await UserModel.findByIdAndUpdate(newUser._id, {livreur: new mongoose.Types.ObjectId(res.data.deliveryman._id)})
+                    break;
+
+                case 'Developpeur':
+                    await UserModel.findByIdAndUpdate(newUser._id, {developpeur: new mongoose.Types.ObjectId(res.data.developer._id)})
+                    break;
+            }
+
+
             resolve()
         } catch (err) {
             console.error('Erreur lors de l\'inscription du restaurant: ', err)
