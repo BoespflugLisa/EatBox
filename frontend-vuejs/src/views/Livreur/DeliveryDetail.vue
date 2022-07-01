@@ -53,7 +53,7 @@
             <v-card-title>QR code de la commande</v-card-title>
             <v-card-text>
                 <div class="align-center d-flex justify-center">
-                    <vue-qr :text=this.token :callback="test" qid="testid"></vue-qr>
+                    <vue-qr :text=this.token qid="testid"></vue-qr>
                 </div>
             </v-card-text>
         </v-card>
