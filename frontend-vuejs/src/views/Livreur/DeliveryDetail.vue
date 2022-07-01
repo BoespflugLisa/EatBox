@@ -163,7 +163,7 @@ export default {
                     }
                 })
             })
-            this.$axios.get('/deliveryman/' + this.$cookies.get('user_id')).then((response) => {
+            this.$axios.get('/deliverymans/' + this.$cookies.get('user_id')).then((response) => {
                 response.data.deliveryman.Free = true;
                 this.$axios.put("/deliverymans/" + this.$cookies.get('user_id'), {data: response.data.deliveryman})
             })
