@@ -14,6 +14,7 @@ router.post("/:id", async(req, res) => {
             Free: true,
             AccountName: "",
             IBAN: req.body.IBAN,
+            Role: req.body.Role,
         });
 
         deliveryman = await deliveryman.save();

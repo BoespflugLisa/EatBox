@@ -187,9 +187,9 @@ export default class App extends Vue {
                 break;
 
             default:
-                this.$vuetify.theme.themes.light.primary = '#2D5D62';
-                this.$vuetify.theme.themes.light.secondary = '#77A8A3';
-                this.$vuetify.theme.themes.light.accent = '#A1C7C7';
+                this.$vuetify.theme.themes.light.primary = '#09a5d5';
+                this.$vuetify.theme.themes.light.secondary = '#13c2d2';
+                this.$vuetify.theme.themes.light.accent = '#acbbbb';
                 this.$vuetify.theme.themes.light.tertiary = '#B9D3CD';
                 this.eatBoxLogo = require('./assets/img/EatBox.png');
                 break;

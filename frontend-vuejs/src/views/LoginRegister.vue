@@ -17,6 +17,7 @@
                     <register-restaurant class="pb-15 pl-5 pr-5" v-if="this.type.type === 'Restaurant'"/>
                     <register-deliveryman class="pb-15 pl-5 pr-5" v-if="this.type.type === 'Livreur'"/>
                     <register-client class="pb-15 pl-5 pr-5" v-if="this.type.type === 'Client'"/>
+                    <register-dev class="pb-15 pl-5 pr-5" v-if="this.type.type === 'Developpeur'"/>
                 </v-tab-item>
 
             </v-tabs>
@@ -40,6 +41,7 @@ import LoginComponent from '../components/LoginComponent.vue'
 import RegisterRestaurant from "../components/Register/RegisterRestaurant.vue";
 import RegisterDeliveryman from "../components/Register/RegisterDeliveryman.vue";
 import RegisterClient from "../components/Register/RegisterClient.vue";
+import RegisterDev from "../components/Register/RegisterDev.vue";
 import {setRole} from '../utils/auth'
 
 @Component({
@@ -47,7 +49,8 @@ import {setRole} from '../utils/auth'
         LoginComponent,
         RegisterRestaurant,
         RegisterDeliveryman,
-        RegisterClient
+        RegisterClient,
+        RegisterDev,
     },
 })
 
@@ -59,7 +62,7 @@ export default class LoginRegister extends Vue {
         {tab: "Se Connecter"},
         {tab: "Créer un compte"},
     ]
-    types = ["Restaurant", "Client", "Livreur"]
+    types = ["Restaurant", "Client", "Livreur", "Developpeur"]
     type = {
         chosen: false,
         type: ""

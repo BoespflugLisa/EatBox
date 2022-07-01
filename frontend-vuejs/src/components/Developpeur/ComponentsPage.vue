@@ -7,10 +7,10 @@
             <v-card class="d-flex justify-space-between">
                 <div>
                     <v-card-title>
-                        {{ component.Name }}
+                        {{ component.Name}}
                     </v-card-title>
                     <v-card-text class="font-14">
-                        {{ component.tipInstallation }}
+                        {{component.tipInstallation}}
                     </v-card-text>
                 </div>
                 <v-card-actions class="mr-3">
@@ -24,6 +24,7 @@
     </div>
 
 
+
 </template>
 
 
@@ -31,10 +32,11 @@
 import {Component, Vue} from 'vue-property-decorator';
 
 @Component({
-    components: {},
+    components: {
+    },
 })
 
-export default class ComponentsPage extends Vue {
+export default class ComponentsPage extends Vue{
     name = "ComponentsPage"
 
     components = [{

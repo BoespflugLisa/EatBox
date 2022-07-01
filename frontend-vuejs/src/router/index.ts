@@ -27,6 +27,10 @@ const routes: Array<RouteConfig> = [
                 case "Livreur":
                     next({name: 'DeliveryList'})
                     break;
+
+                case "Developpeur":
+                    next({name: 'DeveloperHomepage'})
+                    break;
             }
         }
     },
@@ -133,7 +137,7 @@ const routes: Array<RouteConfig> = [
         path: '/AccueilDeveloppeur',
         name: 'DeveloperHomepage',
         component: () => import('../views/Developpeur/DeveloperHomepage.vue'),
-        // meta: {requiresAuth: true, isUser: 'Developpeur'},
+        meta: {requiresAuth: true, isUser: 'Developpeur'},
     },
 
     // COMMUN
