@@ -57,6 +57,7 @@ export function loginUser(username, password, role) {
                         data: {
                             email: username,
                             password: password,
+                            Role: role
                         }
                     }).then(response => {
                         if(!response.data.user.user_id){
