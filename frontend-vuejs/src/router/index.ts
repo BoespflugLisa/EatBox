@@ -27,6 +27,10 @@ const routes: Array<RouteConfig> = [
                 case "Livreur":
                     next({name: 'DeliveryList'})
                     break;
+
+                case "Developpeur":
+                    next()
+                    break;
             }
         }
     },
