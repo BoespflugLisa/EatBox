@@ -265,9 +265,6 @@ router.post('/loginRestaurant', async (req, res) => {
                 .catch(error => console.log(error));
         }
 
-        LogConnectionModel
-
-
         user = {
             _id: user._id,
             Role: req.body.Role,
