@@ -29,7 +29,7 @@ export default class ProfileClientView extends Vue {
         infos: ClientInfos,
     }
 
-    clientId = "62b4165cbb0065eb42293774"/*this.$cookies.get('client_id')*/
+    clientId = this.$cookies.get('user_id')
 
     client = {}
 
