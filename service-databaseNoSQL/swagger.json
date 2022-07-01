@@ -1,0 +1,269 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "0.1.0",
+        "title": "EatBox - Micro service BDD NoSQL",
+        "description": "API permettant de récupérer les informations présentent dans la vase de données NoSQL de EatBox.",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:3031",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Restaurants",
+            "description": "API pour les restaurants"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/restaurants/": {
+            "get": {
+                "tags": [
+                    "Restaurants"
+                ],
+                "description": "Recupère tous les restaurants",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Restaurant"
+                        }
+                    }
+                }
+            }
+        },
+        "/restaurants/{_id}": {
+            "get": {
+                "tags": [
+                    "Restaurants"
+                ],
+                "description": "Recupère le restaurant avec son id",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path",
+                        "description": "Id du restaurant",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Restaurant"
+                        }
+                    }
+                }
+            }
+        },
+        "/restaurants/menus/{_id}": {
+            "get": {
+                "tags": [
+                    "Restaurants"
+                ],
+                "description": "Recupère tous les menus d'un restaurant",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path",
+                        "description": "Id du restaurant",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "example": "[]"
+                        }
+                    }
+                }
+            }
+        },
+        "/restaurants/articles/{_id}": {
+            "get": {
+                "tags": [
+                    "Restaurants"
+                ],
+                "description": "Recupère tous les aticles d'un restaurant",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path",
+                        "description": "Id du restaurant",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "example": "[]"
+                        }
+                    }
+                }
+            }
+        },
+        "/restaurants/add/{_id}": {
+            "post": {
+                "tags": [
+                    "Restaurants"
+                ],
+                "description": "POST un restaurant",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path",
+                        "description": "Id du user_login",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Restaurant"
+                        }
+                    }
+                }
+            }
+        },
+        "/restaurants/update/{_id}": {
+            "put": {
+                "tags": [
+                    "Restaurants"
+                ],
+                "description": "PUT un restaurant",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path",
+                        "description": "Id du restaurant",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "Restaurant mis à jour",
+                        "schema": {
+                            "$ref": "#/definitions/Restaurant"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "OK",
+                        "schema": {
+                            "example": "Restaurant updates successfully"
+                        }
+                    }
+                }
+            }
+        },
+        "/restaurants/delete/{_id}": {
+            "delete": {
+                "tags": [
+                    "Restaurants"
+                ],
+                "description": "PUT un restaurant",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path",
+                        "description": "Id du restaurant",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "OK",
+                        "schema": {
+                            "example": "Restaurant updates successfully"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Restaurant": {
+            "required": [
+                "Name",
+                "_id",
+                "Type",
+                "CoverImg"
+            ],
+            "properties": {
+                "_id": {
+                    "type": "integer",
+                    "uniqueItems": true
+                },
+                "Name": {
+                    "type": "string",
+                    "description": "Nom du restaurant"
+                },
+                "Type": {
+                    "type": "string",
+                    "description": "Type de nourriture proposée"
+                },
+                "CoverImg": {
+                    "type": "string",
+                    "description": "Image de couverture du restaurant"
+                },
+                "Phone": {
+                    "type": "string",
+                    "description": "Téléphone du restaurant"
+                },
+                "Address": {
+                    "type": "object",
+                    "properties": {
+                        "Number": {
+                            "type": "string"
+                        },
+                        "Street": {
+                            "type": "string"
+                        },
+                        "Town": {
+                            "type": "string"
+                        },
+                        "Code": {
+                            "type": "string"
+                        }
+                    },
+                    "description": "Adresse du restaurant"
+                },
+                "Legal": {
+                    "type": "object",
+                    "properties": {
+                        "AccountName": {
+                            "type": "string"
+                        },
+                        "IBAN": {
+                            "type": "string"
+                        },
+                        "SIRET": {
+                            "type": "string"
+                        },
+                        "BIC": {
+                            "type": "string"
+                        }
+                    },
+                    "description": "Information légal du restaurant"
+                }
+            }
+        }
+    }
+}

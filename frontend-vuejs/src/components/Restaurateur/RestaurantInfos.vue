@@ -463,7 +463,7 @@ export default class RestaurantInfos extends Vue {
     }
 
     updateRestaurant() {
-        this.$axios.put("restaurants/" + this.restaurantId, {data: this.restaurantInfos}).then(() => {
+        this.$axios.put("restaurants/update/" + this.restaurantId, {data: this.restaurantInfos}).then(() => {
             this.$refs.snack.openSnackbar("Mise à jour efféctué avec succès", "success");
         }).catch(() => {
             this.$refs.snack.openSnackbar("Erreur lors de la mise à jour", "error");
@@ -484,7 +484,7 @@ export default class RestaurantInfos extends Vue {
     }
 
     deleteAccount() {
-        this.$axios.delete("/restaurants/" + this.$cookies.get('user_id')).then(() => {
+        this.$axios.delete("/restaurants/delete/" + this.$cookies.get('user_id')).then(() => {
             this.$axios_login.delete('/' + this.$cookies.get('_id')).then(() => {
                 logoutUser()
                 this.$router.push('/connexion')

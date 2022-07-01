@@ -8,7 +8,7 @@ function createProfile(newUser) {
     let chemin = ""
     switch (newUser.Role) {
         case "Restaurant":
-            chemin = "restaurants"
+            chemin = "restaurants/add"
             break;
 
         case "Client":

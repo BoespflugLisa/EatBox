@@ -5,7 +5,7 @@ const MenuModel = require("../../models/Menu")
 const ArticleModel = require("../../models/Article")
 const CategoryModel = require("../../models/Category").model;
 
-router.post("/:id", async (req, res) => {
+router.post("/add/:id", async (req, res) => {
     try {
         let restaurant = new RestaurantModel({
             Name: req.body.Name,
@@ -198,7 +198,7 @@ router.get("/:id", async (req, res) => {
 })
 
 
-router.put("/:id", async (req, res) => {
+router.put("/update/:id", async (req, res) => {
     try {
         RestaurantModel.findOneAndUpdate({_id: req.params.id}, req.body.data).then(
             () => {
@@ -215,7 +215,7 @@ router.put("/:id", async (req, res) => {
 
 })
 
-router.delete('/:id', function (req, res) {
+router.delete('/delete/:id', function (req, res) {
     try {
         RestaurantModel.findByIdAndDelete(req.params.id).then(() => {
             res.status(204).json({

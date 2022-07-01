@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 const expressWs = require('express-ws')(app);
 
+const swaggerUi = require("swagger-ui-express"),
+    swaggerDocument = require("./swagger.json");
+
 require('events').EventEmitter.defaultMaxListeners = 15;
 
 
@@ -10,7 +13,6 @@ const bodyParser = require("body-parser");
 const logger = require("morgan");
 
 const port = 3031;
-
 
 
 app.use(logger("dev"));
@@ -28,6 +30,13 @@ db.mongoose.connect(db.url, db.options)
         console.log("Cannot connect to the database!", err);
         process.exit();
     });
+
+
+app.use(
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerDocument, { explorer: true })
+);
 
 const RestaurantsRouter = require("./routes/posts/RestaurantRouter");
 const ClientsRouter = require("./routes/posts/ClientRouter");
@@ -50,6 +59,7 @@ app.use("/deliverymans", DeliverymansRouter);
 app.use("/clients", ClientsRouter);
 app.use("/categories", CategoriesRouter);
 app.use("/developers", DevelopersRouter);
+
 
 app.listen(port, function () {
     console.log("Runnning on " + port);
