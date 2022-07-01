@@ -63,6 +63,7 @@ router.get("/", async (req, res) => {
             ordersOver,
             ordersRefused,
         });
+
     } catch (err) {
         res.status(400).json({
             status: 400,
@@ -162,36 +163,36 @@ router.ws('/socket/:type/:id', async function (ws, req) {
     console.log('connected')
 
     OrderModel.watch().on('change', async (data) => {
-        if (data.operationType === "insert" && ws.type === 'Livreur') {
+        if (data.operationType === "insert" && (ws.type === 'Livreur' || ws.type === "Commercial")) {
             console.log('true')
             ws.send("New order");
         } else if (data.operationType === "update") {
             let order = await OrderModel.findById(data.documentKey._id)
             switch (order.State) {
                 case 0:
-                    if (ws.id === order.Client.toString() || ws.id === order.Restaurant.toString())
+                    if (ws.id === order.Client.toString() || ws.id === order.Restaurant.toString() || ws.type === "Commercial")
                         ws.send("Order updated");
                     break;
 
                 case 1:
                 case 3:
                 case 4:
-                    if (ws.id === order.Client.toString())
+                    if (ws.id === order.Client.toString() || ws.type === "Commercial")
                         ws.send("Order updated");
                     break;
 
-                case 2   :
-                    if (ws.id === order.Client.toString() || ws.id === order.Deliveryman_token)
+                case 2:
+                    if (ws.id === order.Client.toString() || ws.id === order.Deliveryman_token || ws.type === "Commercial")
                         ws.send("Order updated");
                     break;
 
-                case 6   :
-                    if (ws.id === order.Client.toString() || ws.id === order.Restaurant.toString() || ws.id === order.Deliveryman_token)
+                case 6:
+                    if (ws.id === order.Client.toString() || ws.id === order.Restaurant.toString() || ws.id === order.Deliveryman_token || ws.type === "Commercial")
                         ws.send("Order refused");
                     break;
 
             }
-            if (ws.id === order.Client.toString() || ws.id === order.Restaurant.toString() || ws.id === order.Deliveryman_token) {
+            if (ws.id === order.Client.toString() || ws.id === order.Restaurant.toString() || ws.id === order.Deliveryman_token || ws.type === "Commercial") {
                 ws.send("Order update");
             }
         }
