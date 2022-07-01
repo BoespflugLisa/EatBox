@@ -39,6 +39,9 @@ export default class ScanRestaurant extends Vue {
         Deliveryman_token: "",
         CheckTime: {
             Pickedup_at: Date.now(),
+        },
+        Client: {
+            _id: ""
         }
     }
 
@@ -70,11 +73,19 @@ export default class ScanRestaurant extends Vue {
 
             this.order.State = 3;
             this.order.CheckTime.Pickedup_at = Date.now();
-            this.$axios.put(`orders/` + this.order._id, {data: this.order}).then(response => {
-                response.data;
+
+            await this.$axios_notifications.post("/notifications/" + this.order.Client._id, {
+                data: {
+                    action: "OrderIsComming",
+                    Types: {
+                        Command: true,
+                        Delivery: false,
+                    }
+                }
             })
+
             await this.timeout(2000);
-            this.$router.push('/commandes');
+            await this.$router.push('/commandes');
 
         } else {
             this.result = "QrCode incorrect! Réessayez."

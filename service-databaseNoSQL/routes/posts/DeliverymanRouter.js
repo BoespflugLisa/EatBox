@@ -10,7 +10,7 @@ router.post("/:id", async(req, res) => {
             Phone: req.body.Phone,
             belongs_to: req.params.id,
             ProfileImg: req.body.ProfileImg,
-            Open_to_work: true,
+            Open_to_work: false,
             Free: true,
             AccountName: "",
             IBAN: req.body.IBAN,

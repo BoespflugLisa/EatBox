@@ -57,6 +57,10 @@ export default class CommandsList extends Vue {
         this.connectOrderWS();
     }
 
+    beforeDestroy() {
+        this.orderConnection?.close()
+    }
+
     async getData() {
         await this.$axios.get(`orders`)
             .then(response => {
@@ -84,7 +88,6 @@ export default class CommandsList extends Vue {
         }
 
         this.orderConnection.onmessage = () => {
-            console.log('message from ws')
             this.getData()
         }
 

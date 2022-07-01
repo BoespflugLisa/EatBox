@@ -225,6 +225,27 @@ export default class CommandsDetails extends Vue {
         this.$axios.put(`orders/` + this.order._id, {data: this.order}).then(response => {
             response.data;
         })
+
+        this.$axios_notifications.post("/notifications/" + this.order.Client._id, {
+            data: {
+                action: "CanceledOrder",
+                Types: {
+                    Command: true,
+                    Delivery: false,
+                }
+            }
+        }).then(() => {
+            this.$axios_notifications.post("/notifications/" + this.order.Deliveryman_token, {
+                data: {
+                    action: "CanceledOrder",
+                    Types: {
+                        Command: true,
+                        Delivery: false,
+                    }
+                }
+            });
+        });
+
         this.goBack();
     }
 
@@ -234,6 +255,26 @@ export default class CommandsDetails extends Vue {
         this.$axios.put(`orders/` + this.order._id, {data: this.order}).then(response => {
             response.data;
         })
+
+        this.$axios_notifications.post("/notifications/" + this.order.Client._id, {
+            data: {
+                action: "OrderAcceptedRestaurant",
+                Types: {
+                    Command: true,
+                    Delivery: false,
+                }
+            }
+        }).then(() => {
+            this.$axios_notifications.post("/notifications/" + this.order.Deliveryman_token, {
+                data: {
+                    action: "OrderAcceptedRestaurantDelivery",
+                    Types: {
+                        Command: true,
+                        Delivery: false,
+                    }
+                }
+            });
+        });
     }
 
     orderIsReady(readyDate) {
@@ -242,6 +283,26 @@ export default class CommandsDetails extends Vue {
         this.$axios.put(`orders/` + this.order._id, {data: this.order}).then(response => {
             response.data;
         })
+
+        this.$axios_notifications.post("/notifications/" + this.order.Client._id, {
+            data: {
+                action: "DeliverymanWillTakeOrder",
+                Types: {
+                    Command: false,
+                    Delivery: true,
+                }
+            }
+        }).then(() => {
+            this.$axios_notifications.post("/notifications/" + this.order.Deliveryman_token, {
+                data: {
+                    action: "OrderReady",
+                    Types: {
+                        Command: true,
+                        Delivery: false,
+                    }
+                }
+            });
+        });
     }
 
     scanQrCode() {
