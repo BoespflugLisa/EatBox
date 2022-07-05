@@ -1,0 +1,22 @@
+{
+    "name": "api-gateway",
+    "version": "1.0.0",
+    "description": "EatBox API gateway",
+    "main": "index.js",
+    "scripts": {
+        "watch": "nodemon --ext *",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.18.1",
+        "http-proxy-middleware": "^2.0.6",
+        "morgan": "^1.10.0"
+    },
+    "devDependencies": {
+        "connect-livereload": "^0.6.1",
+        "livereload": "^0.9.3",
+        "nodemon": "^2.0.16"
+    }
+}

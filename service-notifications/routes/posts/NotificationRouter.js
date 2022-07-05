@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.post("/:id", async (req, res) => {
     try {
+        console.log('test')
         let notification = new NotificationModel({
                 "Date": new Date(),
                 "Read": false,
@@ -141,17 +142,16 @@ router.get("/:id", async (req, res) => {
         });
         if (notification) {
             res.status(200).json({
-                status: 200,
-                data: notification,
+                notification,
+            });
+        } else {
+            res.status(404).json({
+                status: 404,
+                message: "La notification n'a pas été trouvé.",
             });
         }
-        res.status(400).json({
-            status: 400,
-            message: "La notification n'a pas été trouvé.",
-        });
     } catch (err) {
         res.status(400).json({
-            status: 400,
             message: err.message,
         })
     }
