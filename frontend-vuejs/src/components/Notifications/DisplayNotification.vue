@@ -91,7 +91,7 @@ export default class RestaurateurNotification extends Vue {
     getNotifications() {
         this.command = [];
         this.deliveryman = [];
-        this.$axios_notifications.get("/notifications/user/" + this.userId).then(response => {
+        this.$axios.get("/notifications/user/" + this.userId).then(response => {
             response.data.notifications.forEach(notification => {
                 if (notification.Types.Command) {
                     this.command.push(notification);
@@ -122,7 +122,7 @@ export default class RestaurateurNotification extends Vue {
     }
 
     readAll() {
-        this.$axios_notifications.put("notifications/user/" + this.userId + "/readAll").then(() => {
+        this.$axios.put("notifications/user/" + this.userId + "/readAll").then(() => {
             this.command = []
             this.deliveryman = []
             this.$emit('remove-all-notif')
@@ -139,7 +139,7 @@ export default class RestaurateurNotification extends Vue {
                 break;
         }
         notif.Read = true;
-        this.$axios_notifications.put("notifications/" + notif._id, {data: notif}).then(() => {
+        this.$axios.put("notifications/" + notif._id, {data: notif}).then(() => {
             this.$emit('remove-notif')
         }).catch(() => {
             this.$refs.snack.openSnackbar("Erreur lors de la suppression de la notification", "error")

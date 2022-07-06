@@ -153,7 +153,7 @@ export default {
         finishDelivery() {
             this.order.State = 4
             this.$axios.put('orders/' + this.orderID, {data: this.order}).then(() => {
-                this.$axios_notifications.post("/notifications/" + this.order.Client._id, {
+                this.$axios.post("/notifications/" + this.order.Client._id, {
                     data: {
                         action: "OrderIsFinish",
                         Types: {

@@ -13,27 +13,23 @@ Vue.use(VueCookies, {expire : '1d'});
 
 Vue.config.productionTip = false
 
-const axios_nosql = axios.create({
-    baseURL:'http://localhost:3031',
+const axios_gateway = axios.create({
+    baseURL:'http://localhost:3000',
 });
 
 const axios_login = axios.create({
     baseURL:'http://localhost:3032',
 });
 
-const axios_notifications = axios.create({
-    baseURL:'http://localhost:3000',
-});
 
-Vue.prototype.$axios = axios_nosql;
+
+Vue.prototype.$axios = axios_gateway;
 Vue.prototype.$axios_login = axios_login;
-Vue.prototype.$axios_notifications = axios_notifications;
 
 declare module 'vue/types/vue' {
     interface Vue {
         $axios: AxiosStatic;
         $axios_login: AxiosStatic;
-        $axios_notifications: AxiosStatic;
     }
 }
 

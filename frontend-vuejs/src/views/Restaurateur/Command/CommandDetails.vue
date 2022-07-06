@@ -226,7 +226,7 @@ export default class CommandsDetails extends Vue {
             response.data;
         })
 
-        this.$axios_notifications.post("/notifications/" + this.order.Client._id, {
+        this.$axios.post("/notifications/" + this.order.Client._id, {
             data: {
                 action: "CanceledOrder",
                 Types: {
@@ -235,7 +235,7 @@ export default class CommandsDetails extends Vue {
                 }
             }
         }).then(() => {
-            this.$axios_notifications.post("/notifications/" + this.order.Deliveryman_token, {
+            this.$axios.post("/notifications/" + this.order.Deliveryman_token, {
                 data: {
                     action: "CanceledOrder",
                     Types: {
@@ -256,7 +256,7 @@ export default class CommandsDetails extends Vue {
             response.data;
         })
 
-        this.$axios_notifications.post("/notifications/" + this.order.Client._id, {
+        this.$axios.post("/notifications/" + this.order.Client._id, {
             data: {
                 action: "OrderAcceptedRestaurant",
                 Types: {
@@ -265,7 +265,7 @@ export default class CommandsDetails extends Vue {
                 }
             }
         }).then(() => {
-            this.$axios_notifications.post("/notifications/" + this.order.Deliveryman_token, {
+            this.$axios.post("/notifications/" + this.order.Deliveryman_token, {
                 data: {
                     action: "OrderAcceptedRestaurantDelivery",
                     Types: {
@@ -284,7 +284,7 @@ export default class CommandsDetails extends Vue {
             response.data;
         })
 
-        this.$axios_notifications.post("/notifications/" + this.order.Client._id, {
+        this.$axios.post("/notifications/" + this.order.Client._id, {
             data: {
                 action: "DeliverymanWillTakeOrder",
                 Types: {
@@ -293,7 +293,7 @@ export default class CommandsDetails extends Vue {
                 }
             }
         }).then(() => {
-            this.$axios_notifications.post("/notifications/" + this.order.Deliveryman_token, {
+            this.$axios.post("/notifications/" + this.order.Deliveryman_token, {
                 data: {
                     action: "OrderReady",
                     Types: {

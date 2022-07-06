@@ -160,7 +160,7 @@ export default class DeliveryList extends Vue {
         this.deliveryman.Free = false;
         this.$axios.put('/deliverymans/' + this.deliverymanId, {data: this.deliveryman});
 
-        this.$axios_notifications.post("/notifications/" + order.Restaurant, {
+        this.$axios.post("/notifications/" + order.Restaurant, {
             data: {
                 action: "NewOrder",
                 Types: {
@@ -169,7 +169,7 @@ export default class DeliveryList extends Vue {
                 }
             }
         }).then(() => {
-            this.$axios_notifications.post("/notifications/" + order.Client._id, {
+            this.$axios.post("/notifications/" + order.Client._id, {
                 data: {
                     action: "OrderAcceptedDeliveryman",
                     Types: {
