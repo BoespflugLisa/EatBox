@@ -41,7 +41,6 @@ app.use(
 const RestaurantsRouter = require("./routes/posts/RestaurantRouter");
 const ClientsRouter = require("./routes/posts/ClientRouter");
 const DeliverymansRouter = require("./routes/posts/DeliverymanRouter");
-const OrdersRouter = require("./routes/posts/OrderRouter");
 const ArticlesRouter = require("./routes/posts/ArticleRouter");
 const StatsRouter = require("./routes/posts/StatsRouter");
 const CategoriesRouter = require("./routes/posts/CategoryRouter");
@@ -52,7 +51,6 @@ const LogsConnectionRouter = require("./routes/posts/LogsConnectionRouter");
 
 app.use("/restaurants", RestaurantsRouter);
 app.use("/articles", ArticlesRouter);
-app.use("/orders", OrdersRouter);
 app.use("/stats", StatsRouter);
 app.use("/menus", MenusRouter);
 app.use("/performance", PerformancesRouter);

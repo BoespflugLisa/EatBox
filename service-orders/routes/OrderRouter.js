@@ -1,5 +1,5 @@
 const express = require("express");
-const OrderModel = require("../../models/Order")
+const OrderModel = require("../models/Order")
 const router = express.Router();
 
 router.post("/:id", async (req, res) => {
@@ -28,7 +28,6 @@ router.post("/:id", async (req, res) => {
                 },
             }
         );
-        console.log(order)
         order = await order.save();
         res.status(200).json({
             order,
@@ -101,7 +100,6 @@ router.get('/deliverymanCurrentOrder/:id', async (req, res) => {
             Deliveryman_token: req.params.id,
             $or: [{State: 0}, {State: 1}, {State: 2}, {State: 3}]
         })
-        console.log(order)
         if (order) {
             res.status(200).json({
                     order,
@@ -160,11 +158,9 @@ router.put("/:id", async (req, res) => {
 router.ws('/socket/:type/:id', async function (ws, req) {
     ws.id = req.params.id;
     ws.type = req.params.type;
-    console.log('connected')
 
     OrderModel.watch().on('change', async (data) => {
         if (data.operationType === "insert" && (ws.type === 'Livreur' || ws.type === "Commercial")) {
-            console.log('true')
             ws.send("New order");
         } else if (data.operationType === "update") {
             let order = await OrderModel.findById(data.documentKey._id)

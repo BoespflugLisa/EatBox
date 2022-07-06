@@ -22,7 +22,7 @@ const axios_login = axios.create({
 });
 
 const axios_notifications = axios.create({
-    baseURL:'http://localhost:3033',
+    baseURL:'http://localhost:3000',
 });
 
 Vue.prototype.$axios = axios_nosql;

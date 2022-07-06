@@ -20,7 +20,6 @@ db.url = config.dbUrl
 db.options = config.options;
 
 const RestaurantsModel = require("./models/Restaurant");
-const OrdersModel = require("./models/Order");
 const ArticlesModel = require("./models/Article");
 const StatsModel = require("./models/Stats")
 const MenusModel = require("./models/Menu");
