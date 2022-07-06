@@ -228,7 +228,7 @@
                 </v-dialog>
             </div>
         </div>
-        <div >
+        <div>
             <div class="d-flex flex-wrap">
                 <v-card
                     class="ml-2 mt-5 ml-2"
@@ -361,10 +361,10 @@
             </div>
             <div class="d-flex justify-center">
                 <v-btn
-                       v-if="loadingArticle"
-                       icon
-                       color="primary"
-                       :loading="loadingArticle"
+                    v-if="loadingArticle"
+                    icon
+                    color="primary"
+                    :loading="loadingArticle"
                 >
                     <v-icon>
                         mdi-loading
@@ -821,9 +821,9 @@ export default class ArticlesEtMenus extends Vue {
 
     getAllCategories() {
         this.loadingCategory = true;
-        return this.$axios.get(`categories`)
+        return this.$axios.get(`restaurants/categories/` + this.restaurantId)
             .then(response => {
-                this.categories = response.data.categories;
+                this.categories = response.data.categorie;
             }).finally(() => {
                 this.loadingCategory = false;
             })
@@ -831,9 +831,9 @@ export default class ArticlesEtMenus extends Vue {
 
     getAllArticles() {
         this.loadingArticle = true;
-        return this.$axios.get(`articles`)
+        return this.$axios.get(`restaurants/articles/` + this.restaurantId)
             .then(response => {
-                this.articles = response.data.articles;
+                this.articles = response.data.article;
             }).finally(() => {
                 this.loadingArticle = false;
             })
@@ -841,9 +841,9 @@ export default class ArticlesEtMenus extends Vue {
 
     getAllMenus() {
         this.loadingMenu = true;
-        return this.$axios.get(`menus`)
+        return this.$axios.get(`restaurants/menus/` + this.restaurantId)
             .then(response => {
-                this.menus = response.data.menus;
+                this.menus = response.data.menu;
             }).finally(() => this.loadingMenu = false)
     }
 
@@ -995,11 +995,11 @@ export default class ArticlesEtMenus extends Vue {
                 this.getAllArticles();
             })
         })
-        .finally(() => {
-             this.showDialogUpdateAndDeleteCategory = false;
-             this.showDialogConfirmDelete = false;
-             this.categoryToDelete = false;
-         });
+            .finally(() => {
+                this.showDialogUpdateAndDeleteCategory = false;
+                this.showDialogConfirmDelete = false;
+                this.categoryToDelete = false;
+            });
     }
 
     deleteMenu(menu) {
