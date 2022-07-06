@@ -1,9 +1,9 @@
 const express = require("express");
-const RestaurantModel = require("../../models/Restaurant").model
+const RestaurantModel = require("../models/Restaurant").model
 const router = express.Router();
-const MenuModel = require("../../models/Menu")
-const ArticleModel = require("../../models/Article")
-const CategoryModel = require("../../models/Category").model;
+const MenuModel = require("../models/Menu")
+const ArticleModel = require("../models/Article")
+const CategoryModel = require("../models/Category").model;
 
 router.post("/add/:id", async (req, res) => {
     try {

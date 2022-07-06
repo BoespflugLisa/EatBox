@@ -1,30 +1,31 @@
 const express = require("express");
-const ArticleModel = require("../../models/Article")
-const {model: CategoryModel} = require("../../models/Category");
-const RestaurantModel = require("../../models/Restaurant").model;
+const MenuModel = require("../models/Menu")
+const RestaurantModel = require("../models/Restaurant").model;
+const ArticleModel = require("../models/Article")
 const router = express.Router();
 
 
 router.post("/:id", async (req, res) => {
     try {
         let restaurant = await RestaurantModel.findById(req.params.id).exec();
-        let article = new ArticleModel({
-            made_by : restaurant._id,
-            Name : req.body.data.Name,
-            ArticleImg : req.body.data.ArticleImg,
-            Description : req.body.data.Description,
-            Price : req.body.data.Price,
-            Category: req.body.data.Category
+        let menu = new MenuModel({
+            made_by: restaurant._id,
+            Name: req.body.data.Name,
+            MenuImg: req.body.data.MenuImg,
+            Description: req.body.data.Description,
+            Price: req.body.data.Price,
+            Articles: req.body.data.Articles,
         })
-        if(!article.populated('made_by')){
-            await article.populate('made_by')
-                .then(p=>console.log(p))
-                .catch(error=>console.log(error));;
+        if (!menu.populated('made_by')) {
+            await menu.populate('made_by Articles')
+                .then(p => console.log(p))
+                .catch(error => console.log(error));
         }
-        article = await article.save();
-        console.log(article)
+        menu = await menu.save();
+        console.log(menu)
         res.status(200).json({
-            message: "L'article a été créé.",
+            message: "Le menu a été créé.",
+            menu,
         });
     } catch (err) {
         res.status(400).json({
@@ -36,9 +37,9 @@ router.post("/:id", async (req, res) => {
 
 router.get("/", async (req, res) => {
     try {
-        let articles = await ArticleModel.find();
+        let menus = await MenuModel.find().populate('Articles', 'Name').exec();
         res.status(200).json({
-            articles,
+            menus,
         });
     } catch (err) {
         res.status(400).json({
@@ -51,12 +52,11 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     try {
-        let article = await ArticleModel.findById(req.params.id)
-            .populate('Category', 'Name').exec();
-
-        if (article) {
+        let menu = await MenuModel.findById(req.params.id)
+            .populate('Articles', 'Name').exec();
+        if (menu) {
             res.status(200).json({
-                article,
+                menu,
             });
         }
     } catch (err) {
@@ -69,10 +69,10 @@ router.get("/:id", async (req, res) => {
 
 router.put("/:id", async(req, res) => {
     try {
-        ArticleModel.updateOne({_id: req.params.id}, req.body.data).then(
+        MenuModel.updateOne({_id: req.params.id}, req.body.data).then(
             () => {
                 res.status(204).json({
-                    message: 'Article updated successfully!'
+                    message: 'Menu updated successfully!'
                 });
             })
     }
@@ -86,10 +86,10 @@ router.put("/:id", async(req, res) => {
 
 router.delete('/:id', function(req, res, next) {
     try {
-        ArticleModel.deleteOne({_id: req.params.id}).then(
+        MenuModel.remove({_id: req.params.id}).then(
             () => {
                 res.status(204).json({
-                    message: 'Article deleted successfully!'
+                    message: 'Menu deleted successfully!'
                 });
             }
         )}

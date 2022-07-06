@@ -38,13 +38,13 @@ app.use(
     swaggerUi.setup(swaggerDocument, { explorer: true })
 );
 
-const RestaurantsRouter = require("./routes/posts/RestaurantRouter");
+const RestaurantsRouter = require("../service-restaurants/routes/RestaurantRouter");
 const ClientsRouter = require("./routes/posts/ClientRouter");
 const DeliverymansRouter = require("./routes/posts/DeliverymanRouter");
-const ArticlesRouter = require("./routes/posts/ArticleRouter");
+const ArticlesRouter = require("../service-restaurants/routes/ArticleRouter");
 const StatsRouter = require("./routes/posts/StatsRouter");
-const CategoriesRouter = require("./routes/posts/CategoryRouter");
-const MenusRouter = require("./routes/posts/MenuRouter");
+const CategoriesRouter = require("../service-restaurants/routes/CategoryRouter");
+const MenusRouter = require("../service-restaurants/routes/MenuRouter");
 const PerformancesRouter = require("./routes/posts/PerformanceRouter");
 const DevelopersRouter = require("./routes/posts/DevelopersRouter");
 const LogsConnectionRouter = require("./routes/posts/LogsConnectionRouter");

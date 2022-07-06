@@ -19,10 +19,10 @@ db.mongoose = mongoose;
 db.url = config.dbUrl
 db.options = config.options;
 
-const RestaurantsModel = require("./models/Restaurant");
-const ArticlesModel = require("./models/Article");
+const RestaurantsModel = require("../service-restaurants/models/Restaurant");
+const ArticlesModel = require("../service-restaurants/models/Article");
 const StatsModel = require("./models/Stats")
-const MenusModel = require("./models/Menu");
+const MenusModel = require("../service-restaurants/models/Menu");
 const PerformancesModel = require("./models/Perfomance");
 
 const UsersSchema =  require("../service-authentification/models/User").schema

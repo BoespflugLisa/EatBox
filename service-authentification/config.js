@@ -26,7 +26,7 @@ db.options = config.options;
 db.secret = config.secret;
 const UsersModel = require("./models/User");
 
-const RestaurantsSchema = require('../service-databaseNoSQL/models/Restaurant').schema
+const RestaurantsSchema = require('../service-restaurants/models/Restaurant').schema
 db.mongoose.model("RestaurantModel", RestaurantsSchema, "restaurants");
 
 const LivreursSchema = require('../service-databaseNoSQL/models/Deliveryman').schema
