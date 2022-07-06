@@ -178,7 +178,6 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     try {
         let restaurant = await RestaurantModel.findById(req.params.id)
-            .populate('belongs_to')
             //.then(p => console.log(p))
             //.catch(error => console.log(error));
 

@@ -308,6 +308,23 @@ router.get('/:token', function (req, res) {
     });
 });
 
+router.get('/users/:id', async function (req, res) {
+    try {
+        let user = await UserModel.model.findById(req.params.id)
+        if (user) {
+            res.status(200).json({
+                user,
+            });
+        }
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        })
+    }
+});
+
+
 router.delete('/:id', function (req, res) {
     try {
         UserModel.model.findByIdAndDelete(req.params.id).then(() => {

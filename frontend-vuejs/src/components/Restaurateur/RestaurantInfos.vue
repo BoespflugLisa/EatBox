@@ -179,7 +179,7 @@
             </validation-provider>
 
             <h3 class="mt-3 mb-3">Adresse mail</h3>
-            <p>{{ restaurantInfos.belongs_to.Email }}</p>
+            <p>{{ restaurantInfos.Email }}</p>
 
             <h3 class="mt-3 mb-3">Numéro de SIRET</h3>
             <p v-if="!editContact">{{ restaurantInfos.Legal.SIRET }}</p>
@@ -327,9 +327,7 @@ export default class RestaurantInfos extends Vue {
         Name: "",
         Phone: "",
         CoverImg: "",
-        belongs_to: {
-            Email: "",
-        },
+        Email: "",
         Address: {
             Number: 0,
             Street: "",
