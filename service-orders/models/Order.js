@@ -7,14 +7,14 @@ let OrderSchema = new Schema(
         State : Number,
         Payment : String,
         Rating: Number,
-        Restaurant : {type:Schema.Types.ObjectId, ref: 'RestaurantModel'},
-        Client : {type: Schema.Types.ObjectId, ref:'ClientModel'},
+        Restaurant : {type: Schema.Types.ObjectId},
+        Client : {type: Schema.Types.ObjectId},
         Deliveryman_token : String,
         Complementary : String,
         Detail : {
             Price : Number,
-            Menus : {type: [Schema.Types.ObjectId], ref:"MenuModel"},
-            Articles : {type: [Schema.Types.ObjectId], ref:"ArticleModel"},
+            Menus : {type: [Schema.Types.ObjectId]},
+            Articles : {type: [Schema.Types.ObjectId]},
             Paid : Boolean,
         },
         CheckTime : {

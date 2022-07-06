@@ -137,9 +137,7 @@ router.get("/userCount/:id", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     try {
-        let notification = await NotificationModel.findOne({
-            _id: req.params.id,
-        });
+        let notification = await NotificationModel.findById(req.params.id);
         if (notification) {
             res.status(200).json({
                 notification,
