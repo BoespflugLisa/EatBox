@@ -2,7 +2,9 @@ const express = require("express");
 const app = express();
 const expressWs = require('express-ws')(app);
 
-require('events').EventEmitter.defaultMaxListeners = 15;
+export const emitter = new events.EventEmitter();
+emitter.setMaxListeners(15);
+
 
 const cors = require("cors");
 const bodyParser = require("body-parser");

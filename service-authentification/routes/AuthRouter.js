@@ -212,11 +212,9 @@ router.post('/login', async (req, res) => {
 
         try {
             await utils.createLogConnection(user._id);
+        } catch (err) {
+            throw err;
         }
-        catch (err) {
-                throw err;
-        }
-
 
 
         res.status(200).json({
@@ -224,8 +222,6 @@ router.post('/login', async (req, res) => {
             token: token,
             user
         })
-
-
 
 
     } catch (err) {
