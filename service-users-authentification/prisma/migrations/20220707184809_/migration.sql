@@ -39,6 +39,7 @@ CREATE TABLE `Restaurants` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `fk_user` INTEGER NOT NULL,
     `Name` VARCHAR(191) NOT NULL,
+    `Phone` VARCHAR(191) NULL,
     `IBAN` VARCHAR(191) NULL,
     `Address` JSON NULL,
     `hours` JSON NULL,

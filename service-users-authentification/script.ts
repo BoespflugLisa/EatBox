@@ -12,9 +12,14 @@ app.use(cors());
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(express.json())
 
+const UsersRouter = require("../service-users-authentification/routes/UserRouter");
+app.use("/", UsersRouter);
+
 app.listen(port, function () {
     console.log("Runnning on " + port);
 });
+
+module.exports = app;
 
 /*
 // A `main` function so that you can use async/await

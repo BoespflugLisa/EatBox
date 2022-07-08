@@ -244,9 +244,8 @@ router.post('/register/delivery', async (req: any, res: any) => {
 })
 
 router.post('/login', async (req, res) => {
-
-
     try {
+        let token;
         let user = await prisma.users.findUnique({
             where: {
                 email: req.body.email
@@ -259,23 +258,25 @@ router.post('/login', async (req, res) => {
                 throw "Vos identifiants ne sont pas corrects"
             }
 
+
             let pwdIsValid = bcrypt.compareSync(
                 req.body.password,
                 user.Password
             );
 
-            if (!pwdIsValid) {
+            if (!pwdIsValid || user.role.title !== req.body.role) {
                 throw "Vos identifiants ne sont pas corrects"
             }
 
-            let token = jwt.sign({id: user.id}, process.env.SECRET, {expiresIn: 86400})
-
+            token = jwt.sign({id: user.id}, process.env.SECRET, {expiresIn: 86400})
             res.status(200).send({
                 auth: true,
                 token: token,
                 user
             })
+
         })
+
     } catch (err) {
         console.log(err)
         res.status(400).json({
@@ -286,4 +287,4 @@ router.post('/login', async (req, res) => {
 });
 
 
-
+module.exports = router;

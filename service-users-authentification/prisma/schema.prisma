@@ -46,6 +46,7 @@ model Restaurants {
   fk_user       Int
   Name          String
 
+  Phone         String?
   IBAN          String?
   Address       Json?
   hours         Json?
