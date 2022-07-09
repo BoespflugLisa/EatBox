@@ -33,7 +33,7 @@
                             </p>
                         </div>
 
-                        <div v-if="this.menus !== null">
+                        <div v-if="this.menus.length > 0">
                             <p class="font-weight-bold">
                                 Menus
                             </p>
@@ -44,7 +44,7 @@
                             </ul>
                         </div>
 
-                        <div v-if="this.articles !== null">
+                        <div v-if="this.articles.length > 0">
                             <p class="font-weight-bold">
                                 Articles
                             </p>
@@ -62,7 +62,7 @@
                         <span>{{ this.order.Detail.Price }} €</span>
                         <div v-if="this.order.Complementary !== ''">
                             <v-divider class="ma-auto" width="50%"></v-divider>
-                            <div class="mt-3 mb-3">
+                            <div class="mt-3 mb-3" v-if="this.order.Complementary !== null">
                                 <p class="font-18 font-weight-bold">
                                     Informations complémentaires :
                                 </p>
@@ -180,9 +180,14 @@ import ScanRestaurant from "../../../components/Restaurateur/ScanRestaurant.vue"
 export default class CommandsDetails extends Vue {
     orderID = "";
     order: any = null
-    client = null;
-    menus: Array<never> = [];
-    articles = [];
+    clientId = "";
+    client = {
+        Firstname: ""
+    };
+    menusId = [];
+    menus: any = [];
+    articlesId = [];
+    articles: any = [];
     checkDeliveryman = false;
 
     $refs!: {
@@ -195,18 +200,36 @@ export default class CommandsDetails extends Vue {
         this.orderID = this.$route.params.id;
     }
 
-    mounted() {
-        this.$axios.get(`orders/` + this.orderID)
+    async mounted() {
+        await this.$axios.get(`orders/` + this.orderID)
             .then(response => {
                 this.order = response.data.order;
-                this.menus = response.data.order.Detail.Menus;
-                this.articles = response.data.order.Detail.Articles;
-                this.client = response.data.order.Client;
+                this.menusId = response.data.order.Detail.Menus;
+                this.articlesId = response.data.order.Detail.Articles;
+                this.clientId = response.data.order.Client;
+
+                this.menus = [];
+                this.menusId.forEach(menu => {
+                    this.$axios.get("/menus/" + menu).then(responseMenu => {
+                        this.menus.push(responseMenu.data.menu)
+                    })
+                });
+
+                this.articles = [];
+                this.articlesId.forEach(article => {
+                    this.$axios.get("/articles/" + article).then(responseArticle => {
+                        this.articles.push(responseArticle.data.article)
+                    })
+                });
+
+                this.$axios.get("/clients/" + this.clientId).then(response => {
+                    this.client = response.data.client
+                });
             })
     }
 
-    updated () {
-        if (!this.checkDeliveryman){
+    updated() {
+        if (!this.checkDeliveryman) {
             this.$refs.scan.pause();
         }
     }

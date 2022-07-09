@@ -49,24 +49,24 @@
             <v-card-text>
                 <div>
                     <v-row no-gutters>
-                        <v-col v-if="order.Detail.Menus.length"
+                        <v-col v-if="menus.length"
                                cols="12"
                                sm="6"
                         >
                             <p class="font-16 font-weight-bold">Menus commandés</p>
                             <ul>
-                                <li v-for="(menu, index) in order.Detail.Menus" :key="index">
+                                <li v-for="(menu, index) in menus" :key="index">
                                     {{ menu.Name }}
                                 </li>
                             </ul>
                         </v-col>
-                        <v-col v-if="order.Detail.Articles.length"
+                        <v-col v-if="articles.length"
                                cols="12"
                                sm="6"
                         >
                             <p class="font-16 font-weight-bold">Articles commandés</p>
                             <ul>
-                                <li v-for="(article, index) in order.Detail.Articles" :key="(index+1)*2">
+                                <li v-for="(article, index) in articles" :key="(index+1)*2">
                                     {{ article.Name }}
                                 </li>
                             </ul>
@@ -219,8 +219,10 @@ export default class OrderDetails extends Vue {
     restaurantAddress = "";
     rateRestaurant = false;
     orderToCancel = false;
-    menus = []
-    articles = []
+    menusId = [];
+    menus: any = [];
+    articlesId = [];
+    articles: any = [];
 
     orderConnection: WebSocket | null = null
 
@@ -240,13 +242,33 @@ export default class OrderDetails extends Vue {
     async getData() {
         await this.$axios.get('orders/' + this.orderID).then(response => {
                 this.order = response.data.order;
-                this.stateNumber = response.data.order.State
-                this.commandState = this.states[response.data.order.State]
-                this.client = response.data.order.Client
-                this.restaurantAddress = response.data.order.Restaurant.Address.Number + ' ' + response.data.order.Restaurant.Address.Street + ' , ' + response.data.order.Restaurant.Address.Town + ' , ' + response.data.order.Restaurant.Address.Code;
-                this.$axios.get('clients/' + this.client._id).then(response => {
-                    this.clientAddress = response.data.client.Address.Number + ' ' + response.data.client.Address.Street + ' , ' + response.data.client.Address.Town + ' , ' + response.data.client.Address.Code
-                })
+                this.articlesId = response.data.order.Detail.Articles;
+                this.menusId = response.data.order.Detail.Menus;
+                this.stateNumber = response.data.order.State;
+                this.commandState = this.states[response.data.order.State];
+                this.client = response.data.order.Client;
+
+                this.menus = [];
+                this.menusId.forEach(menu => {
+                    this.$axios.get("/menus/" + menu).then(responseMenu => {
+                        this.menus.push(responseMenu.data.menu)
+                    })
+                });
+
+                this.articles = [];
+                this.articlesId.forEach(article => {
+                    this.$axios.get("/articles/" + article).then(response => {
+                        this.articles.push(response.data.article)
+                    })
+                });
+
+                this.$axios.get("/restaurants/" + response.data.order.Restaurant).then(responseRestaurant => {
+                    this.restaurantAddress = responseRestaurant.data.restaurant.Address.Number + ' ' + responseRestaurant.data.restaurant.Address.Street + ' , ' + responseRestaurant.data.restaurant.Address.Town + ' , ' + responseRestaurant.data.restaurant.Address.Code;
+                });
+
+                this.$axios.get('clients/' + this.client).then(responseClient => {
+                    this.clientAddress = responseClient.data.client.Address.Number + ' ' + responseClient.data.client.Address.Street + ' , ' + responseClient.data.client.Address.Town + ' , ' + responseClient.data.client.Address.Code
+                });
             }
         )
     }
