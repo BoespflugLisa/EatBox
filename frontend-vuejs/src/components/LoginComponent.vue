@@ -12,7 +12,7 @@
                 @click="this.ReturnError = false"
                 v-show="this.ReturnError"
             >
-                {{this.error_login}}
+                {{ this.error_login }}
             </v-alert>
             <v-container fluid fill-height>
                 <v-layout align-center justify-center>
@@ -53,7 +53,7 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import {loginUser} from '../utils/auth'
+import {loginUser, setAuthToken, setRole, setUser} from '../utils/auth'
 
 
 @Component({
@@ -69,7 +69,7 @@ export default class LoginComponent extends Vue {
     form = {
         email: "",
         password: "",
-        Role : this.$cookies.get('role'),
+        Role: this.$cookies.get('role'),
     }
     show1 = false
     rules = {
@@ -80,21 +80,32 @@ export default class LoginComponent extends Vue {
         }
     }
 
-    urlParams:any = new URLSearchParams(window.location.search)
+    urlParams: any = new URLSearchParams(window.location.search)
 
     async login() {
         this.loading = true
         try {
-            await loginUser(this.form.email, this.form.password, this.form.Role)
-                .then(r => {
-                    this.$router.push('/')
-                })
+            await this.$axios.post("/login", {
+                email: this.form.email,
+                password: this.form.password,
+                role: this.form.Role
 
-        } catch (err:any) {
+            }).then(r => {
+                console.log(r)
+                setUser({
+                    id: r.data.user._id,
+                    client_id: r.data.user.id,
+                })
+                setRole(r.data.user.role.title)
+                setAuthToken(r.data.auth, r.data.token)
+                this.$router.push('/')
+            })
+
+
+        } catch (err: any) {
             this.loading = false
-            //console.log(`Erreur: ${err.response.data.message}`)
-            this.ReturnError = true;
-            if(err.response) this.error_login = err.response.data.message
+            this.ReturnError = true
+            if (err.response) this.error_login = err.response.data.message
             else this.error_login = err
         }
     }
