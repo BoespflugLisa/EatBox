@@ -7,7 +7,7 @@ const router = express.Router();
 router.post("/:id", async (req, res) => {
     try {
         let menu = new MenuModel({
-            made_by: req.body.data.Restaurant,
+            made_by: req.params.id,
             Name: req.body.data.Name,
             MenuImg: req.body.data.MenuImg,
             Description: req.body.data.Description,

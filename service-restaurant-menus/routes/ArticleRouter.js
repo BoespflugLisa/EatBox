@@ -7,7 +7,7 @@ const router = express.Router();
 router.post("/:id", async (req, res) => {
     try {
         let article = new ArticleModel({
-            made_by : req.body.data.Restaurant,
+            made_by : req.params.id,
             Name : req.body.data.Name,
             ArticleImg : req.body.data.ArticleImg,
             Description : req.body.data.Description,
