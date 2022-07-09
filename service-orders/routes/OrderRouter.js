@@ -44,13 +44,11 @@ router.get("/", async (req, res) => {
     try {
         let orders = await OrderModel.find().exec();
         let ordersToAcceptByDeliveryman = await OrderModel.find({State: 5})
-            .populate('Client').exec();
         let ordersToAcceptByRestaurant = await OrderModel.find({State: 0}).exec();
         let ordersToPrepare = await OrderModel.find({State: 1}).exec();
         let ordersToDeliver = await OrderModel.find({State: 2}).exec();
         let ordersInDelivery = await OrderModel.find({State: 3}).exec();
         let ordersOver = await OrderModel.find({State: 4})
-            .populate('Client').exec();
         let ordersRefused = await OrderModel.find({State: 6}).exec();
         res.status(200).json({
             orders,
@@ -75,8 +73,6 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     try {
         let order = await OrderModel.findById(req.params.id)
-            .populate('Client', 'Address Phone Name Firstname Phone')
-            .populate('Restaurant', 'Address Name')
             .populate('Detail.Menus', 'Name Articles Price _id')
             .populate('Detail.Menus.Articles', 'Name')
             .populate('Detail.Articles', 'Name Price').exec();

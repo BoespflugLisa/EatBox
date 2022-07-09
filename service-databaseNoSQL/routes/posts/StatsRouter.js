@@ -150,7 +150,7 @@ router.post("/:id", async (req, res) => {
 
 router.get("/", async (req, res) => {
     try {
-        let stats = await StatsModel.find().populate('belongs_to', 'Name').exec();
+        let stats = await StatsModel.find()
         res.status(200).json({
             stats,
         });
@@ -224,7 +224,7 @@ router.get("/:id", async (req, res) => {
 
         let stat = await StatsModel.findOne({
                 belongs_to: req.params.id
-            }).populate('belongs_to');
+            })
         /*} else {
             stat = await new StatsModel({
                 belongs_to: new mongoose.Types.ObjectId(req.params.id),
@@ -232,7 +232,7 @@ router.get("/:id", async (req, res) => {
                 NbOrders: stats.nborders,
                 Benefit: stats.benefits,
                 //NewFave : Number,
-            }).populate('belongs_to',)
+            })
         }*/
 
         if (stat) {
@@ -269,7 +269,7 @@ router.get("/history/:id", async (req, res) => {
                 {$expr: {$lte: [{"$year": "$Date"}, new Date().getFullYear()]}},
             ]
 
-        })//.populate('belongs_to');
+        })
         if (stat) {
             console.log(stat)
             res.status(200).json({

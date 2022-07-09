@@ -14,11 +14,7 @@ router.post("/:id", async (req, res) => {
             Price : req.body.data.Price,
             Category: req.body.data.Category
         })
-        if(!article.populated('made_by')){
-            await article.populate('made_by')
-                .then(p=>console.log(p))
-                .catch(error=>console.log(error));;
-        }
+
         article = await article.save();
         console.log(article)
         res.status(200).json({

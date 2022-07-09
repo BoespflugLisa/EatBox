@@ -27,7 +27,7 @@ router.get("/", async (req, res) => {
         let logsConnection = await LogConnectionModel.find();
         res.status(200).json({
             logsConnection,
-        }).populate('belongs_to').exec();
+        })
     } catch (err) {
         res.status(400).json({
             status: 400,

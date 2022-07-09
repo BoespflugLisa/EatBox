@@ -14,11 +14,6 @@ router.post("/:id", async (req, res) => {
             Price: req.body.data.Price,
             Articles: req.body.data.Articles,
         })
-        if (!menu.populated('made_by')) {
-            await menu.populate('made_by Articles')
-                .then(p => console.log(p))
-                .catch(error => console.log(error));
-        }
         menu = await menu.save();
         console.log(menu)
         res.status(200).json({

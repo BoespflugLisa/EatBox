@@ -48,7 +48,6 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     try {
         let deliveryman = await DeliverymanModel.findById(req.params.id)
-            .populate('belongs_to');
         if (deliveryman) {
             res.status(200).json({
                  deliveryman,

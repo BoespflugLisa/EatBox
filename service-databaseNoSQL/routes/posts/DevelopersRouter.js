@@ -40,7 +40,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     try {
-        let developer = await DeveloperModel.findById(req.params.id).populate('belongs_to', "Email");
+        let developer = await DeveloperModel.findById(req.params.id)
         if (developer) {
             res.status(200).json({
                 developer,
