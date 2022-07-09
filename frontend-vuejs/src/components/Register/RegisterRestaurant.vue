@@ -47,7 +47,7 @@
                                         <validation-provider name="photo du restaurant" rules="required"
                                                              v-slot="{ errors, validated }">
                                             <v-file-input
-                                                show-size v-model="CoverImg"
+                                                show-size v-model="coverImg"
                                                 truncate-length="15"
                                                 prepend-icon="mdi-image-area"
                                                 label="Image de couverture"
@@ -151,7 +151,7 @@
                                             text
                                             :disabled="invalid || !validated"
                                             v-on:click="register">
-                                            Register
+                                            S'inscrire
                                         </v-btn>
                                     </v-card-actions>
                                 </v-card>
@@ -193,22 +193,22 @@ export default class RegisterComponent extends Vue {
     }
 
     resultCoverImg: ArrayBuffer | string | null = null
-    CoverImg = null
+    coverImg = null
 
     uploadImg() {
         const reader = new FileReader();
-        if (this.CoverImg !== null) {
+        if (this.coverImg !== null) {
             reader.onloadend = () => {
-                this.form.CoverImg = reader.result;
+                this.form.coverImg = reader.result;
             }
-            reader.readAsDataURL(this.CoverImg);
+            reader.readAsDataURL(this.coverImg);
         } else {
-            this.form.CoverImg = null;
+            this.form.coverImg = null;
         }
     }
 
     form = {
-        CoverImg: this.resultCoverImg,
+        coverImg: this.resultCoverImg,
         email: "",
         password: "",
         name: "",
@@ -233,20 +233,14 @@ export default class RegisterComponent extends Vue {
         this.loading = true
         this.$refs.obsForm.validate().then(async success => {
             if (success) {
-                try {
-                    //console.log(this.form)
-                    await registerUser(this.form)
-                        .then(r => {
-                            this.loading = false
-                            this.$router.go(0)
-                            //this.$router.push('/connexion')
-                        })
-
-                } catch (err: any) {
+                this.$axios.post("/register/restaurant", {data: this.form}).then(() => {
+                    this.loading = false;
+                    this.$router.go(0);
+                }).catch(err => {
                     this.loading = false
                     this.ReturnError = true;
                     this.error_login = err.response.data.message
-                }
+                })
             }
         })
         this.loading = false

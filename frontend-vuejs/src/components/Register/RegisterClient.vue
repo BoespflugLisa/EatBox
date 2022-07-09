@@ -1,8 +1,7 @@
 <template>
     <div id="register-deliveryman">
         <v-main>
-            <p class="text-center">Veuillez renseigner tous les champs pour inscrire votre restaurant à la liste de nos
-                heureux partenaires.</p>
+            <p class="text-center">Veuillez renseigner tous les champs pour vous inscrire.</p>
             <v-alert
                 color="accent"
                 shaped
@@ -98,7 +97,8 @@
                                             />
                                         </validation-provider>
 
-                                        <validation-provider name="code postal" rules="required|numeric" v-slot="{ errors, valid }">
+                                        <validation-provider name="code postal" rules="required|numeric"
+                                                             v-slot="{ errors, valid }">
                                             <v-text-field
                                                 type="number"
                                                 v-model="form.address.code" label="Code postal"
@@ -124,7 +124,7 @@
                                             text
                                             :disabled="invalid || !validated"
                                             v-on:click="register">
-                                            Register
+                                            S'inscrire
                                         </v-btn>
                                     </v-card-actions>
                                 </v-card>
@@ -153,8 +153,6 @@ export default class RegisterComponent extends Vue {
     name = 'RegisterRestaurant.vue'
 
     loading = false
-
-
     isEditing = false
 
     ReturnError = false
@@ -186,18 +184,14 @@ export default class RegisterComponent extends Vue {
         this.loading = true
         this.$refs.obsForm.validate().then(async success => {
             if (success) {
-                try {
-                    await registerUser(this.form)
-                        .then(r => {
-                            this.loading = false
-                            this.$router.go(0)
-                        })
-
-                } catch (err: any) {
+                this.$axios.post("/register/client", {data: this.form}).then(() => {
+                    this.loading = false;
+                    this.$router.go(0);
+                }).catch(err => {
                     this.loading = false
                     this.ReturnError = true;
                     this.error_login = err.response.data.message
-                }
+                })
             }
         })
         this.loading = false

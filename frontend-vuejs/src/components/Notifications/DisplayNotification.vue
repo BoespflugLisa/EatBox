@@ -89,9 +89,14 @@ export default class RestaurateurNotification extends Vue {
     }
 
     getNotifications() {
+        let access_token = this.$cookies.get('token')
         this.command = [];
         this.deliveryman = [];
-        this.$axios.get("/notifications/user/" + this.userId).then(response => {
+        this.$axios.get("/notifications/user/" + this.userId, {
+            headers: {
+                'Authorization': `token ${access_token}`
+            }
+        }).then(response => {
             response.data.notifications.forEach(notification => {
                 if (notification.Types.Command) {
                     this.command.push(notification);
