@@ -156,6 +156,8 @@ router.post('/register/restaurant', async (req: any, res: any) => {
             }
         }
         res.status(400).json(e)
+    } finally {
+        await prisma.$disconnect()
     }
 })
 
@@ -200,7 +202,8 @@ router.post('/register/client', async (req: any, res: any) => {
         res.status(400).json({
             message: e,
         })
-        return res
+    } finally {
+        await prisma.$disconnect()
     }
 })
 
@@ -243,20 +246,22 @@ router.post('/register/delivery', async (req: any, res: any) => {
             }
         }
         res.status(400).json(e)
+    } finally {
+        await prisma.$disconnect()
     }
 })
 
 router.post('/login', async (req, res) => {
     try {
         let token;
-        let user = await prisma.users.findUnique({
+        await prisma.users.findUnique({
             where: {
                 email: req.body.email
             },
             include: {
                 role: true
             }
-        }).then(user => {
+        }).then(async user => {
             if (!user) {
                 throw "Vos identifiants ne sont pas corrects"
             }
@@ -272,20 +277,47 @@ router.post('/login', async (req, res) => {
             }
 
             token = jwt.sign({id: user.id}, process.env.SECRET, {expiresIn: 86400})
-            res.status(200).send({
+
+            let user_token = await prisma.token.findFirst({
+                where: {
+                    userId : user.id,
+                }
+            })
+
+            if(!user_token){
+                await prisma.token.create({
+                    data: {
+                        value: token,
+                        userId: user.id,
+                    }
+                })
+            } else {
+                await prisma.token.updateMany({
+                    where:{
+                        userId: user.id
+                    },
+                    data: {
+                        value : token
+                    }
+                })
+            }
+
+
+
+            res.status(200).json({
                 auth: true,
                 token: token,
                 user
             })
-
         })
-
     } catch (err) {
         console.log(err)
         res.status(400).json({
             message: err,
         })
         return res
+    } finally {
+        await prisma.$disconnect()
     }
 });
 

@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model Roles {
@@ -29,7 +30,7 @@ model Livreurs {
   Lastname     String
   Firstname    String
   Phone        String
-  ProfileImg   String?
+  ProfileImg   String? @db.LongText
   Open_to_work Boolean
   Free         Boolean
   AccountName  String?
@@ -68,7 +69,6 @@ model Token {
   userId    Int
   user      Users    @relation(fields: [userId], references: [id])
 
-  @@index([userId], map: "Token_userId_fkey")
 }
 
 model Users {
@@ -83,7 +83,6 @@ model Users {
   restaurants Restaurants?
   tokens      Token[]
 
-  @@index([fk_role], map: "Users_fk_role_fkey")
 }
 
 model Components {
@@ -101,4 +100,3 @@ model Services {
   URL         String
   Type        String
 }
-

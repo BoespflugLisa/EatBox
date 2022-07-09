@@ -1,6 +1,6 @@
 const AuthRoutes = [
     {
-        url: '/register',
+        url: '/auth',
         auth: false,
         creditCheck: false,
         rateLimit: {
@@ -8,26 +8,10 @@ const AuthRoutes = [
             max: 5
         },
         proxy: {
-            target: "http://localhost:3036/register",
+            target: "http://localhost:3036/auth",
             changeOrigin: true,
             pathRewrite: {
-                [`^/register`]: '',
-            },
-        }
-    },
-    {
-        url: '/login',
-        auth: false,
-        creditCheck: false,
-        rateLimit: {
-            windowMs: 15 * 60 * 1000,
-            max: 5
-        },
-        proxy: {
-            target: "http://localhost:3036/login/",
-            changeOrigin: true,
-            pathRewrite: {
-                [`^/login`]: '',
+                [`^/auth`]: '',
             },
         }
     }

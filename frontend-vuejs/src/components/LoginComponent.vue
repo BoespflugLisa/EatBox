@@ -85,7 +85,7 @@ export default class LoginComponent extends Vue {
     async login() {
         this.loading = true
         try {
-            await this.$axios.post("/login", {
+            await this.$axios.post("/auth/login", {
                 email: this.form.email,
                 password: this.form.password,
                 role: this.form.Role
