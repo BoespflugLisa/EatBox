@@ -40,4 +40,4 @@ logs
 !.vscode/extensions.json
 
 # Basic Security Excludes
-!/.env
+/.env
