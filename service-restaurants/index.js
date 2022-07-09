@@ -23,13 +23,11 @@ db.mongoose.connect(db.url, db.options)
     });
 
 
-const RestaurantsRouter = require("./routes/RestaurantRouter");
 const MenusRouter = require("./routes/MenuRouter");
 const ArticlesRouter = require("./routes/ArticleRouter");
 const CategoriesRouter = require("./routes/CategoryRouter");
 
 app.use("/articles", ArticlesRouter);
-app.use("/restaurants", RestaurantsRouter);
 app.use("/menus", MenusRouter);
 app.use("/categories", CategoriesRouter);
 

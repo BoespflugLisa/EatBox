@@ -192,7 +192,7 @@ export default class RegisterComponent extends Vue {
         this.loading = true
         this.$refs.obsForm.validate().then(async success => {
             if (success) {
-                this.$axios.post("/register/delivery", {data: this.form}).then(() => {
+                this.$axios.post("/auth/register/delivery", {data: this.form}).then(() => {
                     this.loading = false;
                     this.$router.go(0);
                 }).catch(err => {
