@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 let CategorySchema = new Schema(
     {
-        belongs_to: {type: Schema.Types.ObjectId, ref: 'RestaurantModel'},
+        belongs_to: String,
         Name: String,
         State: Boolean,
     }

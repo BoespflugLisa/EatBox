@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 let MenusSchema = new Schema(
     {
-        made_by: {type: Schema.Types.ObjectId, ref: 'RestaurantModel'},
+        made_by: String,
         Name: String,
         Description: String,
         MenuImg: String,
