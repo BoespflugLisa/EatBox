@@ -65,8 +65,8 @@ model Token {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  value     String
-  userId    Int
+  value     String?   @unique
+  userId    Int      @unique
   user      Users    @relation(fields: [userId], references: [id])
 
 }

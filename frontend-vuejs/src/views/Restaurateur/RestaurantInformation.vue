@@ -45,7 +45,7 @@ export default class RestaurantInformation extends Vue {
         {tab: "Parrainage"},
     ];
 
-    restaurant = {
+    restaurant: any = {
         belongs_to: "",
         Email: "",
     }
@@ -58,15 +58,12 @@ export default class RestaurantInformation extends Vue {
     }
 
     getData() {
-        this.$axios.get('restaurants/' + this.$cookies.get('user_id'))
+        this.$axios.get('/users/restaurants/' + this.$cookies.get('user_id'))
             .then(response => {
                 this.restaurant = response.data.restaurant;
-                this.$axios_login.get('users/' + this.restaurant.belongs_to).then(res =>
-                    {
-                        this.restaurant.Email = res.data.user.Email;
-                        this.$refs.infos.getData(this.restaurant, this.restaurantId);
-                    }
-                )
+                this.restaurant.Email = response.data.restaurant.user.email;
+                this.$refs.infos.getData(this.restaurant, this.restaurantId);
+
             });
     }
 

@@ -262,11 +262,11 @@ export default class OrderDetails extends Vue {
                     })
                 });
 
-                this.$axios.get("/restaurants/" + response.data.order.Restaurant).then(responseRestaurant => {
+                this.$axios.get("/users/restaurants/" + response.data.order.Restaurant).then(responseRestaurant => {
                     this.restaurantAddress = responseRestaurant.data.restaurant.Address.Number + ' ' + responseRestaurant.data.restaurant.Address.Street + ' , ' + responseRestaurant.data.restaurant.Address.Town + ' , ' + responseRestaurant.data.restaurant.Address.Code;
                 });
 
-                this.$axios.get('clients/' + this.client).then(responseClient => {
+                this.$axios.get('/users/clients/' + this.client).then(responseClient => {
                     this.clientAddress = responseClient.data.client.Address.Number + ' ' + responseClient.data.client.Address.Street + ' , ' + responseClient.data.client.Address.Town + ' , ' + responseClient.data.client.Address.Code
                 });
             }
@@ -311,7 +311,7 @@ export default class OrderDetails extends Vue {
 
     async connectOrderWS() {
         if (this.orderConnection === null) {
-            this.orderConnection = await new WebSocket("ws://localhost:3031/orders/socket/" + this.$cookies.get('role') + "/" + this.$cookies.get("user_id"));
+            this.orderConnection = await new WebSocket("ws://localhost:3034/orders/socket/" + this.$cookies.get('role') + "/" + this.$cookies.get("user_id"));
 
             this.orderConnection.onmessage = () => {
                 this.getData()

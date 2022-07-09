@@ -16,7 +16,7 @@ namespace ClientLourd_EatBox.Functions
 
         private static readonly object _lock = new object();
 
-        private static string url = "http://localhost:3031/logs/";
+        private static string url = "http://localhost:3000/logs/";
 
         public HttpClient Client { get; }
         public List<LogsModels> LogsObjects { get; set; }

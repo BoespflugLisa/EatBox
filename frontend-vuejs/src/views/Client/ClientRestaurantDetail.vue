@@ -193,13 +193,13 @@ export default class ClientRestaurantDetail extends Vue {
     newCategoryArray: Array<any> = []
 
     async mounted() {
-        await this.$axios.get(`restaurants/menus/` + this.restaurantID)
+        await this.$axios.get(`/restaurants/menus/` + this.restaurantID)
             .then(response => {
                 this.menus = response.data.menu
 
             })
 
-        await this.$axios.get(`restaurants/` + this.restaurantID)
+        await this.$axios.get(`/users/restaurants/` + this.restaurantID)
             .then(response => {
                 this.restaurantType = response.data.restaurant.Type
                 this.restaurantName = response.data.restaurant.Name
@@ -207,7 +207,7 @@ export default class ClientRestaurantDetail extends Vue {
 
             })
 
-        await this.$axios.get(`restaurants/articles/` + this.restaurantID)
+        await this.$axios.get(`/restaurants/articles/` + this.restaurantID)
             .then(response => {
 
                 this.articles = response.data.article

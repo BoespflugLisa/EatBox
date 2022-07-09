@@ -141,8 +141,8 @@ export default {
             })
         }
         this.order.Client = this.$cookies.get('user_id')
-        this.$axios.get('clients/' + this.order.Client).then(response => {
-            this.clientName = response.data.client.Name
+        this.$axios.get('/users/clients/' + this.order.Client).then(response => {
+            this.clientName = response.data.client.Lastname
             this.order.N_Order = this.getRandomNOrder(1000, 9999).toString().concat(this.clientName.substring(0, 3).toUpperCase());
         })
 

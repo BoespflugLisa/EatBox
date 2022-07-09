@@ -1,7 +1,7 @@
 import express from "express";
 import * as dotenv from 'dotenv';
 
-dotenv.config({path : "../.env"})
+dotenv.config({path: "../.env"})
 
 const router = express.Router();
 
@@ -234,7 +234,11 @@ router.post('/register/delivery', async (req: any, res: any) => {
             })
         })
 
-        res.sendStatus(200).json({result, newProfile})
+        res.json({
+            status: 200,
+            result,
+            newProfile
+        })
 
     } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -266,7 +270,6 @@ router.post('/login', async (req, res) => {
                 throw "Vos identifiants ne sont pas corrects"
             }
 
-
             let pwdIsValid = bcrypt.compareSync(
                 req.body.password,
                 user.Password
@@ -278,13 +281,14 @@ router.post('/login', async (req, res) => {
 
             token = jwt.sign({id: user.id}, process.env.SECRET, {expiresIn: 86400})
 
-            let user_token = await prisma.token.findFirst({
+            let user_token = await prisma.token.findUnique({
                 where: {
-                    userId : user.id,
+                    userId: user.id,
                 }
             })
 
-            if(!user_token){
+            //Création du token dans la BDD
+            if (!user_token) {
                 await prisma.token.create({
                     data: {
                         value: token,
@@ -292,32 +296,102 @@ router.post('/login', async (req, res) => {
                     }
                 })
             } else {
-                await prisma.token.updateMany({
-                    where:{
+                await prisma.token.update({
+                    where: {
                         userId: user.id
                     },
                     data: {
-                        value : token
+                        value: token
                     }
                 })
             }
 
+            let profileid = null
+            switch (+user.role.id) {
+                case 3:
+                    profileid = await prisma.restaurants.findFirst({
+                        where: {fk_user: user.id},
+                        select: {id: true}
+                    }).then(r => {
+                        if(!!r){
+                            return r.id
+                        }
+                    })
+                break;
 
+                case 4:
+                    profileid = await prisma.livreurs.findFirst({
+                        where: {fk_user: user.id},
+                        select: {id: true}
+                    }).then(r => {
+                        if(!!r){
+                            return r.id
+                        }
+                    })
+                break;
+
+                case 5:
+                    profileid = await prisma.clients.findFirst({
+                        where: {fk_user: user.id},
+                        select: {id: true}
+                    }).then(r => {
+                        if(!!r){
+                            return r.id
+                        }
+                    })
+                break;
+
+                case 6:
+                    profileid = await prisma.developers.findFirst({
+                        where: {fk_user: user.id},
+                        select: {id: true}
+                    }).then(r => {
+                        if(!!r){
+                            return r.id
+                        }
+                    })
+                break;
+            }
 
             res.status(200).json({
                 auth: true,
                 token: token,
-                user
+                user,
+                profileid
             })
         })
-
-
     } catch (err) {
         console.log(err)
         res.status(400).json({
             message: err,
         })
         return res
+    } finally {
+        await prisma.$disconnect()
+    }
+});
+
+router.post('/logout', async (req, res) => {
+    try {
+        await prisma.token.update({
+            where: {
+                userId: +req.body.id
+            },
+            data: {
+                value: null,
+            }
+        })
+
+        res.json({
+            status: 200,
+            message: "Déconnexion réussie"
+        })
+    } catch (err) {
+        console.log(err)
+        res.json({
+            status: 400,
+            message: err,
+        })
     } finally {
         await prisma.$disconnect()
     }

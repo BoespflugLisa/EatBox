@@ -1,7 +1,6 @@
 {
-  "name": "service-users-restaurants",
+  "name": "service-users-clients",
   "version": "1.0.0",
-  "description": "",
   "main": "script.ts",
   "scripts": {
     "dev": "ts-node ./script.ts",
@@ -32,5 +31,6 @@
   },
   "engines": {
     "node": ">=12.2.0"
-  }
+  },
+  "description": ""
 }

@@ -31,20 +31,20 @@
 
         <validation-observer ref="obsInfo">
             <h3 class="mt-3 mb-3">Nom</h3>
-            <p v-if="!editInfo">{{ clientInfos.Firstname }}</p>
+            <p v-if="!editInfo">{{ clientInfos.Lastname }}</p>
             <validation-provider v-else name="Nom" rules="required" v-slot="{ errors, valid }">
                 <v-text-field
-                    v-model="editedFirstname"
+                    v-model="editedLastname"
                     :error-messages="errors"
                     :success="valid"
                 />
             </validation-provider>
 
             <h3 class="mt-3 mb-3">Prénom</h3>
-            <p v-if="!editInfo">{{ clientInfos.Name }}</p>
+            <p v-if="!editInfo">{{ clientInfos.Firstname }}</p>
             <validation-provider v-else name="Prénom" rules="required" v-slot="{ errors, valid }">
                 <v-text-field
-                    v-model="editedName"
+                    v-model="editedFirstname"
                     :error-messages="errors"
                     :success="valid"
                 />
@@ -61,7 +61,7 @@
             </validation-provider>
 
             <h3 class="mt-3 mb-3">Adresse mail</h3>
-            <p>{{ clientInfos.belongs_to.Email }}</p>
+            <p>{{ clientInfos.user.email }}</p>
 
             <h3 class="mt-3 mb-3">Adresse</h3>
             <p v-if="!editInfo">{{
@@ -167,7 +167,7 @@ export default class ClientInfos extends Vue {
     clientId = ""
     clientInfos = {
         Firstname: "",
-        Name: "",
+        Lastname: "",
         Phone: "",
         Address: {
             Number: "",
@@ -175,15 +175,15 @@ export default class ClientInfos extends Vue {
             Town: "",
             Code: 0
         },
-        belongs_to: {
-            Mail: "",
+        user: {
+            email: "",
         }
     }
 
     editInfo = false
     loadingInfo = false
     editedFirstname = ""
-    editedName = ""
+    editedLastname = ""
     editedPhone = ""
     editedAddress = {
         Number: "",
@@ -201,7 +201,7 @@ export default class ClientInfos extends Vue {
 
     showEditInfo() {
         this.editedFirstname = this.clientInfos.Firstname;
-        this.editedName = this.clientInfos.Name;
+        this.editedLastname = this.clientInfos.Lastname;
         this.editedPhone = this.clientInfos.Phone;
         this.editedAddress = JSON.parse(JSON.stringify(this.clientInfos.Address));
         this.editInfo = true;
@@ -210,11 +210,18 @@ export default class ClientInfos extends Vue {
     updateInfo() {
         this.$refs.obsInfo.validate().then(success => {
             if (success) {
-                this.clientInfos.Name = this.editedName;
+                this.clientInfos.Lastname = this.editedLastname;
                 this.clientInfos.Firstname = this.editedFirstname;
                 this.clientInfos.Phone = this.editedPhone;
                 this.clientInfos.Address = this.editedAddress;
-                this.$axios.put("/clients/" + this.clientId, {data: this.clientInfos}).then(() => {
+                this.$axios.put("/users/clients/update/" + this.clientId, {
+                    data: {
+                        Lastname: this.editedLastname,
+                        Firstname: this.editedFirstname,
+                        Address: this.editedAddress,
+                        Phone: this.editedPhone
+                    }
+                }).then(() => {
                     this.$refs.snack.openSnackbar("Mise à jour efféctué avec succès", "success");
                 }).catch(() => {
                     this.$refs.snack.openSnackbar("Erreur lors de la mise à jour", "error");
@@ -231,9 +238,16 @@ export default class ClientInfos extends Vue {
     }
 
     deleteAccount() {
-        this.$axios.delete("/clients/" + this.$cookies.get('user_id')).then(() => {
+        this.$axios.delete("/users/clients/delete/" + this.$cookies.get('user_id')).then(() => {
             this.$axios_login.delete('/' + this.$cookies.get('_id')).then(() => {
-                logoutUser()
+                this.$axios.post("/auth/logout", {
+                    token: this.$cookies.get('token'),
+                    id: this.$cookies.get('user_id'),
+
+                }).then(r => {
+                    logoutUser()
+                })
+
                 this.$router.push('/connexion')
             })
         })

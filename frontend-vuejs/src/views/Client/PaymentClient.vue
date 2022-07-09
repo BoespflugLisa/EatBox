@@ -133,7 +133,7 @@ export default class PaymentClient extends Vue {
 
         }
 
-        await this.$axios.get('clients/' + this.clientID).then(response => {
+        await this.$axios.get('/users/clients/' + this.clientID).then(response => {
             this.client = response.data.client;
             this.address = response.data.client.Address.Number + ' ' + response.data.client.Address.Street + ' , '
                 + response.data.client.Address.Town + ' , ' + response.data.client.Address.Code

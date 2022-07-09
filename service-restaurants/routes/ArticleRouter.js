@@ -1,15 +1,13 @@
 const express = require("express");
 const ArticleModel = require("../models/Article")
 const {model: CategoryModel} = require("../models/Category");
-const RestaurantModel = require("../models/Restaurant").model;
 const router = express.Router();
 
 
 router.post("/:id", async (req, res) => {
     try {
-        let restaurant = await RestaurantModel.findById(req.params.id).exec();
         let article = new ArticleModel({
-            made_by : restaurant._id,
+            made_by : req.params.id,
             Name : req.body.data.Name,
             ArticleImg : req.body.data.ArticleImg,
             Description : req.body.data.Description,

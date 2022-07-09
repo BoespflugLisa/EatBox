@@ -461,7 +461,14 @@ export default class RestaurantInfos extends Vue {
     }
 
     updateRestaurant() {
-        this.$axios.put("restaurants/update/" + this.restaurantId, {data: this.restaurantInfos}).then(() => {
+        this.$axios.put("/users/restaurants/update/" + this.restaurantId, {data: {
+                Phone: this.restaurantInfos.Phone,
+                hours: this.restaurantInfos.hours,
+                CoverImg: this.restaurantInfos.CoverImg,
+                Name: this.restaurantInfos.Name,
+                Address : this.restaurantInfos.Address,
+                Legal: this.restaurantInfos.Legal
+            }}).then(() => {
             this.$refs.snack.openSnackbar("Mise à jour efféctué avec succès", "success");
         }).catch(() => {
             this.$refs.snack.openSnackbar("Erreur lors de la mise à jour", "error");
@@ -482,9 +489,16 @@ export default class RestaurantInfos extends Vue {
     }
 
     deleteAccount() {
-        this.$axios.delete("/restaurants/delete/" + this.$cookies.get('user_id')).then(() => {
+        this.$axios.delete("/users/restaurants/delete/" + this.$cookies.get('user_id')).then(() => {
             this.$axios_login.delete('/' + this.$cookies.get('_id')).then(() => {
-                logoutUser()
+                this.$axios.post("/auth/logout", {
+                    token : this.$cookies.get('token'),
+                    id : this.$cookies.get('user_id'),
+
+                }).then(r => {
+                    logoutUser()
+                })
+
                 this.$router.push('/connexion')
             })
         })

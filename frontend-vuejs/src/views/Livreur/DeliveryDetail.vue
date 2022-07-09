@@ -146,12 +146,12 @@ export default {
                     this.commandState = this.states[response.data.order.State];
                     this.idClient = response.data.order.Client;
 
-                    this.$axios.get("/restaurants/" + response.data.order.Restaurant).then(responseRestaurant => {
+                    this.$axios.get("/users/restaurants/" + response.data.order.Restaurant).then(responseRestaurant => {
                         this.restaurantName = responseRestaurant.data.restaurant.Name;
                         this.restaurantAdresse = responseRestaurant.data.restaurant.Address.Number + ' ' + responseRestaurant.data.restaurant.Address.Street + ' , ' + responseRestaurant.data.restaurant.Address.Town + ' , ' + responseRestaurant.data.restaurant.Address.Code;
                     });
 
-                    this.$axios.get('clients/' + this.idClient).then(responseClient => {
+                    this.$axios.get('/users/clients/' + this.idClient).then(responseClient => {
                         this.myAdresse = responseClient.data.client.Address.Number + ' ' + responseClient.data.client.Address.Street + ' , ' + responseClient.data.client.Address.Town + ' , ' + responseClient.data.client.Address.Code
                         this.numTel = responseClient.data.client.Phone;
                     });
@@ -179,7 +179,7 @@ export default {
 
         async connectOrderWS() {
             if (this.orderConnection === null) {
-                this.orderConnection = await new WebSocket("ws://localhost:3033/orders/socket/" + this.$cookies.get('role') + "/" + this.$cookies.get("user_id"));
+                this.orderConnection = await new WebSocket("ws://localhost:3034/orders/socket/" + this.$cookies.get('role') + "/" + this.$cookies.get("user_id"));
 
                 this.orderConnection.onmessage = () => {
                     this.getData();

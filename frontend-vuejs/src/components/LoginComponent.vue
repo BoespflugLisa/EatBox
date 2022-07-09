@@ -53,7 +53,7 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import {loginUser, setAuthToken, setRole, setUser} from '../utils/auth'
+import {setAuthToken, setRole, setUser} from '../utils/auth'
 
 
 @Component({
@@ -93,8 +93,9 @@ export default class LoginComponent extends Vue {
             }).then(r => {
                 console.log(r)
                 setUser({
-                    id: r.data.user._id,
-                    client_id: r.data.user.id,
+                    id: r.data.user.id,
+                    client_id: r.data.profileid,
+                    token : r.data.token
                 })
                 setRole(r.data.user.role.title)
                 setAuthToken(r.data.auth, r.data.token)

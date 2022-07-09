@@ -222,7 +222,7 @@ export default class CommandsDetails extends Vue {
                     })
                 });
 
-                this.$axios.get("/clients/" + this.clientId).then(response => {
+                this.$axios.get("/users/clients/" + this.clientId).then(response => {
                     this.client = response.data.client
                 });
             })

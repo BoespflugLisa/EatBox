@@ -84,7 +84,7 @@ export default class CommandsList extends Vue {
 
     async connectOrderWS() {
         if (this.orderConnection === null) {
-            this.orderConnection = new WebSocket("ws://localhost:3031/orders/socket/" + this.$cookies.get('role') + "/" + this.$cookies.get("user_id"))
+            this.orderConnection = new WebSocket("ws://localhost:3034/orders/socket/" + this.$cookies.get('role') + "/" + this.$cookies.get("user_id"))
         }
 
         this.orderConnection.onmessage = () => {

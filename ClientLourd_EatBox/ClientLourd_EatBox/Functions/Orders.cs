@@ -17,7 +17,7 @@ namespace ClientLourd_EatBox.Functions
 
         private static readonly object _lock = new object();
 
-        private static string url = "http://localhost:3031/orders/";
+        private static string url = "http://localhost:3000/orders/";
 
 //        private static string socket = "http://localhost:3031/socket/Commercial";
 

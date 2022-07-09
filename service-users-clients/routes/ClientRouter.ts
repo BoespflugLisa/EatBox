@@ -1,6 +1,4 @@
 import express = require("express");
-
-
 const router = express.Router();
 
 import {PrismaClient} from "@prisma/client"
@@ -9,7 +7,7 @@ const prisma = new PrismaClient()
 
 router.get('/', async (req: any, res: any) => {
     try {
-        const restaurants = await prisma.restaurants.findMany({
+        const clients = await prisma.clients.findMany({
             include: {
                 user: {
                     select: {
@@ -22,12 +20,14 @@ router.get('/', async (req: any, res: any) => {
             .then(r => {
                 res.json({
                     status: 200,
-                    restaurants : r
+                    clients : r
                 })
             })
-    } catch (e) {
-        console.log(e);
-        res.sendStatus(400).json(e)
+    } catch (e : any) {
+        res.json({
+            status: 200,
+            message: e.message
+        })
     } finally {
         await prisma.$disconnect()
     }
@@ -35,7 +35,7 @@ router.get('/', async (req: any, res: any) => {
 
 router.get('/:id', async (req: any, res: any) => {
     try {
-        const restaurant = await prisma.restaurants.findUnique({
+        const client = await prisma.clients.findUnique({
             where : {
                 id : +req.params.id
             },
@@ -51,12 +51,14 @@ router.get('/:id', async (req: any, res: any) => {
             .then(r => {
                 res.json({
                     status: 200,
-                    restaurant : r
+                    client : r
                 })
             })
-    } catch (e) {
-        console.log(e)
-
+    } catch (e: any) {
+        res.json({
+            status: 200,
+            message: e.message
+        })
     } finally {
         await prisma.$disconnect()
     }
@@ -64,7 +66,7 @@ router.get('/:id', async (req: any, res: any) => {
 
 router.put("/update/:id", async (req, res) => {
     try {
-        await prisma.restaurants.update({
+        await prisma.clients.update({
             where: {
                 id: +req.params.id,
             },
@@ -72,26 +74,30 @@ router.put("/update/:id", async (req, res) => {
         }).then(() => {
             res.json({
                 status: 204,
-                message: 'Restaurant updated successfully!'
+                message: 'Client updated successfully!'
             });
         })
 
-    } catch (e) {
-
+    }  catch (e: any) {
+        res.json({
+            status: 200,
+            message: e.message
+        })
+    } finally {
+        await prisma.$disconnect()
     }
-
 })
 
 router.delete('/delete/:id', async function (req, res) {
     try {
-        await prisma.restaurants.delete({
+        await prisma.clients.delete({
             where: {
                 id: +req.params.id
             }
         }).then(() => {
             res.json({
                 status: 204,
-                message: 'Restaurant deleted successfully!'
+                message: 'Client deleted successfully!'
             });
         })
 

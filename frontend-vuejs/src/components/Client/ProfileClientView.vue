@@ -47,7 +47,7 @@ export default class ProfileClientView extends Vue {
     }
 
     getData() {
-        this.$axios.get("/clients/" + this.clientId)
+        this.$axios.get("/users/clients/" + this.clientId)
             .then(response => {
                 this.client = response.data.client;
                 this.$refs.infos.getData(response.data.client, this.clientId);

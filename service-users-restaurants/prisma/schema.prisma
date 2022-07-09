@@ -7,49 +7,30 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Users {
+  id          Int          @id @default(autoincrement())
+  email       String       @unique
+  Password    String
+  fk_role     Int
+  restaurants Restaurants[]
 
-model Clients {
-  id            Int     @id @default(autoincrement())
-  Lastname      String
-  Firstname     String
-
-  Address       Json?
-  Phone         String?
-}
-
-model Livreurs {
-  id            Int     @id @default(autoincrement())
-  Lastname      String
-  Firstname     String
-  Phone         String
-  ProfileImg    String?
-  Open_to_work  Boolean
-  Free          Boolean
-
-  AccountName   String?
-  IBAN          String?
 }
 
 model Restaurants {
-  id            Int     @id @default(autoincrement())
-  Name          String
+  id   Int    @id @default(autoincrement())
+  Name String
 
-  Phone         String?
-  Address       Json?
-  hours         Json?
-  Type          String?
-  CoverImg      String?
-  Legal         Json?
-  Preferences   Json?
-  Sponsors      Json?
+  Phone       String?
+  Address     Json?
+  hours       Json?
+  Type        String?
+  CoverImg    String?
+  Legal       Json?
+  Preferences Json?
+  Sponsors    Json?
+
+  fk_user Int   @unique
+  user    Users @relation(fields: [fk_user], references: [id])
 }
-
-model Developers {
-  id            Int     @id @default(autoincrement())
-  Lastname      String
-  Firstname     String
-}
-
-
 
 

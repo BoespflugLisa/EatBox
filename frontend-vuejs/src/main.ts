@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
-import axios, {Axios, AxiosStatic} from 'axios'
+import axios, {AxiosStatic} from 'axios'
 import * as VueCookies from "vue-cookies";
 import "./plugins/vee-validate"
 

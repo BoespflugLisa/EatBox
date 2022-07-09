@@ -388,7 +388,14 @@ export default class LivreurInfos extends Vue {
     deleteAccount() {
         this.$axios.delete("/deliverymans/" + this.$cookies.get('user_id')).then(() => {
             this.$axios_login.delete('/' + this.$cookies.get('_id')).then(() => {
-                logoutUser()
+                this.$axios.post("/auth/logout", {
+                    token : this.$cookies.get('token'),
+                    id : this.$cookies.get('user_id'),
+
+                }).then(r => {
+                    logoutUser()
+                })
+
                 this.$router.push('/connexion')
             })
         })

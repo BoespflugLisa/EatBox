@@ -7,8 +7,8 @@ let OrderSchema = new Schema(
         State : Number,
         Payment : String,
         Rating: Number,
-        Restaurant : {type: Schema.Types.ObjectId},
-        Client : {type: Schema.Types.ObjectId},
+        Restaurant : String,
+        Client : String,
         Deliveryman_token : String,
         Complementary : String,
         Detail : {

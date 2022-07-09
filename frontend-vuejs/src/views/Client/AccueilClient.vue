@@ -54,7 +54,7 @@ export default class AccueilClient extends Vue {
 
 
     async mounted() {
-        await this.$axios.get(`/restaurants`)
+        await this.$axios.get(`/users/restaurants`)
           .then(response => {
               this.restaurant = response.data.restaurants;
               //response.data.restaurants.forEach(element => this.restaurant.push(element.Name));
@@ -65,7 +65,7 @@ export default class AccueilClient extends Vue {
 
 
     showRestoDetail(resto) {
-        this.$router.push({name: 'ClientRestaurantDetail', params: {id: resto._id}});
+        this.$router.push({name: 'ClientRestaurantDetail', params: {id: resto.id}});
 
     }
 

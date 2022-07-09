@@ -5,14 +5,14 @@ import bodyParser from 'body-parser'
 const app = express()
 
 
-const port = 3036;
+const port = 3040;
 
 
 app.use(cors());
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(express.json())
 
-const UsersRouter = require("./routes/UserRouter");
+const UsersRouter = require("./routes/AuthRouter");
 app.use("/auth", UsersRouter);
 
 app.listen(port, function () {
@@ -21,21 +21,3 @@ app.listen(port, function () {
 
 module.exports = app;
 
-/*
-// A `main` function so that you can use async/await
-async function main() {
-
-    const allUsers = await prisma.users.findMany({
-        include: { role: true },
-    })
-    // use `console.dir` to print nested objects
-    console.dir(allUsers, { depth: null })
-}
-
-main()
-    .catch((e) => {
-        throw e
-    })
-    .finally(async () => {
-        await prisma.$disconnect()
-    })*/

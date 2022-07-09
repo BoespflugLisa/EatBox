@@ -44,124 +44,6 @@ export function registerUser(form) {
     })
 }
 
-export function loginUser(username, password, role) {
-    // eslint-disable-next-line no-async-promise-executor
-    return new Promise(async (resolve, reject) => {
-        try {
-            let res;
-            switch(role){
-                case "Restaurant":
-                    res = await axios({
-                        url: `${REST_ENDPOINT}loginRestaurant`,
-                        method: 'POST',
-                        data: {
-                            email: username,
-                            password: password,
-                            Role: role
-                        }
-                    }).then(response => {
-                        if(!response.data.user.user_id){
-                            throw "Il n'y a pas de compte restaurant sous cet e-mail"
-                        }
-                        setUser({
-                            id: response.data.user._id,
-                            client_id: response.data.user.user_id,
-                        })
-                        setRole(role)
-                        setAuthToken(response.data.auth, response.data.token)
-                        resolve()
-                    }).catch(function(error){
-                        if(error.response) throw error.response.data.message
-                        else throw error
-                    })
-                    break;
-
-                case "Client":
-                    res = await axios({
-                        url: `${REST_ENDPOINT}login`,
-                        method: 'POST',
-                        data: {
-                            email: username,
-                            password: password,
-                            Role : role
-                        }
-                    }).then(response => {
-                        if(!response.data.user.user_id){
-                            throw "Il n'y a pas de compte client sous cet e-mail"
-                        }
-                        setUser({
-                            id: response.data.user._id,
-                            client_id: response.data.user.user_id,
-                        })
-                        setRole(role)
-                        setAuthToken(response.data.auth, response.data.token)
-                        resolve()
-                    }).catch(function(error){
-                        console.error('Erreur lors de la connexion:', error)
-                        throw error
-                    })
-                    break;
-
-                case "Livreur":
-                    res = await axios({
-                        url: `${REST_ENDPOINT}login`,
-                        method: 'POST',
-                        data: {
-                            email: username,
-                            password: password,
-                            Role : role
-                        }
-                    }).then(response => {
-                        if(!response.data.user.user_id){
-                            throw "Il n'y a pas de compte livreur sous cet e-mail"
-                        }
-                        setUser({
-                            id: response.data.user._id,
-                            client_id: response.data.user.user_id,
-                        })
-                        setRole(role)
-                        setAuthToken(response.data.auth, response.data.token)
-                        resolve()
-                    }).catch(function(error){
-                        //console.error('Erreur lors de la connexion:', error)
-                        throw error
-                    })
-                    break;
-
-                case "Developpeur":
-                    res = await axios({
-                        url: `${REST_ENDPOINT}login`,
-                        method: 'POST',
-                        data: {
-                            email: username,
-                            password: password,
-                            Role : role
-                        }
-                    }).then(response => {
-                        if(!response.data.user.user_id){
-                            throw "Il n'y a pas de compte developpeur sous cet e-mail"
-                        }
-                        setUser({
-                            id: response.data.user._id,
-                            client_id: response.data.user.user_id,
-                        })
-                        setRole(role)
-                        setAuthToken(response.data.auth, response.data.token)
-                        resolve()
-                    }).catch(function(error){
-                        console.error('Erreur lors de la connexion:', error)
-                        throw error
-                    })
-                    break;
-            }
-
-        } catch (err) {
-            //console.error('Erreur lors de la connexion:', err)
-            reject(err)
-        }
-    })
-}
-
 export function logoutUser() {
     clearAuthToken()
 }
@@ -189,14 +71,12 @@ export function getRole() {
     if(Vue.$cookies.isKey('role')){
         return Vue.$cookies.get('role')
     } else return store.state.UserRole
-    // return store.state.UserRole
 }
 
 export function setUser(user) {
     store.commit('changeUser', user)
-
-    Vue.$cookies.set('_id', user.id, '80000s')
-    Vue.$cookies.set('user_id', user.client_id, '80000s')
+    Vue.$cookies.set('_id', user.id, getTokenExpirationDate(user.token))
+    Vue.$cookies.set('user_id', user.client_id, getTokenExpirationDate(user.token))
 }
 
 export function getAuthToken() {
@@ -206,18 +86,16 @@ export function getAuthToken() {
     //return store.state.token
 }
 
-export function clearAuthToken() {
+function clearAuthToken() {
     axios.defaults.headers.common['Authorization'] = ''
     store.commit('changeState', [false, null])
     store.commit('changeUser', null)
     store.commit('changeRole', null)
 
-    Vue.$cookies.remove('user')
     Vue.$cookies.remove('token')
     Vue.$cookies.remove('auth')
     Vue.$cookies.remove('role')
     Vue.$cookies.remove('user_id')
-    Vue.$cookies.remove('_id')
 
     localStorage.clear()
 }
