@@ -1,6 +1,6 @@
 const AuthRoutes = [
     {
-        url: '/register/developer',
+        url: '/auth/register/developer',
         auth: false,
         creditCheck: false,
         rateLimit: {
@@ -8,15 +8,15 @@ const AuthRoutes = [
             max: 5
         },
         proxy: {
-            target: "http://localhost:3036/register/developer/",
+            target: "http://localhost:3036/auth/register/developer/",
             changeOrigin: true,
             pathRewrite: {
-                [`^/register/developer`]: '',
+                [`^/auth/register/developer`]: '',
             },
         }
     },
     {
-        url: '/register/delivery',
+        url: '/auth/register/delivery',
         auth: false,
         creditCheck: false,
         rateLimit: {
@@ -24,15 +24,15 @@ const AuthRoutes = [
             max: 5
         },
         proxy: {
-            target: "http://localhost:3036/register/delivery/",
+            target: "http://localhost:3036/auth/register/delivery/",
             changeOrigin: true,
             pathRewrite: {
-                [`^/register/delivery`]: '',
+                [`^/auth/register/delivery`]: '',
             },
         }
     },
     {
-        url: '/register/client',
+        url: '/auth/register/client',
         auth: false,
         creditCheck: false,
         rateLimit: {
@@ -40,15 +40,15 @@ const AuthRoutes = [
             max: 5
         },
         proxy: {
-            target: "http://localhost:3036/register/client/",
+            target: "http://localhost:3036/auth/register/client/",
             changeOrigin: true,
             pathRewrite: {
-                [`^/register/client`]: '',
+                [`^/auth/register/client`]: '',
             },
         }
     },
     {
-        url: '/register/restaurant',
+        url: '/auth/register/restaurant',
         auth: false,
         creditCheck: false,
         rateLimit: {
@@ -56,15 +56,15 @@ const AuthRoutes = [
             max: 5
         },
         proxy: {
-            target: "http://localhost:3036/register/restaurant/",
+            target: "http://localhost:3036/auth/register/restaurant/",
             changeOrigin: true,
             pathRewrite: {
-                [`^/register/restaurant`]: '',
+                [`^/auth/register/restaurant`]: '',
             },
         }
     },
     {
-        url: '/login',
+        url: '/auth/login',
         auth: false,
         creditCheck: false,
         rateLimit: {
@@ -72,10 +72,10 @@ const AuthRoutes = [
             max: 5
         },
         proxy: {
-            target: "http://localhost:3036/login/",
+            target: "http://localhost:3036/auth/login/",
             changeOrigin: true,
             pathRewrite: {
-                [`^/login`]: '',
+                [`^/auth/login`]: '',
             },
         }
     }

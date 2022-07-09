@@ -12,8 +12,8 @@ app.use(cors());
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(express.json())
 
-const UsersRouter = require("../service-users-authentification/routes/UserRouter");
-app.use("/", UsersRouter);
+const UsersRouter = require("./routes/UserRouter");
+app.use("/auth", UsersRouter);
 
 app.listen(port, function () {
     console.log("Runnning on " + port);

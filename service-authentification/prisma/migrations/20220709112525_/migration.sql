@@ -15,6 +15,7 @@ CREATE TABLE `Clients` (
     `Address` JSON NULL,
     `Phone` VARCHAR(191) NULL,
 
+    UNIQUE INDEX `Clients_fk_user_key`(`fk_user`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -31,6 +32,7 @@ CREATE TABLE `Livreurs` (
     `AccountName` VARCHAR(191) NULL,
     `IBAN` VARCHAR(191) NULL,
 
+    UNIQUE INDEX `Livreurs_fk_user_key`(`fk_user`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -40,7 +42,6 @@ CREATE TABLE `Restaurants` (
     `fk_user` INTEGER NOT NULL,
     `Name` VARCHAR(191) NOT NULL,
     `Phone` VARCHAR(191) NULL,
-    `IBAN` VARCHAR(191) NULL,
     `Address` JSON NULL,
     `hours` JSON NULL,
     `Type` VARCHAR(191) NULL,
@@ -49,6 +50,7 @@ CREATE TABLE `Restaurants` (
     `Preferences` JSON NULL,
     `Sponsors` JSON NULL,
 
+    UNIQUE INDEX `Restaurants_fk_user_key`(`fk_user`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -59,6 +61,7 @@ CREATE TABLE `Developers` (
     `Lastname` VARCHAR(191) NOT NULL,
     `Firstname` VARCHAR(191) NOT NULL,
 
+    UNIQUE INDEX `Developers_fk_user_key`(`fk_user`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -67,8 +70,7 @@ CREATE TABLE `Token` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
-    `valid` BOOLEAN NOT NULL DEFAULT true,
-    `expiration` DATETIME(3) NOT NULL,
+    `value` VARCHAR(191) NOT NULL,
     `userId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)

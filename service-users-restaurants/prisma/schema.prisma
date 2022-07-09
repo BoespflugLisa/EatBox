@@ -1,0 +1,55 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+model Clients {
+  id            Int     @id @default(autoincrement())
+  Lastname      String
+  Firstname     String
+
+  Address       Json?
+  Phone         String?
+}
+
+model Livreurs {
+  id            Int     @id @default(autoincrement())
+  Lastname      String
+  Firstname     String
+  Phone         String
+  ProfileImg    String?
+  Open_to_work  Boolean
+  Free          Boolean
+
+  AccountName   String?
+  IBAN          String?
+}
+
+model Restaurants {
+  id            Int     @id @default(autoincrement())
+  Name          String
+
+  Phone         String?
+  Address       Json?
+  hours         Json?
+  Type          String?
+  CoverImg      String?
+  Legal         Json?
+  Preferences   Json?
+  Sponsors      Json?
+}
+
+model Developers {
+  id            Int     @id @default(autoincrement())
+  Lastname      String
+  Firstname     String
+}
+
+
+
+
