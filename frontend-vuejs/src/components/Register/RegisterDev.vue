@@ -76,7 +76,7 @@
                                             text
                                             :disabled="invalid || !validated"
                                             v-on:click="register">
-                                            Register
+                                            S'inscrire
                                         </v-btn>
                                     </v-card-actions>
                                 </v-card>
@@ -131,18 +131,14 @@ export default class RegisterDev extends Vue {
         this.loading = true
         this.$refs.obsForm.validate().then(async success => {
             if (success) {
-                try {
-                    await registerUser(this.form)
-                        .then(r => {
-                            this.loading = false
-                            this.$router.go(0)
-                        })
-
-                } catch (err: any) {
+                this.$axios.post("/auth/register/developer", {data: this.form}).then(() => {
+                    this.loading = false;
+                    this.$router.go(0);
+                }).catch(err => {
                     this.loading = false
                     this.ReturnError = true;
                     this.error_login = err.response.data.message
-                }
+                })
             }
         })
         this.loading = false

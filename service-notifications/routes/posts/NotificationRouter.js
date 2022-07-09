@@ -11,7 +11,7 @@ router.post("/:id", async (req, res) => {
         let notification = new NotificationModel({
                 "Date": new Date(),
                 "Read": false,
-                "belongs_to": new mongoose.Types.ObjectId(req.params.id),
+                "belongs_to": req.params.id,
                 "Types": {
                     "Command": req.body.data.Types.Command,
                     "Delivery": req.body.data.Types.Delivery,

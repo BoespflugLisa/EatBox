@@ -207,7 +207,12 @@ export default class App extends Vue {
 
     getNotificationCount() {
         if (this.$cookies.get("auth")) {
-            this.$axios.get("/notifications/userCount/" + this.$cookies.get('user_id')).then(response => {
+            let access_token = this.$cookies.get('token')
+            this.$axios.get("/notifications/userCount/" + this.$cookies.get('user_id'), {
+                headers: {
+                    'Authorization': `token ${access_token}`
+                }
+            }).then(response => {
                 this.notifCount = response.data.count;
                 if (response.data.count > 9)
                     this.notifDisplay = "9+";

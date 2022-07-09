@@ -16,26 +16,26 @@ const prisma = new PrismaClient()
 router.post('/register/developer', async (req: any, res: any) => {
     try {
         let newProfile;
-
         const result = await prisma.users.create({
             data: {
-                "email": req.body.email,
-                "Password": bcrypt.hashSync(req.body.password, 8),
+                "email": req.body.data.email,
+                "Password": bcrypt.hashSync(req.body.data.password, 8),
                 "fk_role": 6
             }
         }).then(async function (r) {
             newProfile = await prisma.developers.create({
                 data: {
-                    Lastname: req.body.Lastname,
-                    Firstname: req.body.Firstname,
+                    Lastname: req.body.data.lastname,
+                    Firstname: req.body.data.name,
                     fk_user: r.id,
                 }
             })
         })
 
-        res.sendStatus(200).json({result, newProfile})
-        return;
+        res.status(200).json({result, newProfile})
+
     } catch (e) {
+        console.log(e)
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             // The .code property can be accessed in a type-safe manner
             if (e.code === 'P2002') {
@@ -44,7 +44,7 @@ router.post('/register/developer', async (req: any, res: any) => {
                 )
             }
         }
-        res.sendStatus(400).json(e)
+        res.status(400).json(e)
     } finally {
         await prisma.$disconnect()
     }
@@ -54,88 +54,87 @@ router.post('/register/developer', async (req: any, res: any) => {
 router.post('/register/restaurant', async (req: any, res: any) => {
     try {
         let newProfile;
-
         const result = await prisma.users.create({
             data: {
-                "email": req.body.email,
-                "Password": bcrypt.hashSync(req.body.password, 8),
+                "email": req.body.data.email,
+                "Password": bcrypt.hashSync(req.body.data.password, 8),
                 "fk_role": 3
             }
         }).then(async function (r) {
             newProfile = await prisma.restaurants.create({
                 data: {
                     fk_user: r.id,
-                    CoverImg: req.body.CoverImg,
-                    Name: req.body.name,
-                    Phone: req.body.phone,
-                    Type: req.body.type,
+                    CoverImg: req.body.data.coverImg,
+                    Name: req.body.data.name,
+                    Phone: req.body.data.phone,
+                    Type: req.body.data.type,
                     Legal: {
                         AccountName: "",
-                        SIRET: req.body.legal.siret,
-                        IBAN: req.body.legal.iban,
+                        SIRET: req.body.data.legal.siret,
+                        IBAN: req.body.data.legal.iban,
                     },
                     Address: {
-                        Number: req.body.address.number,
-                        Street: req.body.address.street,
-                        Town: req.body.address.town,
-                        Code: req.body.address.code,
+                        Number: req.body.data.address.number,
+                        Street: req.body.data.address.street,
+                        Town: req.body.data.address.town,
+                        Code: req.body.data.address.code,
                     },
                     hours: {
                         monday: {
                             isOpen: true,
                             isSecondTimeRange: true,
-                            startHour: "",
-                            endHour: "",
-                            startHour2: "",
-                            endHour2: "",
+                            startHour: null,
+                            endHour: null,
+                            startHour2: null,
+                            endHour2: null,
                         },
                         tuesday: {
                             isOpen: true,
                             isSecondTimeRange: true,
-                            startHour: "",
-                            endHour: "",
-                            startHour2: "",
-                            endHour2: "",
+                            startHour: null,
+                            endHour: null,
+                            startHour2: null,
+                            endHour2: null,
                         },
                         wednesday: {
                             isOpen: true,
                             isSecondTimeRange: true,
-                            startHour: "",
-                            endHour: "",
-                            startHour2: "",
-                            endHour2: "",
+                            startHour: null,
+                            endHour: null,
+                            startHour2: null,
+                            endHour2: null,
                         },
                         thursday: {
                             isOpen: true,
                             isSecondTimeRange: true,
-                            startHour: "",
-                            endHour: "",
-                            startHour2: "",
-                            endHour2: "",
+                            startHour: null,
+                            endHour: null,
+                            startHour2: null,
+                            endHour2: null,
                         },
                         friday: {
                             isOpen: true,
                             isSecondTimeRange: true,
-                            startHour: "",
-                            endHour: "",
-                            startHour2: "",
-                            endHour2: "",
+                            startHour: null,
+                            endHour: null,
+                            startHour2: null,
+                            endHour2: null,
                         },
                         saturday: {
                             isOpen: true,
                             isSecondTimeRange: true,
-                            startHour: "",
-                            endHour: "",
-                            startHour2: "",
-                            endHour2: "",
+                            startHour: null,
+                            endHour: null,
+                            startHour2: null,
+                            endHour2: null,
                         },
                         sunday: {
                             isOpen: true,
                             isSecondTimeRange: true,
-                            startHour: "",
-                            endHour: "",
-                            startHour2: "",
-                            endHour2: "",
+                            startHour: null,
+                            endHour: null,
+                            startHour2: null,
+                            endHour2: null,
                         },
                     },
                     Preferences: {
@@ -147,9 +146,10 @@ router.post('/register/restaurant', async (req: any, res: any) => {
             })
         })
 
-        res.sendStatus(200).json({result, newProfile})
+        res.status(200).json({result, newProfile})
 
     } catch (e) {
+        console.log(e)
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             if (e.code === 'P2002') {
                 console.log(
@@ -157,7 +157,7 @@ router.post('/register/restaurant', async (req: any, res: any) => {
                 )
             }
         }
-        res.sendStatus(400).json(e)
+        res.status(400).json(e)
     } finally {
         await prisma.$disconnect()
     }
@@ -167,33 +167,32 @@ router.post('/register/restaurant', async (req: any, res: any) => {
 router.post('/register/client', async (req: any, res: any) => {
     try {
         let newProfile;
-
         const result = await prisma.users.create({
             data: {
-                "email": req.body.email,
-                "Password": bcrypt.hashSync(req.body.password, 8),
+                "email": req.body.data.email,
+                "Password": bcrypt.hashSync(req.body.data.password, 8),
                 "fk_role": 5
             }
         }).then(async function (r) {
             newProfile = await prisma.clients.create({
                 data: {
-                    Lastname: req.body.lastname,
-                    Firstname: req.body.name,
-                    Phone: req.body.phone,
+                    Lastname: req.body.data.lastname,
+                    Firstname: req.body.data.name,
+                    Phone: req.body.data.phone,
                     fk_user: r.id,
                     Address: {
-                        Number: req.body.Address.Number,
-                        Street: req.body.Address.Street,
-                        Town: req.body.Address.Town,
-                        Code: req.body.Address.Code
+                        Number: req.body.data.address.number,
+                        Street: req.body.data.address.street,
+                        Town: req.body.data.address.town,
+                        Code: req.body.data.address.code
                     },
                 }
             })
+            res.status(200).json({result, newProfile})
         })
 
-        res.sendStatus(200).json({result, newProfile})
-
     } catch (e) {
+        console.log(e)
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             // The .code property can be accessed in a type-safe manner
             if (e.code === 'P2002') {
@@ -202,7 +201,9 @@ router.post('/register/client', async (req: any, res: any) => {
                 )
             }
         }
-        res.sendStatus(400).json(e)
+        res.status(400).json({
+            message: e,
+        })
     } finally {
         await prisma.$disconnect()
     }
@@ -214,33 +215,30 @@ router.post('/register/delivery', async (req: any, res: any) => {
 
         const result = await prisma.users.create({
             data: {
-                "email": req.body.email,
-                "Password": bcrypt.hashSync(req.body.password, 8),
+                "email": req.body.data.email,
+                "Password": bcrypt.hashSync(req.body.data.password, 8),
                 "fk_role": 4
             }
         }).then(async function (r) {
             newProfile = await prisma.livreurs.create({
                 data: {
-                    Lastname: req.body.Lastname,
-                    Firstname: req.body.Firstname,
-                    Phone: req.body.Phone,
+                    Lastname: req.body.data.lastname,
+                    Firstname: req.body.data.firstname,
+                    Phone: req.body.data.phone,
                     fk_user: r.id,
-                    ProfileImg: req.body.ProfileImg,
+                    ProfileImg: req.body.data.profileImg,
                     Open_to_work: false,
                     Free: true,
                     AccountName: "",
-                    IBAN: req.body.IBAN,
+                    IBAN: req.body.data.iban,
                 }
             })
         })
 
-        res.json({
-            status: 200,
-            result,
-            newProfile
-        })
+        res.status(200).json({result, newProfile})
 
     } catch (e) {
+        console.log(e)
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             // The .code property can be accessed in a type-safe manner
             if (e.code === 'P2002') {
@@ -249,7 +247,7 @@ router.post('/register/delivery', async (req: any, res: any) => {
                 )
             }
         }
-        res.sendStatus(400).json(e)
+        res.status(400).json(e)
     } finally {
         await prisma.$disconnect()
     }

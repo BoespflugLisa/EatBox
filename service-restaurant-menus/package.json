@@ -1,7 +1,7 @@
 {
-  "name": "service-restaurateurs",
+  "name": "service-restaurant-menus",
   "version": "1.0.0",
-  "description": "EatBox restaurant micro service",
+  "description": "EatBox menus restaurant micro service",
   "main": "index.js",
   "scripts": {
     "watch": "nodemon --ext *",

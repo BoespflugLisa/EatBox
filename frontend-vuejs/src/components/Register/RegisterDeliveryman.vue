@@ -47,7 +47,7 @@
                                         <validation-provider name="photo de profil" rules="required"
                                                              v-slot="{ errors, validated }">
                                             <v-file-input
-                                                show-size v-model="ProfileImg"
+                                                show-size v-model="profileImg"
                                                 truncate-length="15"
                                                 prepend-icon="mdi-image"
                                                 label="Photo de profil"
@@ -110,7 +110,7 @@
                                             text
                                             :disabled="invalid || !validated"
                                             v-on:click="register">
-                                            Register
+                                            S'inscrire
                                         </v-btn>
                                     </v-card-actions>
                                 </v-card>
@@ -159,24 +159,24 @@ export default class RegisterComponent extends Vue {
     }
 
 
-    ProfileImg = null
+    profileImg = null
     resultProfileImg: ArrayBuffer | string | null = null
 
 
     uploadImg() {
         const reader = new FileReader();
-        if (this.ProfileImg !== null) {
+        if (this.profileImg !== null) {
             reader.onloadend = () => {
-                this.form.ProfileImg = reader.result;
+                this.form.profileImg = reader.result;
             }
-            reader.readAsDataURL(this.ProfileImg);
+            reader.readAsDataURL(this.profileImg);
         } else {
-            this.form.ProfileImg = null;
+            this.form.profileImg = null;
         }
     }
 
     form = {
-        ProfileImg: this.resultProfileImg,
+        profileImg: this.resultProfileImg,
         email: "",
         password: "",
         name: "",
@@ -192,18 +192,14 @@ export default class RegisterComponent extends Vue {
         this.loading = true
         this.$refs.obsForm.validate().then(async success => {
             if (success) {
-                try {
-                    await registerUser(this.form)
-                        .then(r => {
-                            this.loading = false
-                            this.$router.go(0)
-                        })
-
-                } catch (err: any) {
+                this.$axios.post("/auth/register/delivery", {data: this.form}).then(() => {
+                    this.loading = false;
+                    this.$router.go(0);
+                }).catch(err => {
                     this.loading = false
                     this.ReturnError = true;
                     this.error_login = err.response.data.message
-                }
+                })
             }
         })
         this.loading = false
