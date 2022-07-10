@@ -8,7 +8,7 @@ const AuthRoutes = [
             max: 5
         },
         proxy: {
-            target: "http://localhost:3036/auth/",
+            target: "http://localhost:3040/auth/",
             changeOrigin: true,
             pathRewrite: {
                 [`^/auth`]: '',
