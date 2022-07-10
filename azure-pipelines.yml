@@ -22,7 +22,7 @@ steps:
 - task: Npm@1
   inputs:
     command: 'custom'
-    customCommand: 'run serve'
+    customCommand: 'run build'
     workingDir: 'frontend-vuejs'
     verbose: true
   continueOnError: true
