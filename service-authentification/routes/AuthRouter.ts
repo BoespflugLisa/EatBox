@@ -12,6 +12,9 @@ import {PrismaClient, Prisma} from "@prisma/client"
 
 const prisma = new PrismaClient()
 
+const salt = bcrypt.genSaltSync();
+
+
 
 router.post('/register/developer', async (req: any, res: any) => {
     try {
@@ -19,7 +22,7 @@ router.post('/register/developer', async (req: any, res: any) => {
         const result = await prisma.users.create({
             data: {
                 "email": req.body.data.email,
-                "Password": bcrypt.hashSync(req.body.data.password, 8),
+                "Password": bcrypt.hashSync(req.body.data.password, salt),
                 "fk_role": 6
             }
         }).then(async function (r) {
@@ -57,7 +60,7 @@ router.post('/register/restaurant', async (req: any, res: any) => {
         const result = await prisma.users.create({
             data: {
                 "email": req.body.data.email,
-                "Password": bcrypt.hashSync(req.body.data.password, 8),
+                "Password": bcrypt.hashSync(req.body.data.password, salt),
                 "fk_role": 3
             }
         }).then(async function (r) {
@@ -170,7 +173,7 @@ router.post('/register/client', async (req: any, res: any) => {
         const result = await prisma.users.create({
             data: {
                 "email": req.body.data.email,
-                "Password": bcrypt.hashSync(req.body.data.password, 8),
+                "Password": bcrypt.hashSync(req.body.data.password, salt),
                 "fk_role": 5
             }
         }).then(async function (r) {
@@ -216,14 +219,14 @@ router.post('/register/delivery', async (req: any, res: any) => {
         const result = await prisma.users.create({
             data: {
                 "email": req.body.data.email,
-                "Password": bcrypt.hashSync(req.body.data.password, 8),
+                "Password": bcrypt.hashSync(req.body.data.password, salt),
                 "fk_role": 4
             }
         }).then(async function (r) {
             newProfile = await prisma.livreurs.create({
                 data: {
                     Lastname: req.body.data.lastname,
-                    Firstname: req.body.data.firstname,
+                    Firstname: req.body.data.name,
                     Phone: req.body.data.phone,
                     fk_user: r.id,
                     ProfileImg: req.body.data.profileImg,
@@ -238,7 +241,7 @@ router.post('/register/delivery', async (req: any, res: any) => {
         res.status(200).json({result, newProfile})
 
     } catch (e) {
-        console.log(e)
+        //console.log(e)
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             // The .code property can be accessed in a type-safe manner
             if (e.code === 'P2002') {

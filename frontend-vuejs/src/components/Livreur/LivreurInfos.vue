@@ -141,7 +141,7 @@
         </validation-observer>
 
         <h3 class="mt-3 mb-3">Adresse mail</h3>
-        <p>{{ deliverymanInfos.belongs_to.Email }}</p>
+        <p>{{ deliverymanInfos.user.email }}</p>
 
 
         <v-divider class="mt-4 mb-4"/>
@@ -265,10 +265,9 @@ export default class LivreurInfos extends Vue {
         Firstname: "",
         Lastname: "",
         Phone: "",
-        belongs_to: {
-            Email: ""
+        user: {
+            email: ""
         },
-        Email: "",
         AccountName: "",
         IBAN: ""
     }
@@ -365,8 +364,17 @@ export default class LivreurInfos extends Vue {
     }
 
     updateDeliveryman() {
-        this.$axios.put("/deliverymans/" + this.deliverymanId, {data: this.deliverymanInfos}).then(() => {
-            this.$refs.snack.openSnackbar("Mise à jour efféctué avec succès", "success");
+        this.$axios.put("/users/deliverymen/update/" + this.deliverymanId, {
+            data: {
+                Lastname: this.deliverymanInfos.Lastname,
+                Firstname: this.deliverymanInfos.Firstname,
+                AccountName: this.deliverymanInfos.AccountName,
+                Phone: this.deliverymanInfos.Phone,
+                IBAN: this.deliverymanInfos.IBAN,
+                ProfileImg: this.deliverymanInfos.ProfileImg,
+            }
+        }).then(() => {
+            this.$refs.snack.openSnackbar("Mise à jour effectué avec succès", "success");
         }).catch(() => {
             this.$refs.snack.openSnackbar("Erreur lors de la mise à jour", "error");
         }).finally(() => {
@@ -386,19 +394,10 @@ export default class LivreurInfos extends Vue {
     }
 
     deleteAccount() {
-        this.$axios.delete("/deliverymans/" + this.$cookies.get('user_id')).then(() => {
-            this.$axios_login.delete('/' + this.$cookies.get('_id')).then(() => {
-                this.$axios.post("/auth/logout", {
-                    token : this.$cookies.get('token'),
-                    id : this.$cookies.get('user_id'),
-
-                }).then(r => {
-                    logoutUser()
-                })
-
-                this.$router.push('/connexion')
-            })
+        this.$axios.delete("/users/deliverymen/delete/" + this.$cookies.get('user_id')).then(r => {
+            logoutUser()
         })
+        this.$router.push('/connexion')
     }
 
 }

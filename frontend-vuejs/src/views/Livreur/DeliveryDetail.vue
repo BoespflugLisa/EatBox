@@ -156,6 +156,7 @@ export default {
                         this.numTel = responseClient.data.client.Phone;
                     });
                 })
+
         },
 
         finishDelivery() {
@@ -171,9 +172,11 @@ export default {
                     }
                 })
             })
-            this.$axios.get('/deliverymans/' + this.$cookies.get('user_id')).then((response) => {
-                response.data.deliveryman.Free = true;
-                this.$axios.put("/deliverymans/" + this.$cookies.get('user_id'), {data: response.data.deliveryman})
+            this.$axios.get('/users/deliverymen/' + this.$cookies.get('user_id')).then((response) => {
+                response.data.livreur.Free = true;
+                this.$axios.put("/users/deliverymen/update/" + this.$cookies.get('user_id'), {data: {
+                    Free: response.data.livreur.Free,
+                }})
             })
         },
 

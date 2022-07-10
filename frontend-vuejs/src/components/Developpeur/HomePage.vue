@@ -52,7 +52,7 @@
         </validation-observer>
 
         <h3 class="mt-3 mb-3">Adresse mail</h3>
-        <p>{{ devInfos.belongs_to.Email }}</p>
+        <p>{{ devInfos.user.email }}</p>
 
         <v-divider class="mt-4 mb-4"/>
 
@@ -117,11 +117,12 @@ export default class HomePage extends Vue {
     }
 
     devInfos = {
-        _id: "",
+        id: "",
         Firstname: "",
         Lastname: "",
-        belongs_to: {
-            Mail: "",
+        user: {
+            email: "",
+            id: "",
         }
     }
 
@@ -137,8 +138,10 @@ export default class HomePage extends Vue {
     }
 
     getData() {
-        this.$axios.get('/developers/' + this.$cookies.get('user_id')).then((response) => {
+        this.$axios.get('/users/developers/' + this.$cookies.get('user_id')).then((response) => {
+            console.log(response.data.developer)
             this.devInfos = response.data.developer;
+            console.log(this.devInfos)
         })
     }
 
@@ -153,7 +156,7 @@ export default class HomePage extends Vue {
             if (success) {
                 this.devInfos.Lastname = this.editedLastname;
                 this.devInfos.Firstname = this.editedFirstname;
-                this.$axios.put("/developers/" + this.devInfos._id, {data: this.devInfos}).then(() => {
+                this.$axios.put("/users/developers/update/" + this.devInfos.id, {data: this.devInfos}).then(() => {
                     this.$refs.snack.openSnackbar("Mise à jour efféctué avec succès", "success");
                 }).catch(() => {
                     this.$refs.snack.openSnackbar("Erreur lors de la mise à jour", "error");
@@ -170,19 +173,11 @@ export default class HomePage extends Vue {
     }
 
     deleteAccount() {
-        this.$axios.delete("/developers/" + this.$cookies.get('user_id')).then(() => {
-            this.$axios_login.delete('/' + this.$cookies.get('_id')).then(() => {
-                this.$axios.post("/auth/logout", {
-                        token : this.$cookies.get('token'),
-                        id : this.$cookies.get('user_id'),
-
-                    }).then(r => {
-                        logoutUser()
-                    })
-
-                this.$router.push('/connexion')
-            })
+        this.$axios.delete("/users/developers/delete/" + this.$cookies.get('user_id')).then(r => {
+            logoutUser()
         })
+
+        this.$router.push('/connexion')
     }
 }
 </script>

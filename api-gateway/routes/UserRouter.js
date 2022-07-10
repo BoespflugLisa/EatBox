@@ -31,6 +31,38 @@ const UserRoutes = [
             },
         }
     },
+    {
+        url: '/users/developers',
+        auth: false,
+        creditCheck: false,
+        rateLimit: {
+            windowMs: 15 * 60 * 1000,
+            max: 5
+        },
+        proxy: {
+            target: "http://localhost:3039/users/developers/",
+            changeOrigin: true,
+            pathRewrite: {
+                [`^/users/developers`]: '',
+            },
+        }
+    },
+    {
+        url: '/users/deliverymen',
+        auth: false,
+        creditCheck: false,
+        rateLimit: {
+            windowMs: 15 * 60 * 1000,
+            max: 5
+        },
+        proxy: {
+            target: "http://localhost:3040/users/deliverymen/",
+            changeOrigin: true,
+            pathRewrite: {
+                [`^/users/deliverymen`]: '',
+            },
+        }
+    }
 
 ];
 

@@ -49,10 +49,10 @@ export default class ArticlesEtMenus extends Vue {
     }
 
     getData() {
-        this.$axios.get("/deliverymans/" + this.deliverymanId)
+        this.$axios.get("/users/deliverymen/" + this.deliverymanId)
             .then(response => {
-                this.deliveryman = response.data.deliveryman
-                this.$refs.infos.getData(response.data.deliveryman, this.deliverymanId)
+                this.deliveryman = response.data.livreur
+                this.$refs.infos.getData(response.data.livreur, this.deliverymanId)
             })
     }
 }
