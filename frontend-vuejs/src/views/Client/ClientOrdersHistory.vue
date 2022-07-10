@@ -71,11 +71,10 @@ export default class ClientOrdersHistory extends Vue {
             headers: {
                 'Authorization': `Bearer ${access_token}`,
             }
-        })
-            .then(response => {
+        }).then(response => {
                 const allFinishedOrders = response.data.ordersOver
                 allFinishedOrders.find(orderF => {
-                    if (orderF.Client._id === clientId) {
+                    if (orderF.Client === clientId) {
                         this.ordersFinished.push(orderF);
                     }
                 })
