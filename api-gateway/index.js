@@ -4,6 +4,7 @@ const cors = require("cors");
 const {ROUTES} = require("./routes.js")
 
 const {setupLogging} = require("./logging");
+const {setupAuth} = require("./auth")
 const {setupProxies} = require("./proxy");
 
 const app = express()
@@ -25,6 +26,7 @@ app.use(cors({
 }));
 
 setupLogging(app);
+/*setupAuth(app, ROUTES);*/
 setupProxies(app, ROUTES);
 
 app.listen(port, () => {

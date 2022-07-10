@@ -80,7 +80,7 @@ model services {
 model token {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @default(now())
   value     String?  @unique(map: "Token_value_key")
   userId    Int      @unique(map: "Token_userId_key")
   users     users    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Token_userId_fkey")
@@ -91,7 +91,7 @@ model users {
   email       String       @unique(map: "Users_email_key")
   Password    String
   fk_role     Int
-  roles       roles        @relation(fields: [fk_role], references: [id], map: "Users_fk_role_fkey")
+  role       roles        @relation(fields: [fk_role], references: [id], map: "Users_fk_role_fkey")
   clients     clients?
   developers  developers?
   livreurs    livreurs?
