@@ -54,6 +54,7 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import {setAuthToken, setRole, setUser} from '../utils/auth'
+import axios from "axios";
 
 
 @Component({

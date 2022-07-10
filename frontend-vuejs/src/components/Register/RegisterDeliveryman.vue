@@ -125,7 +125,6 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import {registerUser} from "../../utils/auth";
 import {extend, ValidationObserver, ValidationProvider} from "vee-validate";
 import {required, email, min} from 'vee-validate/dist/rules';
 

@@ -210,7 +210,7 @@ export default class App extends Vue {
             let access_token = this.$cookies.get('token')
             this.$axios.get("/notifications/userCount/" + this.$cookies.get('user_id'), {
                 headers: {
-                    'Authorization': `token ${access_token}`
+                    'Authorization': `Bearer ${access_token}`,
                 }
             }).then(response => {
                 this.notifCount = response.data.count;

@@ -94,7 +94,7 @@ export default class RestaurateurNotification extends Vue {
         this.deliveryman = [];
         this.$axios.get("/notifications/user/" + this.userId, {
             headers: {
-                'Authorization': `token ${access_token}`
+                'Authorization': `Bearer ${access_token}`
             }
         }).then(response => {
             response.data.notifications.forEach(notification => {

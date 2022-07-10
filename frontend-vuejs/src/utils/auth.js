@@ -3,53 +3,12 @@ import axios from 'axios'
 import store from '@/store/index';
 import Vue from 'vue'
 
-const REST_ENDPOINT = 'http://localhost:3032/'
-
-export function registerUser(form) {
-    // eslint-disable-next-line no-async-promise-executor
-    return new Promise(async (resolve, reject) => {
-        try {
-            let res = await axios({
-                url: `${REST_ENDPOINT}register`,
-                method: 'POST',
-                data: {
-                    email: form.email,
-                    password: form.password,
-                    type: form.type,
-                    name: form.name,
-                    lastname: form.lastname,
-                    legal: form.legal,
-                    role: form.role,
-                    phone: form.phone,
-                    CoverImg : form.CoverImg,
-                    ProfileImg : form.ProfileImg,
-                    address: form.address,
-                    iban: form.iban,
-                }
-            })
-
-            /*setAuthToken(res.data.auth, res.data.token)
-            setRole(res.data.user.Role)
-            setUser({
-                id: res.data.user._id,
-                restaurant: res.data.user.restaurant,
-                client: res.data.user.client,
-                livreur: res.data.user.livreur
-            })*/
-            resolve()
-        } catch (err) {
-            console.error('Erreur lors de l\'inscription: ', err)
-            reject(err)
-        }
-    })
-}
 
 export function logoutUser() {
     clearAuthToken()
 }
 
 export function setAuthToken(auth, token) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
     store.commit('changeState', [auth, token])
 
     Vue.$cookies.set('auth', auth, getTokenExpirationDate(token)+'s')

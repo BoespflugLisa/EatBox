@@ -91,8 +91,7 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import {registerUser} from "../../utils/auth";
-import {extend, ValidationObserver, ValidationProvider} from "vee-validate";
+import {ValidationObserver, ValidationProvider} from "vee-validate";
 
 @Component({
     components: {

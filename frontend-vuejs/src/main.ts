@@ -9,18 +9,17 @@ import "./plugins/vee-validate"
 
 import './assets/CSS/main.scss'
 
-Vue.use(VueCookies, {expire : '1d'});
+Vue.use(VueCookies, {expire: '1d'});
 
 Vue.config.productionTip = false
 
 const axios_gateway = axios.create({
-    baseURL:'http://localhost:3000',
+    baseURL: 'http://localhost:3000',
 });
 
 const axios_login = axios.create({
-    baseURL:'http://localhost:3032',
+    baseURL: 'http://localhost:3032',
 });
-
 
 
 Vue.prototype.$axios = axios_gateway;

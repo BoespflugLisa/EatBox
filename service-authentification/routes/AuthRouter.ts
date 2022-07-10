@@ -414,7 +414,7 @@ router.get('/verify/:token', async (req, res) => {
                     }
                 })
             } else {
-                res.status(504).json({
+                res.status(403).json({
                     check: false,
                     message: "Unauthorized access"
                 })
