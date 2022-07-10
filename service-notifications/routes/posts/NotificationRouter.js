@@ -174,7 +174,7 @@ router.put("/:id", async (req, res) => {
 router.put("/user/:id/readAll", async (req, res) => {
     try {
         NotificationModel.updateMany({
-            belong_to: new mongoose.Types.ObjectId(req.params.id),
+            belong_to: req.params.id,
             Read: false
         }, {
             $set: {Read: true}
