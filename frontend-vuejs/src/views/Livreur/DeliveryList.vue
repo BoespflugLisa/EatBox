@@ -32,7 +32,7 @@
                             </v-card-title>
                             <v-card-text>
                                 <p class="font-16">{{ formatTime(order.CheckTime.Created_at) }}</p>
-                                <p>
+                                <p v-if="order.Client.Address">
                                     Adresse client :
                                     {{
                                         order.Client.Address.Number + ' ' +
@@ -129,13 +129,22 @@ export default class DeliveryList extends Vue {
     async getData() {
         let access_token = this.$cookies.get('token');
         if (this.deliveryman.Open_to_work) {
-            await this.$axios.get(`orders`, {
+            await this.$axios.get(`/orders`, {
                 headers: {
                     'Authorization': `Bearer ${access_token}`,
                 }
             })
                 .then(response => {
                     this.orders = response.data.ordersToAcceptByDeliveryman;
+                    this.orders.forEach((order: any) => {
+                        this.$axios.get('/users/clients/' + order.Client, {
+                            headers: {
+                                'Authorization': `Bearer ${access_token}`,
+                            }
+                        }).then(response => {
+                            order.Client = response.data.client;
+                        })
+                    })
                     this.orders.forEach(() => this.dialogDelete.push(false));
                 })
         }
@@ -156,14 +165,13 @@ export default class DeliveryList extends Vue {
     showDetails(order) {
         order.State = 0;
         order.Deliveryman_token = this.deliverymanId;
+        order.Client = order.Client.id;
 
         let access_token = this.$cookies.get('token');
         this.$axios.put(`orders/` + order._id, {data: order}, {
             headers: {
                 'Authorization': `Bearer ${access_token}`,
             }
-        }).then(response => {
-            response.data;
         })
 
         this.deliveryman.Free = false;
