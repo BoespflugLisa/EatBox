@@ -5,7 +5,7 @@ import bodyParser from 'body-parser'
 const app = express()
 
 
-const port = 3040;
+const port = 3036;
 
 
 app.use(cors());

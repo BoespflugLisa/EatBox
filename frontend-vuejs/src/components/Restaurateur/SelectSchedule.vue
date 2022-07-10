@@ -277,68 +277,68 @@ export default class SelectSchedule extends Vue {
         monday: {
             isOpen: false,
             isSecondTimeRange: false,
-            startHour: null,
-            endHour: null,
-            startHour2: null,
-            endHour2: null,
+            startHour: "",
+            endHour: "",
+            startHour2: "",
+            endHour2: "",
         },
         tuesday: {
             isOpen: false,
             isSecondTimeRange: false,
-            startHour: null,
-            endHour: null,
-            startHour2: null,
-            endHour2: null,
+            startHour: "",
+            endHour: "",
+            startHour2: "",
+            endHour2: "",
         },
         wednesday: {
             isOpen: false,
             isSecondTimeRange: false,
-            startHour: null,
-            endHour: null,
-            startHour2: null,
-            endHour2: null,
+            startHour: "",
+            endHour: "",
+            startHour2: "",
+            endHour2: "",
         },
         thursday: {
             isOpen: false,
             isSecondTimeRange: false,
-            startHour: null,
-            endHour: null,
-            startHour2: null,
-            endHour2: null,
+            startHour: "",
+            endHour: "",
+            startHour2: "",
+            endHour2: "",
         },
         friday: {
             isOpen: false,
             isSecondTimeRange: false,
-            startHour: null,
-            endHour: null,
-            startHour2: null,
-            endHour2: null,
+            startHour: "",
+            endHour: "",
+            startHour2: "",
+            endHour2: "",
         },
         saturday: {
             isOpen: false,
             isSecondTimeRange: false,
-            startHour: null,
-            endHour: null,
-            startHour2: null,
-            endHour2: null,
+            startHour: "",
+            endHour: "",
+            startHour2: "",
+            endHour2: "",
         },
         sunday: {
             isOpen: false,
             isSecondTimeRange: false,
-            startHour: null,
-            endHour: null,
-            startHour2: null,
-            endHour2: null,
+            startHour: "",
+            endHour: "",
+            startHour2: "",
+            endHour2: "",
         }
     }
 
     schedule = {
         isOpen: false,
         isSecondTimeRange: false,
-        startHour: null,
-        endHour: null,
-        startHour2: null,
-        endHour2: null,
+        startHour: "",
+        endHour: "",
+        startHour2: "",
+        endHour2: "",
     }
 
     menuStart = false
@@ -376,9 +376,9 @@ export default class SelectSchedule extends Vue {
 
         if (!this.schedule.isOpen) {
             this.formIsValid = true;
-        } else if (!this.schedule.isSecondTimeRange && this.schedule.startHour !== null && this.schedule.endHour !== null) {
+        } else if (!this.schedule.isSecondTimeRange && this.schedule.startHour !== "" && this.schedule.endHour !== "") {
             this.formIsValid = true;
-        } else if (this.schedule.startHour !== null && this.schedule.endHour !== null && this.schedule.startHour2 !== null && this.schedule.endHour2 !== null) {
+        } else if (this.schedule.startHour !== "" && this.schedule.endHour !== "" && this.schedule.startHour2 !== "" && this.schedule.endHour2 !== "") {
             this.formIsValid = true;
         } else {
             this.formIsValid = false;
