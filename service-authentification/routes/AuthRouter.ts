@@ -416,7 +416,7 @@ router.get('/verify/:id/:token', async (req, res) => {
             }
         })
 
-    } catch(e){
+    } catch(e: any){
         console.log(e)
         res.status(501).json({
             check : false,

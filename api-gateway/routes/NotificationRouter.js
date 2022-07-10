@@ -1,7 +1,7 @@
 const NotificationRoutes = [
     {
         url: '/notifications',
-        auth: false,
+        auth: true,
         creditCheck: false,
         rateLimit: {
             windowMs: 15 * 60 * 1000,
