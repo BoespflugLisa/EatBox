@@ -311,44 +311,44 @@ router.post('/login', async (req, res) => {
                         where: {fk_user: user.id},
                         select: {id: true}
                     }).then(r => {
-                        if(!!r){
+                        if (!!r) {
                             return r.id
                         }
                     })
-                break;
+                    break;
 
                 case 4:
                     profileid = await prisma.livreurs.findFirst({
                         where: {fk_user: user.id},
                         select: {id: true}
                     }).then(r => {
-                        if(!!r){
+                        if (!!r) {
                             return r.id
                         }
                     })
-                break;
+                    break;
 
                 case 5:
                     profileid = await prisma.clients.findFirst({
                         where: {fk_user: user.id},
                         select: {id: true}
                     }).then(r => {
-                        if(!!r){
+                        if (!!r) {
                             return r.id
                         }
                     })
-                break;
+                    break;
 
                 case 6:
                     profileid = await prisma.developers.findFirst({
                         where: {fk_user: user.id},
                         select: {id: true}
                     }).then(r => {
-                        if(!!r){
+                        if (!!r) {
                             return r.id
                         }
                     })
-                break;
+                    break;
             }
 
             res.status(200).json({
@@ -395,32 +395,32 @@ router.post('/logout', async (req, res) => {
     }
 });
 
-router.get('/verify/:id/:token', async (req, res) => {
+router.get('/verify/:token', async (req, res) => {
     try {
         await prisma.token.findUnique({
-            where : {
-                userId : +req.params.id
+            where: {
+                value: req.params.token
             }
         }).then(t => {
-            if(!!t){
-                jwt.verify(req.params.token, process.env.SECRET, function(err: any, decoded: any){
-                    if(err){
-                        throw err
-                    } else {
+            if (!!t) {
+                jwt.verify(req.params.token, process.env.SECRET, function (err: any, decoded: any) {
+                    if (err) {
+                        throw "Unauthorized access"
+                    } else if (decoded.id === t.userId) {
                         res.status(200).json({
-                            check : true,
+                            check: true,
                             decoded
                         })
                     }
                 })
             }
         })
-
-    } catch(e){
+        throw "Unauthorized access"
+    } catch (e) {
         console.log(e)
         res.status(501).json({
-            check : false,
-            message : e.message
+            check: false,
+            message: e
         })
     }
 })
