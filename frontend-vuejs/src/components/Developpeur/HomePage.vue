@@ -173,19 +173,11 @@ export default class HomePage extends Vue {
     }
 
     deleteAccount() {
-        this.$axios.delete("/users/developers/delete/" + this.$cookies.get('user_id')).then(() => {
-            this.$axios_login.delete('/' + this.$cookies.get('_id')).then(() => {
-                this.$axios.post("/auth/logout", {
-                        token : this.$cookies.get('token'),
-                        id : this.$cookies.get('user_id'),
-
-                    }).then(r => {
-                        logoutUser()
-                    })
-
-                this.$router.push('/connexion')
-            })
+        this.$axios.delete("/users/developers/delete/" + this.$cookies.get('user_id')).then(r => {
+            logoutUser()
         })
+
+        this.$router.push('/connexion')
     }
 }
 </script>

@@ -364,14 +364,16 @@ export default class LivreurInfos extends Vue {
     }
 
     updateDeliveryman() {
-        this.$axios.put("/users/deliverymen/update/" + this.deliverymanId, {data: {
+        this.$axios.put("/users/deliverymen/update/" + this.deliverymanId, {
+            data: {
                 Lastname: this.deliverymanInfos.Lastname,
                 Firstname: this.deliverymanInfos.Firstname,
                 AccountName: this.deliverymanInfos.AccountName,
                 Phone: this.deliverymanInfos.Phone,
                 IBAN: this.deliverymanInfos.IBAN,
                 ProfileImg: this.deliverymanInfos.ProfileImg,
-            }}).then(() => {
+            }
+        }).then(() => {
             this.$refs.snack.openSnackbar("Mise à jour effectué avec succès", "success");
         }).catch(() => {
             this.$refs.snack.openSnackbar("Erreur lors de la mise à jour", "error");
@@ -392,19 +394,10 @@ export default class LivreurInfos extends Vue {
     }
 
     deleteAccount() {
-        this.$axios.delete("/users/deliverymen/delete/" + this.$cookies.get('user_id')).then(() => {
-            this.$axios_login.delete('/' + this.$cookies.get('_id')).then(() => {
-                this.$axios.post("/auth/logout", {
-                    token : this.$cookies.get('token'),
-                    id : this.$cookies.get('user_id'),
-
-                }).then(r => {
-                    logoutUser()
-                })
-
-                this.$router.push('/connexion')
-            })
+        this.$axios.delete("/users/deliverymen/delete/" + this.$cookies.get('user_id')).then(r => {
+            logoutUser()
         })
+        this.$router.push('/connexion')
     }
 
 }
