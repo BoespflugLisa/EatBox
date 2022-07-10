@@ -10,10 +10,7 @@ pool:
   vmImage: windows-latest
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '18.x'
-  displayName: 'Install Node.js'
+
 
 - task: Npm@1
   displayName: 'npm install'
