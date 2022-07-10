@@ -26,7 +26,7 @@ app.use(cors({
 }));
 
 setupLogging(app);
-setupAuth(app, ROUTES);
+/*setupAuth(app, ROUTES);*/
 setupProxies(app, ROUTES);
 
 app.listen(port, () => {
