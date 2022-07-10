@@ -185,9 +185,6 @@ router.ws('/socket/:type/:id', async function (ws, req) {
                     break;
 
             }
-            if (ws.id === order.Client.toString() || ws.id === order.Restaurant.toString() || ws.id === order.Deliveryman_token || ws.type === "Commercial") {
-                ws.send("Order update");
-            }
         }
     })
 });
