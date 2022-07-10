@@ -312,7 +312,7 @@ export default class OrderDetails extends Vue {
         this.order.Payment = "Canceled";
         this.order.CheckTime.Cancelled_at = Date.now()
         let access_token = this.$cookies.get('token');
-        this.$axios.post("/notifications/" + this.order.Restaurant._id, {
+        this.$axios.post("/notifications/" + this.order.Restaurant, {
             data: {
                 action: "CanceledOrder",
                 Types: {

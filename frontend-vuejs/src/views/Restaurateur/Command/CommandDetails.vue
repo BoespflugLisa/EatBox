@@ -271,7 +271,7 @@ export default class CommandsDetails extends Vue {
             response.data;
         })
 
-        this.$axios.post("/notifications/" + this.order.Client._id, {
+        this.$axios.post("/notifications/" + this.order.Client, {
             data: {
                 action: "CanceledOrder",
                 Types: {
@@ -314,7 +314,7 @@ export default class CommandsDetails extends Vue {
             response.data;
         })
 
-        this.$axios.post("/notifications/" + this.order.Client._id, {
+        this.$axios.post("/notifications/" + this.order.Client, {
             data: {
                 action: "OrderAcceptedRestaurant",
                 Types: {
@@ -355,7 +355,7 @@ export default class CommandsDetails extends Vue {
             response.data;
         })
 
-        this.$axios.post("/notifications/" + this.order.Client._id, {
+        this.$axios.post("/notifications/" + this.order.Client, {
             data: {
                 action: "DeliverymanWillTakeOrder",
                 Types: {

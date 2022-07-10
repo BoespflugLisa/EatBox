@@ -180,7 +180,7 @@ export default {
                     'Authorization': `Bearer ${access_token}`,
                 }
             }).then(() => {
-                this.$axios.post("/notifications/" + this.order.Client._id, {
+                this.$axios.post("/notifications/" + this.order.Client, {
                     data: {
                         action: "OrderIsFinish",
                         Types: {

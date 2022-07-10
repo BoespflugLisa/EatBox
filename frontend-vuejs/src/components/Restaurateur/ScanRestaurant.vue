@@ -79,7 +79,7 @@ export default class ScanRestaurant extends Vue {
                     'Authorization': `Bearer ${access_token}`,
                 }
             });
-            await this.$axios.post("/notifications/" + this.order.Client._id, {
+            await this.$axios.post("/notifications/" + this.order.Client, {
                 data: {
                     action: "OrderIsComming",
                     Types: {

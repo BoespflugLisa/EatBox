@@ -199,7 +199,7 @@ export default class DeliveryList extends Vue {
                 'Authorization': `Bearer ${access_token}`,
             }
         }).then(() => {
-            this.$axios.post("/notifications/" + order.Client._id, {
+            this.$axios.post("/notifications/" + order.Client, {
                 data: {
                     action: "OrderAcceptedDeliveryman",
                     Types: {
