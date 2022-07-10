@@ -158,7 +158,11 @@ export default class DeliveryList extends Vue {
         })
 
         this.deliveryman.Free = false;
-        this.$axios.put('/deliverymans/' + this.deliverymanId, {data: this.deliveryman});
+        this.$axios.put('/users/deliverymen/update/' + this.deliverymanId, {data:
+                {
+                    Free: this.deliveryman.Free
+                }
+        })
 
         this.$axios.post("/notifications/" + order.Restaurant, {
             data: {
@@ -180,15 +184,12 @@ export default class DeliveryList extends Vue {
             });
         })
 
-
-
-
         this.$router.push({name: 'DeliveryDetail', params: {id: order._id}});
     }
 
     getDeliveryman() {
-        this.$axios.get('/deliverymans/' + this.deliverymanId).then((response) => {
-            this.deliveryman = response.data.deliveryman;
+        this.$axios.get('/users/deliverymen/' + this.deliverymanId).then((response) => {
+            this.deliveryman = response.data.livreur;
             this.getData();
             this.connectOrderWS();
         })
@@ -196,7 +197,11 @@ export default class DeliveryList extends Vue {
 
     setDeliverymanOpen() {
         this.deliveryman.Open_to_work = true;
-        this.$axios.put('/deliverymans/' + this.deliverymanId, {data: this.deliveryman})
+        this.$axios.put('/users/deliverymen/update/' + this.deliverymanId, {data:
+                {
+                    Open_to_work: true
+                }
+        })
             .then(() => {
                 this.getData();
                 this.connectOrderWS();
@@ -206,7 +211,11 @@ export default class DeliveryList extends Vue {
     setDeliverymanNotOpen() {
         this.deliveryman.Open_to_work = false;
         this.orderConnection?.close();
-        this.$axios.put('/deliverymans/' + this.deliverymanId, {data: this.deliveryman})
+        this.$axios.put('/users/deliverymen/update/' + this.deliverymanId, {data:
+                {
+                    Open_to_work: false
+                }
+        })
     }
 
     async connectOrderWS() {

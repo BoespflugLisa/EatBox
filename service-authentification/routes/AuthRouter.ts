@@ -223,15 +223,16 @@ router.post('/register/delivery', async (req: any, res: any) => {
                 "fk_role": 4
             }
         }).then(async function (r) {
+            console.log(req.body.data)
             newProfile = await prisma.livreurs.create({
                 data: {
                     Lastname: req.body.data.lastname,
-                    Firstname: req.body.data.firstname,
+                    Firstname: req.body.data.name,
                     Phone: req.body.data.phone,
                     fk_user: r.id,
                     ProfileImg: req.body.data.profileImg,
                     Open_to_work: false,
-                    Free: true,
+                    Free: false,
                     AccountName: "",
                     IBAN: req.body.data.iban,
                 }
@@ -241,7 +242,7 @@ router.post('/register/delivery', async (req: any, res: any) => {
         res.status(200).json({result, newProfile})
 
     } catch (e) {
-        console.log(e)
+        //console.log(e)
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             // The .code property can be accessed in a type-safe manner
             if (e.code === 'P2002') {
