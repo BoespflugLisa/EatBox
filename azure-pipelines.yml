@@ -15,12 +15,20 @@ steps:
     versionSpec: '18.x'
   displayName: 'Install Node.js'
 
-
-- script: |
-    npm install
-    npm run build
-    inputs:
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
     workingDir: 'frontend-vuejs'
     verbose: true
-  displayName: 'npm install and build'
+  continueOnError: true
+  
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    customCommand: 'run serve'
+    workingDir: 'frontend-vuejs'
+    verbose: true
+  continueOnError: true
+
+
   
