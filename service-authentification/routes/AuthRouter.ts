@@ -413,13 +413,16 @@ router.get('/verify/:token', async (req, res) => {
                         })
                     }
                 })
+            } else {
+                res.status(504).json({
+                    check: false,
+                    message: "Unauthorized access"
+                })
             }
         })
-        throw "Unauthorized access"
     } catch (e) {
         console.log(e)
-        res.status(501).json({
-            check: false,
+        res.status(404).json({
             message: e
         })
     }
