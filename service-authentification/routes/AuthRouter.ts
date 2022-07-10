@@ -395,5 +395,34 @@ router.post('/logout', async (req, res) => {
     }
 });
 
+router.get('/verify/:id/:token', async (req, res) => {
+    try {
+        await prisma.token.findUnique({
+            where : {
+                userId : +req.params.id
+            }
+        }).then(t => {
+            if(!!t){
+                jwt.verify(req.params.token, process.env.SECRET, function(err: any, decoded: any){
+                    if(err){
+                        throw err
+                    } else {
+                        res.status(200).json({
+                            check : true,
+                            decoded
+                        })
+                    }
+                })
+            }
+        })
+
+    } catch(e){
+        console.log(e)
+        res.status(501).json({
+            check : false,
+            message : e.message
+        })
+    }
+})
 
 module.exports = router;
