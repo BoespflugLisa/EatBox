@@ -96,6 +96,7 @@ function clearAuthToken() {
     Vue.$cookies.remove('auth')
     Vue.$cookies.remove('role')
     Vue.$cookies.remove('user_id')
+    Vue.$cookies.remove('_id')
 
     localStorage.clear()
 }

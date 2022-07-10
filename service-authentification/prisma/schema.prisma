@@ -8,25 +8,33 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
-model Roles {
-  id    Int     @id @default(autoincrement())
-  title String
-  user  Users[]
-}
-
-model Clients {
+model clients {
   id        Int     @id @default(autoincrement())
-  fk_user   Int     @unique
+  fk_user   Int     @unique(map: "Clients_fk_user_key")
   Lastname  String
   Firstname String
   Address   Json?
   Phone     String?
-  user      Users   @relation(fields: [fk_user], references: [id])
+  users     users   @relation(fields: [fk_user], references: [id], onDelete: Cascade, map: "Clients_fk_user_fkey")
 }
 
-model Livreurs {
+model components {
+  id        Int    @id @default(autoincrement())
+  name      String
+  downloads Int
+}
+
+model developers {
+  id        Int    @id @default(autoincrement())
+  fk_user   Int    @unique(map: "Developers_fk_user_key")
+  Lastname  String
+  Firstname String
+  users     users  @relation(fields: [fk_user], references: [id], onDelete: Cascade, map: "Developers_fk_user_fkey")
+}
+
+model livreurs {
   id           Int     @id @default(autoincrement())
-  fk_user      Int     @unique
+  fk_user      Int     @unique(map: "Livreurs_fk_user_key")
   Lastname     String
   Firstname    String
   Phone        String
@@ -35,12 +43,12 @@ model Livreurs {
   Free         Boolean
   AccountName  String?
   IBAN         String?
-  user         Users   @relation(fields: [fk_user], references: [id])
+  users        users   @relation(fields: [fk_user], references: [id], onDelete: Cascade, map: "Livreurs_fk_user_fkey")
 }
 
-model Restaurants {
+model restaurants {
   id          Int     @id @default(autoincrement())
-  fk_user     Int     @unique
+  fk_user     Int     @unique(map: "Restaurants_fk_user_key")
   Name        String
   Phone       String?
   Address     Json?
@@ -50,48 +58,16 @@ model Restaurants {
   Legal       Json?
   Preferences Json?
   Sponsors    Json?
-  user        Users   @relation(fields: [fk_user], references: [id])
+  users       users   @relation(fields: [fk_user], references: [id], onDelete: Cascade, map: "Restaurants_fk_user_fkey")
 }
 
-model Developers {
-  id        Int    @id @default(autoincrement())
-  fk_user   Int    @unique
-  Lastname  String
-  Firstname String
-  user      Users  @relation(fields: [fk_user], references: [id])
+model roles {
+  id    Int     @id @default(autoincrement())
+  title String
+  users users[]
 }
 
-model Token {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  value     String?   @unique
-  userId    Int      @unique
-  user      Users    @relation(fields: [userId], references: [id])
-
-}
-
-model Users {
-  id          Int          @id @default(autoincrement())
-  email       String       @unique
-  Password    String
-  fk_role     Int
-  role        Roles        @relation(fields: [fk_role], references: [id])
-  clients     Clients?
-  developers  Developers?
-  deliverymen Livreurs?
-  restaurants Restaurants?
-  tokens      Token[]
-
-}
-
-model Components {
-  id        Int    @id @default(autoincrement())
-  name      String
-  downloads Int
-}
-
-model Services {
+model services {
   id          Int    @id @default(autoincrement())
   name        String
   IP          String
@@ -99,4 +75,28 @@ model Services {
   Port        Int
   URL         String
   Type        String
+}
+
+model token {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  value     String?  @unique(map: "Token_value_key")
+  userId    Int      @unique(map: "Token_userId_key")
+  users     users    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Token_userId_fkey")
+}
+
+model users {
+  id          Int          @id @default(autoincrement())
+  email       String       @unique(map: "Users_email_key")
+  Password    String
+  fk_role     Int
+  roles       roles        @relation(fields: [fk_role], references: [id], map: "Users_fk_role_fkey")
+  clients     clients?
+  developers  developers?
+  livreurs    livreurs?
+  restaurants restaurants?
+  token       token?
+
+  @@index([fk_role], map: "Users_fk_role_fkey")
 }

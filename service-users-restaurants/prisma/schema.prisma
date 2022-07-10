@@ -7,16 +7,15 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Users {
+model users {
   id          Int          @id @default(autoincrement())
-  email       String       @unique
+  email       String       @unique(map: "Users_email_key")
   Password    String
   fk_role     Int
-  restaurants Restaurants[]
-
+  restaurants restaurants?
 }
 
-model Restaurants {
+model restaurants {
   id   Int    @id @default(autoincrement())
   Name String
 
@@ -29,8 +28,8 @@ model Restaurants {
   Preferences Json?
   Sponsors    Json?
 
-  fk_user Int   @unique
-  user    Users @relation(fields: [fk_user], references: [id])
+  fk_user     Int     @unique(map: "Restaurants_fk_user_key")
+  user       users   @relation(fields: [fk_user], references: [id], onDelete: Cascade, map: "Restaurants_fk_user_fkey")
 }
 
 

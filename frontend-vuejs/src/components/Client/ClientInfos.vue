@@ -238,18 +238,10 @@ export default class ClientInfos extends Vue {
     }
 
     deleteAccount() {
-        this.$axios.delete("/users/clients/delete/" + this.$cookies.get('user_id')).then(() => {
-            this.$axios_login.delete('/' + this.$cookies.get('_id')).then(() => {
-                this.$axios.post("/auth/logout", {
-                    token: this.$cookies.get('token'),
-                    id: this.$cookies.get('user_id'),
+        this.$axios.delete("/users/clients/delete/" + this.$cookies.get('user_id')).then(r => {
+            logoutUser()
 
-                }).then(r => {
-                    logoutUser()
-                })
-
-                this.$router.push('/connexion')
-            })
+            this.$router.push('/connexion')
         })
     }
 
