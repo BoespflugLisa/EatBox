@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
 const expressWs = require('express-ws')(app);
-
+const swaggerUi = require("swagger-ui-express"),
+swaggerDocument = require("./swagger.json");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
@@ -21,6 +22,8 @@ db.mongoose.connect(db.url, db.options)
         console.log("Cannot connect to the database!", err);
         process.exit();
     });
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument, {explorer: true}));
 
 
 const MenusRouter = require("./routes/MenuRouter");
