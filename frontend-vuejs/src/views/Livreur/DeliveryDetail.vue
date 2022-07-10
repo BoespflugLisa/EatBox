@@ -137,7 +137,12 @@ export default {
 
     methods: {
         async getData() {
-            await this.$axios.get(`orders/` + this.orderID)
+            let access_token = this.$cookies.get('token');
+            await this.$axios.get(`orders/` + this.orderID, {
+                headers: {
+                    'Authorization': `Bearer ${access_token}`,
+                }
+            })
                 .then(response => {
                     this.order = response.data.order;
                     this.articlesId = response.data.order.Detail.Articles;
@@ -146,12 +151,20 @@ export default {
                     this.commandState = this.states[response.data.order.State];
                     this.idClient = response.data.order.Client;
 
-                    this.$axios.get("/users/restaurants/" + response.data.order.Restaurant).then(responseRestaurant => {
+                    this.$axios.get("/users/restaurants/" + response.data.order.Restaurant, {
+                        headers: {
+                            'Authorization': `Bearer ${access_token}`,
+                        }
+                    }).then(responseRestaurant => {
                         this.restaurantName = responseRestaurant.data.restaurant.Name;
                         this.restaurantAdresse = responseRestaurant.data.restaurant.Address.Number + ' ' + responseRestaurant.data.restaurant.Address.Street + ' , ' + responseRestaurant.data.restaurant.Address.Town + ' , ' + responseRestaurant.data.restaurant.Address.Code;
                     });
 
-                    this.$axios.get('/users/clients/' + this.idClient).then(responseClient => {
+                    this.$axios.get('/users/clients/' + this.idClient, {
+                        headers: {
+                            'Authorization': `Bearer ${access_token}`,
+                        }
+                    }).then(responseClient => {
                         this.myAdresse = responseClient.data.client.Address.Number + ' ' + responseClient.data.client.Address.Street + ' , ' + responseClient.data.client.Address.Town + ' , ' + responseClient.data.client.Address.Code
                         this.numTel = responseClient.data.client.Phone;
                     });
@@ -160,8 +173,13 @@ export default {
         },
 
         finishDelivery() {
+            let access_token = this.$cookies.get('token');
             this.order.State = 4
-            this.$axios.put('orders/' + this.orderID, {data: this.order}).then(() => {
+            this.$axios.put('orders/' + this.orderID, {data: this.order}, {
+                headers: {
+                    'Authorization': `Bearer ${access_token}`,
+                }
+            }).then(() => {
                 this.$axios.post("/notifications/" + this.order.Client._id, {
                     data: {
                         action: "OrderIsFinish",
@@ -170,13 +188,28 @@ export default {
                             Delivery: false,
                         }
                     }
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                    }
                 })
             })
-            this.$axios.get('/users/deliverymen/' + this.$cookies.get('user_id')).then((response) => {
+            this.$axios.get('/users/deliverymen/' + this.$cookies.get('user_id'), {
+                headers: {
+                    'Authorization': `Bearer ${access_token}`,
+                }
+            }).then((response) => {
                 response.data.livreur.Free = true;
-                this.$axios.put("/users/deliverymen/update/" + this.$cookies.get('user_id'), {data: {
-                    Free: response.data.livreur.Free,
-                }})
+                this.$axios.put("/users/deliverymen/update/" + this.$cookies.get('user_id'), {
+                    data:
+                        {
+                            Free: response.data.livreur.Free,
+                        }
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                })
             })
         },
 

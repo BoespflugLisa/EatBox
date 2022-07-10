@@ -44,7 +44,12 @@ export default class DeliverymanSidebar extends Vue {
 
     getCurrentOrder() {
         this.loadingCurrentOrder = true
-        this.$axios.get('/orders/deliverymanCurrentOrder/' + this.$cookies.get('user_id')).then((response) => {
+        let access_token = this.$cookies.get('token');
+        this.$axios.get('/orders/deliverymanCurrentOrder/' + this.$cookies.get('user_id'), {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then((response) => {
             if (response.status === 200) {
                 this.currentOrderId = response.data.order._id;
                 this.loadingCurrentOrder = false

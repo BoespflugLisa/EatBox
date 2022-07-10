@@ -130,6 +130,7 @@ export default class RegisterDev extends Vue {
         this.loading = true
         this.$refs.obsForm.validate().then(async success => {
             if (success) {
+                let access_token = this.$cookies.get('token');
                 this.$axios.post("/auth/register/developer", {data: this.form}).then(() => {
                     this.loading = false;
                     this.$router.go(0);

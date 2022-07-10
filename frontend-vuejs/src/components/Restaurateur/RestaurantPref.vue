@@ -79,7 +79,12 @@ export default class RestaurantPref extends Vue {
         {
             this.loading = true;
             this.restaurantInfos.Preferences = this.editedPreferences;
-            this.$axios.put("/users/restaurants/update/"+this.restaurantId, {data: this.restaurantInfos}).then(() => {
+            let access_token = this.$cookies.get('token');
+            this.$axios.put("/users/restaurants/update/"+this.restaurantId, {data: this.restaurantInfos}, {
+                headers: {
+                    'Authorization': `Bearer ${access_token}`,
+                }
+            }).then(() => {
                 //this.snackbarSuccess = true
                 this.loading = false;
             }).catch(() => {

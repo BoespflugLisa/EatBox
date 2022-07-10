@@ -2,11 +2,6 @@ const NotificationRoutes = [
     {
         url: '/notifications',
         auth: true,
-        creditCheck: false,
-        rateLimit: {
-            windowMs: 15 * 60 * 1000,
-            max: 5
-        },
         proxy: {
             target: "http://localhost:3033/notifications/",
             changeOrigin: true,

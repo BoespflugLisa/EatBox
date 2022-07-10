@@ -364,6 +364,7 @@ export default class LivreurInfos extends Vue {
     }
 
     updateDeliveryman() {
+        let access_token = this.$cookies.get('token');
         this.$axios.put("/users/deliverymen/update/" + this.deliverymanId, {
             data: {
                 Lastname: this.deliverymanInfos.Lastname,
@@ -372,6 +373,10 @@ export default class LivreurInfos extends Vue {
                 Phone: this.deliverymanInfos.Phone,
                 IBAN: this.deliverymanInfos.IBAN,
                 ProfileImg: this.deliverymanInfos.ProfileImg,
+            }
+        }, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
             }
         }).then(() => {
             this.$refs.snack.openSnackbar("Mise à jour effectué avec succès", "success");
@@ -394,7 +399,12 @@ export default class LivreurInfos extends Vue {
     }
 
     deleteAccount() {
-        this.$axios.delete("/users/deliverymen/delete/" + this.$cookies.get('user_id')).then(r => {
+        let access_token = this.$cookies.get('token');
+        this.$axios.delete("/users/deliverymen/delete/" + this.$cookies.get('user_id'), {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then(r => {
             logoutUser()
         })
         this.$router.push('/connexion')

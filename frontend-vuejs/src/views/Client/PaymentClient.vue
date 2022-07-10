@@ -113,11 +113,15 @@ export default class PaymentClient extends Vue {
         this.menusAdded = this.$cookies.get("menus");
         this.articlesAdded = this.$cookies.get("articles");
         this.restaurantID = this.$cookies.get("retaurant_id")
-
+        let access_token = this.$cookies.get('token');
         if (this.menusAdded) {
             const menus = this.menusAdded.split(',');
             menus.forEach(menuId => {
-                this.$axios.get('menus/' + menuId).then(response => {
+                this.$axios.get('menus/' + menuId, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                }).then(response => {
                     this.totalAmount += response.data.menu.Price
                 })
             })
@@ -126,14 +130,22 @@ export default class PaymentClient extends Vue {
         if (this.articlesAdded) {
             const articles = this.articlesAdded.split(',');
             articles.forEach(articleId => {
-                this.$axios.get('articles/' + articleId).then(response => {
+                this.$axios.get('articles/' + articleId, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                }).then(response => {
                     this.totalAmount += response.data.article.Price
                 })
             })
 
         }
 
-        await this.$axios.get('/users/clients/' + this.clientID).then(response => {
+        await this.$axios.get('/users/clients/' + this.clientID, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then(response => {
             this.client = response.data.client;
             this.address = response.data.client.Address.Number + ' ' + response.data.client.Address.Street + ' , '
                 + response.data.client.Address.Town + ' , ' + response.data.client.Address.Code

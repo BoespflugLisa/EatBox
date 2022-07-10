@@ -54,7 +54,12 @@ export default class AccueilClient extends Vue {
 
 
     async mounted() {
-        await this.$axios.get(`/users/restaurants`)
+        let access_token = this.$cookies.get('token');
+        await this.$axios.get(`/users/restaurants`, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        })
           .then(response => {
               this.restaurant = response.data.restaurants;
               //response.data.restaurants.forEach(element => this.restaurant.push(element.Name));

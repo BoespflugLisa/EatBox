@@ -58,7 +58,12 @@ export default class RestaurantInformation extends Vue {
     }
 
     getData() {
-        this.$axios.get('/users/restaurants/' + this.$cookies.get('user_id'))
+        let access_token = this.$cookies.get('token');
+        this.$axios.get('/users/restaurants/' + this.$cookies.get('user_id'), {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        })
             .then(response => {
                 this.restaurant = response.data.restaurant;
                 this.restaurant.Email = response.data.restaurant.user.email;

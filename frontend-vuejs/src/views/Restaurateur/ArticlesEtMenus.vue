@@ -820,8 +820,13 @@ export default class ArticlesEtMenus extends Vue {
     }
 
     getAllCategories() {
+        let access_token = this.$cookies.get('token');
         this.loadingCategory = true;
-        return this.$axios.get(`restaurants/categories/` + this.restaurantId)
+        return this.$axios.get(`restaurants/categories/` + this.restaurantId, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        })
             .then(response => {
                 this.categories = response.data.categorie;
             }).finally(() => {
@@ -830,8 +835,13 @@ export default class ArticlesEtMenus extends Vue {
     }
 
     getAllArticles() {
+        let access_token = this.$cookies.get('token');
         this.loadingArticle = true;
-        return this.$axios.get(`restaurants/articles/` + this.restaurantId)
+        return this.$axios.get(`restaurants/articles/` + this.restaurantId, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        })
             .then(response => {
                 this.articles = response.data.article;
             }).finally(() => {
@@ -840,16 +850,26 @@ export default class ArticlesEtMenus extends Vue {
     }
 
     getAllMenus() {
+        let access_token = this.$cookies.get('token');
         this.loadingMenu = true;
-        return this.$axios.get(`restaurants/menus/` + this.restaurantId)
+        return this.$axios.get(`restaurants/menus/` + this.restaurantId, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        })
             .then(response => {
                 this.menus = response.data.menu;
             }).finally(() => this.loadingMenu = false)
     }
 
     openDialogUpdateArticle(article) {
+        let access_token = this.$cookies.get('token');
         this.loadingCategory = true;
-        this.$axios.get('articles/' + article._id).then(response => {
+        this.$axios.get('articles/' + article._id, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then(response => {
             this.editedArticle.Category = response.data.article.Category;
 
         })
@@ -868,8 +888,13 @@ export default class ArticlesEtMenus extends Vue {
     }
 
     openDialogUpdateMenu(menu) {
+        let access_token = this.$cookies.get('token');
         this.loadingArticle = true;
-        this.$axios.get('menus/' + menu._id).then(response => {
+        this.$axios.get('menus/' + menu._id, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then(response => {
             this.editedMenu.Articles = response.data.menu.Articles;
 
         })
@@ -882,10 +907,15 @@ export default class ArticlesEtMenus extends Vue {
     addArticle() {
         this.$refs.obsAddArticle.validate().then(success => {
             if (success) {
+                let access_token = this.$cookies.get('token');
                 if (this.resultArticleImg !== null) {
                     this.article.ArticleImg = this.resultArticleImg.toString();
                 }
-                this.$axios.post(`articles/` + this.restaurantId, {data: this.article}).then(() => {
+                this.$axios.post(`articles/` + this.restaurantId, {data: this.article}, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                }).then(() => {
                     this.getAllArticles();
                 }).finally(() => {
                     this.showDialogAddArticle = false;
@@ -895,9 +925,14 @@ export default class ArticlesEtMenus extends Vue {
     }
 
     addCategory() {
+        let access_token = this.$cookies.get('token');
         this.$refs.obsAddCategory.validate().then(success => {
             if (success) {
-                this.$axios.post(`categories/` + this.restaurantId, {data: this.category}).then(() => {
+                this.$axios.post(`categories/` + this.restaurantId, {data: this.category}, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                }).then(() => {
                     this.getAllCategories();
                 }).finally(() => {
                     this.showDialogAddCategory = false;
@@ -909,10 +944,15 @@ export default class ArticlesEtMenus extends Vue {
     addMenu() {
         this.$refs.obsAddMenu.validate().then(success => {
             if (success) {
+                let access_token = this.$cookies.get('token');
                 if (this.resultMenuImg !== null) {
                     this.menu.MenuImg = this.resultMenuImg.toString();
                 }
-                this.$axios.post(`menus/` + this.restaurantId, {data: this.menu}).then(() => {
+                this.$axios.post(`menus/` + this.restaurantId, {data: this.menu}, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                }).then(() => {
                     this.getAllMenus();
                 }).finally(() => {
                     this.showDialogAddMenu = false;
@@ -924,10 +964,15 @@ export default class ArticlesEtMenus extends Vue {
     updateArticle() {
         this.$refs.obsUpdateArticle.validate().then(success => {
             if (success) {
+                let access_token = this.$cookies.get('token');
                 if (this.resultArticleImg !== null) {
                     this.editedArticle.ArticleImg = this.resultArticleImg.toString();
                 }
-                this.$axios.put(`articles/` + this.editedArticleId, {data: this.editedArticle}).then(() => {
+                this.$axios.put(`articles/` + this.editedArticleId, {data: this.editedArticle}, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                }).then(() => {
                     this.getAllArticles();
                 }).finally(() => {
                     this.showDialogUpdateAndDeleteArticle = false;
@@ -940,7 +985,12 @@ export default class ArticlesEtMenus extends Vue {
     updateCategory() {
         this.$refs.obsUpdateCategory.validate().then(success => {
             if (success) {
-                this.$axios.put(`categories/` + this.editedCategoryId, {data: this.editedCategory}).then(() => {
+                let access_token = this.$cookies.get('token');
+                this.$axios.put(`categories/` + this.editedCategoryId, {data: this.editedCategory}, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                }).then(() => {
                     this.getAllCategories();
                 }).finally(() => {
                     this.showDialogUpdateAndDeleteCategory = false;
@@ -953,10 +1003,15 @@ export default class ArticlesEtMenus extends Vue {
     updateMenu() {
         this.$refs.obsUpdateMenu.validate().then(success => {
             if (success) {
+                let access_token = this.$cookies.get('token');
                 if (this.resultMenuImg !== null) {
                     this.editedMenu.MenuImg = this.resultMenuImg.toString();
                 }
-                this.$axios.put(`menus/` + this.editedMenuId, {data: this.editedMenu}).then(() => {
+                this.$axios.put(`menus/` + this.editedMenuId, {data: this.editedMenu}, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                }).then(() => {
                     this.getAllMenus();
                 }).finally(() => {
                     this.showDialogUpdateMenu = false;
@@ -966,9 +1021,15 @@ export default class ArticlesEtMenus extends Vue {
     }
 
     deleteArticle(article) {
+        let access_token = this.$cookies.get('token');
         this.categoryToDelete = false;
         this.menuToDelete = false;
-        this.$axios.delete(`articles/` + article._id, {data: article}).then(() => {
+        this.$axios.delete(`articles/` + article._id, {
+            data: article,
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then(() => {
             this.getAllArticles();
             this.getAllMenus();
         }).finally(() => {
@@ -981,16 +1042,30 @@ export default class ArticlesEtMenus extends Vue {
     deleteCategory(category) {
         this.articleToDelete = false;
         this.menuToDelete = false;
-        this.$axios.get('articles/').then((response) => {
+        let access_token = this.$cookies.get('token');
+        this.$axios.get('articles/', {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then((response) => {
             const articles = response.data.articles;
             articles.forEach(article => {
                 if (article.Category === category._id) {
                     article.Category = null;
-                    this.$axios.put(`articles/` + article._id, {data: article}).then()
+                    this.$axios.put(`articles/` + article._id, {data: article}, {
+                        headers: {
+                            'Authorization': `Bearer ${access_token}`,
+                        }
+                    }).then()
                 }
             })
         }).then(() => {
-            this.$axios.delete(`categories/` + category._id, {data: category}).then(() => {
+            this.$axios.delete(`categories/` + category._id, {
+                data: category,
+                headers: {
+                    'Authorization': `Bearer ${access_token}`,
+                }
+            }).then(() => {
                 this.getAllCategories();
                 this.getAllArticles();
             })
@@ -1005,7 +1080,13 @@ export default class ArticlesEtMenus extends Vue {
     deleteMenu(menu) {
         this.articleToDelete = false;
         this.categoryToDelete = false;
-        this.$axios.delete(`menus/` + menu._id, {data: menu}).then(() => {
+        let access_token = this.$cookies.get('token');
+        this.$axios.delete(`menus/` + menu._id, {
+            data: menu,
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then(() => {
             this.getAllMenus();
         }).finally(() => {
             this.menuToDelete = false;

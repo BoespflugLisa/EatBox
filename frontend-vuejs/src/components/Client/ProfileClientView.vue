@@ -47,7 +47,12 @@ export default class ProfileClientView extends Vue {
     }
 
     getData() {
-        this.$axios.get("/users/clients/" + this.clientId)
+        let access_token = this.$cookies.get('token');
+        this.$axios.get("/users/clients/" + this.clientId, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        })
             .then(response => {
                 this.client = response.data.client;
                 this.$refs.infos.getData(response.data.client, this.clientId);

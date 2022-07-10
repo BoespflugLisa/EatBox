@@ -49,7 +49,12 @@ export default class ArticlesEtMenus extends Vue {
     }
 
     getData() {
-        this.$axios.get("/users/deliverymen/" + this.deliverymanId)
+        let access_token = this.$cookies.get('token');
+        this.$axios.get("/users/deliverymen/" + this.deliverymanId, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        })
             .then(response => {
                 this.deliveryman = response.data.livreur
                 this.$refs.infos.getData(response.data.livreur, this.deliverymanId)

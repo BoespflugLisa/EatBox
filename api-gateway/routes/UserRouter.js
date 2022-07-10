@@ -1,12 +1,7 @@
 const UserRoutes = [
     {
         url: '/users/restaurants',
-        auth: false,
-        creditCheck: false,
-        rateLimit: {
-            windowMs: 15 * 60 * 1000,
-            max: 5
-        },
+        auth: true,
         proxy: {
             target: "http://localhost:3037/users/restaurants/",
             changeOrigin: true,
@@ -17,12 +12,7 @@ const UserRoutes = [
     },
     {
         url: '/users/clients',
-        auth: false,
-        creditCheck: false,
-        rateLimit: {
-            windowMs: 15 * 60 * 1000,
-            max: 5
-        },
+        auth: true,
         proxy: {
             target: "http://localhost:3038/users/clients/",
             changeOrigin: true,
@@ -33,12 +23,7 @@ const UserRoutes = [
     },
     {
         url: '/users/developers',
-        auth: false,
-        creditCheck: false,
-        rateLimit: {
-            windowMs: 15 * 60 * 1000,
-            max: 5
-        },
+        auth: true,
         proxy: {
             target: "http://localhost:3039/users/developers/",
             changeOrigin: true,
@@ -49,12 +34,7 @@ const UserRoutes = [
     },
     {
         url: '/users/deliverymen',
-        auth: false,
-        creditCheck: false,
-        rateLimit: {
-            windowMs: 15 * 60 * 1000,
-            max: 5
-        },
+        auth: true,
         proxy: {
             target: "http://localhost:3040/users/deliverymen/",
             changeOrigin: true,

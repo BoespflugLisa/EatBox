@@ -210,6 +210,7 @@ export default class ClientInfos extends Vue {
     updateInfo() {
         this.$refs.obsInfo.validate().then(success => {
             if (success) {
+                let access_token = this.$cookies.get('token');
                 this.clientInfos.Lastname = this.editedLastname;
                 this.clientInfos.Firstname = this.editedFirstname;
                 this.clientInfos.Phone = this.editedPhone;
@@ -220,6 +221,10 @@ export default class ClientInfos extends Vue {
                         Firstname: this.editedFirstname,
                         Address: this.editedAddress,
                         Phone: this.editedPhone
+                    }
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
                     }
                 }).then(() => {
                     this.$refs.snack.openSnackbar("Mise à jour efféctué avec succès", "success");
@@ -238,7 +243,12 @@ export default class ClientInfos extends Vue {
     }
 
     deleteAccount() {
-        this.$axios.delete("/users/clients/delete/" + this.$cookies.get('user_id')).then(r => {
+        let access_token = this.$cookies.get('token');
+        this.$axios.delete("/users/clients/delete/" + this.$cookies.get('user_id'), {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then(r => {
             logoutUser()
 
             this.$router.push('/connexion')

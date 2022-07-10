@@ -127,7 +127,12 @@ export default class RestaurateurNotification extends Vue {
     }
 
     readAll() {
-        this.$axios.put("notifications/user/" + this.userId + "/readAll").then(() => {
+        let access_token = this.$cookies.get('token');
+        this.$axios.put("notifications/user/" + this.userId + "/readAll", null, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then(() => {
             this.command = []
             this.deliveryman = []
             this.$emit('remove-all-notif')
@@ -144,7 +149,14 @@ export default class RestaurateurNotification extends Vue {
                 break;
         }
         notif.Read = true;
-        this.$axios.put("notifications/" + notif._id, {data: notif}).then(() => {
+        let access_token = this.$cookies.get('token');
+        this.$axios.put("notifications/" + notif._id, {
+            data: notif
+        }, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then(() => {
             this.$emit('remove-notif')
         }).catch(() => {
             this.$refs.snack.openSnackbar("Erreur lors de la suppression de la notification", "error")

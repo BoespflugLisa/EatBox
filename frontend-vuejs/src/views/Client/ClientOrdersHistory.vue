@@ -65,8 +65,13 @@ export default class ClientOrdersHistory extends Vue {
     currentOrders: any = [];
 
     mounted() {
+        let access_token = this.$cookies.get('token');
         const clientId = this.$cookies.get('user_id');
-        this.$axios.get(`orders/`)
+        this.$axios.get(`orders/`, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        })
             .then(response => {
                 const allFinishedOrders = response.data.ordersOver
                 allFinishedOrders.find(orderF => {
@@ -76,7 +81,11 @@ export default class ClientOrdersHistory extends Vue {
                 })
 
             })
-        this.$axios.get('orders/client/' + clientId).then(response => {
+        this.$axios.get('orders/client/' + clientId, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then(response => {
             this.currentOrders = response.data.currentOrders
         })
 

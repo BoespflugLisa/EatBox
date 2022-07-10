@@ -153,16 +153,11 @@ export default class App extends Vue {
     logout() {
         this.$axios.post("/auth/logout", {
                 id : this.$cookies.get('_id'),
-
             }).then(r => {
                 logoutUser()
             this.changeTheme()
             this.$router.push('/connexion')
-
             })
-
-
-
     }
 
     displayMenu() {

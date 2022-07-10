@@ -461,6 +461,7 @@ export default class RestaurantInfos extends Vue {
     }
 
     updateRestaurant() {
+        let access_token = this.$cookies.get('token');
         this.$axios.put("/users/restaurants/update/" + this.restaurantId, {
             data: {
                 Phone: this.restaurantInfos.Phone,
@@ -469,6 +470,10 @@ export default class RestaurantInfos extends Vue {
                 Name: this.restaurantInfos.Name,
                 Address: this.restaurantInfos.Address,
                 Legal: this.restaurantInfos.Legal
+            }
+        }, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
             }
         }).then(() => {
             this.$refs.snack.openSnackbar("Mise à jour efféctué avec succès", "success");
@@ -491,7 +496,12 @@ export default class RestaurantInfos extends Vue {
     }
 
     deleteAccount() {
-        this.$axios.delete("/users/restaurants/delete/" + this.$cookies.get('user_id')).then(() => {
+        let access_token = this.$cookies.get('token')
+        this.$axios.delete("/users/restaurants/delete/" + this.$cookies.get('user_id'), {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then(() => {
             this.$axios.post("/auth/logout", {
                 token: this.$cookies.get('token'),
                 id: this.$cookies.get('user_id'),

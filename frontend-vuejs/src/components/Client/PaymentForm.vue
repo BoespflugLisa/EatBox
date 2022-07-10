@@ -126,22 +126,37 @@ export default {
 
         if (this.menusAdded) {
             const menus = this.menusAdded.split(',');
+            let access_token = this.$cookies.get('token');
             menus.forEach(menuId => {
-                this.$axios.get('menus/' + menuId).then(response => {
+                this.$axios.get('menus/' + menuId, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                }).then(response => {
                     this.order.Detail.Menus.push(response.data.menu);
                 })
             })
         }
         if (this.articlesAdded) {
             const articles = this.articlesAdded.split(',');
+            let access_token = this.$cookies.get('token');
             articles.forEach(articleId => {
-                this.$axios.get('articles/' + articleId).then(response => {
+                this.$axios.get('articles/' + articleId, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                }).then(response => {
                     this.order.Detail.Articles.push(response.data.article);
                 })
             })
         }
         this.order.Client = this.$cookies.get('user_id')
-        this.$axios.get('/users/clients/' + this.order.Client).then(response => {
+        let access_token = this.$cookies.get('token');
+        this.$axios.get('/users/clients/' + this.order.Client, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then(response => {
             this.clientName = response.data.client.Lastname
             this.order.N_Order = this.getRandomNOrder(1000, 9999).toString().concat(this.clientName.substring(0, 3).toUpperCase());
         })
@@ -165,7 +180,14 @@ export default {
                     this.order.Detail.Paid = false;
                     this.order.Detail.Price = this.price;
                     this.order.Complementary = this.comment;
-                    this.$axios.post("/orders/" + this.restaurantID, {data: this.order}).then(response => {
+                    let access_token = this.$cookies.get('token');
+                    this.$axios.post("/orders/" + this.restaurantID, {
+                        data: this.order
+                    }, {
+                        headers: {
+                            'Authorization': `Bearer ${access_token}`,
+                        }
+                    }).then(response => {
                         this.$router.push('/SuiviCommande/' + response.data.order._id);
                     })
 

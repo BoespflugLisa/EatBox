@@ -17,18 +17,11 @@ const axios_gateway = axios.create({
     baseURL: 'http://localhost:3000',
 });
 
-const axios_login = axios.create({
-    baseURL: 'http://localhost:3032',
-});
-
-
 Vue.prototype.$axios = axios_gateway;
-Vue.prototype.$axios_login = axios_login;
 
 declare module 'vue/types/vue' {
     interface Vue {
         $axios: AxiosStatic;
-        $axios_login: AxiosStatic;
     }
 }
 

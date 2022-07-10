@@ -106,7 +106,12 @@ export default class StatsHistory extends Vue {
 
 
     async mounted(){
-        await this.$axios.get('stats/history/'+this.$cookies.get('user_id'))
+        let access_token = this.$cookies.get('token');
+        await this.$axios.get('stats/history/'+this.$cookies.get('user_id'), {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        })
             .then (response => {
                 response.data.stat.forEach(element => element.Date = dateFormat(new Date(element.Date), 'mmmm yyyy'))
                 this.items = response.data.stat

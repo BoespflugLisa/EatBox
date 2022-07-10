@@ -138,7 +138,12 @@ export default class HomePage extends Vue {
     }
 
     getData() {
-        this.$axios.get('/users/developers/' + this.$cookies.get('user_id')).then((response) => {
+        let access_token = this.$cookies.get('token');
+        this.$axios.get('/users/developers/' + this.$cookies.get('user_id'), {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then((response) => {
             console.log(response.data.developer)
             this.devInfos = response.data.developer;
             console.log(this.devInfos)
@@ -156,7 +161,14 @@ export default class HomePage extends Vue {
             if (success) {
                 this.devInfos.Lastname = this.editedLastname;
                 this.devInfos.Firstname = this.editedFirstname;
-                this.$axios.put("/users/developers/update/" + this.devInfos.id, {data: this.devInfos}).then(() => {
+                let access_token = this.$cookies.get('token');
+                this.$axios.put("/users/developers/update/" + this.devInfos.id, {
+                    data: this.devInfos
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                }).then(() => {
                     this.$refs.snack.openSnackbar("Mise à jour efféctué avec succès", "success");
                 }).catch(() => {
                     this.$refs.snack.openSnackbar("Erreur lors de la mise à jour", "error");
@@ -173,7 +185,12 @@ export default class HomePage extends Vue {
     }
 
     deleteAccount() {
-        this.$axios.delete("/users/developers/delete/" + this.$cookies.get('user_id')).then(r => {
+        let access_token = this.$cookies.get('token');
+        this.$axios.delete("/users/developers/delete/" + this.$cookies.get('user_id'), {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then(r => {
             logoutUser()
         })
 

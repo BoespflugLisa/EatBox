@@ -73,8 +73,12 @@ export default class ScanRestaurant extends Vue {
 
             this.order.State = 3;
             this.order.CheckTime.Pickedup_at = Date.now();
-
-            await this.$axios.put('/orders/'+ this.order._id, {data:this.order});
+            let access_token = this.$cookies.get('token');
+            await this.$axios.put('/orders/'+ this.order._id, {data:this.order}, {
+                headers: {
+                    'Authorization': `Bearer ${access_token}`,
+                }
+            });
             await this.$axios.post("/notifications/" + this.order.Client._id, {
                 data: {
                     action: "OrderIsComming",
@@ -82,6 +86,10 @@ export default class ScanRestaurant extends Vue {
                         Command: true,
                         Delivery: false,
                     }
+                }
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${access_token}`,
                 }
             })
 

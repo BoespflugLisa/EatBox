@@ -111,7 +111,12 @@ export default class StatsOfTheMonth extends Vue {
 
 
     async mounted() {
-        await this.$axios.get('stats/' + this.$cookies.get('user_id')).then(response => {
+        let access_token = this.$cookies.get('token');
+        await this.$axios.get('stats/' + this.$cookies.get('user_id'), {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then(response => {
             this.rating = {
                 '5': response.data.stats.Ratings['5'],
                 '4': response.data.stats.Ratings['4'],

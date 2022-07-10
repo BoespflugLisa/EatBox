@@ -195,17 +195,27 @@ export default class Cart extends Vue {
         this.articlesAdded = this.$cookies.get("articles")
 
         if (this.menusAdded) {
+            let access_token = this.$cookies.get('token');
             const menus = this.menusAdded.split(',');
             menus.forEach(menuId => {
-                this.$axios.get('menus/' + menuId).then(response => {
+                this.$axios.get('menus/' + menuId, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                }).then(response => {
                     this.CartMenus.push(response.data.menu);
                 })
             })
         }
         if (this.articlesAdded) {
+            let access_token = this.$cookies.get('token');
             const articles = this.articlesAdded.split(',');
             articles.forEach(articleId => {
-                this.$axios.get('articles/' + articleId).then(response => {
+                this.$axios.get('articles/' + articleId, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                }).then(response => {
                     this.CartArticles.push(response.data.article);
                 })
             })

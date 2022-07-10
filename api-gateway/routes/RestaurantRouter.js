@@ -1,12 +1,7 @@
 const RestaurantRoutes = [
     {
         url: '/restaurants',
-        auth: false,
-        creditCheck: false,
-        rateLimit: {
-            windowMs: 15 * 60 * 1000,
-            max: 5
-        },
+        auth: true,
         proxy: {
             target: "http://localhost:3035/restaurants/",
             changeOrigin: true,
@@ -17,12 +12,7 @@ const RestaurantRoutes = [
     },
     {
         url: '/menus',
-        auth: false,
-        creditCheck: false,
-        rateLimit: {
-            windowMs: 15 * 60 * 1000,
-            max: 5
-        },
+        auth: true,
         proxy: {
             target: "http://localhost:3035/menus/",
             changeOrigin: true,
@@ -33,12 +23,7 @@ const RestaurantRoutes = [
     },
     {
         url: '/articles',
-        auth: false,
-        creditCheck: false,
-        rateLimit: {
-            windowMs: 15 * 60 * 1000,
-            max: 5
-        },
+        auth: true,
         proxy: {
             target: "http://localhost:3035/articles/",
             changeOrigin: true,
@@ -50,12 +35,7 @@ const RestaurantRoutes = [
     ,
     {
         url: '/categories',
-        auth: false,
-        creditCheck: false,
-        rateLimit: {
-            windowMs: 15 * 60 * 1000,
-            max: 5
-        },
+        auth: true,
         proxy: {
             target: "http://localhost:3035/categories/",
             changeOrigin: true,

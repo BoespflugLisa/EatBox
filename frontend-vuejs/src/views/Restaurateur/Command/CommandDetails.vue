@@ -201,7 +201,12 @@ export default class CommandsDetails extends Vue {
     }
 
     async mounted() {
-        await this.$axios.get(`orders/` + this.orderID)
+        let access_token = this.$cookies.get('token');
+        await this.$axios.get(`orders/` + this.orderID, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        })
             .then(response => {
                 this.order = response.data.order;
                 this.menusId = response.data.order.Detail.Menus;
@@ -210,19 +215,31 @@ export default class CommandsDetails extends Vue {
 
                 this.menus = [];
                 this.menusId.forEach(menu => {
-                    this.$axios.get("/menus/" + menu).then(responseMenu => {
+                    this.$axios.get("/menus/" + menu, {
+                        headers: {
+                            'Authorization': `Bearer ${access_token}`,
+                        }
+                    }).then(responseMenu => {
                         this.menus.push(responseMenu.data.menu)
                     })
                 });
 
                 this.articles = [];
                 this.articlesId.forEach(article => {
-                    this.$axios.get("/articles/" + article).then(responseArticle => {
+                    this.$axios.get("/articles/" + article, {
+                        headers: {
+                            'Authorization': `Bearer ${access_token}`,
+                        }
+                    }).then(responseArticle => {
                         this.articles.push(responseArticle.data.article)
                     })
                 });
 
-                this.$axios.get("/users/clients/" + this.clientId).then(response => {
+                this.$axios.get("/users/clients/" + this.clientId, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                }).then(response => {
                     this.client = response.data.client
                 });
             })
@@ -244,8 +261,13 @@ export default class CommandsDetails extends Vue {
     }
 
     RefuseOrder() {
+        let access_token = this.$cookies.get('token');
         this.order.State = 5;
-        this.$axios.put(`orders/` + this.order._id, {data: this.order}).then(response => {
+        this.$axios.put(`orders/` + this.order._id, {data: this.order}, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then(response => {
             response.data;
         })
 
@@ -257,6 +279,10 @@ export default class CommandsDetails extends Vue {
                     Delivery: false,
                 }
             }
+        }, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
         }).then(() => {
             this.$axios.post("/notifications/" + this.order.Deliveryman_token, {
                 data: {
@@ -266,6 +292,10 @@ export default class CommandsDetails extends Vue {
                         Delivery: false,
                     }
                 }
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${access_token}`,
+                }
             });
         });
 
@@ -273,9 +303,14 @@ export default class CommandsDetails extends Vue {
     }
 
     validateOrder() {
+        let access_token = this.$cookies.get('token');
         this.order.State = 1;
         this.order.CheckTime.Accepted_at = new Date();
-        this.$axios.put(`orders/` + this.order._id, {data: this.order}).then(response => {
+        this.$axios.put(`orders/` + this.order._id, {data: this.order}, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then(response => {
             response.data;
         })
 
@@ -287,6 +322,10 @@ export default class CommandsDetails extends Vue {
                     Delivery: false,
                 }
             }
+        }, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
         }).then(() => {
             this.$axios.post("/notifications/" + this.order.Deliveryman_token, {
                 data: {
@@ -296,14 +335,23 @@ export default class CommandsDetails extends Vue {
                         Delivery: false,
                     }
                 }
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${access_token}`,
+                }
             });
         });
     }
 
     orderIsReady(readyDate) {
+        let access_token = this.$cookies.get('token');
         this.order.State = 2;
         this.order.CheckTime.Ready_at = readyDate;
-        this.$axios.put(`orders/` + this.order._id, {data: this.order}).then(response => {
+        this.$axios.put(`orders/` + this.order._id, {data: this.order}, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then(response => {
             response.data;
         })
 
@@ -315,6 +363,10 @@ export default class CommandsDetails extends Vue {
                     Delivery: true,
                 }
             }
+        }, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
         }).then(() => {
             this.$axios.post("/notifications/" + this.order.Deliveryman_token, {
                 data: {
@@ -323,6 +375,10 @@ export default class CommandsDetails extends Vue {
                         Command: true,
                         Delivery: false,
                     }
+                }
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${access_token}`,
                 }
             });
         });

@@ -127,8 +127,13 @@ export default class DeliveryList extends Vue {
     }
 
     async getData() {
+        let access_token = this.$cookies.get('token');
         if (this.deliveryman.Open_to_work) {
-            await this.$axios.get(`orders`)
+            await this.$axios.get(`orders`, {
+                headers: {
+                    'Authorization': `Bearer ${access_token}`,
+                }
+            })
                 .then(response => {
                     this.orders = response.data.ordersToAcceptByDeliveryman;
                     this.orders.forEach(() => this.dialogDelete.push(false));
@@ -152,16 +157,25 @@ export default class DeliveryList extends Vue {
         order.State = 0;
         order.Deliveryman_token = this.deliverymanId;
 
-        console.log(order)
-        this.$axios.put(`orders/` + order._id, {data: order}).then(response => {
+        let access_token = this.$cookies.get('token');
+        this.$axios.put(`orders/` + order._id, {data: order}, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then(response => {
             response.data;
         })
 
         this.deliveryman.Free = false;
-        this.$axios.put('/users/deliverymen/update/' + this.deliverymanId, {data:
+        this.$axios.put('/users/deliverymen/update/' + this.deliverymanId, {
+            data:
                 {
                     Free: this.deliveryman.Free
                 }
+        }, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
         })
 
         this.$axios.post("/notifications/" + order.Restaurant, {
@@ -172,6 +186,10 @@ export default class DeliveryList extends Vue {
                     Delivery: false,
                 }
             }
+        }, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
         }).then(() => {
             this.$axios.post("/notifications/" + order.Client._id, {
                 data: {
@@ -181,6 +199,10 @@ export default class DeliveryList extends Vue {
                         Delivery: true,
                     }
                 }
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${access_token}`,
+                }
             });
         })
 
@@ -188,7 +210,12 @@ export default class DeliveryList extends Vue {
     }
 
     getDeliveryman() {
-        this.$axios.get('/users/deliverymen/' + this.deliverymanId).then((response) => {
+        let access_token = this.$cookies.get('token');
+        this.$axios.get('/users/deliverymen/' + this.deliverymanId, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then((response) => {
             this.deliveryman = response.data.livreur;
             this.getData();
             this.connectOrderWS();
@@ -197,10 +224,16 @@ export default class DeliveryList extends Vue {
 
     setDeliverymanOpen() {
         this.deliveryman.Open_to_work = true;
-        this.$axios.put('/users/deliverymen/update/' + this.deliverymanId, {data:
+        let access_token = this.$cookies.get('token');
+        this.$axios.put('/users/deliverymen/update/' + this.deliverymanId, {
+            data:
                 {
                     Open_to_work: true
                 }
+        }, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
         })
             .then(() => {
                 this.getData();
@@ -211,10 +244,16 @@ export default class DeliveryList extends Vue {
     setDeliverymanNotOpen() {
         this.deliveryman.Open_to_work = false;
         this.orderConnection?.close();
-        this.$axios.put('/users/deliverymen/update/' + this.deliverymanId, {data:
+        let access_token = this.$cookies.get('token');
+        this.$axios.put('/users/deliverymen/update/' + this.deliverymanId, {
+            data:
                 {
                     Open_to_work: false
                 }
+        }, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
         })
     }
 

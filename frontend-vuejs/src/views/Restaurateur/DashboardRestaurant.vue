@@ -96,7 +96,12 @@ export default class DashboardRestaurant extends Vue {
     }
 
     mounted() {
-        this.$axios.get(`stats/`+this.$cookies.get('user_id'))
+        let access_token = this.$cookies.get('token');
+        this.$axios.get(`stats/`+this.$cookies.get('user_id'), {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        })
             .then(response => {
                 this.stats.restaurantName = response.data.stat.belongs_to.Name;
                 this.stats.nbCommandes = response.data.stat.NbOrders;

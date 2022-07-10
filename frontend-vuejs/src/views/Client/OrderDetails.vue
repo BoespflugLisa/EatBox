@@ -240,7 +240,12 @@ export default class OrderDetails extends Vue {
     }
 
     async getData() {
-        await this.$axios.get('orders/' + this.orderID).then(response => {
+        let access_token = this.$cookies.get('token');
+        await this.$axios.get('orders/' + this.orderID, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then(response => {
                 this.order = response.data.order;
                 this.articlesId = response.data.order.Detail.Articles;
                 this.menusId = response.data.order.Detail.Menus;
@@ -250,23 +255,39 @@ export default class OrderDetails extends Vue {
 
                 this.menus = [];
                 this.menusId.forEach(menu => {
-                    this.$axios.get("/menus/" + menu).then(responseMenu => {
+                    this.$axios.get("/menus/" + menu, {
+                        headers: {
+                            'Authorization': `Bearer ${access_token}`,
+                        }
+                    }).then(responseMenu => {
                         this.menus.push(responseMenu.data.menu)
                     })
                 });
 
                 this.articles = [];
                 this.articlesId.forEach(article => {
-                    this.$axios.get("/articles/" + article).then(response => {
+                    this.$axios.get("/articles/" + article, {
+                        headers: {
+                            'Authorization': `Bearer ${access_token}`,
+                        }
+                    }).then(response => {
                         this.articles.push(response.data.article)
                     })
                 });
 
-                this.$axios.get("/users/restaurants/" + response.data.order.Restaurant).then(responseRestaurant => {
+                this.$axios.get("/users/restaurants/" + response.data.order.Restaurant, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                }).then(responseRestaurant => {
                     this.restaurantAddress = responseRestaurant.data.restaurant.Address.Number + ' ' + responseRestaurant.data.restaurant.Address.Street + ' , ' + responseRestaurant.data.restaurant.Address.Town + ' , ' + responseRestaurant.data.restaurant.Address.Code;
                 });
 
-                this.$axios.get('/users/clients/' + this.client).then(responseClient => {
+                this.$axios.get('/users/clients/' + this.client, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                    }
+                }).then(responseClient => {
                     this.clientAddress = responseClient.data.client.Address.Number + ' ' + responseClient.data.client.Address.Street + ' , ' + responseClient.data.client.Address.Town + ' , ' + responseClient.data.client.Address.Code
                 });
             }
@@ -274,9 +295,14 @@ export default class OrderDetails extends Vue {
     }
 
     goToOrdersHistory() {
+        let access_token = this.$cookies.get('token');
         this.rateRestaurant = false;
         this.orderToCancel = false;
-        this.$axios.put('orders/' + this.orderID, {data: this.order}).then().finally(() => {
+        this.$axios.put('orders/' + this.orderID, {data: this.order}, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        }).then().finally(() => {
             this.$router.push('/HistoriqueCommandes')
         })
     }
@@ -285,7 +311,7 @@ export default class OrderDetails extends Vue {
         this.order.State = 6;
         this.order.Payment = "Canceled";
         this.order.CheckTime.Cancelled_at = Date.now()
-
+        let access_token = this.$cookies.get('token');
         this.$axios.post("/notifications/" + this.order.Restaurant._id, {
             data: {
                 action: "CanceledOrder",
@@ -293,6 +319,10 @@ export default class OrderDetails extends Vue {
                     Command: true,
                     Delivery: false,
                 }
+            }
+        }, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
             }
         }).then(() => {
             this.$axios.post("/notifications/" + this.order.Deliveryman_token, {
@@ -302,6 +332,10 @@ export default class OrderDetails extends Vue {
                         Command: true,
                         Delivery: false,
                     }
+                }
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${access_token}`,
                 }
             });
         });

@@ -62,7 +62,12 @@ export default class CommandsList extends Vue {
     }
 
     async getData() {
-        await this.$axios.get(`orders`)
+        let access_token = this.$cookies.get('token');
+        await this.$axios.get(`orders`, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        })
             .then(response => {
                 this.orders = response.data.orders;
                 this.incomingOrders = response.data.ordersToAcceptByRestaurant;
