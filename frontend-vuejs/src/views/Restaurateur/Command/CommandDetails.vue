@@ -19,7 +19,7 @@
                 <v-card-text>
                     <p>
                         {{ this.client.Firstname }}
-                        {{ this.client.Name }}
+                        {{ this.client.Lastname }}
                         <span v-if="this.order.Client.Favorite === true">⭐</span>
                     </p>
                     <p v-if="this.order.State === 1">Commande à réaliser pour :

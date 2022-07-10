@@ -36,7 +36,7 @@
                 </v-card-title>
                 <v-card-text>
                     <p class="d-flex">
-                        Prénom, Nom : {{ this.client.Firstname }} {{ this.client.Name }}
+                        Nom, Prénom: {{ this.client.Firstname }} {{ this.client.Lastname }}
                     </p>
                     <p>
                         Adresse : {{ this.address }}
