@@ -223,7 +223,6 @@ router.post('/register/delivery', async (req: any, res: any) => {
                 "fk_role": 4
             }
         }).then(async function (r) {
-            console.log(req.body.data)
             newProfile = await prisma.livreurs.create({
                 data: {
                     Lastname: req.body.data.lastname,
@@ -232,7 +231,7 @@ router.post('/register/delivery', async (req: any, res: any) => {
                     fk_user: r.id,
                     ProfileImg: req.body.data.profileImg,
                     Open_to_work: false,
-                    Free: false,
+                    Free: true,
                     AccountName: "",
                     IBAN: req.body.data.iban,
                 }
