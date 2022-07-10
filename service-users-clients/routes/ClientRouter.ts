@@ -1,7 +1,9 @@
 import express = require("express");
+
 const router = express.Router();
 
 import {PrismaClient} from "@prisma/client"
+
 const prisma = new PrismaClient()
 
 
@@ -11,7 +13,7 @@ router.get('/', async (req: any, res: any) => {
             include: {
                 user: {
                     select: {
-                        id:true,
+                        id: true,
                         email: true,
                     }
                 }
@@ -20,10 +22,10 @@ router.get('/', async (req: any, res: any) => {
             .then(r => {
                 res.json({
                     status: 200,
-                    clients : r
+                    clients: r
                 })
             })
-    } catch (e : any) {
+    } catch (e: any) {
         res.json({
             status: 200,
             message: e.message
@@ -36,13 +38,13 @@ router.get('/', async (req: any, res: any) => {
 router.get('/:id', async (req: any, res: any) => {
     try {
         const client = await prisma.clients.findUnique({
-            where : {
-                id : +req.params.id
+            where: {
+                id: +req.params.id
             },
             include: {
                 user: {
                     select: {
-                        id:true,
+                        id: true,
                         email: true,
                     }
                 }
@@ -51,7 +53,7 @@ router.get('/:id', async (req: any, res: any) => {
             .then(r => {
                 res.json({
                     status: 200,
-                    client : r
+                    client: r
                 })
             })
     } catch (e: any) {
@@ -78,7 +80,7 @@ router.put("/update/:id", async (req, res) => {
             });
         })
 
-    }  catch (e: any) {
+    } catch (e: any) {
         res.json({
             status: 200,
             message: e.message
@@ -90,19 +92,31 @@ router.put("/update/:id", async (req, res) => {
 
 router.delete('/delete/:id', async function (req, res) {
     try {
-        await prisma.clients.delete({
+        await prisma.clients.findUnique({
             where: {
                 id: +req.params.id
             }
-        }).then(() => {
-            res.json({
-                status: 204,
-                message: 'Client deleted successfully!'
-            });
+        }).then(async (r) => {
+            if (!!r) {
+                await prisma.users.delete({
+                    where: {
+                        id: r.fk_user
+                    }
+                }).then(() => {
+                    res.json({
+                        status: 204,
+                        message: 'Client deleted successfully!'
+                    });
+                })
+            }
         })
 
     } catch (e) {
-
+        console.log(e)
+        res.json({
+            status: 404,
+            message: e
+        });
     }
 });
 

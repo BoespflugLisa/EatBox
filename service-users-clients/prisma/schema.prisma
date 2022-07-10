@@ -8,24 +8,23 @@ generator client {
 }
 
 
-model Clients {
-  id            Int     @id @default(autoincrement())
-  Lastname      String
-  Firstname     String
-
-  Address       Json?
-  Phone         String?
-
-  fk_user   Int    @unique
-  user      Users  @relation(fields: [fk_user], references: [id])
+model clients {
+  id        Int     @id @default(autoincrement())
+  Lastname  String
+  Firstname String
+  Address   Json?
+  Phone     String?
+  fk_user   Int     @unique(map: "Clients_fk_user_key")
+  user      users  @relation(fields: [fk_user], references: [id])
 }
 
-model Users {
+model users {
   id          Int          @id @default(autoincrement())
-  email       String       @unique
+  email       String       @unique(map: "Users_email_key")
   Password    String
   fk_role     Int
-  clients Clients[]
+
+  clients     clients?
 
 }
 

@@ -84,19 +84,31 @@ router.put("/update/:id", async (req, res) => {
 
 router.delete('/delete/:id', async function (req, res) {
     try {
-        await prisma.restaurants.delete({
+        await prisma.restaurants.findUnique({
             where: {
                 id: +req.params.id
             }
-        }).then(() => {
-            res.json({
-                status: 204,
-                message: 'Restaurant deleted successfully!'
-            });
+        }).then(async (r) => {
+            if (!!r) {
+                await prisma.users.delete({
+                    where: {
+                        id: r.fk_user
+                    }
+                }).then(() => {
+                    res.json({
+                        status: 204,
+                        message: 'Restaurant deleted successfully!'
+                    });
+                })
+            }
         })
 
     } catch (e) {
-
+        console.log(e)
+        res.json({
+            status: 404,
+            message: e
+        });
     }
 });
 
