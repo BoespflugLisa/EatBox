@@ -175,6 +175,7 @@ export default {
         finishDelivery() {
             let access_token = this.$cookies.get('token');
             this.order.State = 4
+            this.order.CheckTime.Delivered_at = Date.now();
             this.$axios.put('orders/' + this.orderID, {data: this.order}, {
                 headers: {
                     'Authorization': `Bearer ${access_token}`,

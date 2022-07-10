@@ -23,10 +23,10 @@
                         </v-btn>
                     </v-card-actions>
                 </v-card>
-                <div v-else class="mt-5">
-                    <p> Aucune commande à préparer</p>
-                </div>
             </div>
+        </div>
+        <div v-else class="mt-5">
+            <p> Aucune commande à préparer</p>
         </div>
 
         <h2 class="mt-3">En attente du livreur</h2>
@@ -52,11 +52,12 @@
                         </v-btn>
                     </v-card-actions>
                 </v-card>
-                <div v-else class="mt-5">
-                    <p> Aucune commande Prête</p>
-                </div>
+
             </div>
 
+        </div>
+        <div v-else class="mt-5">
+            <p> Aucune commande prête</p>
         </div>
     </div>
 

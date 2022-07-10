@@ -2,8 +2,8 @@
     <div id="orders-history" class="side-padding">
         <h2 class="mt-3">Historique des commandes</h2>
         <h3 class="mt-3">Commandes en cours de livraison</h3>
-        <div v-if="this.ordersWithDeliveryman.length > 0">
-            <div class="mt-3" v-for="order in this.ordersWithDeliveryman" :key="order._id">
+        <div v-if="ordersWithDeliveryman.length > 0">
+            <div class="mt-3" v-for="order in ordersWithDeliveryman" :key="order._id">
                 <v-card v-if="order.State === 3" class="d-flex justify-space-between mb-2">
                     <div>
                         <v-card-title>
@@ -26,8 +26,8 @@
         </div>
 
         <h3 class="mt-3">Commandes Livrées</h3>
-        <div v-if="this.ordersFinished.length > 0">
-            <div class="mt-3" v-for="order in this.ordersFinished" :key="order._id">
+        <div v-if="ordersFinished.length > 0">
+            <div class="mt-3" v-for="order in ordersFinished" :key="order._id">
                 <v-card v-if="order.State === 4" class="d-flex justify-space-between mb-2">
                     <div>
                         <v-card-title>
