@@ -1,0 +1,35 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model users {
+  id          Int          @id @default(autoincrement())
+  email       String       @unique(map: "Users_email_key")
+  Password    String
+  fk_role     Int
+  restaurants restaurants?
+}
+
+model restaurants {
+  id   Int    @id @default(autoincrement())
+  Name String
+
+  Phone       String?
+  Address     Json?
+  hours       Json?
+  Type        String?
+  CoverImg    String?
+  Legal       Json?
+  Preferences Json?
+  Sponsors    Json?
+
+  fk_user     Int     @unique(map: "Restaurants_fk_user_key")
+  user       users   @relation(fields: [fk_user], references: [id], onDelete: Cascade, map: "Restaurants_fk_user_fkey")
+}
+
+
